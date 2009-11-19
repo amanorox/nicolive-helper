@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<overlay id="NicoLiveHelper" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/prefutils.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/overlay.js" />
+
+<!--
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="nicolive-menu-item" label="NicoLive Helper" insertbefore="menu_pageInfo" />
+  </menupopup>
+-->
+
+  <popup id="contentAreaContextMenu">
+    <menuitem id="nicolive-popup-menu" label="NicoLive Helper" oncommand="NicoLiveOverlay.openNicoLiveWindow();" />
+  </popup>
+
+<!--
+  <statusbar id="status-bar">
+    <statusbarpanel id="NicoLive-panel" label="NicoLive Helper" />
+  </statusbar>
+-->
+
+</overlay>

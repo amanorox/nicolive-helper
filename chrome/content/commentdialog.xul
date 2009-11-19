@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<dialog id="commentwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" title="Comment Window(NicoLive Helper)" buttons="accept" ondialogaccept="return true;" onload="setvalue();">
+
+  <script>
+  <![CDATA[
+function setvalue(){
+    var fl = window.arguments[0];
+    document.getElementById('playlist-text').value = fl;
+}
+  ]]>
+  </script>
+  <textbox id="playlist-text" multiline="true" readonly="true" flex="1"/>
+
+</dialog>

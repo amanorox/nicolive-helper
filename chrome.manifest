@@ -1,0 +1,3 @@
+content	nicolivehelper	chrome/content/
+
+overlay chrome://browser/content/browser.xul chrome://nicolivehelper/content/menu.xul

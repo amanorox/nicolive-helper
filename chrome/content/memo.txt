@@ -1,0 +1,10 @@
+﻿voteの仕様
+
+投票は0オリジンで0〜3
+GET http://watch.live.nicovideo.jp/api/vote?v=lv000000&id=3
+
+戻り値
+status=true
+
+--
+・選曲対象がないときに再生する動画
