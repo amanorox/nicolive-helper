@@ -2,7 +2,7 @@
 
 <overlay id="NicoLiveHelper" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/prefutils.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/overlay.js" />
 
 <!--
