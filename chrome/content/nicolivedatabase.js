@@ -397,7 +397,6 @@ var NicoLiveDatabase = {
 	    st.bindUTF8StringParameter(0,pname);
 	    st.bindUTF8StringParameter(1,video_id);
 	    st.execute();
-	    //debugprint(video_id+'/'+pname);
 	}
     },
     getPName:function(video_id){
@@ -410,6 +409,30 @@ var NicoLiveDatabase = {
 	st.finalize();
 	if(!pname) pname = "";
 	return pname;
+    },
+
+    setAdditional:function(){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	let video_id = elem.firstChild.textContent;
+	let oldadditional = this.getAdditional(video_id);
+	let additional = window.prompt("「"+video_id+"」の追加情報を入力してください",oldadditional);
+	if(additional!=null){
+	    let st = this.dbconnect.createStatement('update nicovideo set additional=?1 where video_id=?2');
+	    st.bindUTF8StringParameter(0,additional);
+	    st.bindUTF8StringParameter(1,video_id);
+	    st.execute();
+	}
+    },
+    getAdditional:function(video_id){
+	let st = this.dbconnect.createStatement('SELECT additional FROM nicovideo WHERE video_id = ?1');
+	let additional;
+	st.bindUTF8StringParameter(0,video_id);
+	while(st.step()){
+	    additional = st.getString(0);
+	}
+	st.finalize();
+	if(!additional) additional = "";
+	return additional;
     },
 
     init:function(){

@@ -313,6 +313,7 @@
       <menuitem label="ストック追加" oncommand="NicoLiveDatabase.addStockOne();"/>
       <menuitem label="リクエスト送信" oncommand="NicoLiveDatabase.sendRequestOne();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
     </menupopup>
 
     <!-- for stock-view -->
