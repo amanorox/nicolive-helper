@@ -3,18 +3,19 @@
  */
 
 /*
- * video_id       : character primary key
- * title          : character
- * description    : character
- * thumbnail_url  : character
- * first_retrive  : integer
- * length         : integer
- * view_counter   : integer
- * comment_num    : integer
- * mylist_counter : integer
- * tags           : character
- * update_date    : integer
- * pname          : character (0.7.2-)
+ * video_id       : character primary key 動画ID
+ * title          : character 動画タイトル
+ * description    : character 動画詳細
+ * thumbnail_url  : character サムネイルURL
+ * first_retrive  : integer 動画投稿日時
+ * length         : integer 長さ
+ * view_counter   : integer 再生数
+ * comment_num    : integer コメント数
+ * mylist_counter : integer マイリスト数
+ * tags           : character タグ(カンマ区切りの文字列)
+ * update_date    : integer DB情報の更新日時
+ * pname          : character (0.7.2-) 動画固有P名
+ * additional     : character (0.7.2-) 動画固有の追加情報
  */
 
 var NicoLiveDatabase = {
@@ -422,14 +423,20 @@ var NicoLiveDatabase = {
         this.dbconnect = storageService.openDatabase(file);
 	if(!this.dbconnect.tableExists('nicovideo')){
 	    // テーブルなければ作成.
-	    this.dbconnect.createTable('nicovideo','video_id character primary key, title character, description character, thumbnail_url character, first_retrieve integer, length integer, view_counter integer, comment_num integer, mylist_counter integer, tags character, update_date integer, pname character');
+	    this.dbconnect.createTable('nicovideo','video_id character primary key, title character, description character, thumbnail_url character, first_retrieve integer, length integer, view_counter integer, comment_num integer, mylist_counter integer, tags character, update_date integer, pname character, additional character');
 	}else{
-	    // 既に存在していればpnameフィールドを追加する(0.7.2-).
+	    // 既に存在していればpname,additionalフィールドを追加する(0.7.2-).
 	    try{
 		let sql = "alter table nicovideo add pname character";
 		this.dbconnect.executeSimpleSQL(sql);
 	    } catch (x) {
-		debugprint('pname was already exist');
+		debugprint('pname column was already exist');
+	    }
+	    try{
+		let sql = "alter table nicovideo add additional character";
+		this.dbconnect.executeSimpleSQL(sql);
+	    } catch (x) {
+		debugprint('additional column was already exist');
 	    }
 	}
 	this.setRegisterdVideoNumber();
