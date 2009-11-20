@@ -235,6 +235,9 @@ var NicoLiveHelper = {
 					  tmp = pn;
 				      }
 				      break;
+				  case 'additional':
+				      tmp = NicoLiveDatabase.getAdditional(info.video_id);
+				      break;
 				  }
 				  return tmp;
 			      });
