@@ -70,9 +70,11 @@ function FindParentElement(elem,tagName){
 }
 
 function CopyToClipboard(str){
+    if(str.length<=0) return;
     let gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].  
 	getService(Components.interfaces.nsIClipboardHelper);  
     gClipboardHelper.copyString(str);
+    debugprint('copy to clipboard:'+str);
 }
 
 function htmlspecialchars(ch){
@@ -126,6 +128,15 @@ function GetTimeString(sec){
 // min以上、max以下の範囲で乱数を返す.
 function GetRandomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function ZenToHan(str){
+    return str.replace(/[ａ-ｚＡ-Ｚ０-９]/g,
+		       function(s){ return String.fromCharCode(s.charCodeAt(0)-65248); });
+}
+
+function FormatCommas(str){
+    return str.toString().replace(/(\d)(?=(?:\d{3})+$)/g,"$1,");
 }
 
 function clearTable(tbody)

@@ -382,6 +382,7 @@ var NicoLiveDatabase = {
 	$('db-label').value = n +"件登録済み";
     },
 
+    // 現在のvbox内の動画IDをコピーする(リク、ストック、DBで共通利用可)
     copyToClipboard:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	CopyToClipboard(elem.firstChild.textContent); // 動画IDを取れる.
@@ -390,6 +391,7 @@ var NicoLiveDatabase = {
     setPName:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.firstChild.textContent;
+	if(video_id.length<=0) return;
 	let oldpname = this.getPName(video_id);
 	let pname = window.prompt("「"+video_id+"」のP名を入力してください",oldpname);
 	if(pname!=null){
@@ -414,6 +416,7 @@ var NicoLiveDatabase = {
     setAdditional:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.firstChild.textContent;
+	if(video_id.length<=0) return;
 	let oldadditional = this.getAdditional(video_id);
 	let additional = window.prompt("「"+video_id+"」の追加情報を入力してください",oldadditional);
 	if(additional!=null){

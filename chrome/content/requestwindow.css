@@ -34,8 +34,8 @@ tr.table_evenrow{
 }
 
 table#database-table tr:hover{
-    background-color: #444444;
-    color: white;
+/*    background-color: #444444;
+    color: white; */
 }
 
 tr.color1{

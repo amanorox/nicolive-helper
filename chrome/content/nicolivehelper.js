@@ -213,19 +213,30 @@ var NicoLiveHelper = {
 				  case 'length':
 				      tmp = info.length; break;
 				  case 'view':
-				      tmp = info.view_counter; break;
+				      tmp = FormatCommas(info.view_counter); break;
 				  case 'comment':
-				      tmp = info.comment_num; break;
+				      tmp = FormatCommas(info.comment_num); break;
 				  case 'mylist':
-				      tmp = info.mylist_counter; break;
+				      tmp = FormatCommas(info.mylist_counter); break;
 				  case 'tags':
-				      tmp = info.tags.join(','); break;
+				      // 1行40文字程度までかなぁ
+				      tmp = info.tags.join(',');
+				      tmp = tmp.replace(/(.{35,}?),/g,"$1<br>");
+				      break;
 				  case 'pname':
 				      let pn = NicoLiveDatabase.getPName(info.video_id);
 				      if(!pn){
 					  let pname = new Array();
 					  for(let i=0,tag;tag=info.tags[i];i++){
+					      tag = ZenToHan(tag);
+					      if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup)$/i)) continue;
+					      if(tag.match(/(M[A@]D|MMD|HD|3D|頭文字D|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid)$/i)) continue;
+
+					      // P名
 					      let t = tag.match(/.*[^OＯ][pｐPＰ]$/);
+					      if(t) pname.push(t[0]);
+					      // D名
+					      t = tag.match(/.*[dｄDＤ]$/);
 					      if(t) pname.push(t[0]);
 					  }
 					  if(pname.length) tmp = pname.join(',');
@@ -1265,6 +1276,7 @@ var NicoLiveHelper = {
 		let jingle = NicoLivePreference.jinglemovie;
 		let timerid = setInterval( function(){
 					       NicoLiveHelper.postCasterComment("/play "+jingle);
+					       NicoLiveHelper._sendMusicInfo();
 					       clearInterval(timerid);
 					   }, 5000);
 	    }

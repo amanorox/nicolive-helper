@@ -40,6 +40,13 @@ var NicoLiveRequest = {
 	td = tr.insertCell(tr.cells.length);
 
 	let vbox = CreateElement('vbox');
+	vbox.setAttribute('context','popup-copyrequest');
+
+	let htmlspan = CreateHTMLElement('span');
+	htmlspan.style.display = 'none';
+	htmlspan.appendChild(document.createTextNode(item.video_id));
+	vbox.appendChild(htmlspan);
+
 	let div = CreateHTMLElement('div');
 	let a = CreateHTMLElement('a');
 	a.onclick = function(){ window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id); };
@@ -154,6 +161,13 @@ var NicoLiveRequest = {
 	td = tr.insertCell(tr.cells.length);
 
 	let vbox = CreateElement('vbox');
+	vbox.setAttribute('context','popup-sort-stock');
+
+	let htmlspan = CreateHTMLElement('span');
+	htmlspan.style.display = 'none';
+	htmlspan.appendChild(document.createTextNode(item.video_id));
+	vbox.appendChild(htmlspan);
+
 	let div = CreateHTMLElement('div');
 	let a = CreateHTMLElement('a');
 	a.onclick = function(){ window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id); };
@@ -306,6 +320,14 @@ var NicoLiveRequest = {
 		}
 	    }
 	}
+    },
+
+    copyRequestToClipboard:function(){
+	let ids = new Array();
+	for(let i=0,item;item=NicoLiveHelper.requestqueue[i];i++){
+	    ids.push(item.video_id);
+	}
+	if(ids.length>0) CopyToClipboard(ids.join('\r\n'));
     },
 
     init:function(){

@@ -91,7 +91,7 @@
 	    <button label="全消去" oncommand="NicoLiveHelper.clearStock();"/>
 	    <label id="stock-playtime"/>
 	  </hbox>
-	  <vbox flex="1" style="overflow:auto" context="popup-sort-stock" id="vbox-stock">
+	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
 	    <html:table id="stock-table" class="requestview">
 	    </html:table>
 	  </vbox>
@@ -307,6 +307,15 @@
       <menuitem label="コメントをコピー" oncommand="NicoLiveComment.copyComment();"/>
     </menupopup>
 
+    <!-- request tab -->
+    <menupopup id="popup-copyrequest">
+      <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
+      <menuseparator/>
+      <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
+      <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
+    </menupopup>
+
     <!-- for DB result -->
     <menupopup id="popup-db-result">
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
@@ -339,6 +348,10 @@
 	</menupopup>
       </menu>
       <menuitem label="詳細の表示/非表示" oncommand="NicoLiveRequest.showhideDetail();"/>
+      <menuseparator/>
+      <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
+      <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
     </menupopup>
   </popupset>
   
