@@ -5,7 +5,7 @@ var NicoLiveOverlay = {
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
 	//Application.console.log(url+' '+title);
-	window.open("chrome://nicolivehelper/content/requestwindow.xul","NicoLive_Helper_"+url,feature);
+	window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
     },
 
     openNicoLiveWindow:function(){

@@ -1,4 +1,45 @@
-var Preference = {
+var NLHPreference = {
+
+    resetMovieInfo:function(){
+	/*
+	 * 再生数/{view} コメント/{comment} マイリスト/{mylist}({mylistrate})<br>{pname}
+	 * タグ/{tags}
+	 * ♪{id} {title}<br>投稿日/{date} 時間/{length}<br>{additional}
+	 */
+	try{
+	    $('pref-videoinfo1').reset();
+	} catch (x) {}
+	try{
+	    $('pref-videoinfo2').reset();
+	} catch (x) {}
+	try{
+	    $('pref-videoinfo3').reset();
+	} catch (x) {}
+	try{
+	    $('pref-typeofvideoinfo').reset();
+	} catch (x) {}
+    },
+
+    resetAutoReply:function(){
+	try{
+	    $('pref-msg-deleted').reset();
+	} catch (x) {}
+	try{
+	    $('pref-msg-notaccept').reset();
+	} catch (x) {}
+	try{
+	    $('pref-msg-newmovie').reset();
+	} catch (x) {}
+	try{
+	    $('pref-msg-played').reset();
+	} catch (x) {}	
+	try{
+	    $('pref-msg-requested').reset();
+	} catch (x) {}	
+	try{
+	    $('pref-msg-accept').reset();
+	} catch (x) {}	
+    },
 
     refDirectory:function(){
 	const nsIFilePicker = Components.interfaces.nsIFilePicker;

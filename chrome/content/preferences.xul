@@ -11,7 +11,6 @@
 
   <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/icon1.png" onpaneload="$('caster-comment-type').value = $('pref-typeofvideoinfo').value;">
     <preferences>
-      <preference id="pref-symbol" name="extensions.nicolivehelper.test" type="string"/>
       <preference id="pref-videoinfo1" name="extensions.nicolivehelper.videoinfo1" type="unichar"/>
       <preference id="pref-videoinfo2" name="extensions.nicolivehelper.videoinfo2" type="unichar"/>
       <preference id="pref-videoinfo3"      name="extensions.nicolivehelper.videoinfo3" type="unichar"/>
@@ -45,6 +44,9 @@
 	<listitem label="/perm + hiddenで運営コメント" value="3"/>
       </listbox>
     </vbox>
+    <hbox>
+      <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
+    </hbox>
   </prefpane>
 
   <prefpane id="nicolivehelper-prefpane-castercomment" label="運営コメント" image="chrome://nicolivehelper/content/icon2.png">
@@ -88,6 +90,9 @@
 	</row>
       </rows>
     </grid>
+    <hbox>
+      <button label="デフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
+    </hbox>
   </prefpane>
     
   <prefpane id="nicolivehelper-prefpane-request" label="リクエスト制限" image="chrome://nicolivehelper/content/icon3.png">
@@ -100,7 +105,7 @@
     </hbox>
   </prefpane>
 
-  <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/icon1.png" onpaneload="Preference.updateFilePicker();">
+  <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>
       <preference id="pref-commentlogDir" name="extensions.nicolivehelper.commentlogDir" type="file"/>
@@ -115,7 +120,7 @@
       <hbox align="center">
 	<label control="commentlog" value="コメントログ保存先:"/>
 	<filefield id="commentlog" flex="1"/>
-	<button label="参照..." oncommand="Preference.refDirectory();"/>
+	<button label="参照..." oncommand="NLHPreference.refDirectory();"/>
       </hbox>
     </vbox>
     <html:hr style="margin:1em;"/>
@@ -135,13 +140,13 @@
 	  </row>
 	  <row>
 	    <label value="放送者"/>
-	    <checkbox preference="pref-auto-open" label=""/>
-	    <checkbox preference="pref-auto-close" label=""/>
+	    <checkbox preference="pref-auto-open"/>
+	    <checkbox preference="pref-auto-close"/>
 	  </row>
 	  <row>
 	    <label value="視聴者"/>
-	    <checkbox preference="pref-auto-open-listener" label=""/>
-	    <checkbox preference="pref-auto-close-listener" label=""/>
+	    <checkbox preference="pref-auto-open-listener"/>
+	    <checkbox preference="pref-auto-close-listener"/>
 	  </row>
 	</rows>
       </grid>
@@ -156,5 +161,6 @@
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/preferences.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
 
 </prefwindow>

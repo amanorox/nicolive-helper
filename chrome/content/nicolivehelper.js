@@ -220,7 +220,7 @@ var NicoLiveHelper = {
 				  case 'mylist':
 				      tmp = FormatCommas(info.mylist_counter); break;
 				  case 'mylistrate':
-				      tmp = (100*mylist/view).toFixed(1) + "%";
+				      tmp = (100*info.mylist/info.view).toFixed(1) + "%";
 				      break;
 				  case 'tags':
 				      // 1行40文字程度までかなぁ
