@@ -61,9 +61,9 @@ function OpenFile(path){
     }
 }
 
-function FindParentElement(elem,tagName){
+function FindParentElement(elem,tag){
     while(elem.parentNode &&
-	  (!elem.tagName || (elem.tagName.toUpperCase()!=tagName.toUpperCase()))){
+	  (!elem.tagName || (elem.tagName.toUpperCase()!=tag.toUpperCase()))){
 	elem = elem.parentNode;
     }
     return elem;

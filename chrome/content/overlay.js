@@ -25,8 +25,17 @@ var NicoLiveOverlay = {
     },
 
     onPageLoad:function(e){
+	let player = e.target.getElementById("WatchPlayer");
+	let iscaster = false;
+	if( !player ) return;
+
+	if(player.innerHTML.match(/console\.swf/)){
+	    iscaster = true;
+	}
+
 	let prefs = new PrefsWrapper1("extensions.nicolivehelper.");
-	if( prefs.getBoolPref("autowindowopen") ){
+	if( prefs.getBoolPref("autowindowopen") && iscaster ||
+	    prefs.getBoolPref("autowindowopen-listener") && !iscaster ){
 	    let url = e.target.location.href;
 	    url = url.match(/lv\d+/);
 	    if(url){

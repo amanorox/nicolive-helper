@@ -106,6 +106,8 @@
       <preference id="pref-commentlogDir" name="extensions.nicolivehelper.commentlogDir" type="file"/>
       <preference id="pref-auto-open" name="extensions.nicolivehelper.autowindowopen" type="bool"/>
       <preference id="pref-auto-close" name="extensions.nicolivehelper.autowindowclose" type="bool"/>
+      <preference id="pref-auto-open-listener" name="extensions.nicolivehelper.autowindowopen-listener" type="bool"/>
+      <preference id="pref-auto-close-listener" name="extensions.nicolivehelper.autowindowclose-listener" type="bool"/>
       <preference id="pref-z-order" name="extensions.nicolivehelper.z-order" type="bool"/>
     </preferences>
     <vbox>
@@ -118,8 +120,36 @@
     </vbox>
     <html:hr style="margin:1em;"/>
     <vbox>
+      <label value="生放送の開始、終了に合わせて、Helperを自動で"/>
+      <grid>
+	<columns>
+	  <column/>
+	  <column/>
+	  <column/>
+	</columns>
+	<rows>
+	  <row>
+	    <label value=""/>
+	    <label value="開く"/>
+	    <label value="閉じる"/>
+	  </row>
+	  <row>
+	    <label value="放送者"/>
+	    <checkbox preference="pref-auto-open" label=""/>
+	    <checkbox preference="pref-auto-close" label=""/>
+	  </row>
+	  <row>
+	    <label value="視聴者"/>
+	    <checkbox preference="pref-auto-open-listener" label=""/>
+	    <checkbox preference="pref-auto-close-listener" label=""/>
+	  </row>
+	</rows>
+      </grid>
+      <!--
       <checkbox preference="pref-auto-open" label="生放送のページを開いた時に、自動でHelperを開く"/>
       <checkbox preference="pref-auto-close" label="生放送終了時、自動でHelperを閉じる"/>
+      -->
+      <html:hr style="margin:1em;"/>
       <checkbox preference="pref-z-order" label="常に最前面に表示"/>
     </vbox>
   </prefpane>

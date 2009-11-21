@@ -139,7 +139,8 @@ var NicoLiveHelper = {
 	    this.close();
 
 	    let prefs = NicoLivePreference.getBranch();
-	    if( prefs.getBoolPref("autowindowclose") ){
+	    if( prefs.getBoolPref("autowindowclose") && this.iscaster ||
+	        prefs.getBoolPref("autowindowclose-listener") && !this.iscaster ){
 		window.close();
 	    }else{
 		debugalert(this.request_id+' finished.');
@@ -221,7 +222,7 @@ var NicoLiveHelper = {
 				  case 'tags':
 				      // 1行40文字程度までかなぁ
 				      tmp = info.tags.join(',');
-				      tmp = tmp.replace(/(.{35,}?),/g,"$1<br>");
+				      tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
 				      break;
 				  case 'pname':
 				      let pn = NicoLiveDatabase.getPName(info.video_id);
