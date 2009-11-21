@@ -230,7 +230,7 @@ var NicoLiveHelper = {
 					  for(let i=0,tag;tag=info.tags[i];i++){
 					      tag = ZenToHan(tag);
 					      if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup)$/i)) continue;
-					      if(tag.match(/(M[A@]D|MMD|HD|3D|頭文字D|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid)$/i)) continue;
+					      if(tag.match(/(M[A@]D|MMD|HD|3D|頭文字D|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad)$/i)) continue;
 
 					      // P名
 					      let t = tag.match(/.*[^OＯ][pｐPＰ]$/);
