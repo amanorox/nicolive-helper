@@ -219,6 +219,9 @@ var NicoLiveHelper = {
 				      tmp = FormatCommas(info.comment_num); break;
 				  case 'mylist':
 				      tmp = FormatCommas(info.mylist_counter); break;
+				  case 'mylistrate':
+				      tmp = (100*mylist/view).toFixed(1) + "%";
+				      break;
 				  case 'tags':
 				      // 1行40文字程度までかなぁ
 				      tmp = info.tags.join(',');
@@ -1274,6 +1277,7 @@ var NicoLiveHelper = {
 	if( !NicoLivePreference.isjingle ) return;
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){
+		this.inplay = true;
 		let jingle = NicoLivePreference.jinglemovie;
 		let timerid = setInterval( function(){
 					       NicoLiveHelper.postCasterComment("/play "+jingle);
