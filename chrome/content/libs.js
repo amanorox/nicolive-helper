@@ -118,6 +118,11 @@ function GetDateString(ms){
     return d.toLocaleFormat("%Y/%m/%d %H:%M:%S");
 }
 
+function GetFormattedDateString(format,ms){
+    let d = new Date(ms);
+    return d.toLocaleFormat(format);
+}
+
 function GetTimeString(sec){
     let str;
     str = parseInt(sec/60) + ":";
