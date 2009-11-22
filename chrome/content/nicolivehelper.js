@@ -55,7 +55,10 @@ var NicoLiveHelper = {
 	// リクエスト制限のチェック.
 	if(NicoLivePreference.restrict.dorestrict){
 	    let msg = this.checkMovieRestriction(info);
-	    return {code:-6,"msg":msg};
+	    if( msg ){
+		debugprint(msg);
+		return {code:-6,"msg":msg,movieinfo:info};
+	    }
 	}
 
 	if(NicoLivePreference.mikuonly){
@@ -92,38 +95,33 @@ var NicoLiveHelper = {
     checkMovieRestriction:function(videoinfo){
 	let restrict = NicoLivePreference.restrict;
 	let msg = [];
-	let str = "";
+	let str = "リクエストエラー:";
 
 	if(restrict.videolength>0){
 	    // 指定秒数以下かどうか.
 	    if( videoinfo.length_ms/1000 > restrict.videolength ){
-		msg.push("<動画時間");
+		return str + "動画時間が長いです";
 	    }
 	}
 	if(restrict.mylist_from>0){
 	    if( videoinfo.mylist_counter<restrict.mylist_from ){
-		msg.push(">マイリスト数");
+		return str + "マイリスト数が少ないです";
 	    }
 	}
 	if(restrict.mylist_to>0){
 	    if( videoinfo.mylist_counter>restrict.mylist_to ){
-		msg.push("<マイリスト数");
+		return str + "マイリスト数が多いです";
 	    }
 	}
 	if(restrict.view_from>0){
 	    if( videoinfo.view_counter<restrict.view_from ){
-		msg.push(">再生数");
+		return str + "再生数が少ないです";
 	    }
 	}
 	if(restrict.view_to>0){
 	    if( videoinfo.view_counter>restrict.view_to ){
-		msg.push("<再生数");
+		return str + "再生数が多いです";
 	    }
-	}
-	if(restrict.tag_include.length>0){
-	}
-	if(restrict.tag_exclude.length>0){
-	    
 	}
 	let date_from,date_to;
 	date_from = restrict.date_from.match(/\d+/g);
@@ -132,8 +130,42 @@ var NicoLiveHelper = {
 	date_to   = new Date(date_to[0],date_to[1]-1,date_to[2],23,59,59);
 	if( date_to-date_from >= 86400000 ){ /* 86400000は1日のミリ秒数 */
 	    // 投稿日チェック
+	    let posted = videoinfo.first_retrieve*1000;
+	    if( date_from <= posted && posted <= date_to ){
+		// OK
+	    }else{
+		return str + "投稿日時が範囲外です";
+	    }
 	}
-	return str;
+
+	// タグにキーワードが含まれていればOK
+	if(restrict.tag_include.length>0){
+	    let tagstr = videoinfo.tags.join(' ');
+	    let flg = false;
+	    for(let i=0,tag;tag=restrict.tag_include[i];i++){
+		if( tagstr.indexOf(tag) != -1 ){
+		    // 含まれている
+		    flg = true;
+		}
+	    }
+	    if( !flg ) return str + "タグに指定のキーワードが含まれていません";
+	}
+
+	// タグにキーワードが含まれていなければOK
+	if(restrict.tag_exclude.length>0){
+	    let tagstr = videoinfo.tags.join(' ');
+	    let flg = true;
+	    let tag;
+	    for(let i=0;tag=restrict.tag_exclude[i];i++){
+		if( tagstr.indexOf(tag) != -1 ){
+		    // 含まれている
+		    flg = false;
+		    break;
+		}
+	    }
+	    if( !flg ) return str +"タグに「"+tag+"」が含まれています";
+	}
+	return null;
     },
 
     extractComment: function(xmlchat){
@@ -272,7 +304,7 @@ var NicoLiveHelper = {
 				  case 'mylist':
 				      tmp = FormatCommas(info.mylist_counter); break;
 				  case 'mylistrate':
-				      tmp = (100*info.mylist/info.view).toFixed(1) + "%";
+				      tmp = (100*info.mylist_counter/info.view_counter).toFixed(1) + "%";
 				      break;
 				  case 'tags':
 				      // 1行40文字程度までかなぁ
@@ -286,13 +318,13 @@ var NicoLiveHelper = {
 					  for(let i=0,tag;tag=info.tags[i];i++){
 					      tag = ZenToHan(tag);
 					      if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup)$/i)) continue;
-					      if(tag.match(/(M[A@]D|MMD|HD|3D|頭文字D|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad)$/i)) continue;
+					      if(tag.match(/(M[A@]D|MMD|HD|3D|頭文字D|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 
 					      // P名
 					      let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
 					      if(t) pname.push(t[0]);
 					      // D名
-					      t = tag.match(/.*[dｄDＤ]$/);
+					      t = tag.match(/.*[DＤ]$/);
 					      if(t) pname.push(t[0]);
 					  }
 					  if(pname.length) tmp = pname.join(',');

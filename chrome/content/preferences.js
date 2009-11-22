@@ -51,7 +51,6 @@ var NLHPreference = {
 	st.finalize();
 	try{
 	    let item = JSON.parse(value);
-	    $('pref-restrict-request').value   = item.dorestriction;
 	    $('pref-restrict-date-from').value = item.date_from;
 	    $('pref-restrict-date-to').value   = item.date_to;
 	    $('pref-restrict-view-from').value = item.view_from;
@@ -70,7 +69,6 @@ var NLHPreference = {
     addPreset:function(name){
 	if(name.length<=0) return;
 	let item = {};
-	item.dorestriction = $('pref-restrict-request').value;
 	item.date_from     = $('pref-restrict-date-from').value;
 	item.date_to       = $('pref-restrict-date-to').value;
 	item.view_from     = $('pref-restrict-view-from').value;
