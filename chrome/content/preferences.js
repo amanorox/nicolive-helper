@@ -68,6 +68,7 @@ var NLHPreference = {
 
     // プリセットをDBに登録する.
     addPreset:function(name){
+	if(name.length<=0) return;
 	let item = {};
 	item.dorestriction = $('pref-restrict-request').value;
 	item.date_from     = $('pref-restrict-date-from').value;
@@ -93,6 +94,7 @@ var NLHPreference = {
 
     // プリセットをDBから削除する
     delPreset:function(name){
+	if(name.length<=0) return;
 	let st = this.dbconnect.createStatement('DELETE FROM requestcond where presetname=?1');
 	st.bindUTF8StringParameter(0,name);
 	st.execute();

@@ -34,25 +34,28 @@ var NicoLiveHelper = {
 	}
 	let info = this.xmlToMovieInfo(xml);
 
-	if( !this.isacceptrequest ){
-	    // リクを受け付けていない.
+	// リクを受け付けていない.
+	if( !this.isacceptrequest )
 	    return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
-	}
 
 	if(NicoLivePreference.limitnewmovie){
-	    if( GetCurrentTime()-info.first_retrieve < this.secofweek ){
-		// 7日内に投稿された動画.
+	    // 7日内に投稿された動画.
+	    if( GetCurrentTime()-info.first_retrieve < this.secofweek )
 		return {code:-3,msg:NicoLivePreference.msg_newmovie,movieinfo:info};
-	    }
 	}
 
-	if(this.isPlayedMusic(info.video_id)){
+	// 再生済み.
+	if(this.isPlayedMusic(info.video_id))
 	    return {code:-4,msg:NicoLivePreference.msg_played,movieinfo:info};
-	}
 
-	if(this.isRequestedMusic(info.video_id)){
-	    // リクエストキューに既にある動画.
+	// リクエストキューに既にある動画.
+	if(this.isRequestedMusic(info.video_id))
 	    return {code:-5,msg:NicoLivePreference.msg_requested,movieinfo:info};
+
+	// リクエスト制限のチェック.
+	if(NicoLivePreference.restrict.dorestrict){
+	    let msg = this.checkMovieRestriction(info);
+	    return {code:-6,"msg":msg};
 	}
 
 	if(NicoLivePreference.mikuonly){
@@ -82,6 +85,55 @@ var NicoLiveHelper = {
 
 	// code:0を返すことで受け付ける.
 	return {code:0,msg:NicoLivePreference.msg_accept,movieinfo:info};
+    },
+
+
+    // リク制限のチェック.
+    checkMovieRestriction:function(videoinfo){
+	let restrict = NicoLivePreference.restrict;
+	let msg = [];
+	let str = "";
+
+	if(restrict.videolength>0){
+	    // 指定秒数以下かどうか.
+	    if( videoinfo.length_ms/1000 > restrict.videolength ){
+		msg.push("<動画時間");
+	    }
+	}
+	if(restrict.mylist_from>0){
+	    if( videoinfo.mylist_counter<restrict.mylist_from ){
+		msg.push(">マイリスト数");
+	    }
+	}
+	if(restrict.mylist_to>0){
+	    if( videoinfo.mylist_counter>restrict.mylist_to ){
+		msg.push("<マイリスト数");
+	    }
+	}
+	if(restrict.view_from>0){
+	    if( videoinfo.view_counter<restrict.view_from ){
+		msg.push(">再生数");
+	    }
+	}
+	if(restrict.view_to>0){
+	    if( videoinfo.view_counter>restrict.view_to ){
+		msg.push("<再生数");
+	    }
+	}
+	if(restrict.tag_include.length>0){
+	}
+	if(restrict.tag_exclude.length>0){
+	    
+	}
+	let date_from,date_to;
+	date_from = restrict.date_from.match(/\d+/g);
+	date_to   = restrict.date_to.match(/\d+/g);
+	date_from = new Date(date_from[0],date_from[1]-1,date_from[2]);
+	date_to   = new Date(date_to[0],date_to[1]-1,date_to[2],23,59,59);
+	if( date_to-date_from >= 86400000 ){ /* 86400000は1日のミリ秒数 */
+	    // 投稿日チェック
+	}
+	return str;
     },
 
     extractComment: function(xmlchat){

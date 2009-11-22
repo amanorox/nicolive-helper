@@ -20,6 +20,19 @@ var NicoLivePreference = {
 
 	this.topmost = branch.getBoolPref("z-order");
 	SetWindowTopMost(this.topmost);
+
+	let restrict = {};
+	restrict.dorestrict = branch.getBoolPref("request.restrict");
+	restrict.date_from  = branch.getCharPref("request.date-from");
+	restrict.date_to    = branch.getCharPref("request.date-to");
+	restrict.mylist_from= branch.getIntPref("request.mylist-from");
+	restrict.mylist_to  = branch.getIntPref("request.mylist-to");
+	restrict.tag_exclude = branch.getUnicharPref("request.tag-exclude").split(/\s+/);
+	restrict.tag_include = branch.getUnicharPref("request.tag-include").split(/\s+/);
+	restrict.videolength = branch.getIntPref("request.videolength");
+	restrict.view_from   = branch.getIntPref("request.view-from");
+	restrict.view_to     = branch.getIntPref("request.view-to");
+	this.restrict = restrict;
     },
 
     readBasicPrefs:function(){
