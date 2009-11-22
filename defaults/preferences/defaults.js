@@ -30,3 +30,14 @@ pref("extensions.nicolivehelper.msg-accept","リクエストを受け付けま�
 
 pref("extensions.nicolivehelper.savecomment",false);
 pref("extensions.nicolivehelper.commentlogDir","");
+
+pref("extensions.nicolivehelper.request.restrict",false);
+pref("extensions.nicolivehelper.request.date-from","2007-08-31");
+pref("extensions.nicolivehelper.request.date-to","2007-08-31");
+pref("extensions.nicolivehelper.request.view-from",0);
+pref("extensions.nicolivehelper.request.view-to",0);
+pref("extensions.nicolivehelper.request.mylist-from",0);
+pref("extensions.nicolivehelper.request.mylist-to",0);
+pref("extensions.nicolivehelper.request.videolength",0);
+pref("extensions.nicolivehelper.request.tag-include","");
+pref("extensions.nicolivehelper.request.tag-exclude","");

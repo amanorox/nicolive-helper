@@ -95,13 +95,79 @@
     </hbox>
   </prefpane>
     
-  <prefpane id="nicolivehelper-prefpane-request" label="リクエスト制限" image="chrome://nicolivehelper/content/icon3.png">
+  <prefpane id="nicolivehelper-prefpane-request" label="リクエスト制限" image="chrome://nicolivehelper/content/icon3.png" onpaneload="NLHPreference.updateRestrictPane();">
     <preferences>
-      <preference id="pref-test" name="extensions.nicolivehelper.test" type="string"/>
-    </preferences>    
+      <preference id="pref-restrict-request"   name="extensions.nicolivehelper.request.restrict" type="bool"/>
+      <preference id="pref-restrict-date-from" name="extensions.nicolivehelper.request.date-from" type="string"/>
+      <preference id="pref-restrict-date-to"   name="extensions.nicolivehelper.request.date-to"   type="string"/>
+      <preference id="pref-restrict-view-from" name="extensions.nicolivehelper.request.view-from" type="int"/>
+      <preference id="pref-restrict-view-to"   name="extensions.nicolivehelper.request.view-to" type="int"/>
+      <preference id="pref-restrict-mylist-from" name="extensions.nicolivehelper.request.mylist-from" type="int"/>
+      <preference id="pref-restrict-mylist-to"   name="extensions.nicolivehelper.request.mylist-to" type="int"/>
+      <preference id="pref-restrict-videolength" name="extensions.nicolivehelper.request.videolength" type="int"/>
+      <preference id="pref-restrict-tag-include" name="extensions.nicolivehelper.request.tag-include" type="unichar"/>
+      <preference id="pref-restrict-tag-exclude" name="extensions.nicolivehelper.request.tag-exclude" type="unichar"/>
+    </preferences>
+
     <hbox>
-      <label control="test" value="test: "/>
-      <textbox preference="pref-test" id="test"/>
+      <checkbox label="リクエスト制限を行う" preference="pref-restrict-request"/>
+      <button type="menu" label="プリセット読み込み">
+	<menupopup id="id-menu-preset">
+	</menupopup>
+      </button>
+      <hbox align="center"><label id="id-preset-name" value=""/></hbox>
+    </hbox>
+
+    <grid>
+      <columns>
+	<column/>
+	<column flex="1"/>
+	<column/>
+	<column flex="1"/>
+	<column/>
+      </columns>
+      <rows>
+	<row>
+	  <hbox align="center"><label value="投稿日" tooltiptext="同一日と前後矛盾した日付設定は無視します"/></hbox>
+	  <datepicker id="pref-date-from" type="popup" preference="pref-restrict-date-from"/>
+	  <hbox align="center"><label value="から"/></hbox>
+	  <datepicker id="pref-date-to"   type="popup" preference="pref-restrict-date-to"/>
+	  <hbox align="center"><label value="まで"/></hbox>
+	</row>
+	<row>
+	  <hbox aling="center"><label value="再生数"/></hbox>
+	  <textbox type="number" min="0" size="6" preference="pref-restrict-view-from"/>
+	  <hbox align="center"><label value="以上"/></hbox>
+	  <textbox type="number" min="0" size="6" preference="pref-restrict-view-to"/>
+	  <hbox align="center"><label value="以下"/></hbox>
+	</row>
+	<row>
+	  <hbox aling="center"><label value="マイリスト数"/></hbox>
+	  <textbox type="number" min="0" size="6" preference="pref-restrict-mylist-from"/>
+	  <hbox align="center"><label value="以上"/></hbox>
+	  <textbox type="number" min="0" size="6" preference="pref-restrict-mylist-to"/>
+	  <hbox align="center"><label value="以下"/></hbox>
+	</row>
+	<row>
+	  <hbox aling="center"><label value="動画時間"/></hbox>
+	  <textbox type="number" min="0" size="6" preference="pref-restrict-videolength"/>
+	  <hbox align="center"><label value="秒以下"/></hbox>
+	</row>
+	<row>
+	  <hbox align="center"><label value="タグ" tooltiptext=""/></hbox>
+	  <textbox size="6" flex="1" preference="pref-restrict-tag-include"/>
+	  <hbox align="center"><label value="を含む"/></hbox>
+	  <textbox size="6" flex="1" preference="pref-restrict-tag-exclude"/>
+	  <hbox align="center"><label value="を含まない"/></hbox>
+	</row>
+      </rows>
+    </grid>
+    <spacer flex="1"/>
+    <hbox>
+      <hbox align="center"><label value="プリセット名"/></hbox>
+      <textbox id="id-edit-presetname" flex="1" emptytext="プリセット名を入力してください"/>
+      <button label="登録" oncommand="NLHPreference.addPreset(document.getElementById('id-edit-presetname').value);"/>
+      <button label="削除" oncommand="NLHPreference.delPreset(document.getElementById('id-edit-presetname').value);"/>
     </hbox>
   </prefpane>
 

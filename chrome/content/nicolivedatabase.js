@@ -1,8 +1,8 @@
 /**
- * 動画データベース
+ * 動画データベースなど
  */
 
-/*
+/* TABLE nicovideo
  * video_id       : character primary key 動画ID
  * title          : character 動画タイトル
  * description    : character 動画詳細
@@ -16,6 +16,14 @@
  * update_date    : integer DB情報の更新日時
  * pname          : character (0.7.2-) 動画固有P名
  * additional     : character (0.7.2-) 動画固有の追加情報
+ */
+/* TABLE requestcond
+ * presetname : character primary key プリセット名
+ * value      : character リクエスト条件(JSON)
+ */
+/* TABLE settings
+ * key   : character キー
+ * value : character 値(JSON)
  */
 
 var NicoLiveDatabase = {
@@ -400,6 +408,7 @@ var NicoLiveDatabase = {
 	    st.bindUTF8StringParameter(1,video_id);
 	    st.execute();
 	}
+	st.finalize();
     },
     getPName:function(video_id){
 	let st = this.dbconnect.createStatement('SELECT pname FROM nicovideo WHERE video_id = ?1');
@@ -425,6 +434,7 @@ var NicoLiveDatabase = {
 	    st.bindUTF8StringParameter(1,video_id);
 	    st.execute();
 	}
+	st.finalize();
     },
     getAdditional:function(video_id){
 	let st = this.dbconnect.createStatement('SELECT additional FROM nicovideo WHERE video_id = ?1');
@@ -438,15 +448,7 @@ var NicoLiveDatabase = {
 	return additional;
     },
 
-    init:function(){
-	debugprint('NicoLiveDatabase init');
-	this.addSearchLine();
-
-        let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-        file.append("nicolivehelper_miku39jp.sqlite");
-
-        let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);
-        this.dbconnect = storageService.openDatabase(file);
+    createVideoDB:function(){
 	if(!this.dbconnect.tableExists('nicovideo')){
 	    // テーブルなければ作成.
 	    this.dbconnect.createTable('nicovideo','video_id character primary key, title character, description character, thumbnail_url character, first_retrieve integer, length integer, view_counter integer, comment_num integer, mylist_counter integer, tags character, update_date integer, pname character, additional character');
@@ -465,6 +467,25 @@ var NicoLiveDatabase = {
 		debugprint('additional column was already exist');
 	    }
 	}
+    },
+
+    createRequestCondDB:function(){
+	if(!this.dbconnect.tableExists('requestcond')){
+	    this.dbconnect.createTable('requestcond','presetname character primary key, value character');
+	}
+    },
+
+    init:function(){
+	debugprint('NicoLiveDatabase init');
+	this.addSearchLine();
+
+        let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+        file.append("nicolivehelper_miku39jp.sqlite");
+
+        let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);
+        this.dbconnect = storageService.openDatabase(file);
+	this.createVideoDB();
+	this.createRequestCondDB();
 	this.setRegisterdVideoNumber();
     },
     destroy:function(){

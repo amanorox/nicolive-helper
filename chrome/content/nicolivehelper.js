@@ -26,7 +26,7 @@ var NicoLiveHelper = {
     isautoplay: false,      // 自動再生フラグ.
     israndomplay: false,   // ランダム再生フラグ.
 
-    // リクを受け付けるかどうかチェック.
+    // リクを受け付けるかどうかチェック(動画の属性をチェックするのみ).
     checkAcceptRequest: function(xml){
 	if(xml.getElementsByTagName('error').length){
 	    // 動画がない.
@@ -183,7 +183,7 @@ var NicoLiveHelper = {
 	    if(1 || this.iscaster){
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
-		    let selfreq = chat.text.match(/自貼り/);
+		    let selfreq = chat.text.match(/自貼/);
 		    this.getthumbinfo(sm[1],chat.no, selfreq?"0":chat.user_id);
 		}
 	    }
@@ -237,7 +237,7 @@ var NicoLiveHelper = {
 					      if(tag.match(/(M[A@]D|MMD|HD|3D|頭文字D|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad)$/i)) continue;
 
 					      // P名
-					      let t = tag.match(/.*[^OＯ][pｐPＰ]$/);
+					      let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
 					      if(t) pname.push(t[0]);
 					      // D名
 					      t = tag.match(/.*[dｄDＤ]$/);
@@ -911,7 +911,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.request_per_ppl[req.user_id] = 0;
 		}
 		if( ans.code==0 && req.user_id!="0"){
-		    // 自張りはカウントしない.
+		    // 自貼りはカウントしなくてOK.
 		    NicoLiveHelper.request_per_ppl[req.user_id]++;
 		}
 		let n = NicoLiveHelper.request_per_ppl[req.user_id];
@@ -929,7 +929,9 @@ var NicoLiveHelper = {
 		switch(ans.code){
 		case 0:
 		    ans.movieinfo.cno = req.comment_no;
+		    ans.movieinfo.user_id = req.user_id;
 		    NicoLiveHelper.addRequestQueue(ans.movieinfo);
+
 		    if(NicoLiveHelper.iscaster &&
 		       NicoLiveHelper.isautoplay &&
 		       !NicoLiveHelper.inplay &&

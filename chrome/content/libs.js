@@ -87,7 +87,8 @@ function htmlspecialchars(ch){
 }
 
 function debugprint(txt){
-    $('debug-textbox').value += txt + "\n";
+    if( $('debug-textbox') )
+	$('debug-textbox').value += txt + "\n";
     //Application.console.log(txt);
 }
 function debugalert(txt){

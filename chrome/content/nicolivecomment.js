@@ -106,6 +106,22 @@ var NicoLiveComment = {
 	}
     },
 
+    getNGWords:function(){
+	// GET /api/configurengword?video=lv4635894&mode=get&video=lv4635894 HTTP/1.1
+	// Host: watch.live.nicovideo.jp
+
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let ngwords = req.responseXML.getElementsByTagName('ngclient');
+	    }
+	};
+	let url = "http://watch.live.nicovideo.jp/api/configurengword?video="+NicoLiveHelper.request_id+"&mode=get";
+	req.open('GET', url );
+	req.send(null);
+    },
+
     openDialog:function(){
 	let str = "";
 	for(let i=0,item;item=this.commentlog[i];i++){
