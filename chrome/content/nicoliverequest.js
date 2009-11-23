@@ -229,7 +229,6 @@ var NicoLiveRequest = {
 	let str;
 	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
 	for(let i=0,s;s=str[i];i++){
-	    debugprint(s);
 	    if( s.indexOf('mylist/')!=-1 ){
 		let a = CreateHTMLElement('a');
 		let mylist = s;
