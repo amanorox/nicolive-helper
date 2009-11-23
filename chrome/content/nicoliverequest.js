@@ -75,7 +75,32 @@ var NicoLiveRequest = {
 	div.appendChild(hr);
 
 	let div2 = CreateHTMLElement('div');
-	div2.appendChild(document.createTextNode(item.description));
+	//div2.appendChild(document.createTextNode(item.description));
+	let str;
+	// innerHTMLが使えないのでひたすらDOM操作.
+	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
+	for(let i=0,s;s=str[i];i++){
+	    if( s.indexOf('mylist')!=-1 ){
+		let a = CreateHTMLElement('a');
+		let mylist = s;
+		a.onclick = function(){
+		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
+		};
+		a.appendChild(document.createTextNode(s));
+		div2.appendChild(a);
+	    }else if( s.match(/(sm|nm)\d+/) ){
+		let a = CreateHTMLElement('a');
+		let vid = s;
+		a.onclick = function(){
+		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
+		};
+		a.appendChild(document.createTextNode(s));
+		div2.appendChild(a);
+	    }else{
+		div2.appendChild(document.createTextNode(s));
+	    }
+	}
+
 	div.appendChild(div2);
 
 	vbox.appendChild(div);
@@ -199,7 +224,33 @@ var NicoLiveRequest = {
 
 	let div2 = CreateHTMLElement('div');
 	div2.className = 'detail';
-	div2.appendChild(document.createTextNode(item.description));
+	//div2.appendChild(document.createTextNode(item.description));
+
+	let str;
+	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
+	for(let i=0,s;s=str[i];i++){
+	    debugprint(s);
+	    if( s.indexOf('mylist/')!=-1 ){
+		let a = CreateHTMLElement('a');
+		let mylist = s;
+		a.onclick = function(){
+		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
+		};
+		a.appendChild(document.createTextNode(s));
+		div2.appendChild(a);
+	    }else if( s.match(/(sm|nm)\d+/) ){
+		let a = CreateHTMLElement('a');
+		let vid = s;
+		a.onclick = function(){
+		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
+		};
+		a.appendChild(document.createTextNode(s));
+		div2.appendChild(a);
+	    }else{
+		div2.appendChild(document.createTextNode(s));
+	    }
+	}
+
 	div.appendChild(div2);
 
 	vbox.appendChild(div);
