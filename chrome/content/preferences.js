@@ -151,6 +151,9 @@ var NLHPreference = {
 	    $('pref-videoinfo3').reset();
 	} catch (x) {}
 	try{
+	    $('pref-videoinfo4').reset();
+	} catch (x) {}
+	try{
 	    $('pref-typeofvideoinfo').reset();
 	} catch (x) {}
     },
