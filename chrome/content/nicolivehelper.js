@@ -96,17 +96,19 @@ var NicoLiveHelper = {
 	    }
 	}
 
+	let success_msg = NicoLivePreference.msg_accept;
+
 	// アンカー受付の個数チェック.
-	if( this.anchor.start && this.anchor.end &&
-	    this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
+	if( this.anchor.start && this.anchor.end && this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
 	    this.anchor.counter++;
 	    if( this.anchor.num && this.anchor.num < this.anchor.counter ){
 		return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
 	    }
+	    success_msg = "";
 	}
 
 	// code:0を返すことで受け付ける.
-	return {code:0,msg:NicoLivePreference.msg_accept,movieinfo:info};
+	return {code:0,msg:success_msg,movieinfo:info};
     },
 
 
@@ -669,6 +671,7 @@ var NicoLiveHelper = {
 	    this.anchor.start = start_cno;
 	    this.anchor.end   = end_cno;
 	    this.anchor.num   = num ? num : 0;
+	    this.anchor.counter = 0;
 	    debugprint("アンカー受付:コメ番"+start_cno+"から"+end_cno+"まで"+num+"個");
 	}
 

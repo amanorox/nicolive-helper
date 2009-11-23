@@ -162,6 +162,7 @@
 	</row>
       </rows>
     </grid>
+    <hbox><button label="リセット" oncommand="NLHPreference.resetRequestRestriction();"/></hbox>
     <spacer flex="1"/>
     <hbox>
       <hbox align="center"><label value="プリセット名"/></hbox>

@@ -99,6 +99,41 @@ var NLHPreference = {
 	st.finalize();
     },
 
+    // リクエスト制限タブをリセットする.
+    resetRequestRestriction:function(){
+	$('id-preset-name').value = "";
+	try{
+	    $('pref-restrict-date-from').reset();
+	    $('pref-date-from').value = "2007-08-31";
+	} catch (x) {}
+	try{
+	    $('pref-restrict-date-to').reset();
+	    $('pref-date-to').value = "2007-08-31";
+	} catch (x) {}
+	try{
+	    $('pref-restrict-view-from').reset();
+	} catch (x) {}
+	try{
+	    $('pref-restrict-view-to').reset();
+	} catch (x) {}
+
+	try{
+	    $('pref-restrict-mylist-from').reset();
+	} catch (x) {}
+	try{
+	    $('pref-restrict-mylist-to').reset();
+	} catch (x) {}
+	try{
+	    $('pref-restrict-videolength').reset();
+	} catch (x) {}
+	try{
+	    $('pref-restrict-tag-include').reset();
+	} catch (x) {}
+	try{
+	    $('pref-restrict-tag-exclude').reset();
+	} catch (x) {}
+    },
+
     // 動画情報をデフォルトにする.
     resetMovieInfo:function(){
 	/*
