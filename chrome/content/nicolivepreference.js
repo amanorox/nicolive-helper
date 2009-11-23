@@ -8,6 +8,7 @@ var NicoLivePreference = {
 	this.videoinfo[0] = branch.getUnicharPref("videoinfo1");
 	this.videoinfo[1] = branch.getUnicharPref("videoinfo2");
 	this.videoinfo[2] = branch.getUnicharPref("videoinfo3");
+	this.videoinfo[3] = branch.getUnicharPref("videoinfo4");
 
 	this.msg_deleted   = branch.getUnicharPref("msg-deleted");
 	this.msg_notaccept = branch.getUnicharPref("msg-notaccept");

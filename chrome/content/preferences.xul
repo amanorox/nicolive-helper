@@ -13,7 +13,8 @@
     <preferences>
       <preference id="pref-videoinfo1" name="extensions.nicolivehelper.videoinfo1" type="unichar"/>
       <preference id="pref-videoinfo2" name="extensions.nicolivehelper.videoinfo2" type="unichar"/>
-      <preference id="pref-videoinfo3"      name="extensions.nicolivehelper.videoinfo3" type="unichar"/>
+      <preference id="pref-videoinfo3" name="extensions.nicolivehelper.videoinfo3" type="unichar"/>
+      <preference id="pref-videoinfo4" name="extensions.nicolivehelper.videoinfo4" type="unichar"/>
       <preference id="pref-typeofvideoinfo" name="extensions.nicolivehelper.comment-type-of-videoinfo" type="int"/>
     </preferences>
     <grid>
@@ -33,6 +34,10 @@
 	<row>
 	  <hbox align="center"><label control="videoinfo3" value="動画情報(3行目)"/></hbox>
 	  <textbox preference="pref-videoinfo3" id="videoinfo3" flex="1"/>
+	</row>
+	<row>
+	  <hbox align="center"><label control="videoinfo4" value="動画情報(4行目)"/></hbox>
+	  <textbox preference="pref-videoinfo4" id="videoinfo4" flex="1"/>
 	</row>
       </rows>
     </grid>

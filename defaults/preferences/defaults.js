@@ -19,6 +19,7 @@ pref("extensions.nicolivehelper.accept-nreq",0);
 pref("extensions.nicolivehelper.videoinfo1","♪Length:{length} Views:{view} Comments:{comment} NumMylist:{mylist}");
 pref("extensions.nicolivehelper.videoinfo2","♪{title}<br>Date:{date}");
 pref("extensions.nicolivehelper.videoinfo3","");
+pref("extensions.nicolivehelper.videoinfo4","");
 pref("extensions.nicolivehelper.comment-type-of-videoinfo",0);
 
 pref("extensions.nicolivehelper.msg-deleted","その動画は削除されているか、見つかりません");

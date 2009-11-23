@@ -650,7 +650,9 @@ var NicoLiveHelper = {
 			}
 		    }
 		    if(video_id){
-			NicoLiveHelper.postCasterComment(video_id+"は再生できませんでした","");
+			let str = video_id + "は再生できませんでした";
+			NicoLiveHelper.postCasterComment(str,"");
+			$('played-list-textbox').value += str + "\n";
 			// たまに生引用拒否していなくてもエラーになるので.
 			// エラーになった動画はストックにしておく.
 			NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
