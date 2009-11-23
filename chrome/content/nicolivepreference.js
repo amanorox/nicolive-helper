@@ -28,8 +28,16 @@ var NicoLivePreference = {
 	restrict.date_to    = branch.getCharPref("request.date-to");
 	restrict.mylist_from= branch.getIntPref("request.mylist-from");
 	restrict.mylist_to  = branch.getIntPref("request.mylist-to");
-	restrict.tag_exclude = branch.getUnicharPref("request.tag-exclude").split(/\s+/);
-	restrict.tag_include = branch.getUnicharPref("request.tag-include").split(/\s+/);
+	let exclude = branch.getUnicharPref("request.tag-exclude");
+	restrict.tag_exclude = new Array();
+	if(exclude.length>0){
+	    restrict.tag_exclude = exclude.split(/\s+/);
+	}
+	let include = branch.getUnicharPref("request.tag-include");
+	restrict.tag_include = new Array();
+	if(include.length>0){
+	    restrict.tag_include = include.split(/\s+/);
+	}
 	restrict.videolength = branch.getIntPref("request.videolength");
 	restrict.view_from   = branch.getIntPref("request.view-from");
 	restrict.view_to     = branch.getIntPref("request.view-to");

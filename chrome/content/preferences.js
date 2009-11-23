@@ -101,37 +101,17 @@ var NLHPreference = {
 
     // リクエスト制限タブをリセットする.
     resetRequestRestriction:function(){
+	// reset()がなぜか使えないので.
 	$('id-preset-name').value = "";
-	try{
-	    $('pref-restrict-date-from').reset();
-	    $('pref-date-from').value = "2007-08-31";
-	} catch (x) {}
-	try{
-	    $('pref-restrict-date-to').reset();
-	    $('pref-date-to').value = "2007-08-31";
-	} catch (x) {}
-	try{
-	    $('pref-restrict-view-from').reset();
-	} catch (x) {}
-	try{
-	    $('pref-restrict-view-to').reset();
-	} catch (x) {}
-
-	try{
-	    $('pref-restrict-mylist-from').reset();
-	} catch (x) {}
-	try{
-	    $('pref-restrict-mylist-to').reset();
-	} catch (x) {}
-	try{
-	    $('pref-restrict-videolength').reset();
-	} catch (x) {}
-	try{
-	    $('pref-restrict-tag-include').reset();
-	} catch (x) {}
-	try{
-	    $('pref-restrict-tag-exclude').reset();
-	} catch (x) {}
+	$('pref-restrict-date-from').value = "2007-08-31";
+	$('pref-restrict-date-to').value = "2007-08-31";
+	$('pref-restrict-view-from').value = 0;
+	$('pref-restrict-view-to').value = 0;
+	$('pref-restrict-mylist-from').value = 0;
+	$('pref-restrict-mylist-to').value = 0;
+	$('pref-restrict-videolength').value = 0;
+	$('pref-restrict-tag-include').value = "";
+	$('pref-restrict-tag-exclude').value = "";
     },
 
     // 動画情報をデフォルトにする.
@@ -141,43 +121,21 @@ var NLHPreference = {
 	 * タグ/{tags}
 	 * ♪{id} {title}<br>投稿日/{date} 時間/{length}<br>{additional}
 	 */
-	try{
-	    $('pref-videoinfo1').reset();
-	} catch (x) {}
-	try{
-	    $('pref-videoinfo2').reset();
-	} catch (x) {}
-	try{
-	    $('pref-videoinfo3').reset();
-	} catch (x) {}
-	try{
-	    $('pref-videoinfo4').reset();
-	} catch (x) {}
-	try{
-	    $('pref-typeofvideoinfo').reset();
-	} catch (x) {}
+	$('pref-videoinfo1').value = "♪Length:{length} Views:{view} Comments:{comment} NumMylist:{mylist}";
+	$('pref-videoinfo2').value = "♪{title}<br>Date:{date}";
+	$('pref-videoinfo3').value = "";
+	$('pref-videoinfo4').value = "";
+	$('pref-typeofvideoinfo').value = 0;
     },
 
     // 自動応答をデフォルトにする.
     resetAutoReply:function(){
-	try{
-	    $('pref-msg-deleted').reset();
-	} catch (x) {}
-	try{
-	    $('pref-msg-notaccept').reset();
-	} catch (x) {}
-	try{
-	    $('pref-msg-newmovie').reset();
-	} catch (x) {}
-	try{
-	    $('pref-msg-played').reset();
-	} catch (x) {}	
-	try{
-	    $('pref-msg-requested').reset();
-	} catch (x) {}	
-	try{
-	    $('pref-msg-accept').reset();
-	} catch (x) {}	
+	$('pref-msg-deleted').value   = "その動画は削除されているか、見つかりません";
+	$('pref-msg-notaccept').value = "現在リクエストを受け付けていません";
+	$('pref-msg-newmovie').value  = "その動画は7日以内に投稿された動画です(新着制限)";
+	$('pref-msg-played').value    = "その動画は既に再生されました";
+	$('pref-msg-requested').value = "その動画は既にリクエストされています";
+	$('pref-msg-accept').value    = "リクエストを受け付けました";
     },
 
     refDirectory:function(){

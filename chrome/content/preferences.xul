@@ -141,28 +141,28 @@
 	</row>
 	<row>
 	  <hbox aling="center"><label value="再生数"/></hbox>
-	  <textbox type="number" min="0" size="6" preference="pref-restrict-view-from"/>
+	  <textbox id="restrict-view-from" type="number" min="0" size="6" preference="pref-restrict-view-from"/>
 	  <hbox align="center"><label value="以上"/></hbox>
-	  <textbox type="number" min="0" size="6" preference="pref-restrict-view-to"/>
+	  <textbox id="restrict-view-to" type="number" min="0" size="6" preference="pref-restrict-view-to"/>
 	  <hbox align="center"><label value="以下"/></hbox>
 	</row>
 	<row>
 	  <hbox aling="center"><label value="マイリスト数"/></hbox>
-	  <textbox type="number" min="0" size="6" preference="pref-restrict-mylist-from"/>
+	  <textbox id="restrict-mylist-from" type="number" min="0" size="6" preference="pref-restrict-mylist-from"/>
 	  <hbox align="center"><label value="以上"/></hbox>
-	  <textbox type="number" min="0" size="6" preference="pref-restrict-mylist-to"/>
+	  <textbox id="restrict-mylist-to" type="number" min="0" size="6" preference="pref-restrict-mylist-to"/>
 	  <hbox align="center"><label value="以下"/></hbox>
 	</row>
 	<row>
 	  <hbox aling="center"><label value="動画時間"/></hbox>
-	  <textbox type="number" min="0" size="6" preference="pref-restrict-videolength"/>
+	  <textbox id="restrict-length" type="number" min="0" size="6" preference="pref-restrict-videolength"/>
 	  <hbox align="center"><label value="秒以下"/></hbox>
 	</row>
 	<row>
 	  <hbox align="center"><label value="タグ" tooltiptext=""/></hbox>
-	  <textbox size="6" flex="1" preference="pref-restrict-tag-include"/>
+	  <textbox id="restrict-tag-include" size="6" flex="1" preference="pref-restrict-tag-include"/>
 	  <hbox align="center"><label value="を含む"/></hbox>
-	  <textbox size="6" flex="1" preference="pref-restrict-tag-exclude"/>
+	  <textbox id="restrict-tag-exclude" size="6" flex="1" preference="pref-restrict-tag-exclude"/>
 	  <hbox align="center"><label value="を含まない"/></hbox>
 	</row>
       </rows>

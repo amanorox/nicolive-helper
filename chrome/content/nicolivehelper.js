@@ -92,6 +92,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	    if(!ismiku||!isoriginal){
+		debugprint("ミクオリジナル曲ではなさそうだ");
 		return {code:-6,msg:"ミクオリジナル曲かどうかを自動判断できませんでした",movieinfo:info};
 	    }
 	}
