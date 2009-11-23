@@ -200,12 +200,20 @@ var NicoLiveDatabase = {
 	//elem.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
 	hbox.appendChild(elem);
 
-	elem = CreateButton('+');
-	elem.addEventListener('command',function(e){ NicoLiveDatabase.addSearchLine();}, false);
+	//elem = CreateButton('+');
+	//elem.addEventListener('command',function(e){ NicoLiveDatabase.addSearchLine();}, false);
+	elem = CreateHTMLElement('input');
+	elem.setAttribute('type','button');
+	elem.setAttribute('value','+');
+	elem.addEventListener('click',function(e){ NicoLiveDatabase.addSearchLine();}, false);
 	hbox.appendChild(elem);
 
-	elem = CreateButton('-');
-	elem.addEventListener('command',function(e){ NicoLiveDatabase.removeSearchLine(e);}, false);
+	//elem = CreateButton('-');
+	//elem.addEventListener('command',function(e){ NicoLiveDatabase.removeSearchLine(e);}, false);
+	elem = CreateHTMLElement('input');
+	elem.setAttribute('type','button');
+	elem.setAttribute('value','-');
+	elem.addEventListener('click',function(e){ NicoLiveDatabase.removeSearchLine(e);}, false);
 	hbox.appendChild(elem);
 	$('search-condition').appendChild(hbox);
     },
