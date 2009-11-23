@@ -626,8 +626,10 @@ var NicoLiveHelper = {
 			}
 		    }
 		    if(video_id){
-			//debugprint(video_id+"は引用拒否動画のようです");
 			NicoLiveHelper.postCasterComment(video_id+"は再生できませんでした","");
+			// たまに生引用拒否していなくてもエラーになるので.
+			// エラーになった動画はストックにしておく.
+			NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
 			// 曲情報の送信を止める.
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
