@@ -8,26 +8,29 @@ var NicoLiveHelper = {
     port: 0,
     thread: "",        // コメントサーバスレッド.
     ticket: "",
-    user_id:"",
-    is_premium:"0",
-    last_res: 0,
-    postkey:"",
+
+    user_id:"",        // ユーザーID(数字のやつ)
+    is_premium:"0",    // プレミアムかどうか.
+
+    last_res: 0,       // リスナーコメするのに必要なコメ番.
+    postkey:"",        // リスナーコメするのに必要なキー.
 
     connecttime: 0,    // 接続した時刻.
     secofweek: 604800, // 1週間の秒数(60*60*24*7).
 
-    starttime: 0,  // 放送の始まった時刻(sec).
-    musicstarttime: 0, // 曲の再生開始時刻(sec).
-    musicendtime: 0,   // 曲の終了予定時刻(sec).
+    starttime: 0,          // 放送の始まった時刻(sec).
+    musicstarttime: 0,     // 曲の再生開始時刻(sec).
+    musicendtime: 0,       // 曲の終了予定時刻(sec).
 
-    iscaster: false,   // 主フラグ.
-    inplay: false,     // 再生中フラグ.
+    iscaster: false,       // 主フラグ.
+    inplay: false,         // 再生中フラグ.
     isacceptrequest: true, // リクを受け付けるフラグ.
-    isautoplay: false,      // 自動再生フラグ.
+    isautoplay: false,     // 自動再生フラグ.
     israndomplay: false,   // ランダム再生フラグ.
+    anchor: {},            // アンカー処理用.
 
     // リクを受け付けるかどうかチェック(動画の属性をチェックするのみ).
-    checkAcceptRequest: function(xml){
+    checkAcceptRequest: function(xml, comment_no){
 	if(xml.getElementsByTagName('error').length){
 	    // 動画がない.
 	    return {code:-1,msg:NicoLivePreference.msg_deleted,movieinfo:{}};
@@ -35,8 +38,15 @@ var NicoLiveHelper = {
 	let info = this.xmlToMovieInfo(xml);
 
 	// リクを受け付けていない.
-	if( !this.isacceptrequest )
-	    return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
+	if( !this.isacceptrequest ){
+	    // アンカーチェックはここでやる.
+	    if( this.anchor.start && this.anchor.end &&
+		this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
+		    // アンカー範囲内なので無問題.
+	    }else{
+		return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
+	    }
+	}
 
 	if(NicoLivePreference.limitnewmovie){
 	    // 7日内に投稿された動画.
@@ -56,7 +66,7 @@ var NicoLiveHelper = {
 	if(NicoLivePreference.restrict.dorestrict){
 	    let msg = this.checkMovieRestriction(info);
 	    if( msg ){
-		debugprint(msg);
+		debugprint(info.video_id+'/'+msg);
 		return {code:-6,"msg":msg,movieinfo:info};
 	    }
 	}
@@ -86,6 +96,15 @@ var NicoLiveHelper = {
 	    }
 	}
 
+	// アンカー受付の個数チェック.
+	if( this.anchor.start && this.anchor.end &&
+	    this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
+	    this.anchor.counter++;
+	    if( this.anchor.num && this.anchor.num < this.anchor.counter ){
+		return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
+	    }
+	}
+
 	// code:0を返すことで受け付ける.
 	return {code:0,msg:NicoLivePreference.msg_accept,movieinfo:info};
     },
@@ -94,7 +113,6 @@ var NicoLiveHelper = {
     // リク制限のチェック.
     checkMovieRestriction:function(videoinfo){
 	let restrict = NicoLivePreference.restrict;
-	let msg = [];
 	let str = "リクエストエラー:";
 
 	if(restrict.videolength>0){
@@ -417,6 +435,7 @@ var NicoLiveHelper = {
 	NicoLiveRequest.updateStockView(this.stock);
 	this.saveToGlobalStorage();
     },
+    // ストックの最上位に移動.
     topToStock:function(idx){
 	idx--;
 	let t;
@@ -427,6 +446,7 @@ var NicoLiveHelper = {
 	    this.saveToGlobalStorage();
 	}
     },
+    // ストックの上に浮かす.
     floatStock:function(idx){
 	idx--; 
 	if(idx<=0) return;
@@ -436,6 +456,7 @@ var NicoLiveHelper = {
 	NicoLiveRequest.updateStockView(this.stock);
 	this.saveToGlobalStorage();
     },
+    // ストックの下に沈める.
     sinkStock:function(idx){
 	if(idx>=this.stock.length) return;
 	idx--;
@@ -445,6 +466,7 @@ var NicoLiveHelper = {
 	NicoLiveRequest.updateStockView(this.stock);
 	this.saveToGlobalStorage();
     },
+    // ストックソート.
     sortStock:function(type,order){
 	// order:1だと昇順、order:-1だと降順.
 	this.stock.sort( function(a,b){
@@ -630,13 +652,26 @@ var NicoLiveHelper = {
 			// たまに生引用拒否していなくてもエラーになるので.
 			// エラーになった動画はストックにしておく.
 			NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
-			// 曲情報の送信を止める.
+
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
 		    }
 		}
 	    }
 	};
+
+	let anchor = comment.match(/>>(\d+)-(\d+)(@(\d+))?/);
+	if(anchor){
+	    let start_cno = anchor[1];
+	    let end_cno   = anchor[2];
+	    let num       = anchor[4];
+	    this.anchor = {};
+	    this.anchor.start = start_cno;
+	    this.anchor.end   = end_cno;
+	    this.anchor.num   = num ? num : 0;
+	    debugprint("アンカー受付:コメ番"+start_cno+"から"+end_cno+"まで"+num+"個");
+	}
+
 	let url = "http://watch.live.nicovideo.jp/api/broadcast/" + this.request_id;
 	req.open('POST', url );
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
@@ -908,7 +943,7 @@ var NicoLiveHelper = {
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		// ストックでもリクエスト縛り要件を満たすかチェックする.
-		let ans = NicoLiveHelper.checkAcceptRequest(req.responseXML);
+		let ans = NicoLiveHelper.checkAcceptRequest(req.responseXML, 0);
 		switch(ans.code){
 		case 0:
 		case -2: // リク受けつけてない.
@@ -987,9 +1022,9 @@ var NicoLiveHelper = {
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		// リクのあった動画をチェック.
-		let ans = NicoLiveHelper.checkAcceptRequest(req.responseXML);
-		ans.movieinfo.iscasterselection = req.comment_no==0?true:false; // 主セレ
-		ans.movieinfo.selfrequest = req.user_id=="0"?true:false;
+		let ans = NicoLiveHelper.checkAcceptRequest( req.responseXML, req.comment_no );
+		ans.movieinfo.iscasterselection = req.comment_no==0?true:false; // コメ番0は主セレ.
+		ans.movieinfo.selfrequest = req.user_id=="0"?true:false;        // 自貼りのユーザーIDは0.
 
 		// リクエスト制限数をチェック.
 		let nlim = NicoLivePreference.nreq_per_ppl;
@@ -1006,6 +1041,7 @@ var NicoLiveHelper = {
 		    ans.msg = "リクエストは1人"+NicoLivePreference.nreq_per_ppl+"件までです";
 		    ans.code = -1;
 		}
+
 		if(NicoLivePreference.isautoreply && ans.msg && req.comment_no!=0){
 		    // 返答メッセージが指定してあれば.
 		    let msg = ">>"+req.comment_no+" " + ans.msg;
