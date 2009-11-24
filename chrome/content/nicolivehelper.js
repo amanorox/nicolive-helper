@@ -651,11 +651,7 @@ var NicoLiveHelper = {
 		    try{
 			video_id = comment.match(/^\/play\s+((sm|nm)\d+)/)[1];
 		    } catch (x) {
-			try{
-			    video_id = comment.match(/^(sm|nm)\d+$/)[0];
-			} catch (x) {
-			    video_id = "";
-			}
+			video_id = "";
 		    }
 		    if(video_id){
 			let str = video_id + "は再生できませんでした";
@@ -663,7 +659,9 @@ var NicoLiveHelper = {
 			$('played-list-textbox').value += str + "\n";
 			// たまに生引用拒否していなくてもエラーになるので.
 			// エラーになった動画はストックにしておく.
-			NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
+			if( video_id==NicoLiveHelper.musicinfo.video_id ){
+			    NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
+			}
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
 		    }
@@ -783,6 +781,8 @@ var NicoLiveHelper = {
 
     // リクエストリストに追加する.
     addRequestQueue:function(item){
+	if( !item ) return;
+	if( !item.video_id ) return;
 	this.requestqueue.push(item);
 	NicoLiveRequest.add(item);
     },
@@ -827,6 +827,7 @@ var NicoLiveHelper = {
     // ストックリストに追加.
     addStockQueue:function(item){
 	if( !item ) return;
+	if( !item.video_id ) return;
 	if(this.isStockedMusic(item.video_id)) return;
 	this.stock.push(item);
 	NicoLiveRequest.addStockView(item);
