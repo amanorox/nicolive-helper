@@ -912,6 +912,7 @@ var NicoLiveHelper = {
     xmlToMovieInfo: function(xml){
 	var info = {};
 	try{
+
 	    info.video_id       = xml.getElementsByTagName('video_id')[0].textContent;
 	    info.title          = htmlspecialchars(xml.getElementsByTagName('title')[0].textContent);
 	    info.description    = htmlspecialchars(xml.getElementsByTagName('description')[0].textContent);
@@ -932,6 +933,11 @@ var NicoLiveHelper = {
 	    for(let i=0,item;item=tag[i];i++){
 		info.tags[i] = item.textContent; // string
 	    }
+	    info.highbitrate = xml.getElementsByTagName('size_high')[0].textContent;
+	    info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
+	    info.lowbitrate = xml.getElementsByTagName('size_low')[0].textContent;
+	    info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
+
 	    info.cno = 0; // comment #
 	    //NicoLiveDatabase.addDatabase(info);
 	} catch (x) {

@@ -41,6 +41,7 @@ var NicoLiveRequest = {
 
 	let vbox = CreateElement('vbox');
 	vbox.setAttribute('context','popup-copyrequest');
+	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
 	let htmlspan = CreateHTMLElement('span');
 	htmlspan.style.display = 'none';
@@ -192,18 +193,21 @@ var NicoLiveRequest = {
 	htmlspan.style.display = 'none';
 	htmlspan.appendChild(document.createTextNode(item.video_id));
 	vbox.appendChild(htmlspan);
+	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
 	let div = CreateHTMLElement('div');
+
+	// サムネ.
 	let a = CreateHTMLElement('a');
 	a.onclick = function(){ window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id); };
 	a.className = 'detail';
-
 	let img = CreateHTMLElement('img');
 	img.src = item.thumbnail_url;
 	img.style.cssFloat = 'left';
 	img.style.marginRight = '0.5em';
 	a.appendChild(img);
 
+	// 動画ID + タイトル.
 	let label = CreateElement('label');
 	label.setAttribute('value',item.video_id+'/'+item.title);
 
@@ -211,6 +215,7 @@ var NicoLiveRequest = {
 	div.appendChild(label); // video-id and title
 	div.appendChild(CreateHTMLElement('br'));
 
+	// 動画情報.
 	label = CreateElement('label');
 	let datestr = GetDateString(item.first_retrieve*1000);
 	label.setAttribute("value",
@@ -222,10 +227,12 @@ var NicoLiveRequest = {
 	hr.className = 'detail';
 	div.appendChild(hr);
 
+	// 詳細.
 	let div2 = CreateHTMLElement('div');
 	div2.className = 'detail';
 	//div2.appendChild(document.createTextNode(item.description));
 
+	// descriptionにリンクを張る.
 	let str;
 	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
 	for(let i=0,s;s=str[i];i++){
