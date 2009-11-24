@@ -233,9 +233,12 @@ var NicoLiveRequest = {
 	//div2.appendChild(document.createTextNode(item.description));
 
 	// descriptionにリンクを張る.
-	let str;
+	let str,len;
 	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
-	for(let i=0,s;s=str[i];i++){
+	len = str.length;
+	for(let i=0,s;i<len;i++){
+	    s = str[i];
+	    if(!s) continue;
 	    if( s.indexOf('mylist/')!=-1 ){
 		let a = CreateHTMLElement('a');
 		let mylist = s;
