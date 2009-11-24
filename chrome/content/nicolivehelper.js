@@ -915,42 +915,73 @@ var NicoLiveHelper = {
 	this.saveToGlobalStorage();
     },
 
-    // ニコニコ動画のgetthumbinfoのXMLから情報抽出.
+    /* getElementsByTagNameでrootから毎回辿るより
+     * Breadth-first searchかDepth-first searchで高速化しようと思ったけど
+     * 情報が全部同じ階層にあるのでループまわした方が速いか.
+     */
     xmlToMovieInfo: function(xml){
-	var info = {};
-	try{
-
-	    info.video_id       = xml.getElementsByTagName('video_id')[0].textContent;
-	    info.title          = htmlspecialchars(xml.getElementsByTagName('title')[0].textContent);
-	    info.description    = htmlspecialchars(xml.getElementsByTagName('description')[0].textContent);
-	    info.thumbnail_url  = xml.getElementsByTagName('thumbnail_url')[0].textContent;
-	    info.first_retrieve = xml.getElementsByTagName('first_retrieve')[0].textContent;
-	    let date = info.first_retrieve.match(/\d+/g);
-	    let d = new Date(date[0],date[1]-1,date[2],date[3],date[4],date[5]);
-	    info.first_retrieve = d.getTime() / 1000; // integer
-	    info.length         = xml.getElementsByTagName('length')[0].textContent;
-	    let len = info.length.match(/\d+/g);
-	    info.length_ms      = (parseInt(len[0],10)*60 + parseInt(len[1]))*1000;//integer
-	    info.view_counter   = xml.getElementsByTagName('view_counter')[0].textContent;
-	    info.comment_num    = xml.getElementsByTagName('comment_num')[0].textContent;
-	    info.mylist_counter = xml.getElementsByTagName('mylist_counter')[0].textContent;
-	    let tags            = xml.getElementsByTagName('tags')[0]; // jpのタグ
-	    let tag             = tags.getElementsByTagName('tag');// DOM object
-	    info.tags = new Array();
-	    for(let i=0,item;item=tag[i];i++){
-		info.tags[i] = item.textContent; // string
+	// ニコニコ動画のgetthumbinfoのXMLから情報抽出.
+	let info = {};
+	info.cno = 0;
+	let root = xml.getElementsByTagName('thumb')[0];
+	for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
+	    switch( elem.tagName ){
+	    case "video_id":
+		info.video_id = elem.textContent;
+		break;
+	    case "title":
+		info.title = htmlspecialchars(elem.textContent);
+		break;
+	    case "description":
+		info.description = htmlspecialchars(elem.textContent);
+		break;
+	    case "thumbnail_url":
+		info.thumbnail_url = elem.textContent;
+		break;
+	    case "first_retrieve":
+		info.first_retrieve = elem.textContent;
+		let date = info.first_retrieve.match(/\d+/g);
+		let d = new Date(date[0],date[1]-1,date[2],date[3],date[4],date[5]);
+		info.first_retrieve = d.getTime() / 1000; // seconds from epoc.
+		break;
+	    case "length":
+		info.length = elem.textContent;
+		let len = info.length.match(/\d+/g);
+		info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1]))*1000;
+		break;
+	    case "view_counter":
+		info.view_counter = elem.textContent;
+		break;
+	    case "comment_num":
+		info.comment_num = elem.textContent;
+		break;
+	    case "mylist_counter":
+		info.mylist_counter = elem.textContent;
+		break;
+	    case "tags":
+		// attribute domain=jp のチェックが必要.
+		if( elem.getAttribute('domain')=='jp' ){
+		    let tag = elem.getElementsByTagName('tag');// DOM object
+		    info.tags = new Array();
+		    for(let i=0,item;item=tag[i];i++){
+			info.tags[i] = item.textContent; // string
+		    }
+		}
+		break;
+	    case "size_high":
+		info.highbitrate = elem.textContent;
+		info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
+		break;
+	    case "size_low":
+		info.lowbitrate = elem.textContent;
+		info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
+		break;
+	    default:
+		break;
 	    }
-	    info.highbitrate = xml.getElementsByTagName('size_high')[0].textContent;
-	    info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
-	    info.lowbitrate = xml.getElementsByTagName('size_low')[0].textContent;
-	    info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
-
-	    info.cno = 0; // comment #
-	    //NicoLiveDatabase.addDatabase(info);
-	} catch (x) {
-	    debugprint('getthumbinfoのXML解析に失敗.');
-	    return null;
 	}
+	// video_id がないときはエラーとしておこう、念のため.
+	if( !info.video_id ) return null;
 	return info;
     },
 
