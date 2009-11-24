@@ -918,12 +918,18 @@ var NicoLiveHelper = {
     /* getElementsByTagNameでrootから毎回辿るより
      * Breadth-first searchかDepth-first searchで高速化しようと思ったけど
      * 情報が全部同じ階層にあるのでループまわした方が速いか.
+     * ずいぶんとすっきりした.
      */
     xmlToMovieInfo: function(xml){
 	// ニコニコ動画のgetthumbinfoのXMLから情報抽出.
 	let info = {};
 	info.cno = 0;
-	let root = xml.getElementsByTagName('thumb')[0];
+	let root;
+	try{
+	    root = xml.getElementsByTagName('thumb')[0];
+	} catch (x) {
+	    return null;
+	}
 	if( !root ) return null;
 	for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
 	    switch( elem.tagName ){
