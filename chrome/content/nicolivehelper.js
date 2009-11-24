@@ -36,6 +36,9 @@ var NicoLiveHelper = {
 	    return {code:-1,msg:NicoLivePreference.msg_deleted,movieinfo:{}};
 	}
 	let info = this.xmlToMovieInfo(xml);
+	if( !info ){
+	    return {code:-1,msg:"",movieinfo:{}};
+	}
 
 	// リクを受け付けていない.
 	if( !this.isacceptrequest ){
@@ -218,12 +221,14 @@ var NicoLiveHelper = {
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
-		NicoLiveHelper.musicinfo = music;
-		let du = Math.floor(NicoLiveHelper.musicinfo.length_ms/1000)+1;
-		NicoLiveHelper.musicendtime   = NicoLiveHelper.musicstarttime+du;
-		if(setinterval){
-		    NicoLiveHelper.setupPlayNextMusic(music.length_ms);
-		    NicoLiveHelper.addPlayedList(music);
+		if( music ){
+		    NicoLiveHelper.musicinfo = music;
+		    let du = Math.floor(NicoLiveHelper.musicinfo.length_ms/1000)+1;
+		    NicoLiveHelper.musicendtime   = NicoLiveHelper.musicstarttime+du;
+		    if(setinterval){
+			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
+			NicoLiveHelper.addPlayedList(music);
+		    }
 		}
 	    }
 	};
@@ -659,7 +664,6 @@ var NicoLiveHelper = {
 			// たまに生引用拒否していなくてもエラーになるので.
 			// エラーになった動画はストックにしておく.
 			NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
-
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
 		    }
@@ -822,6 +826,7 @@ var NicoLiveHelper = {
 
     // ストックリストに追加.
     addStockQueue:function(item){
+	if( !item ) return;
 	if(this.isStockedMusic(item.video_id)) return;
 	this.stock.push(item);
 	NicoLiveRequest.addStockView(item);
@@ -942,7 +947,7 @@ var NicoLiveHelper = {
 	    //NicoLiveDatabase.addDatabase(info);
 	} catch (x) {
 	    debugprint('getthumbinfoのXML解析に失敗.');
-	    info = {};
+	    return null;
 	}
 	return info;
     },

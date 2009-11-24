@@ -71,7 +71,9 @@ var NicoLiveDatabase = {
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
-		NicoLiveDatabase.addDatabase(music);
+		if( music ){
+		    NicoLiveDatabase.addDatabase(music);
+		}
 	    }
 	};
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+id;
