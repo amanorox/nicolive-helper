@@ -662,6 +662,7 @@ var NicoLiveHelper = {
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
 			    NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
 			}
+			NicoLiveHelper.musicinfo = {};
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
 		    }
