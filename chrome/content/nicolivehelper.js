@@ -100,12 +100,14 @@ var NicoLiveHelper = {
 	let success_msg = NicoLivePreference.msg_accept;
 
 	// アンカー受付の個数チェック.
-	if( this.anchor.start && this.anchor.end && this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
-	    this.anchor.counter++;
-	    if( this.anchor.num && this.anchor.num < this.anchor.counter ){
-		return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
+	if( !this.isacceptrequest ){
+	    if( this.anchor.start && this.anchor.end && this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
+		this.anchor.counter++;
+		if( this.anchor.num && this.anchor.num < this.anchor.counter ){
+		    return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
+		}
+		success_msg = "";
 	    }
-	    success_msg = "";
 	}
 
 	// code:0を返すことで受け付ける.
