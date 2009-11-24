@@ -924,6 +924,7 @@ var NicoLiveHelper = {
 	let info = {};
 	info.cno = 0;
 	let root = xml.getElementsByTagName('thumb')[0];
+	if( !root ) return null;
 	for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
 	    switch( elem.tagName ){
 	    case "video_id":
