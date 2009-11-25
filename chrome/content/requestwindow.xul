@@ -289,6 +289,10 @@
   </statusbar>
 
   <popupset>
+    <menupopup id="popup-copy-url">
+      <menuitem label="URLをコピー" oncommand="NicoLiveRequest.copyURL();"/>
+    </menupopup>
+
     <menupopup id="popup-add-mylist">
       <menu label="マイリストに追加">
 	<menupopup id="popup-mylists">

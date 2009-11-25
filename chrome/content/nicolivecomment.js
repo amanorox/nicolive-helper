@@ -56,7 +56,7 @@ var NicoLiveComment = {
 	// sm,nmにリンクを貼り付け.
 	str = comment.text.replace(/<.*?>/g,"");
 	str = htmlspecialchars(str);
-	str = str.replace(/((sm|nm)\d+)/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\" style=\"color:blue; text-decoration:underline; cursor:pointer;\">$1</html:a>");
+	str = str.replace(/((sm|nm)\d+)/g,"<hbox context=\"popup-copy-url\"><html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\" style=\"color:blue; text-decoration:underline; cursor:pointer;\">$1</html:a></hbox>");
 	td.innerHTML = "<hbox flex=\"1\" context=\"popup-copycomment\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
