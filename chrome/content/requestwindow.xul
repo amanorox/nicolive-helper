@@ -52,9 +52,9 @@
 	  <hbox>
 	    <button type="menu" label="手動再生" id="btn-play">
 	      <menupopup>
-		<menuitem label="手動再生" oncommand="NicoLiveHelper.setAutoplay(0); setLabel('btn-play',this.label);" />
-		<menuitem label="自動再生(順次)" oncommand="NicoLiveHelper.setAutoplay(1); NicoLiveHelper.setRandomplay(false); setLabel('btn-play',this.label);" />
-		<menuitem label="自動再生(ランダム)" oncommand="NicoLiveHelper.setAutoplay(1); NicoLiveHelper.setRandomplay(true); setLabel('btn-play',this.label);" />
+		<menuitem label="手動再生" oncommand="NicoLiveHelper.setManualPlay(); setLabel('btn-play',this.label);" />
+		<menuitem label="自動再生(順次)" oncommand="NicoLiveHelper.setAutoPlayBySequential(); setLabel('btn-play',this.label);" />
+		<menuitem label="自動再生(ランダム)" oncommand="NicoLiveHelper.setAutoPlayByRandom(); setLabel('btn-play',this.label);" />
 	      </menupopup>
 	    </button>
 	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleRequest();"/>

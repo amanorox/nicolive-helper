@@ -124,6 +124,7 @@ function GetFormattedDateString(format,ms){
     return d.toLocaleFormat(format);
 }
 
+// min:sec の文字列を返す.
 function GetTimeString(sec){
     let str;
     str = parseInt(sec/60) + ":";

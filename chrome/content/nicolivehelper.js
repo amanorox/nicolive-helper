@@ -296,78 +296,117 @@ var NicoLiveHelper = {
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
 		    let selfreq = chat.text.match(/自貼/);
-		    this.getthumbinfo(sm[1],chat.no, selfreq?"0":chat.user_id);
+		    this.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
 		}
 	    }
 	    break;
 	}
     },
 
+    // 文字列のマクロ展開を行う.
+    replaceMacros:function(str){
+	let info = this.musicinfo;
+	return str.replace(/{(.*?)}/g,
+			   function(s,p){
+			       let tmp = s;
+			       switch(p){
+			       case 'id':
+				   if(info.video_id==null) break;
+				   tmp = info.video_id;
+				   break;
+			       case 'title':
+				   if(info.title==null) break;
+				   tmp = info.title;
+				   break;
+			       case 'date':
+				   if(info.first_retrieve==null) break;
+				   tmp = GetDateString(info.first_retrieve*1000);
+				   break;
+			       case 'length':
+				   if(info.length==null) break;
+				   tmp = info.length;
+				   break;
+			       case 'view':
+				   if(info.view_counter==null) break;
+				   tmp = FormatCommas(info.view_counter);
+				   break;
+			       case 'comment':
+				   if(info.comment_num==null) break;
+				   tmp = FormatCommas(info.comment_num);
+				   break;
+			       case 'mylist':
+				   if(info.mylist_counter==null) break;
+				   tmp = FormatCommas(info.mylist_counter);
+				   break;
+			       case 'mylistrate':
+				   if(info.mylist_counter==null||info.view_counter==null||info.view_counter==0) break;
+				   tmp = (100*info.mylist_counter/info.view_counter).toFixed(1) + "%";
+				   break;
+			       case 'tags':
+				   // 1行40文字程度までかなぁ
+				   if(info.tags==null) break;
+				   tmp = info.tags.join(',');
+				   tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
+				   break;
+			       case 'pname':
+				   if(info.video_id==null || info.tags==null) break;
+				   let pn = NicoLiveDatabase.getPName(info.video_id);
+				   if(!pn){
+				       let pname = new Array();
+				       for(let i=0,tag;tag=info.tags[i];i++){
+					   tag = ZenToHan(tag);
+					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
+					   if(tag.match(/(M[A@]D|MMD|HD|3D|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
+					   // P名
+					   let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
+					   if(t) pname.push(t[0]);
+					   // D名
+					   t = tag.match(/.*[DＤ]$/);
+					   if(t) pname.push(t[0]);
+				       }
+				       if(pname.length) tmp = pname.join(',');
+				       else tmp = "";
+				   }else{
+				       // DBのP名優先.
+				       tmp = pn;
+				   }
+				   break;
+			       case 'additional':
+				   tmp = NicoLiveDatabase.getAdditional(info.video_id);
+				   break;
+			       case 'requestnum': // リク残数.
+				   tmp = NicoLiveHelper.requestqueue.length;
+				   break;
+			       case 'requesttime': // リク残時間(mm:ss).
+				   let reqtime = NicoLiveHelper.getTotalMusicTime();
+				   tmp = GetTimeString(reqtime.min*60+reqtime.sec);
+				   break;
+			       case 'stocknum':  // ストック残数.
+				   let remainstock = 0;
+				   for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
+				       if(!item.isplayed){
+					   remainstock++;
+				       }
+				   }
+				   tmp = remainstock;
+				   break;
+			       case 'stocktime': // ストック残時間(mm:ss).
+				   let stocktime = NicoLiveHelper.getTotalStockTime();
+				   tmp = GetTimeString(stocktime.min*60+stocktime.sec);
+				   break;
+			       }
+			       return tmp;
+			   });
+    },
+
     // 再生する曲の情報を主コメする.
     sendMusicInfo2:function(){
-	let info = this.musicinfo;
-	let str = NicoLivePreference.videoinfo[this._counter];
-	let sendstr;
-	if(!str){
+	let sendstr = NicoLivePreference.videoinfo[this._counter];
+	if(!sendstr){
 	    clearInterval(this._sendmusicid);
 	    this._counter = 0;
 	    return;
 	}
-	sendstr = str.replace(/{(.*?)}/g,
-			      function(s,p){
-				  let tmp = s;
-				  switch(p){
-				  case 'id':
-				      tmp = info.video_id; break;
-				  case 'title':
-				      tmp = info.title; break;
-				  case 'date':
-				      tmp = GetDateString(info.first_retrieve*1000); break;
-				  case 'length':
-				      tmp = info.length; break;
-				  case 'view':
-				      tmp = FormatCommas(info.view_counter); break;
-				  case 'comment':
-				      tmp = FormatCommas(info.comment_num); break;
-				  case 'mylist':
-				      tmp = FormatCommas(info.mylist_counter); break;
-				  case 'mylistrate':
-				      tmp = (100*info.mylist_counter/info.view_counter).toFixed(1) + "%";
-				      break;
-				  case 'tags':
-				      // 1行40文字程度までかなぁ
-				      tmp = info.tags.join(',');
-				      tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
-				      break;
-				  case 'pname':
-				      let pn = NicoLiveDatabase.getPName(info.video_id);
-				      if(!pn){
-					  let pname = new Array();
-					  for(let i=0,tag;tag=info.tags[i];i++){
-					      tag = ZenToHan(tag);
-					      if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup)$/i)) continue;
-					      if(tag.match(/(M[A@]D|MMD|HD|3D|頭文字D|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
-
-					      // P名
-					      let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
-					      if(t) pname.push(t[0]);
-					      // D名
-					      t = tag.match(/.*[DＤ]$/);
-					      if(t) pname.push(t[0]);
-					  }
-					  if(pname.length) tmp = pname.join(',');
-					  else tmp = "";
-				      }else{
-					  // DBのP名優先.
-					  tmp = pn;
-				      }
-				      break;
-				  case 'additional':
-				      tmp = NicoLiveDatabase.getAdditional(info.video_id);
-				      break;
-				  }
-				  return tmp;
-			      });
 	let cmd = "";
 	switch(NicoLivePreference.caster_comment_type){
 	case 1: // /perm
@@ -669,6 +708,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
+	comment = this.replaceMacros(comment);
 
 	let anchor = comment.match(/>>(\d+)-(\d+)(@(\d+))?/);
 	if(anchor){
@@ -678,7 +718,7 @@ var NicoLiveHelper = {
 	    this.anchor = {};
 	    this.anchor.start = start_cno;
 	    this.anchor.end   = end_cno;
-	    this.anchor.num   = num ? num : 0;
+	    this.anchor.num   = num ? num : 999;
 	    this.anchor.counter = 0;
 	    debugprint("アンカー受付:コメ番"+start_cno+"から"+end_cno+"まで"+num+"個");
 	}
@@ -759,6 +799,21 @@ var NicoLiveHelper = {
 	req.open('GET', url );
 	req.send('');
 	return;
+    },
+
+    // 手動再生.
+    setManualPlay:function(){
+	this.setAutoplay(0);
+    },
+    // 自動(順次).
+    setAutoPlayBySequential:function(){
+	this.setAutoplay(1);
+	this.setRandomplay(false);
+    },
+    // 自動(ランダム).
+    setAutoPlayByRandom:function(){
+	this.setAutoplay(1);
+	this.setRandomplay(true);
     },
 
     // 自動再生の設定をする.
