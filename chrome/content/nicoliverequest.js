@@ -88,10 +88,7 @@ var NicoLiveRequest = {
 		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
 		};
 		a.appendChild(document.createTextNode(s));
-		let hbox = CreateElement('hbox');
-		hbox.setAttribute('context','popup-copy-url');
-		hbox.appendChild(a);
-		div2.appendChild(hbox);
+		div2.appendChild(a);
 	    }else if( s.match(/(sm|nm)\d+/) ){
 		let a = CreateHTMLElement('a');
 		let vid = s;
@@ -99,10 +96,7 @@ var NicoLiveRequest = {
 		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
 		};
 		a.appendChild(document.createTextNode(s));
-		let hbox = CreateElement('hbox');
-		hbox.setAttribute('context','popup-copy-url');
-		hbox.appendChild(a);
-		div2.appendChild(hbox);
+		div2.appendChild(a);
 	    }else{
 		div2.appendChild(document.createTextNode(s));
 	    }
@@ -252,10 +246,7 @@ var NicoLiveRequest = {
 		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
 		};
 		a.appendChild(document.createTextNode(s));
-		let hbox = CreateElement('hbox');
-		hbox.setAttribute('context','popup-copy-url');
-		hbox.appendChild(a);
-		div2.appendChild(hbox);
+		div2.appendChild(a);
 	    }else if( s.match(/(sm|nm)\d+/) ){
 		let a = CreateHTMLElement('a');
 		let vid = s;
@@ -263,10 +254,7 @@ var NicoLiveRequest = {
 		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
 		};
 		a.appendChild(document.createTextNode(s));
-		let hbox = CreateElement('hbox');
-		hbox.setAttribute('context','popup-copy-url');
-		hbox.appendChild(a);
-		div2.appendChild(hbox);
+		div2.appendChild(a);
 	    }else{
 		div2.appendChild(document.createTextNode(s));
 	    }
@@ -392,16 +380,6 @@ var NicoLiveRequest = {
 		}
 	    }
 	}
-    },
-
-    copyURL:function(){
-	let str = document.popupNode.textContent;
-	if(str.indexOf('mylist')!=-1){
-	    str = 'http://www.nicovideo.jp/'+str;
-	}else{
-	    str = 'http://www.nicovideo.jp/watch/'+str;
-	}
-	CopyToClipboard(str);
     },
 
     copyRequestToClipboard:function(){
