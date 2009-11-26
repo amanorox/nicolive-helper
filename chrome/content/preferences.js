@@ -136,6 +136,8 @@ var NLHPreference = {
 	$('pref-msg-played').value    = "その動画は既に再生されました";
 	$('pref-msg-requested').value = "その動画は既にリクエストされています";
 	$('pref-msg-accept').value    = "リクエストを受け付けました";
+	$('pref-msg-requestok').value = "";
+	$('pref-msg-requestng').value = "";
     },
 
     refDirectory:function(){

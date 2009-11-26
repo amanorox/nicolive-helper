@@ -848,6 +848,10 @@ var NicoLiveHelper = {
     // リクを受け付ける.
     setAcceptRequest:function(flg){
 	this.isacceptrequest = flg;
+	let str = flg?NicoLivePreference.msg_requestok:NicoLivePreference.msg_requestng;
+	if(str){
+	    this.postCasterComment(str,"");
+	}
     },
 
     // リクエストリストに追加する.

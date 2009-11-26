@@ -16,6 +16,8 @@ var NicoLivePreference = {
 	this.msg_played    = branch.getUnicharPref("msg-played");
 	this.msg_requested = branch.getUnicharPref("msg-requested");
 	this.msg_accept    = branch.getUnicharPref("msg-accept");
+	this.msg_requestok = branch.getUnicharPref("msg-requestok");
+	this.msg_requestng = branch.getUnicharPref("msg-requestng");
 
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 

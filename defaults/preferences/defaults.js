@@ -28,6 +28,8 @@ pref("extensions.nicolivehelper.msg-newmovie","その動画は7日以内に投�
 pref("extensions.nicolivehelper.msg-played","その動画は既に再生されました");
 pref("extensions.nicolivehelper.msg-requested","その動画は既にリクエストされています");
 pref("extensions.nicolivehelper.msg-accept","リクエストを受け付けました");
+pref("extensions.nicolivehelper.msg-requestok","");
+pref("extensions.nicolivehelper.msg-requestng","");
 
 pref("extensions.nicolivehelper.savecomment",false);
 pref("extensions.nicolivehelper.commentlogDir","");

@@ -319,7 +319,6 @@
 
     <!-- for DB result -->
     <menupopup id="popup-db-result">
-      <menuitem label="動画ページを開く" oncommand="NicoLiveDatabase.openVideoPage();"/>
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="ストック追加" oncommand="NicoLiveDatabase.addStockOne();"/>
       <menuitem label="リクエスト送信" oncommand="NicoLiveDatabase.sendRequestOne();"/>

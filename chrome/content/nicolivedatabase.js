@@ -359,7 +359,7 @@ var NicoLiveDatabase = {
 	let str;
 	str = "<vbox context=\"popup-db-result\"><html:span style=\"display:none;\">"+item.video_id+"</html:span>"
 	    + "<html:div>"
-	    + "<label value=\""+item.video_id+"/"+item.title+"\"/><html:br/>";
+	    + "<label><html:a onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+item.video_id+"');\">"+item.video_id+"</html:a>/"+item.title+"</label><html:br/>";
 
 	let datestr = GetDateString(item.first_retrieve*1000);
 	str+= "<label value=\"投稿日:" + datestr +" "
@@ -419,12 +419,13 @@ var NicoLiveDatabase = {
 	let oldpname = this.getPName(video_id);
 	let pname = window.prompt("「"+video_id+"」のP名を入力してください",oldpname);
 	if(pname!=null){
-	    let st = this.dbconnect.createStatement('update nicovideo set pname=?1 where video_id=?2');
+	    let st;
+	    st = this.dbconnect.createStatement('update nicovideo set pname=?1 where video_id=?2');
 	    st.bindUTF8StringParameter(0,pname);
 	    st.bindUTF8StringParameter(1,video_id);
 	    st.execute();
+	    st.finalize();
 	}
-	st.finalize();
     },
     getPName:function(video_id){
 	let st = this.dbconnect.createStatement('SELECT pname FROM nicovideo WHERE video_id = ?1');
@@ -445,12 +446,13 @@ var NicoLiveDatabase = {
 	let oldadditional = this.getAdditional(video_id);
 	let additional = window.prompt("「"+video_id+"」の追加情報を入力してください",oldadditional);
 	if(additional!=null){
-	    let st = this.dbconnect.createStatement('update nicovideo set additional=?1 where video_id=?2');
+	    let st;
+	    st = this.dbconnect.createStatement('update nicovideo set additional=?1 where video_id=?2');
 	    st.bindUTF8StringParameter(0,additional);
 	    st.bindUTF8StringParameter(1,video_id);
 	    st.execute();
+	    st.finalize();
 	}
-	st.finalize();
     },
     getAdditional:function(video_id){
 	let st = this.dbconnect.createStatement('SELECT additional FROM nicovideo WHERE video_id = ?1');

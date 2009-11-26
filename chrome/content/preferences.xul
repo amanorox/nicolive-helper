@@ -62,6 +62,8 @@
       <preference id="pref-msg-played" name="extensions.nicolivehelper.msg-played" type="unichar"/>
       <preference id="pref-msg-requested" name="extensions.nicolivehelper.msg-requested" type="unichar"/>
       <preference id="pref-msg-accept" name="extensions.nicolivehelper.msg-accept" type="unichar"/>
+      <preference id="pref-msg-requestok" name="extensions.nicolivehelper.msg-requestok" type="unichar"/>
+      <preference id="pref-msg-requestng" name="extensions.nicolivehelper.msg-requestng" type="unichar"/>
     </preferences>
     <grid>
       <columns>
@@ -92,6 +94,14 @@
 	<row>
 	  <hbox align="center"><label control="msg-requested" value="リクエスト受付済みの動画の時"/></hbox>
 	  <textbox preference="pref-msg-requested" id="msg-requested" flex="1"/>
+	</row>
+	<row>
+	  <hbox align="center"><label control="msg-requestok" value="リクエスト許可に切り替えた時"/></hbox>
+	  <textbox preference="pref-msg-requestok" id="msg-requestok" flex="1"/>
+	</row>
+	<row>
+	  <hbox align="center"><label control="msg-requestng" value="リクエスト不可に切り替えた時"/></hbox>
+	  <textbox preference="pref-msg-requestng" id="msg-requestng" flex="1"/>
 	</row>
       </rows>
     </grid>
