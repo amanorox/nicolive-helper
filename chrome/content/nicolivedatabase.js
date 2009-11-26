@@ -16,6 +16,7 @@
  * update_date    : integer DB情報の更新日時
  * pname          : character (0.7.2-) 動画固有P名
  * additional     : character (0.7.2-) 動画固有の追加情報
+ * favorite       : integer (0.7.3-) お気に入り度
  */
 /* TABLE requestcond
  * presetname : character primary key プリセット名
@@ -461,7 +462,7 @@ var NicoLiveDatabase = {
     createVideoDB:function(){
 	if(!this.dbconnect.tableExists('nicovideo')){
 	    // テーブルなければ作成.
-	    this.dbconnect.createTable('nicovideo','video_id character primary key, title character, description character, thumbnail_url character, first_retrieve integer, length integer, view_counter integer, comment_num integer, mylist_counter integer, tags character, update_date integer, pname character, additional character');
+	    this.dbconnect.createTable('nicovideo','video_id character primary key, title character, description character, thumbnail_url character, first_retrieve integer, length integer, view_counter integer, comment_num integer, mylist_counter integer, tags character, update_date integer, pname character, additional character, favorite integer');
 	}else{
 	    // 既に存在していればpname,additionalフィールドを追加する(0.7.2-).
 	    try{
@@ -475,6 +476,13 @@ var NicoLiveDatabase = {
 		this.dbconnect.executeSimpleSQL(sql);
 	    } catch (x) {
 		debugprint('additional column was already exist');
+	    }
+	    // 0.7.3-
+	    try{
+		let sql = "alter table nicovideo add favorite integer";
+		this.dbconnect.executeSimpleSQL(sql);
+	    } catch (x) {
+		debugprint('favorite column was already exist');
 	    }
 	}
     },

@@ -177,6 +177,9 @@ var NicoLiveRequest = {
 	if(item.isplayed){
 	    tr.className = "table_played";
 	}
+	if(item.error){
+	    tr.className = "white";
+	}
 
 	let td;
 	td = tr.insertCell(tr.cells.length);

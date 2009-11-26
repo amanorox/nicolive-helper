@@ -278,7 +278,6 @@ var NicoLiveHelper = {
 			this.musicstarttime = GetCurrentTime();
 			this.setCurrentVideoInfo(dat[2],true);
 			this.inplay = true;
-			$('played-list-textbox').value += dat[2]+" "+dat[4]+"\n";
 		    }else{
 			// 自動再生の準備.
 			this.setupPlayNextMusic(this.musicinfo.length_ms);
@@ -372,6 +371,7 @@ var NicoLiveHelper = {
 				   }
 				   break;
 			       case 'additional':
+				   if(info.video_id==null) break;
 				   tmp = NicoLiveDatabase.getAdditional(info.video_id);
 				   break;
 			       case 'requestnum': // リク残数.
@@ -699,6 +699,7 @@ var NicoLiveHelper = {
 			// たまに生引用拒否していなくてもエラーになるので.
 			// エラーになった動画はストックにしておく.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
+			    NicoLiveHelper.musicinfo.error = true;
 			    NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
 			}
 			NicoLiveHelper.musicinfo = {};
@@ -1162,12 +1163,13 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.postCasterComment(msg,"");
 		}
 
+		ans.movieinfo.cno = req.comment_no;
+		ans.movieinfo.user_id = req.user_id;
+
 		switch(ans.code){
 		case 0:
-		    ans.movieinfo.cno = req.comment_no;
-		    ans.movieinfo.user_id = req.user_id;
+		    ans.movieinfo.error = false;
 		    NicoLiveHelper.addRequestQueue(ans.movieinfo);
-
 		    if(NicoLiveHelper.iscaster &&
 		       NicoLiveHelper.isautoplay &&
 		       !NicoLiveHelper.inplay &&
@@ -1177,6 +1179,8 @@ var NicoLiveHelper = {
 		    }
 		    break;
 		default:
+		    ans.movieinfo.error = true;
+		    //NicoLiveHelper.addStockQueue(ans.movieinfo);
 		    break;
 		}
 	    }

@@ -63,6 +63,10 @@ tr.color8{
     background-color: #ffffee;
 }
 
+tr.white{
+    background-color: white;
+}
+
 /* 主用の色 */
 tr.table_casterselection{
     background-color: #ffeeee;
