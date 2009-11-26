@@ -29,7 +29,7 @@ var NicoLiveHelper = {
     israndomplay: false,   // ランダム再生フラグ.
     anchor: {},            // アンカー処理用.
 
-    // リクを受け付けるかどうかチェック(動画の属性をチェックするのみ).
+    // リクを受け付けるかどうかチェック.
     checkAcceptRequest: function(xml, comment_no){
 	if(xml.getElementsByTagName('error').length){
 	    // 動画がない.
@@ -1284,7 +1284,7 @@ var NicoLiveHelper = {
 		    this.line += lineData.value;
 		    if( lineData.value=="\0" ){
 			NicoLiveHelper.processLine(this.line);
-			    this.line = "";
+			this.line = "";
 		    }
 		}
 	    }
@@ -1300,7 +1300,9 @@ var NicoLiveHelper = {
 	this.heartbeat();
 	this._heartbeat = setInterval("NicoLiveHelper.heartbeat();",1*60*1000);
 
-	this.playJingle();
+	if( NicoLivePreference.isjingle ){
+	    this.playJingle();
+	}
 
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
@@ -1516,7 +1518,6 @@ var NicoLiveHelper = {
 	// コメントサーバ接続時、
 	// 放送開始から3分未満、
 	// 何も再生していないときに、ジングルを再生開始する.
-	if( !NicoLivePreference.isjingle ) return;
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){
 		this.inplay = true;

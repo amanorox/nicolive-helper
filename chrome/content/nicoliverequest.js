@@ -81,7 +81,7 @@ var NicoLiveRequest = {
 	// innerHTMLが使えないのでひたすらDOM操作.
 	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
 	for(let i=0,s;s=str[i];i++){
-	    if( s.indexOf('mylist')!=-1 ){
+	    if( s.indexOf('mylist/')!=-1 ){
 		let a = CreateHTMLElement('a');
 		let mylist = s;
 		a.onclick = function(){

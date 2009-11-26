@@ -208,6 +208,7 @@
 	    <hbox>
 	      <checkbox id="pref-jingle" label="接続時にジングルを再生する"/>
 	      <textbox id="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください"/>
+	      <button label="再生" oncommand="NicoLiveHelper.playJingle();"/>
 	    </hbox>
 	    <checkbox id="pref-limit30min" label="自動再生時、30分枠に収まるように再生する動画を選択する"/>
 	    <checkbox id="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する"/>
