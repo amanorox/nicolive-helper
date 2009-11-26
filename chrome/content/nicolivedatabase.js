@@ -406,6 +406,11 @@ var NicoLiveDatabase = {
 	let elem = FindParentElement(document.popupNode,'vbox');
 	CopyToClipboard(elem.firstChild.textContent); // 動画IDを取れる.
     },
+    // 動画のページを開く
+    openVideoPage:function(){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+elem.firstChild.textContent);
+    },
 
     setPName:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');

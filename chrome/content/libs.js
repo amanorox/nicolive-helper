@@ -95,6 +95,12 @@ function debugalert(txt){
     alert(txt);
 }
 
+function debugnotice(txt){
+    $('noticewin').removeAllNotifications(false);
+    $('noticewin').appendNotification(txt,null,null,
+				      $('noticewin').PRIORITY_WARNING_LOW,null);
+}
+
 function SetWindowTopMost(b){
     var Ci = Components.interfaces;
     var XULWindow = window

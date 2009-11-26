@@ -2,6 +2,19 @@
  * ニコニコ生放送ヘルパー for Firefox 3.5
  */
 
+/*
+ * inplayがtrueになるとき
+ * ・/playを受け取ったとき
+ * ・接続時にすでに再生されているとき
+ * ・ジングル再生要求を出したとき
+ * 
+ * inplayがfalseになるとき
+ * ・再生しようとしたらリクが空のとき
+ * ・次曲を再生しようとしたら、リクもストックも空のとき
+ * ・手動再生で、曲の再生が終わったとき
+ * ・/playを送信してstatus=errorになったとき
+ */
+
 var NicoLiveHelper = {
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
@@ -702,6 +715,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.musicinfo.error = true;
 			    NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
 			}
+			NicoLiveHelper.inplay = false;
 			NicoLiveHelper.musicinfo = {};
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
@@ -897,7 +911,7 @@ var NicoLiveHelper = {
 	idx--;
 	let music = this.stock[idx];
 	if(this.isRequestedMusic(music.video_id)){
-	    debugalert(music.video_id+'はリクエスト済みです');
+	    debugnotice(music.video_id+'はリクエスト済みです');
 	    return;
 	}
 	this.addRequestQueue(music);
@@ -980,6 +994,8 @@ var NicoLiveHelper = {
 	// ニコニコ動画のgetthumbinfoのXMLから情報抽出.
 	let info = {};
 	info.cno = 0;
+	info.tags = [];
+
 	let root;
 	try{
 	    root = xml.getElementsByTagName('thumb')[0];
@@ -1392,7 +1408,7 @@ var NicoLiveHelper = {
 	    let xml = req.responseXML;
 
 	    if( xml.getElementsByTagName('code').length ){
-		alert( xml.getElementsByTagName('code')[0].textContent );
+		debugalert( xml.getElementsByTagName('code')[0].textContent );
 		return;
 	    }
 	    try {
@@ -1472,6 +1488,9 @@ var NicoLiveHelper = {
 	    du = maxplay;
 	}
 	this._musicend = setInterval("NicoLiveHelper.checkPlayNext();", du+interval);
+
+	if(du<30*1000) return;
+	// 30秒未満のときはやらない.
 	this._prepare = setInterval(
 	    function(){
 		clearInterval(NicoLiveHelper._prepare);
@@ -1518,10 +1537,11 @@ var NicoLiveHelper = {
 	// コメントサーバ接続時、
 	// 放送開始から3分未満、
 	// 何も再生していないときに、ジングルを再生開始する.
+	let jingle = NicoLivePreference.jinglemovie;
+	if( !jingle ){ debugprint('ジングル動画が指定されていないので再生しない'); return; }
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){
 		this.inplay = true;
-		let jingle = NicoLivePreference.jinglemovie;
 		let timerid = setInterval( function(){
 					       NicoLiveHelper.postCasterComment("/play "+jingle);
 					       NicoLiveHelper._sendMusicInfo();
