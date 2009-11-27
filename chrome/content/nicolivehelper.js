@@ -466,6 +466,7 @@ var NicoLiveHelper = {
 	for(i=0;item=this.stock[i];i++){
 	    if(this.isPlayedMusic(item.video_id)){
 		item.isplayed = true;
+		item.error = false;
 	    }
 	}
 	NicoLiveRequest.updateStockView(this.stock);
@@ -632,7 +633,7 @@ var NicoLiveHelper = {
 
     // プレイリストに追加する.
     addPlayedList:function(item){
-	this.playedlist.push(item); // 再生済みリストに登録.
+	this.playlist.push(item); // 再生済みリストに登録.
 	let elem = $('played-list-textbox');
 	elem.value += item.video_id+" "+item.title+"\n";
 	this.saveToGlobalStorage();
@@ -642,7 +643,7 @@ var NicoLiveHelper = {
     clearPlayedList:function(){
 	let elem = $('played-list-textbox');
 	elem.value = "";
-	this.playedlist = new Array();
+	this.playlist = new Array();
 	for(let i=0,item;item=this.stock[i];i++){
 	    item.isplayed = false;
 	}
@@ -1111,7 +1112,7 @@ var NicoLiveHelper = {
 	    // 現在再生している曲.
 	    return true;
 	}
-	for(let i=0,item;item=this.playedlist[i];i++){
+	for(let i=0,item;item=this.playlist[i];i++){
 	    if(item.video_id==video_id){
 		// 再生済みの動画.
 		return true;
@@ -1428,9 +1429,9 @@ var NicoLiveHelper = {
 		if( NicoLiveHelper.iscaster==777 ){
 		    NicoLiveHelper.iscaster=true;
 		    debugprint('You are a caster');
-		    NicoLiveHelper.playedlist     =Application.storage.get("nico_live_playedlist",[]);
-		    NicoLiveHelper.requestqueue   =Application.storage.get("nico_live_requestlist",[]);
-		    $('played-list-textbox').value=Application.storage.get("nico_live_requestlist_txt","");
+		    NicoLiveHelper.playlist       = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
+		    NicoLiveHelper.requestqueue   = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
+		    $('played-list-textbox').value= NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
 		}else{
 		    NicoLiveHelper.iscaster = false;
@@ -1564,12 +1565,12 @@ var NicoLiveHelper = {
     // グローバルストレージに引き継ぎ情報をセット.
     saveToGlobalStorage:function(){
 	// ストックだけは主じゃなくても保存する.
-	Application.storage.set("nico_live_stock",this.stock);
+	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
 
 	if(!this.iscaster){ return; }
-	Application.storage.set("nico_live_playedlist",this.playedlist);
-	Application.storage.set("nico_live_requestlist",this.requestqueue);
-	Application.storage.set("nico_live_requestlist_txt",$('played-list-textbox').value);
+	NicoLiveDatabase.saveGPStorage("nico_live_playlist",this.playlist);
+	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
+	NicoLiveDatabase.saveGPStorage("nico_live_playlist_txt",$('played-list-textbox').value);
     },
 
     resetRequestCount:function(){
@@ -1584,13 +1585,13 @@ var NicoLiveHelper = {
 
 	debugprint(request_id);
 	this.requestqueue = new Array();
-	this.playedlist   = new Array();
+	this.playlist     = new Array();
 	this.stock        = new Array();
 	this.isnotified   = new Array(); // 残り3分通知を出したかどうかのフラグ.
 	this.musicinfo    = {};
 	this.request_per_ppl = new Object(); // 1人あたりのリクエスト受け付け数ワーク.
 
-	this.stock = Application.storage.get("nico_live_stock",[]);
+	this.stock = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
 	debugprint("stock "+this.stock.length);
 
 	if(request_id!="lv0"){

@@ -8,12 +8,12 @@
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivepreference.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivedatabase.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehelper.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecomment.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverequest.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivemylist.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivebrowser.js" />
-  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivedatabase.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehistory.js" />
 
   <script>
@@ -28,7 +28,7 @@
 	      f += ',alwaysRaised=yes';
       }
       debugprint(f);
-      window.openDialog('chrome://nicolivehelper/content/preferences.xul','NLHPreference',f);
+      window.openDialog('chrome://nicolivehelper/content/preferences.xul','NLHPreference',f).focus();
   }
   ]]>
   </script>

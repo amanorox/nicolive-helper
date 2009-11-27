@@ -24,16 +24,6 @@ var NicoLiveComment = {
 	    tr.className = this.colormap[comment.user_id];
 	}
 
-/*
-	let handlename = comment.text.match(/[@＠](.*)$/);
-	if(handlename){
-	    let tmp = handlename[1];
-	    if(comment.premium!=3 && !tmp.match(/(sm|nm)/) && tmp!="全" && tmp!="確認"){
-		this.namemap[comment.user_id] = tmp;
-	    }
-	}
-*/
-
 	if(comment.premium==3){
 	    tr.className = "table_casterselection";
 	}
@@ -46,7 +36,7 @@ var NicoLiveComment = {
 
 	let str;
 	if(this.namemap[comment.user_id]){
-	    str = this.namemap[comment.user_id];
+	    str = this.namemap[comment.user_id].name;
 	}else{
 	    str = comment.user_id;
 	}
@@ -92,10 +82,20 @@ var NicoLiveComment = {
 
     addName:function(){
 	let userid = document.popupNode.firstChild.textContent;
-	let name = window.prompt("「"+userid+"」のコテハンを指定してください",this.namemap[userid]?this.namemap[userid]:userid);
+	let name = window.prompt("「"+userid+"」のコテハンを指定してください",this.namemap[userid]?this.namemap[userid].name:userid);
 	if(name && name.length){
-	    this.namemap[userid] = name;
-	    Application.storage.set("nico_live_kotehan",this.namemap);
+	    let now = GetCurrentTime();
+	    let id;
+	    this.namemap[userid] = {"name":name, date:now};
+	    for(id in this.namemap){
+		if( id>0 ) continue;
+		// 1週間経ったものは削除.
+		if( now-this.namemap[id].date > 7*24*60*60 ){
+		    delete this.namemap[id];
+		    debugprint(id+'のコテハン情報は1週間経ったため削除します');
+		}
+	    }
+	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
 	}
 	this.updateCommentViewer();
     },
@@ -179,9 +179,8 @@ var NicoLiveComment = {
 
     init:function(){
 	this.colormap = new Object();
-	//this.namemap  = new Object();
-	this.namemap = Application.storage.get("nico_live_kotehan",{});
 	this.commentlog   = new Array();
+	this.namemap = NicoLiveDatabase.loadGPStorage("nico_live_kotehan",{});
     },
     destroy:function(){
 	this.closeFile();

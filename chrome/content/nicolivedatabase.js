@@ -466,6 +466,45 @@ var NicoLiveDatabase = {
 	return additional;
     },
 
+    // 汎用ストレージにname,JavascriptオブジェクトをJSON形式で保存.
+    saveGPStorage:function(name,obj){
+	let st;
+	let value = JSON.stringify(obj);
+	//Application.console.log(value);
+	try{
+	    st = this.dbconnect.createStatement('insert into gpstorage(key,value) values(?1,?2)');
+	    st.bindUTF8StringParameter(0,name);
+	    st.bindUTF8StringParameter(1,value);
+	    st.execute();
+	    st.finalize();
+	} catch (x) {
+	    st = this.dbconnect.createStatement('update gpstorage set value=?1 where key=?2');
+	    st.bindUTF8StringParameter(0,value);
+	    st.bindUTF8StringParameter(1,name);
+	    st.execute();
+	    st.finalize();
+	}
+    },
+
+    // 汎用ストレージからJSON形式のJavascriptオブジェクトを読み込む.
+    loadGPStorage:function(name,defitem){
+	let st = this.dbconnect.createStatement('SELECT value FROM gpstorage where key=?1');
+	st.bindUTF8StringParameter(0,name);
+	let value = "";
+	while(st.step()){
+	    value=st.getString(0);
+	}
+	st.finalize();
+	let item;
+	if(value){
+	    item = JSON.parse(value);
+	}else{
+	    item = defitem;
+	}
+	return item;
+    },
+
+    // 動画情報を記録するDB
     createVideoDB:function(){
 	if(!this.dbconnect.tableExists('nicovideo')){
 	    // テーブルなければ作成.
@@ -494,9 +533,17 @@ var NicoLiveDatabase = {
 	}
     },
 
+    // リク制限を保存するDB
     createRequestCondDB:function(){
 	if(!this.dbconnect.tableExists('requestcond')){
 	    this.dbconnect.createTable('requestcond','presetname character primary key, value character');
+	}
+    },
+
+    // 汎用(General-Purpose)で使うDB
+    createGPStorageDB:function(){
+	if(!this.dbconnect.tableExists('gpstorage')){
+	    this.dbconnect.createTable('gpstorage','key character primary key, value character');
 	}
     },
 
@@ -511,13 +558,14 @@ var NicoLiveDatabase = {
         this.dbconnect = storageService.openDatabase(file);
 	this.createVideoDB();
 	this.createRequestCondDB();
+	this.createGPStorageDB();
 	this.setRegisterdVideoNumber();
     },
     destroy:function(){
 	// This call will not be successful
 	// unless you call finalize() on all of your remaining mozIStorageStatement  objects.
-	debugprint('db close');
-	this.dbconnect.close();
+	//debugprint('db close');
+	//this.dbconnect.close();
     }
 };
 

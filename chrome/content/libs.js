@@ -117,7 +117,7 @@ function SetWindowTopMost(b){
 // 現在時刻を秒で返す(C言語でいうところのtime()で).
 function GetCurrentTime(){
     let d = new Date();
-    return d.getTime()/1000;
+    return Math.floor(d.getTime()/1000);
 }
 
 function GetDateString(ms){

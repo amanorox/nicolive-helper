@@ -216,19 +216,14 @@
 	</columns>
 	<rows>
 	  <row>
-	    <label value=""/>
-	    <label value="開く"/>
-	    <label value="閉じる"/>
+	    <hbox align="center"><label value="放送者"/></hbox>
+	    <checkbox preference="pref-auto-open" label="開く"/>
+	    <checkbox preference="pref-auto-close" label="閉じる"/>
 	  </row>
 	  <row>
-	    <label value="放送者"/>
-	    <checkbox preference="pref-auto-open"/>
-	    <checkbox preference="pref-auto-close"/>
-	  </row>
-	  <row>
-	    <label value="視聴者"/>
-	    <checkbox preference="pref-auto-open-listener"/>
-	    <checkbox preference="pref-auto-close-listener"/>
+	    <hbox align="center"><label value="視聴者"/></hbox>
+	    <checkbox preference="pref-auto-open-listener" label="開く"/>
+	    <checkbox preference="pref-auto-close-listener" label="閉じる"/>
 	  </row>
 	</rows>
       </grid>
