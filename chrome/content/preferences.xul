@@ -9,7 +9,7 @@
 	    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	    xmlns:html="http://www.w3.org/1999/xhtml">
 
-  <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/icon1.png" onpaneload="$('caster-comment-type').value = $('pref-typeofvideoinfo').value;">
+  <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="$('caster-comment-type').value = $('pref-typeofvideoinfo').value;">
     <preferences>
       <preference id="pref-videoinfo1" name="extensions.nicolivehelper.videoinfo1" type="unichar"/>
       <preference id="pref-videoinfo2" name="extensions.nicolivehelper.videoinfo2" type="unichar"/>
@@ -54,7 +54,7 @@
     </hbox>
   </prefpane>
 
-  <prefpane id="nicolivehelper-prefpane-castercomment" label="運営コメント" image="chrome://nicolivehelper/content/icon2.png">
+  <prefpane id="nicolivehelper-prefpane-castercomment" label="運営コメント" image="chrome://nicolivehelper/content/data/icon2.png">
     <preferences>
       <preference id="pref-msg-deleted" name="extensions.nicolivehelper.msg-deleted" type="unichar"/>
       <preference id="pref-msg-notaccept" name="extensions.nicolivehelper.msg-notaccept" type="unichar"/>
@@ -110,7 +110,7 @@
     </hbox>
   </prefpane>
     
-  <prefpane id="nicolivehelper-prefpane-request" label="リクエスト制限" image="chrome://nicolivehelper/content/icon3.png" onpaneload="NLHPreference.updateRestrictPane();">
+  <prefpane id="nicolivehelper-prefpane-request" label="リクエスト制限" image="chrome://nicolivehelper/content/data/icon3.png" onpaneload="NLHPreference.updateRestrictPane();">
     <preferences>
       <preference id="pref-restrict-request"   name="extensions.nicolivehelper.request.restrict" type="bool"/>
       <preference id="pref-restrict-date-from" name="extensions.nicolivehelper.request.date-from" type="string"/>
@@ -187,7 +187,7 @@
     </hbox>
   </prefpane>
 
-  <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
+  <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>
       <preference id="pref-commentlogDir" name="extensions.nicolivehelper.commentlogDir" type="file"/>
