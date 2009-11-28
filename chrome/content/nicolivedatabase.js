@@ -497,6 +497,7 @@ var NicoLiveDatabase = {
 	st.finalize();
 	let item;
 	if(value){
+	    debugprint('load '+name);
 	    item = JSON.parse(value);
 	}else{
 	    item = defitem;

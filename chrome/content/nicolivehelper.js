@@ -28,8 +28,9 @@ var NicoLiveHelper = {
     last_res: 0,       // リスナーコメするのに必要なコメ番.
     postkey:"",        // リスナーコメするのに必要なキー.
 
-    connecttime: 0,    // 接続した時刻.
-    secofweek: 604800, // 1週間の秒数(60*60*24*7).
+    serverconnecttime: 0, // 接続したときのサーバの時刻(epoc).
+    connecttime: 0,       // 接続したときのローカルPC時刻(epoc).
+    secofweek: 604800,    // 1週間の秒数(60*60*24*7).
 
     starttime: 0,          // 放送の始まった時刻(sec).
     musicstarttime: 0,     // 曲の再生開始時刻(sec).
@@ -37,7 +38,7 @@ var NicoLiveHelper = {
 
     iscaster: false,       // 主フラグ.
     inplay: false,         // 再生中フラグ.
-    isacceptrequest: true, // リクを受け付けるフラグ.
+    allowrequest: true,    // リクを受け付けるフラグ.
     isautoplay: false,     // 自動再生フラグ.
     israndomplay: false,   // ランダム再生フラグ.
     anchor: {},            // アンカー処理用.
@@ -54,7 +55,7 @@ var NicoLiveHelper = {
 	}
 
 	// リクを受け付けていない.
-	if( !this.isacceptrequest ){
+	if( !this.allowrequest ){
 	    // アンカーチェックはここでやる.
 	    if( this.anchor.start && this.anchor.end &&
 		this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
@@ -116,7 +117,7 @@ var NicoLiveHelper = {
 	let success_msg = NicoLivePreference.msg_accept;
 
 	// アンカー受付の個数チェック.
-	if( !this.isacceptrequest ){
+	if( !this.allowrequest ){
 	    if( this.anchor.start && this.anchor.end && this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
 		this.anchor.counter++;
 		if( this.anchor.num && this.anchor.num < this.anchor.counter ){
@@ -478,7 +479,7 @@ var NicoLiveHelper = {
 	this.saveToGlobalStorage();
     },
 
-    // ストックから再生する.
+    // ストックから再生する(idx=1,2,3,...).
     playStock:function(idx,force){
 	// 再生済みのときだけfalseを返す.
 	// force=trueは再生済みを無視して強制再生.
@@ -575,9 +576,13 @@ var NicoLiveHelper = {
 
     // 次曲を再生する.
     playNext: function(){
-	let remain = 30*60 - (GetCurrentTime()-this.starttime); // second.
+	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
+	if(tmp<0) tmp = 0;
+	let remain = 30*60 - tmp; // second.
 	let limit30min = NicoLivePreference.limit30min;
 	let carelosstime = NicoLivePreference.carelosstime;
+	if(!this.requestqueue) return;
+	if(!this.stock) return;
 
 	if(this.requestqueue.length){
 	    // リクエストがあればそれを優先に再生.
@@ -824,19 +829,24 @@ var NicoLiveHelper = {
 	return;
     },
 
-    // 手動再生.
-    setManualPlay:function(){
-	this.setAutoplay(0);
-    },
-    // 自動(順次).
-    setAutoPlayBySequential:function(){
-	this.setAutoplay(1);
-	this.setRandomplay(false);
-    },
-    // 自動(ランダム).
-    setAutoPlayByRandom:function(){
-	this.setAutoplay(1);
-	this.setRandomplay(true);
+    // 再生方式を指定.
+    setPlayStyle:function(style){
+	this.playstyle = style;
+	switch(style){
+	case 0:// 手動.
+	    this.setAutoplay(0);
+	    break;
+	case 1:// 自動順次
+	    this.setAutoplay(1);
+	    this.setRandomplay(false);
+	    break;
+	case 2:// 自動ランダム
+	    this.setAutoplay(1);
+	    this.setRandomplay(true);
+	    break;
+	default:
+	    break;
+	}
     },
 
     // 自動再生の設定をする.
@@ -855,7 +865,7 @@ var NicoLiveHelper = {
 
     // リクを受け付ける.
     setAcceptRequest:function(flg){
-	this.isacceptrequest = flg;
+	this.allowrequest = flg;
 	let str = flg?NicoLivePreference.msg_requestok:NicoLivePreference.msg_requestng;
 	if(str){
 	    this.postCasterComment(str,"");
@@ -1221,15 +1231,6 @@ var NicoLiveHelper = {
     // コメントサーバからやってくる行を処理する.
     processLine: function(line){
 	//debugprint(line);
-/*
-	if(line.match(/<chat.*?>.*<\/chat>/)){
-	    //debugprint(line);
-	    let parser = new DOMParser();
-	    let dom = parser.parseFromString(line,"text/xml");
-	    this.processComment(dom.getElementsByTagName('chat')[0]);
-	    return;
-	}
-*/
 	if(line.match(/^<chat\s+.*>/)){
 	    //debugprint(line);
 	    let parser = new DOMParser();
@@ -1277,7 +1278,7 @@ var NicoLiveHelper = {
 	var socket = socketTransportService.createTransport(null,0,server,port,null);
 	var iStream = socket.openInputStream(0,0,0);
 	this.connecttime = new Date();
-	this.connecttime = this.connecttime.getTime()/1000; // convert to second.
+	this.connecttime = this.connecttime.getTime()/1000; // convert to second from epoc.
 
 	this.ciStream = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
 	this.ciStream.init(iStream,"UTF-8",0,Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
@@ -1336,6 +1337,10 @@ var NicoLiveHelper = {
 	if(prefs.getBoolPref("savecomment")){
 	    NicoLiveComment.openFile(this.request_id);
 	}
+	debugprint('Server clock:'+GetDateString(this.serverconnecttime*1000));
+	debugprint('PC clock:'+GetDateString(this.connecttime*1000));
+	// サーバ時刻にしておけば間違いないかな.
+	this.connecttime = this.serverconnecttime;
     },
 
     keepConnection:function(){
@@ -1377,6 +1382,7 @@ var NicoLiveHelper = {
 	let liveprogress = $('statusbar-live-progress');
 	let p = GetCurrentTime() - this.starttime;
 	let n = Math.floor(p / (30*60));
+	if(p<0) p = 0;
 	liveprogress.label = GetTimeString(p);
 
 	// 27分+30*n(n=0,1,2,...)越えたら
@@ -1435,6 +1441,8 @@ var NicoLiveHelper = {
 		// 座席番号777が主らしい.
 		if( NicoLiveHelper.iscaster==777 ){
 		    NicoLiveHelper.iscaster=true;
+		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
+		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 		    debugprint('You are a caster');
 		}else{
 		    NicoLiveHelper.iscaster = false;
@@ -1467,6 +1475,10 @@ var NicoLiveHelper = {
 			}
 		    }
 		}
+
+		let serverdate = req.getResponseHeader("Date");
+		serverdate = new Date(serverdate);
+		NicoLiveHelper.serverconnecttime = serverdate.getTime()/1000;
 
 		debugprint("addr:"+NicoLiveHelper.addr);
 		debugprint("port:"+NicoLiveHelper.port);
@@ -1570,6 +1582,7 @@ var NicoLiveHelper = {
 	debugprint("save stock");
 
 	if(!this.iscaster && this.request_id!="lv0"){
+	    debugprint('リスナーのときはプレイリスト、リクは保存しないよ');
 	    return;
 	}
 
@@ -1587,6 +1600,10 @@ var NicoLiveHelper = {
 	this.request_per_ppl = new Object();
     },
 
+    isOffline:function(){
+	return this.request_id=="lv0";
+    },
+
     init: function(){
 	debugprint('Initialized NicoLive Helper');
 	let request_id = Application.storage.get("nico_request_id","lv0");
@@ -1600,16 +1617,19 @@ var NicoLiveHelper = {
 	this.musicinfo    = {};
 	this.request_per_ppl = new Object(); // 1人あたりのリクエスト受け付け数ワーク.
 
+	this.allowrequest = NicoLivePreference.allowrequest;
+	this.setPlayStyle(NicoLivePreference.playstyle);
+
 	this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 	this.stock        = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
-	NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-	$('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 
 	if(request_id!="lv0"){
 	    document.title = request_id+":"+title+" (NicoLive Helper)";
 	    this.start(request_id);
 	}else{
 	    this.request_id = request_id;
+	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
+	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}
     },
     destroy: function(){

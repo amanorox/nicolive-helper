@@ -50,7 +50,9 @@ var NicoLiveRequest = {
 
 	let div = CreateHTMLElement('div');
 	let a = CreateHTMLElement('a');
-	a.onclick = function(){ window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id); };
+	a.onclick = function(){
+	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
+	};
 
 	let img = CreateHTMLElement('img');
 	img.src = item.thumbnail_url;
@@ -202,7 +204,9 @@ var NicoLiveRequest = {
 
 	// サムネ.
 	let a = CreateHTMLElement('a');
-	a.onclick = function(){ window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id); };
+	a.onclick = function(){
+	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
+	};
 	a.className = 'detail';
 	let img = CreateHTMLElement('img');
 	img.src = item.thumbnail_url;
@@ -283,7 +287,19 @@ var NicoLiveRequest = {
 
 	button = CreateElement('button');
 	button.setAttribute("label",'再生');
-	button.addEventListener("command",function(){ NicoLiveHelper.playStock(n,true); },false);
+	button.addEventListener("command",
+				function(){
+				    if(!NicoLiveHelper.isOffline()){
+					NicoLiveHelper.playStock(n,true);
+				    }else{
+					let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
+					NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
+					NicoLiveRequest.playlist_start = n;
+					clearInterval(NicoLiveRequest.playlist_timer);
+					NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",2000);
+				    }
+				},
+				false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
@@ -347,6 +363,30 @@ var NicoLiveRequest = {
 	    NicoLiveHelper.addRequest(id,0,"1");
 	}
 	$('input-request').value="";
+    },
+
+    test:function(){
+	// playing, pauseed, end
+	if(this.opentab.contentDocument){
+	    let status;
+	    status = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject.ext_getStatus();
+	    switch(status){
+	    case "end":
+		if(this.playlist_start>NicoLiveHelper.stock.length){
+		    debugprint("ストックの最後まで再生しました");
+		    clearInterval(this.playlist_timer);
+		    return;
+		}
+		let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
+		this.playlist_start++;
+		debugprint(nextmusic.video_id+"を再生します");
+		this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
+		break;
+	    }
+	}else{
+	    debugprint("動画再生タブがなくなったので停止します");
+	    clearInterval(this.playlist_timer);
+	}
     },
 
     // ストックに追加する. 動画IDはまとめて渡すことができる.

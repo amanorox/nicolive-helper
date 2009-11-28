@@ -1,6 +1,9 @@
 pref("extensions.nicolivehelper.test","test default value");
 pref("extensions.nicolivehelper.mikuonly",false);
 
+pref("extensions.nicolivehelper.playstyle",0);
+pref("extensions.nicolivehelper.allowrequest",true);
+
 pref("extensions.nicolivehelper.z-order",false);
 pref("extensions.nicolivehelper.autowindowopen",false);
 pref("extensions.nicolivehelper.autowindowclose",false);

@@ -51,10 +51,10 @@
 	  <!-- command buttons -->
 	  <hbox>
 	    <button type="menu" label="手動再生" id="btn-play">
-	      <menupopup>
-		<menuitem label="手動再生" oncommand="NicoLiveHelper.setManualPlay(); setLabel('btn-play',this.label);" />
-		<menuitem label="自動再生(順次)" oncommand="NicoLiveHelper.setAutoPlayBySequential(); setLabel('btn-play',this.label);" />
-		<menuitem label="自動再生(ランダム)" oncommand="NicoLiveHelper.setAutoPlayByRandom(); setLabel('btn-play',this.label);" />
+	      <menupopup id="btn-popup-playstyle">
+		<menuitem label="手動再生" oncommand="NicoLiveHelper.setPlayStyle(0); setLabel('btn-play',this.label);" />
+		<menuitem label="自動再生(順次)" oncommand="NicoLiveHelper.setPlayStyle(1); setLabel('btn-play',this.label);" />
+		<menuitem label="自動再生(ランダム)" oncommand="NicoLiveHelper.setPlayStyle(2); setLabel('btn-play',this.label);" />
 	      </menupopup>
 	    </button>
 	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleRequest();"/>

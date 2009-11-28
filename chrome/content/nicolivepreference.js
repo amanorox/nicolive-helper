@@ -49,6 +49,9 @@ var NicoLivePreference = {
     readBasicPrefs:function(){
 	let branch = this.getBranch();
 
+	this.playstyle = branch.getIntPref("playstyle");
+	this.allowrequest = branch.getBoolPref("allowrequest");
+
 	this.isjingle = branch.getBoolPref("jingle");
 	this.jinglemovie = branch.getCharPref("jingle-movie");
 	this.limit30min = branch.getBoolPref("limit30min");
@@ -61,6 +64,14 @@ var NicoLivePreference = {
 	this.nreq_per_ppl = branch.getIntPref("accept-nreq");
 
 	this.mikuonly = branch.getBoolPref("mikuonly");
+
+	try{
+	    $('btn-play').label = $('btn-popup-playstyle').getElementsByTagName('menuitem')[this.playstyle].label;
+	} catch (x) {
+	    NicoLiveHelper.setPlayStyle(0);
+	    $('btn-play').label = $('btn-popup-playstyle').getElementsByTagName('menuitem')[0].label;
+	}
+	$('btn-acc-request').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
 
 	$('pref-jingle').checked = this.isjingle;
 	$('pref-jingle-movie').value = this.jinglemovie;
@@ -103,6 +114,11 @@ var NicoLivePreference = {
 	$('noticewin').removeAllNotifications(false);
 	$('noticewin').appendNotification('設定を反映しました',null,null,$('noticewin').PRIORITY_INFO_HIGH,null);
     },
+    writePlayStyle:function(){
+	let branch = this.getBranch();
+	branch.setBoolPref("allowrequest",NicoLiveHelper.allowrequest);
+	branch.setIntPref("playstyle",NicoLiveHelper.playstyle);
+    },
 
     getCommentDir:function(){
 	return this.getBranch().getFilePref('commentlogDir');
@@ -129,6 +145,7 @@ var NicoLivePreference = {
 	if(aTopic != "nsPref:changed") return;
 	this.readBasicPrefs();
 	this.readAdvancedPrefs();
+	debugprint("設定が変更されました");
     },
 
     init:function(){
@@ -136,8 +153,10 @@ var NicoLivePreference = {
 	this.readBasicPrefs();
 	this.readAdvancedPrefs();
 	this.register();
+	debugprint('NicoLivePreference.init');
     },
     destroy:function(){
+	this.writePlayStyle();
 	this.unregister();
     }
 };
