@@ -239,8 +239,11 @@ var NicoLiveHelper = {
 		    let du = Math.floor(NicoLiveHelper.musicinfo.length_ms/1000)+1;
 		    NicoLiveHelper.musicendtime   = NicoLiveHelper.musicstarttime+du;
 		    if(setinterval){
+			// 手動で/playコマンドを入力したときにここに来る.
 			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
 			NicoLiveHelper.addPlayedList(music);
+			NicoLiveHelper._sendMusicInfo();
+			NicoLiveHelper.inplay = true;
 		    }
 		}
 	    }
@@ -288,6 +291,7 @@ var NicoLiveHelper = {
 		    if( this.musicinfo.video_id!=dat[2] ){
 			// 直接運営コマンドを入力したときとかで、
 			// 現在再生しているはずの曲と異なる場合.
+			// 動画情報の主コメは動画情報を取ってきてから.
 			this.musicstarttime = GetCurrentTime();
 			this.setCurrentVideoInfo(dat[2],true);
 			this.inplay = true;
@@ -443,6 +447,7 @@ var NicoLiveHelper = {
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
 	if(!this.iscaster) return;
+	if(!this.request_id){ debugprint('request_idがないので再生できない'); return; }
 	if(this.requestqueue.length<=0){
 	    // リクなし.
 	    clearInterval(this._musicend);
@@ -478,6 +483,7 @@ var NicoLiveHelper = {
 	// 再生済みのときだけfalseを返す.
 	// force=trueは再生済みを無視して強制再生.
 	if(!this.iscaster) return true;
+	if(!this.request_id){ debugprint('request_idがないので再生できない'); return true; }
 	if(idx>this.stock.length) return true;
 
 	let playmusic = this.stock[idx-1];
@@ -667,7 +673,6 @@ var NicoLiveHelper = {
 	// 曲情報の送信.
 	clearInterval(this._sendmusicid);
 	this._counter = 0;
-	//this._sendmusicid = setInterval("NicoLiveHelper.sendMusicInfo();",5000);
 	this._sendmusicid = setInterval("NicoLiveHelper.sendMusicInfo2();",5000);
     },
 
@@ -693,6 +698,7 @@ var NicoLiveHelper = {
     // 主コメを投げる.
     postCasterComment: function(comment,mail){
 	if(!this.iscaster) return;
+	if(!this.request_id){ debugprint('request_idがないので主コメできない'); return; }
 	var req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
@@ -750,6 +756,7 @@ var NicoLiveHelper = {
 
     // リスナーコメを送信する.
     postListenerComment: function(comment,mail){
+	if(this.request_id=="lv0"){ debugprint("request_idがないのでリスナーコメできない"); return; }
 	if(!comment) return;
 	if(this.previouschat==comment){
 	    debugprint("同じコメの連投はできません");
@@ -1429,10 +1436,6 @@ var NicoLiveHelper = {
 		if( NicoLiveHelper.iscaster==777 ){
 		    NicoLiveHelper.iscaster=true;
 		    debugprint('You are a caster');
-		    NicoLiveHelper.playlist       = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-		    NicoLiveHelper.requestqueue   = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
-		    $('played-list-textbox').value= NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
-		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
 		}else{
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('You are not a caster');
@@ -1455,12 +1458,11 @@ var NicoLiveHelper = {
 			    // 生主モードなら次曲再生できるようにセット.
 			    NicoLiveHelper.setupPlayNextMusic(remain);
 			}
-
 			// プログレスバー用に情報をセット.
 			let tmp = currentplay.textContent.match(/(sm|nm|ze)\d+/);
 			if(tmp){
 			    NicoLiveHelper.musicstarttime  = st;
-			    NicoLiveHelper.setCurrentVideoInfo(tmp[0]);
+			    NicoLiveHelper.setCurrentVideoInfo(tmp[0],false);
 			    NicoLiveHelper.inplay = true;
 			}
 		    }
@@ -1549,7 +1551,6 @@ var NicoLiveHelper = {
 		this.inplay = true;
 		let timerid = setInterval( function(){
 					       NicoLiveHelper.postCasterComment("/play "+jingle);
-					       NicoLiveHelper._sendMusicInfo();
 					       clearInterval(timerid);
 					   }, 5000);
 	    }
@@ -1564,13 +1565,21 @@ var NicoLiveHelper = {
 
     // グローバルストレージに引き継ぎ情報をセット.
     saveToGlobalStorage:function(){
-	// ストックだけは主じゃなくても保存する.
+	// 視聴者のときはストックのみ保存.
 	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
+	debugprint("save stock");
 
-	if(!this.iscaster){ return; }
+	if(!this.iscaster && this.request_id!="lv0"){
+	    return;
+	}
+
+	/* 従来は生放送と関係ないところで開いた場合はリスナーとして動いて
+	 * 記録されなかった項目も、記録を行う.
+	 */
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist",this.playlist);
 	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist_txt",$('played-list-textbox').value);
+	debugprint("save request, playlist");
     },
 
     resetRequestCount:function(){
@@ -1591,12 +1600,16 @@ var NicoLiveHelper = {
 	this.musicinfo    = {};
 	this.request_per_ppl = new Object(); // 1人あたりのリクエスト受け付け数ワーク.
 
-	this.stock = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
-	debugprint("stock "+this.stock.length);
+	this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
+	this.stock        = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
+	NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
+	$('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 
 	if(request_id!="lv0"){
 	    document.title = request_id+":"+title+" (NicoLive Helper)";
 	    this.start(request_id);
+	}else{
+	    this.request_id = request_id;
 	}
     },
     destroy: function(){
