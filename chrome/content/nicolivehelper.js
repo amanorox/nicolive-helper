@@ -285,7 +285,6 @@ var NicoLiveHelper = {
 		str = "";
 		for(let i=1,a;a=this.officialvote[i];i++){
 		    str += this.officialvote[i] + "(" + (result[i-1]/10).toFixed(1) + "%) ";
-		    if((i%2)==0) str+="<br>";
 		}
 		this.postCasterComment(str,"");
 		return;
@@ -302,6 +301,7 @@ var NicoLiveHelper = {
 		    return;
 		}
 	    }
+	    if(!this.iscaster) break;
 	    switch(chat.text){
 	    case "@version":
 		this.postCasterComment("NicoLive Helper 0.8","");
@@ -408,7 +408,6 @@ var NicoLiveHelper = {
 				   if(!pn){
 				       let pname = new Array();
 				       for(let i=0,tag;tag=info.tags[i];i++){
-					   tag = ZenToHan(tag);
 					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
 					   if(tag.match(/(M[A@]D|MMD|HD|3D|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 					   // P名
@@ -494,8 +493,8 @@ var NicoLiveHelper = {
 
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
+	if(this.isOffline()) return;
 	if(!this.iscaster) return;
-	if(!this.request_id){ debugprint('request_idがないので再生できない'); return; }
 	if(this.requestqueue.length<=0){
 	    // リクなし.
 	    clearInterval(this._musicend);
@@ -530,8 +529,8 @@ var NicoLiveHelper = {
     playStock:function(idx,force){
 	// 再生済みのときだけfalseを返す.
 	// force=trueは再生済みを無視して強制再生.
+	if(this.isOffline()) return true;
 	if(!this.iscaster) return true;
-	if(!this.request_id){ debugprint('request_idがないので再生できない'); return true; }
 	if(idx>this.stock.length) return true;
 
 	let playmusic = this.stock[idx-1];
@@ -1121,7 +1120,7 @@ var NicoLiveHelper = {
 		    let tag = elem.getElementsByTagName('tag');// DOM object
 		    info.tags = new Array();
 		    for(let i=0,item;item=tag[i];i++){
-			info.tags[i] = item.textContent; // string
+			info.tags[i] = ZenToHan(item.textContent); // string
 		    }
 		}
 		break;
