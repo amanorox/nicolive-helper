@@ -83,5 +83,5 @@ var pname_whitelist = [
 
 // 高速化のためのハッシュテーブル作成.
 for(let i=0;i<pname_whitelist.length;i++){
-    pname_whitelist["_"+pname_whitelist[i]] = true;
+    pname_whitelist["_"+ ZenToHan(pname_whitelist[i])] = true;
 }
