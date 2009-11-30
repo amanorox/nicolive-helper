@@ -418,6 +418,21 @@ var NicoLiveDatabase = {
 	window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+elem.firstChild.textContent);
     },
 
+    deleteMovie:function(){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	let video_id = elem.firstChild.textContent;
+	let st;
+	try{
+	    st = this.dbconnect.createStatement('delete from nicovideo where video_id=?1');
+	    st.bindUTF8StringParameter(0,video_id);
+	    st.execute();
+	    st.finalize();
+	    debugprint(video_id+'をDBから削除');
+	    debugnotice(video_id+"をDBから削除しました");
+	} catch (x) {
+	}
+    },
+
     setPName:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.firstChild.textContent;

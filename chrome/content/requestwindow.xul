@@ -326,6 +326,8 @@
       <menuitem label="リクエスト送信" oncommand="NicoLiveDatabase.sendRequestOne();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
+      <menuseparator/>
+      <menuitem label="DBから削除" oncommand="NicoLiveDatabase.deleteMovie();"/>
     </menupopup>
 
     <!-- for stock-view -->
