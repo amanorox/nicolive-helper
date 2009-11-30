@@ -742,7 +742,8 @@ var NicoLiveHelper = {
     // 主コメを投げる.
     postCasterComment: function(comment,mail){
 	if(!this.iscaster) return;
-	if(!this.request_id){ debugprint('request_idがないので主コメできない'); return; }
+	if(this.isOffline()) return;
+
 	var req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
@@ -800,10 +801,10 @@ var NicoLiveHelper = {
 
     // リスナーコメを送信する.
     postListenerComment: function(comment,mail){
-	if(this.request_id=="lv0"){ debugprint("request_idがないのでリスナーコメできない"); return; }
+	if(this.isOffline()) return;
 	if(!comment) return;
 	if(this.previouschat==comment){
-	    debugprint("同じコメの連投はできません");
+	    debugnotice("同じコメの連投はできません");
 	    return;
 	}
 	this._getpostkeycounter = 0;
@@ -836,6 +837,7 @@ var NicoLiveHelper = {
 
     // リスナーコメント投稿用のキーを取得してからコメ送信する.
     getpostkey:function(){
+	if(this.isOffline()) return;
 	let thread = this.thread;
 	if(!thread) return;
 	let block_no = parseInt(this.last_res/100) + this._getpostkeycounter;
@@ -1238,6 +1240,7 @@ var NicoLiveHelper = {
 		    // 返答メッセージが指定してあれば.
 		    let msg = ">>"+req.comment_no+" " + ans.msg;
 		    NicoLiveHelper.postCasterComment(msg,"");
+		    debugprint(msg);
 		}
 
 		ans.movieinfo.cno = req.comment_no;
@@ -1480,6 +1483,10 @@ var NicoLiveHelper = {
 		// 座席番号777が主らしい.
 		if( NicoLiveHelper.iscaster==777 ){
 		    NicoLiveHelper.iscaster=true;
+		    // load requests
+		    NicoLiveHelper.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
+		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
+		    // load playlist
 		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
 		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 		    debugprint('You are a caster');
@@ -1626,6 +1633,7 @@ var NicoLiveHelper = {
 	debugprint('end:'+GetCurrentTime());
     },
     saveRequest:function(){
+	// 視聴者ではリクエストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	debugprint('start:'+GetCurrentTime());
 	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
@@ -1633,6 +1641,7 @@ var NicoLiveHelper = {
 	debugprint('end:'+GetCurrentTime());
     },
     savePlaylist:function(){
+	// 視聴者ではプレイリストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	debugprint('start:'+GetCurrentTime());
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist",this.playlist);
@@ -1666,14 +1675,16 @@ var NicoLiveHelper = {
 	this.allowrequest = NicoLivePreference.allowrequest;
 	this.setPlayStyle(NicoLivePreference.playstyle);
 
-	this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 	this.stock        = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
 
 	if(request_id!="lv0"){
+	    // online
 	    document.title = request_id+":"+title+" (NicoLive Helper)";
 	    this.start(request_id);
 	}else{
+	    // offline
 	    this.request_id = request_id;
+	    this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
 	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}

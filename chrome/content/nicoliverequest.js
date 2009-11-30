@@ -508,8 +508,10 @@ var NicoLiveRequest = {
 	debugprint("NicoLiveRequest.init");
 	this.setTotalPlayTime({min:0,sec:0});
 	this.setTotalStockTime({min:0,sec:0});
-	this.update(NicoLiveHelper.requestqueue);
 	this.updateStockView(NicoLiveHelper.stock);
+	if(NicoLiveHelper.isOffline()){
+	    this.update(NicoLiveHelper.requestqueue);
+	}
     }
 };
 
