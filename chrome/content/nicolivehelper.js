@@ -263,7 +263,9 @@ var NicoLiveHelper = {
 		return;
 	    }
 
-	    // "〜" を一つの項目、空白を区切り
+	    /* ダブルクォーテーションから次のダブルクォーテーションまでが項目
+	     * 空白で区切られているものが項目
+	     */
 	    dat = chat.text.match(/^\/vote\s+start\s+(.*)/);
 	    if(dat){
 		return;
@@ -496,7 +498,7 @@ var NicoLiveHelper = {
 	    }
 	}
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.saveAll();
     },
 
     // ストックから再生する(idx=1,2,3,...).
@@ -523,7 +525,7 @@ var NicoLiveHelper = {
 	idx--;
 	this.stock.splice(idx,1);
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.saveStock();
     },
     // ストックの最上位に移動.
     topToStock:function(idx){
@@ -533,7 +535,7 @@ var NicoLiveHelper = {
 	if(t){
 	    this.stock.unshift(t[0]);
 	    NicoLiveRequest.updateStockView(this.stock);
-	    this.saveToGlobalStorage();
+	    this.saveStock();
 	}
     },
     // ストックの上に浮かす.
@@ -544,7 +546,7 @@ var NicoLiveHelper = {
 	this.stock[idx-1] = this.stock[idx];
 	this.stock[idx] = tmp;
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.saveStock();
     },
     // ストックの下に沈める.
     sinkStock:function(idx){
@@ -554,7 +556,7 @@ var NicoLiveHelper = {
 	this.stock[idx+1] = this.stock[idx];
 	this.stock[idx] = tmp;
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.saveStock();
     },
     // ストックソート.
     sortStock:function(type,order){
@@ -587,11 +589,18 @@ var NicoLiveHelper = {
 				 tmpa = a.mylist_counter / a.view_counter;
 				 tmpb = b.mylist_counter / b.view_counter;
 				 break;
+			     case 6:// タイトル.
+				 if(a.title < b.title){
+				     return -order;
+				 }else{
+				     return order;
+				 }
+				 break;
 			     }
 			     return (tmpa - tmpb) * order;
 			 });
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.saveStock();
     },
 
     // 次曲を再生する.
@@ -667,7 +676,7 @@ var NicoLiveHelper = {
 	this.playlist.push(item); // 再生済みリストに登録.
 	let elem = $('played-list-textbox');
 	elem.value += item.video_id+" "+item.title+"\n";
-	this.saveToGlobalStorage();
+	this.savePlaylist();
     },
 
     // プレイリストをクリアする.
@@ -679,19 +688,19 @@ var NicoLiveHelper = {
 	    item.isplayed = false;
 	}
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.savePlaylist();
     },
     // リクエストを消去する.
     clearRequest:function(){
 	this.requestqueue = new Array();
 	NicoLiveRequest.update(this.requestqueue);
-	this.saveToGlobalStorage();
+	this.saveRequest();
     },
     // ストックを消去する.
     clearStock:function(){
 	this.stock = new Array();
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.saveStock();
     },
 
     _sendMusicInfo:function(){
@@ -905,7 +914,7 @@ var NicoLiveHelper = {
 	let removeditem = this.requestqueue.splice(idx,1);
 	debugprint("Remove request #"+idx);
 	NicoLiveRequest.update(this.requestqueue);
-	this.saveToGlobalStorage();
+	this.saveRequest();
 	return removeditem[0];
     },
     topToRequest:function(idx){
@@ -915,7 +924,7 @@ var NicoLiveHelper = {
 	if(t){
 	    this.requestqueue.unshift(t[0]);
 	    NicoLiveRequest.update(this.requestqueue);
-	    this.saveToGlobalStorage();
+	    this.saveRequest();
 	}
     },
     floatRequest:function(idx){
@@ -925,7 +934,7 @@ var NicoLiveHelper = {
 	this.requestqueue[idx-1] = this.requestqueue[idx];
 	this.requestqueue[idx] = tmp;
 	NicoLiveRequest.update(this.requestqueue);
-	this.saveToGlobalStorage();
+	this.saveRequest();
     },
     sinkRequest:function(idx){
 	if(idx>=this.requestqueue.length) return;
@@ -934,7 +943,7 @@ var NicoLiveHelper = {
 	this.requestqueue[idx+1] = this.requestqueue[idx];
 	this.requestqueue[idx] = tmp;
 	NicoLiveRequest.update(this.requestqueue);
-	this.saveToGlobalStorage();
+	this.saveRequest();
     },
 
     // ストックリストに追加.
@@ -1013,7 +1022,7 @@ var NicoLiveHelper = {
 	    this.requestqueue[j] = t;
 	}
 	NicoLiveRequest.update(this.requestqueue);
-	this.saveToGlobalStorage();
+	this.saveRequest();
     },
     shuffleStock:function(){
 	let i = this.stock.length;
@@ -1024,7 +1033,7 @@ var NicoLiveHelper = {
 	    this.stock[j] = t;
 	}
 	NicoLiveRequest.updateStockView(this.stock);
-	this.saveToGlobalStorage();
+	this.saveStock();
     },
 
     /* getElementsByTagNameでrootから毎回辿るより
@@ -1595,25 +1604,30 @@ var NicoLiveHelper = {
 	this.getplayerstatus(request_id);
     },
 
-    // グローバルストレージに引き継ぎ情報をセット.
-    saveToGlobalStorage:function(){
+    saveAll:function(){
+	this.saveStock();
+	this.saveRequest();
+	this.savePlaylist();	
+    },
+    saveStock:function(){
 	debugprint('start:'+GetCurrentTime());
-	// 視聴者のときはストックのみ保存.
 	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
 	debugprint("save stock");
-
-	if(!this.iscaster && this.request_id!="lv0"){
-	    debugprint('リスナーのときはプレイリスト、リクは保存しないよ');
-	    return;
-	}
-
-	/* 従来は生放送と関係ないところで開いた場合はリスナーとして動いて
-	 * 記録されなかった項目も、記録を行う.
-	 */
-	NicoLiveDatabase.saveGPStorage("nico_live_playlist",this.playlist);
+	debugprint('end:'+GetCurrentTime());
+    },
+    saveRequest:function(){
+	if(!this.iscaster && !this.isOffline()) return;
+	debugprint('start:'+GetCurrentTime());
 	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
+	debugprint("save request");
+	debugprint('end:'+GetCurrentTime());
+    },
+    savePlaylist:function(){
+	if(!this.iscaster && !this.isOffline()) return;
+	debugprint('start:'+GetCurrentTime());
+	NicoLiveDatabase.saveGPStorage("nico_live_playlist",this.playlist);
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist_txt",$('played-list-textbox').value);
-	debugprint("save request, playlist");
+	debugprint("save play history");
 	debugprint('end:'+GetCurrentTime());
     },
 
@@ -1656,7 +1670,7 @@ var NicoLiveHelper = {
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
-	this.saveToGlobalStorage();
+	this.saveAll();
 	this.close();
     }
 };

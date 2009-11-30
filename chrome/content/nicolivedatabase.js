@@ -14,17 +14,23 @@
  * mylist_counter : integer マイリスト数
  * tags           : character タグ(カンマ区切りの文字列)
  * update_date    : integer DB情報の更新日時
- * pname          : character (0.7.2-) 動画固有P名
- * additional     : character (0.7.2-) 動画固有の追加情報
- * favorite       : integer (0.7.3-) お気に入り度
+ * favorite       : integer (0.7.3+) お気に入り度
+ * 
+ * pname          : character (0.7.2+) 動画固有P名 (※0.8で廃止)
+ * additional     : character (0.7.2+) 動画固有の追加情報 (※0.8で廃止)
  */
-/* TABLE requestcond
+/* TABLE requestcond (0.7.3+)
  * presetname : character primary key プリセット名
  * value      : character リクエスト条件(JSON)
  */
-/* TABLE settings
+/* TABLE gpstorage (0.8+)
  * key   : character キー
  * value : character 値(JSON)
+ */
+/* TABLE pname (0.8+) P名と追加情報を記録
+ * video_id : character primary key
+ * pname    : character
+ * additional : character
  */
 
 var NicoLiveDatabase = {
@@ -387,7 +393,7 @@ var NicoLiveDatabase = {
 	info.mylist_counter = row.getResultByName('mylist_counter');
 	let tags            = row.getResultByName('tags');
 	info.tags           = tags.split(/,/);
-	info.pname          = row.getResultByName('pname');
+	//info.pname          = row.getResultByName('pname');
 	return info;
     },
 
@@ -420,15 +426,23 @@ var NicoLiveDatabase = {
 	let pname = window.prompt("「"+video_id+"」のP名を入力してください",oldpname);
 	if(pname!=null){
 	    let st;
-	    st = this.dbconnect.createStatement('update nicovideo set pname=?1 where video_id=?2');
-	    st.bindUTF8StringParameter(0,pname);
-	    st.bindUTF8StringParameter(1,video_id);
-	    st.execute();
-	    st.finalize();
+	    try{
+		st = this.dbconnect.createStatement('insert into pname(video_id,pname) values(?1,?2)');
+		st.bindUTF8StringParameter(0,video_id);
+		st.bindUTF8StringParameter(1,pname);
+		st.execute();
+		st.finalize();
+	    } catch (x) {
+		st = this.dbconnect.createStatement('update pname set pname=?1 where video_id=?2');
+		st.bindUTF8StringParameter(0,pname);
+		st.bindUTF8StringParameter(1,video_id);
+		st.execute();
+		st.finalize();
+	    }
 	}
     },
     getPName:function(video_id){
-	let st = this.dbconnect.createStatement('SELECT pname FROM nicovideo WHERE video_id = ?1');
+	let st = this.dbconnect.createStatement('SELECT pname FROM pname WHERE video_id = ?1');
 	let pname;
 	st.bindUTF8StringParameter(0,video_id);
 	while(st.step()){
@@ -447,15 +461,23 @@ var NicoLiveDatabase = {
 	let additional = window.prompt("「"+video_id+"」の追加情報を入力してください",oldadditional);
 	if(additional!=null){
 	    let st;
-	    st = this.dbconnect.createStatement('update nicovideo set additional=?1 where video_id=?2');
-	    st.bindUTF8StringParameter(0,additional);
-	    st.bindUTF8StringParameter(1,video_id);
-	    st.execute();
-	    st.finalize();
+	    try{
+		st = this.dbconnect.createStatement('insert into pname(video_id,additional) values(?1,?2)');
+		st.bindUTF8StringParameter(0,video_id);
+		st.bindUTF8StringParameter(1,additional);
+		st.execute();
+		st.finalize();
+	    } catch (x) {
+		st = this.dbconnect.createStatement('update pname set additional=?1 where video_id=?2');
+		st.bindUTF8StringParameter(0,additional);
+		st.bindUTF8StringParameter(1,video_id);
+		st.execute();
+		st.finalize();
+	    }
 	}
     },
     getAdditional:function(video_id){
-	let st = this.dbconnect.createStatement('SELECT additional FROM nicovideo WHERE video_id = ?1');
+	let st = this.dbconnect.createStatement('SELECT additional FROM pname WHERE video_id = ?1');
 	let additional;
 	st.bindUTF8StringParameter(0,video_id);
 	while(st.step()){
@@ -509,21 +531,8 @@ var NicoLiveDatabase = {
     createVideoDB:function(){
 	if(!this.dbconnect.tableExists('nicovideo')){
 	    // テーブルなければ作成.
-	    this.dbconnect.createTable('nicovideo','video_id character primary key, title character, description character, thumbnail_url character, first_retrieve integer, length integer, view_counter integer, comment_num integer, mylist_counter integer, tags character, update_date integer, pname character, additional character, favorite integer');
+	    this.dbconnect.createTable('nicovideo','video_id character primary key, title character, description character, thumbnail_url character, first_retrieve integer, length integer, view_counter integer, comment_num integer, mylist_counter integer, tags character, update_date integer, favorite integer');
 	}else{
-	    // 既に存在していればpname,additionalフィールドを追加する(0.7.2-).
-	    try{
-		let sql = "alter table nicovideo add pname character";
-		this.dbconnect.executeSimpleSQL(sql);
-	    } catch (x) {
-		debugprint('pname column was already exist');
-	    }
-	    try{
-		let sql = "alter table nicovideo add additional character";
-		this.dbconnect.executeSimpleSQL(sql);
-	    } catch (x) {
-		debugprint('additional column was already exist');
-	    }
 	    // 0.7.3-
 	    try{
 		let sql = "alter table nicovideo add favorite integer";
@@ -548,6 +557,13 @@ var NicoLiveDatabase = {
 	}
     },
 
+    // P名、追加情報DB(0.8+)
+    createPnameDB:function(){
+	if(!this.dbconnect.tableExists('pname')){
+	    this.dbconnect.createTable('pname','video_id character primary key, pname character, additional character');
+	}
+    },
+
     init:function(){
 	debugprint('NicoLiveDatabase init');
 	this.addSearchLine();
@@ -560,6 +576,7 @@ var NicoLiveDatabase = {
 	this.createVideoDB();
 	this.createRequestCondDB();
 	this.createGPStorageDB();
+	this.createPnameDB();
 	this.setRegisterdVideoNumber();
     },
     destroy:function(){

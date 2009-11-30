@@ -312,11 +312,11 @@
 
     <!-- request tab -->
     <menupopup id="popup-copyrequest">
-      <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
-      <menuseparator/>
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
+      <menuseparator/>
+      <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
 
     <!-- for DB result -->
@@ -338,6 +338,7 @@
 	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortStock(3,1)"/>
 	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortStock(4,1)"/>
 	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortStock(5,1)"/>
+	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortStock(6,1)"/>
 	</menupopup>
       </menu>
       <menu label="降順">
@@ -348,6 +349,7 @@
 	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortStock(3,-1)"/>
 	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortStock(4,-1)"/>
 	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortStock(5,-1)"/>
+	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortStock(6,-1)"/>
 	</menupopup>
       </menu>
       <menuitem label="詳細の表示/非表示" oncommand="NicoLiveRequest.showhideDetail();"/>
