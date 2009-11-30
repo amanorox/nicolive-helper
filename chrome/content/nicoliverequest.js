@@ -17,6 +17,7 @@ var NicoLiveRequest = {
 	}
     },
 
+    // リクエストテーブルにitemオブジェクトを追加.
     _add:function(table,item){
 	let tr = table.insertRow(table.rows.length);
 	tr.className = table.rows.length%2?"table_oddrow":"table_evenrow";
@@ -335,6 +336,7 @@ var NicoLiveRequest = {
 
     // ストックからリクエストリストする.
     addRequestFromStock:function(n){
+	if(NicoLiveHelper.isOffline()) return;
 	if(NicoLiveHelper.iscaster){
 	    // 生主の場合は、リクエストリストに追加.
 	    NicoLiveHelper.addRequestFromStock(n);
@@ -356,6 +358,7 @@ var NicoLiveRequest = {
 	elem.value = "残ストック時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.stock.length+"件";
     },
 
+    // 動画ID(複数OK)でリクエストに追加.
     addRequest:function(sm){
 	if(sm.length<3) return;
 	let l = sm.match(/(sm|nm)\d+/g);
@@ -432,15 +435,37 @@ var NicoLiveRequest = {
 	}
 	if(ids.length>0) CopyToClipboard(ids.join('\r\n'));
     },
-    copyStockToClipboard:function(){
+    saveStockToFile:function(){
 	let ids = new Array();
 	for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
 	    ids.push(item.video_id + " " + item.title);
 	}
-	if(ids.length>0) CopyToClipboard(ids.join('\r\n'));
+	if(ids.length<=0) return;
+
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "ストックの保存", nsIFilePicker.modeSave);
+	fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterAll);
+	let rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    let file = fp.file;
+	    let path = fp.file.path;
+	    debugprint("「"+path+"」にストックを保存します");
+	    let os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+	    let flags = 0x02|0x08|0x20;// wronly|create|truncate
+	    os.init(file,flags,0664,0);
+
+	    let cos = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+	    cos.init(os,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
+
+	    cos.writeString(ids.join('\r\n')+"\r\n");
+	    cos.close();
+	}
     },
 
+    // ファイルからストックに登録する.
     readFileToStock:function(file){
+	// file は nsIFile
 	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
 	istream.init(file, 0x01, 0444, 0);
 	istream.QueryInterface(Components.interfaces.nsILineInputStream);
@@ -451,11 +476,11 @@ var NicoLiveRequest = {
 	do {
 	    hasmore = istream.readLine(line);
 	    if( line.value.match(/(sm|nm)\d+/) ){
-		this.addStock(line.value);
 		if(first){
 		    NicoLiveHelper.clearStock();
 		    first = false;
 		}
+		this.addStock(line.value);
 	    }
 	} while(hasmore);
 
@@ -464,7 +489,6 @@ var NicoLiveRequest = {
 
     checkDrag:function(event){
 	let b = event.dataTransfer.types.contains("application/x-moz-file");
-	//Application.console.log('dragging:'+b);
 	if(b){
 	    event.preventDefault();
 	}
@@ -477,7 +501,6 @@ var NicoLiveRequest = {
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("dropped:"+file.path);
 	    this.readFileToStock(file);
-	    //event.currentTarget.appendItem(file.leafName);
 	}
     },
 

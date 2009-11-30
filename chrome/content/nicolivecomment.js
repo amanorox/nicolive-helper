@@ -82,7 +82,7 @@ var NicoLiveComment = {
 
     addName:function(){
 	let userid = document.popupNode.firstChild.textContent;
-	let name = window.prompt("「"+userid+"」のコテハンを指定してください",this.namemap[userid]?this.namemap[userid].name:userid);
+	let name = InputPrompt("「"+userid+"」のコテハンを指定してください","コテハン入力",this.namemap[userid]?this.namemap[userid].name:userid);
 	if(name && name.length){
 	    let now = GetCurrentTime();
 	    let id;

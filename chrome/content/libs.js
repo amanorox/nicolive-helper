@@ -61,6 +61,25 @@ function OpenFile(path){
     }
 }
 
+function ComfirmPrompt(text,caption){
+    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    let result = prompts.confirm(null, caption, text);
+    return result;
+}
+
+function InputPrompt(text,caption,input){
+    var check = {value: false};
+    var input_ = {value: input};
+
+    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    let result = prompts.prompt(null, caption, text, input_, null, check);
+    if( result ){
+	return input_.value;
+    }else{
+	return null;
+    }
+}
+
 function FindParentElement(elem,tag){
     while(elem.parentNode &&
 	  (!elem.tagName || (elem.tagName.toUpperCase()!=tag.toUpperCase()))){

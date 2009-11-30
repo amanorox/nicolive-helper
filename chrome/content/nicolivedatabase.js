@@ -438,7 +438,7 @@ var NicoLiveDatabase = {
 	let video_id = elem.firstChild.textContent;
 	if(video_id.length<=0) return;
 	let oldpname = this.getPName(video_id);
-	let pname = window.prompt("「"+video_id+"」のP名を入力してください",oldpname);
+	let pname = InputPrompt("「"+video_id+"」のP名を入力してください","P名(D名)の入力",oldpname);
 	if(pname!=null){
 	    let st;
 	    try{
@@ -473,7 +473,7 @@ var NicoLiveDatabase = {
 	let video_id = elem.firstChild.textContent;
 	if(video_id.length<=0) return;
 	let oldadditional = this.getAdditional(video_id);
-	let additional = window.prompt("「"+video_id+"」の追加情報を入力してください",oldadditional);
+	let additional = InputPrompt("「"+video_id+"」の追加情報を入力してください","追加情報の入力",oldadditional);
 	if(additional!=null){
 	    let st;
 	    try{
