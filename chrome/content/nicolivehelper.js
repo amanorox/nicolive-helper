@@ -102,7 +102,7 @@ var NicoLiveHelper = {
 		if(item.match(/コモンズ/)){ isoriginal = true; }
 		if(item.match(/VOCALOID→VOCALOIDカバー/)){ isoriginal = true; }
 		if(item.match(/VOCALOIDアレンジ曲/)){ isoriginal = true; }
-		if(item.match(/VOCALOID-PV/)){ isoriginal = true; }
+		if(item.match(/VOCALOID-PV/i)){ isoriginal = true; }
 		if(item.match(/ミクオリジナル/)){
 		    ismiku = true;
 		    isoriginal = true;
@@ -137,12 +137,6 @@ var NicoLiveHelper = {
 	let restrict = NicoLivePreference.restrict;
 	let str = "リクエストエラー:";
 
-	if(restrict.videolength>0){
-	    // 指定秒数以下かどうか.
-	    if( videoinfo.length_ms/1000 > restrict.videolength ){
-		return str + "動画時間が長いです";
-	    }
-	}
 	if(restrict.mylist_from>0){
 	    if( videoinfo.mylist_counter<restrict.mylist_from ){
 		return str + "マイリスト数が少ないです";
@@ -163,6 +157,13 @@ var NicoLiveHelper = {
 		return str + "再生数が多いです";
 	    }
 	}
+	if(restrict.videolength>0){
+	    // 指定秒数以下かどうか.
+	    if( videoinfo.length_ms/1000 > restrict.videolength ){
+		return str + "動画時間が長いです";
+	    }
+	}
+
 	let date_from,date_to;
 	date_from = restrict.date_from.match(/\d+/g);
 	date_to   = restrict.date_to.match(/\d+/g);
@@ -206,6 +207,91 @@ var NicoLiveHelper = {
 	    if( !flg ) return str +"タグに「"+tag+"」が含まれています";
 	}
 	return null;
+    },
+
+    // コメを処理する.
+    processComment: function(xmlchat){
+	let chat=this.extractComment(xmlchat);
+
+	NicoLiveComment.push(chat);
+	NicoLiveComment.addRow(chat);
+
+	if(chat.date<this.connecttime){ return; } // 過去ログ無視.
+
+	if((chat.premium==3||chat.user_id=="0") && chat.text=="/disconnect"){
+	    // ロスタイムのときはuser_id=="0"から/disconnectがやってくる.
+	    this.close();
+
+	    let prefs = NicoLivePreference.getBranch();
+	    if( prefs.getBoolPref("autowindowclose") && this.iscaster ||
+	        prefs.getBoolPref("autowindowclose-listener") && !this.iscaster ){
+		window.close();
+	    }else{
+		debugalert(this.request_id+' finished.');
+	    }
+	}
+
+	switch(chat.premium){
+	case 3:
+	    // 主コメの処理.
+	    let dat;
+	    // /play smile:sm00000 "title"
+	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*main\s*\"(.*)\"$/);
+	    if(dat){
+		if(!this.iscaster){
+		    // リスナーの場合は動画情報を持っていないので取ってくる.
+		    this.musicstarttime = GetCurrentTime();
+		    this.setCurrentVideoInfo(dat[2],false);
+		    this.inplay = true;
+		    $('played-list-textbox').value += dat[2]+" "+dat[4]+"\n";
+		}else{
+		    if( this.musicinfo.video_id!=dat[2] ){
+			// 直接運営コマンドを入力したときとかで、
+			// 現在再生しているはずの曲と異なる場合.
+			// 動画情報の主コメは動画情報を取ってきてから.
+			this.musicstarttime = GetCurrentTime();
+			this.setCurrentVideoInfo(dat[2],true);
+			this.inplay = true;
+		    }else{
+			// 自動再生の準備.
+			this.setupPlayNextMusic(this.musicinfo.length_ms);
+			this.inplay = true;
+			this.musicstarttime = GetCurrentTime();
+			this.musicendtime   = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
+		    }
+		}
+		return;
+	    }
+
+	    // "〜" を一つの項目、空白を区切り
+	    dat = chat.text.match(/^\/vote\s+start\s+(.*)/);
+	    if(dat){
+		return;
+	    }
+
+	    dat = chat.text.match(/^\/vote\s+showresult/);
+	    if(dat){
+		return;
+	    }
+	    break;
+
+	default:
+	    // リスナーコメの処理.
+	    if(1 || this.iscaster){
+		let sm = chat.text.match(/((sm|nm)\d+)/);
+		if(sm){
+		    let selfreq = chat.text.match(/自貼/);
+		    this.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
+		    return;
+		}
+	    }
+	    switch(chat.text){
+	    case "@version":
+		this.postCasterComment("NicoLive Helper 0.8","");
+		break;
+	    }
+	    break;
+	}
     },
 
     extractComment: function(xmlchat){
@@ -252,72 +338,6 @@ var NicoLiveHelper = {
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+video_id;
 	req.open('GET', url );
 	req.send("");
-    },
-
-    // コメを処理する.
-    processComment: function(xmlchat){
-	let chat=this.extractComment(xmlchat);
-
-	NicoLiveComment.push(chat);
-	NicoLiveComment.addRow(chat);
-
-	if(chat.date<this.connecttime){ return; } // 過去ログ無視.
-
-	if((chat.premium==3||chat.user_id=="0") && chat.text=="/disconnect"){
-	    // ロスタイムのときはuser_id=="0"から/disconnectがやってくる.
-	    this.close();
-
-	    let prefs = NicoLivePreference.getBranch();
-	    if( prefs.getBoolPref("autowindowclose") && this.iscaster ||
-	        prefs.getBoolPref("autowindowclose-listener") && !this.iscaster ){
-		window.close();
-	    }else{
-		debugalert(this.request_id+' finished.');
-	    }
-	}
-
-	switch(chat.premium){
-	case 3:
-	    // 主コメの処理.
-	    let dat;
-	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*main\s*\"(.*)\"$/);
-	    if(dat){
-		if(!this.iscaster){
-		    // リスナーの場合は動画情報を持っていないので取ってくる.
-		    this.musicstarttime = GetCurrentTime();
-		    this.setCurrentVideoInfo(dat[2],false);
-		    this.inplay = true;
-		    $('played-list-textbox').value += dat[2]+" "+dat[4]+"\n";
-		}else{
-		    if( this.musicinfo.video_id!=dat[2] ){
-			// 直接運営コマンドを入力したときとかで、
-			// 現在再生しているはずの曲と異なる場合.
-			// 動画情報の主コメは動画情報を取ってきてから.
-			this.musicstarttime = GetCurrentTime();
-			this.setCurrentVideoInfo(dat[2],true);
-			this.inplay = true;
-		    }else{
-			// 自動再生の準備.
-			this.setupPlayNextMusic(this.musicinfo.length_ms);
-			this.inplay = true;
-			this.musicstarttime = GetCurrentTime();
-			this.musicendtime   = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
-		    }
-		}
-	    }
-	    break;
-
-	default:
-	    // リスナーコメの処理.
-	    if(1 || this.iscaster){
-		let sm = chat.text.match(/((sm|nm)\d+)/);
-		if(sm){
-		    let selfreq = chat.text.match(/自貼/);
-		    this.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
-		}
-	    }
-	    break;
-	}
     },
 
     // 文字列のマクロ展開を行う.
@@ -1577,6 +1597,7 @@ var NicoLiveHelper = {
 
     // グローバルストレージに引き継ぎ情報をセット.
     saveToGlobalStorage:function(){
+	debugprint('start:'+GetCurrentTime());
 	// 視聴者のときはストックのみ保存.
 	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
 	debugprint("save stock");
@@ -1593,6 +1614,7 @@ var NicoLiveHelper = {
 	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist_txt",$('played-list-textbox').value);
 	debugprint("save request, playlist");
+	debugprint('end:'+GetCurrentTime());
     },
 
     resetRequestCount:function(){

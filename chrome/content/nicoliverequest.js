@@ -432,6 +432,54 @@ var NicoLiveRequest = {
 	}
 	if(ids.length>0) CopyToClipboard(ids.join('\r\n'));
     },
+    copyStockToClipboard:function(){
+	let ids = new Array();
+	for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
+	    ids.push(item.video_id + " " + item.title);
+	}
+	if(ids.length>0) CopyToClipboard(ids.join('\r\n'));
+    },
+
+    readFileToStock:function(file){
+	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	istream.init(file, 0x01, 0444, 0);
+	istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+	// 行を配列に読み込む
+	let line = {}, hasmore;
+	let first = true;
+	do {
+	    hasmore = istream.readLine(line);
+	    if( line.value.match(/(sm|nm)\d+/) ){
+		this.addStock(line.value);
+		if(first){
+		    NicoLiveHelper.clearStock();
+		    first = false;
+		}
+	    }
+	} while(hasmore);
+
+	istream.close();
+    },
+
+    checkDrag:function(event){
+	let b = event.dataTransfer.types.contains("application/x-moz-file");
+	//Application.console.log('dragging:'+b);
+	if(b){
+	    event.preventDefault();
+	}
+	return b;
+    },
+
+    dropToStock:function(event){
+	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	if (file instanceof Components.interfaces.nsIFile){
+	    if( !file.leafName.match(/\.txt$/) ) return;
+	    debugprint("dropped:"+file.path);
+	    this.readFileToStock(file);
+	    //event.currentTarget.appendItem(file.leafName);
+	}
+    },
 
     init:function(){
 	debugprint("NicoLiveRequest.init");
