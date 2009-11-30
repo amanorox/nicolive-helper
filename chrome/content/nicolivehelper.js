@@ -263,16 +263,31 @@ var NicoLiveHelper = {
 		return;
 	    }
 
-	    /* ダブルクォーテーションから次のダブルクォーテーションまでが項目
-	     * 空白で区切られているものが項目
-	     */
+	    if(!this.iscaster) break;
+
 	    dat = chat.text.match(/^\/vote\s+start\s+(.*)/);
 	    if(dat){
+		let str = dat[1];
+		let qa = CSVToArray(str,"\s+");
+		qa[0] = "Q/"+qa[0];
+		for(let i=1,s;s=qa[i];i++){
+		    qa[i] = "A"+i+"/" + s;
+		}
+		this.postCasterComment(qa.join(","),"");
+		this.officialvote = qa;
 		return;
 	    }
 
-	    dat = chat.text.match(/^\/vote\s+showresult/);
+	    dat = chat.text.match(/^\/vote\s+showresult\s+(.*)/);
 	    if(dat){
+		let str = dat[1];
+		let result = str.match(/\d+/g);
+		str = "";
+		for(let i=1,a;a=this.officialvote[i];i++){
+		    str += this.officialvote[i] + "(" + (result[i-1]/10).toFixed(1) + "%) ";
+		    if((i%2)==0) str+="<br>";
+		}
+		this.postCasterComment(str,"");
 		return;
 	    }
 	    break;

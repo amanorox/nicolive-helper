@@ -5,6 +5,7 @@
 <window id="requestwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" title="NicoLive Helper">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewhitelist.js" />
