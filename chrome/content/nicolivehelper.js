@@ -393,15 +393,25 @@ var NicoLiveHelper = {
 				   if(!pn){
 				       let pname = new Array();
 				       for(let i=0,tag;tag=info.tags[i];i++){
-					   tag = ZenToHan(tag);
-					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
-					   if(tag.match(/(M[A@]D|MMD|HD|3D|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
+					   let tagh = ZenToHan(tag);
+					   if(tagh.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
+					   if(tagh.match(/(M[A@]D|MMD|HD|3D|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 					   // P名
 					   let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
-					   if(t) pname.push(t[0]);
+					   if(t){
+					       pname.push(t[0]);
+					       continue;
+					   }
 					   // D名
 					   t = tag.match(/.*[DＤ]$/);
-					   if(t) pname.push(t[0]);
+					   if(t){
+					       pname.push(t[0]);
+					       continue;
+					   }
+					   // ホワイトリストチェック.
+					   if( pname_whitelist["_"+tag] ){
+					       pname.push(tag);
+					   }
 				       }
 				       if(pname.length) tmp = pname.join(',');
 				       else tmp = "";
