@@ -34,6 +34,44 @@
   }
   ]]>
   </script>
+  <toolbar id="global-menu">
+    <toolbarbutton label="手動再生" type="menu" id="toolbar-playstyle">
+      <menupopup id="toolbar-popup-playstyle">
+	<menuitem label="手動再生" oncommand="NicoLiveHelper.setPlayStyle(0); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem label="自動(順次)" oncommand="NicoLiveHelper.setPlayStyle(1); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem label="自動(ランダム)" oncommand="NicoLiveHelper.setPlayStyle(2); setLabel('toolbar-playstyle',this.label);" />
+      </menupopup>
+    </toolbarbutton>
+    <toolbarbutton label="リクエスト許可" type="menu" id="toolbar-allowrequest">
+      <menupopup>
+	<menuitem label="リクエスト許可" oncommand="NicoLiveHelper.setAcceptRequest(true); setLabel('toolbar-allowrequest',this.label);" />
+	<menuitem label="リクエスト不可" oncommand="NicoLiveHelper.setAcceptRequest(false); setLabel('toolbar-allowrequest',this.label);" />
+      </menupopup>
+    </toolbarbutton>
+    <toolbarbutton label="次曲" tooltiptext="次の動画を再生します" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();">
+    </toolbarbutton>
+    <toolbarbutton disabled="true" label="一時停止" tooltiptext="自動再生を停止します" image="chrome://nicolivehelper/content/data/pause.png">
+    </toolbarbutton>
+    <toolbarbutton label="停止" tooltiptext="/stop" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();">
+    </toolbarbutton>
+    <toolbarbutton tooltiptext="/soundonly" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly();">
+    </toolbarbutton>
+    <toolbarbutton tooltiptext="/swap" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');">
+    </toolbarbutton>
+    <toolbarbutton label="サブ画面" id="do-subdisplay" autoCheck="true" type="checkbox"/>
+    <toolbarbutton label="コマンド" type="menu">
+      <menupopup>
+	<menuitem label="アンケート(Lv25+)" tooltiptext="アンケートを行います(Lv25〜)"/>
+	<menuseparator/>
+	<menuitem label="サウンドオンリーを止める(メイン)" tooltiptext="/soundonly off" oncommand="NicoLiveHelper.postCasterComment('/soundonly off','');"/>
+	<menuitem label="サウンドオンリーを止める(サブ)" tooltiptext="/soundonly off sub" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
+	<menuitem label="カメラ映像に切り替え" tooltiptext="/play" oncommand="NicoLiveHelper.postCasterComment('/play','');"/>
+	<menuitem label="運営コメントを消す" tooltiptext="/cls" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/>
+	<menuseparator/>
+	<menuitem label="放送を終了する" tooltiptext="/disconnect" oncommand="NicoLiveHelper.postCasterComment('/disconnect','');"/>
+      </menupopup>
+    </toolbarbutton>
+  </toolbar>
 
   <groupbox orient="horizontal" flex="1">
 
@@ -52,20 +90,7 @@
 	<vbox class="tabpanel">
 	  <!-- command buttons -->
 	  <hbox>
-	    <button type="menu" label="手動再生" id="btn-play">
-	      <menupopup id="btn-popup-playstyle">
-		<menuitem label="手動再生" oncommand="NicoLiveHelper.setPlayStyle(0); setLabel('btn-play',this.label);" />
-		<menuitem label="自動再生(順次)" oncommand="NicoLiveHelper.setPlayStyle(1); setLabel('btn-play',this.label);" />
-		<menuitem label="自動再生(ランダム)" oncommand="NicoLiveHelper.setPlayStyle(2); setLabel('btn-play',this.label);" />
-	      </menupopup>
-	    </button>
 	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleRequest();"/>
-	    <button type="menu" label="リクエスト許可" id="btn-acc-request">
-	      <menupopup>
-		<menuitem label="リクエスト許可" oncommand="NicoLiveHelper.setAcceptRequest(true); setLabel('btn-acc-request',this.label);" />
-		<menuitem label="リクエスト不可" oncommand="NicoLiveHelper.setAcceptRequest(false); setLabel('btn-acc-request',this.label);" />
-	      </menupopup>
-	    </button>
 	    <textbox id="input-request" emptytext="動画IDを入力するとリクエストに追加されます" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
 	    <spacer flex="1"/>
 	    <button label="全消去" oncommand="NicoLiveHelper.clearRequest();"/>

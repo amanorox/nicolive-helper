@@ -348,7 +348,7 @@ var NicoLiveRequest = {
     },
     setTotalStockTime:function(t){
 	let elem = $("stock-playtime");
-	elem.value = "残ストック時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.stock.length+"件";
+	elem.value = "残時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.stock.length+"件";
     },
 
     // 動画ID(複数OK)でリクエストに追加.

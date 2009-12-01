@@ -66,12 +66,13 @@ var NicoLivePreference = {
 	this.mikuonly = branch.getBoolPref("mikuonly");
 
 	try{
-	    $('btn-play').label = $('btn-popup-playstyle').getElementsByTagName('menuitem')[this.playstyle].label;
+	    $('toolbar-playstyle').label = $('toolbar-popup-playstyle').getElementsByTagName('menuitem')[this.playstyle].label;
 	} catch (x) {
 	    NicoLiveHelper.setPlayStyle(0);
-	    $('btn-play').label = $('btn-popup-playstyle').getElementsByTagName('menuitem')[0].label;
+	    $('toolbar-playstyle').label = $('toolbar-popup-playstyle').getElementsByTagName('menuitem')[0].label;
 	}
-	$('btn-acc-request').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
+
+	$('toolbar-allowrequest').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
 
 	$('pref-jingle').checked = this.isjingle;
 	$('pref-jingle-movie').value = this.jinglemovie;

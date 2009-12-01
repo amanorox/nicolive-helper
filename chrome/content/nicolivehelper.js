@@ -110,7 +110,7 @@ var NicoLiveHelper = {
 	    }
 	    if(!ismiku||!isoriginal){
 		debugprint("ミクオリジナル曲ではなさそうだ");
-		return {code:-6,msg:"ミクオリジナル曲かどうかを自動判断できませんでした",movieinfo:info};
+		return {code:-6,msg:"ミクオリジナル曲かどうかを自動判断できませんでした<br>主判断をお待ちください",movieinfo:info};
 	    }
 	}
 
@@ -236,7 +236,7 @@ var NicoLiveHelper = {
 	    // 主コメの処理.
 	    let dat;
 	    // /play smile:sm00000 "title"
-	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*main\s*\"(.*)\"$/);
+	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		if(!this.iscaster){
 		    // リスナーの場合は動画情報を持っていないので取ってくる.
@@ -507,7 +507,12 @@ var NicoLiveHelper = {
 
 	clearInterval(this._musicend);
 	this.musicinfo = music;
-	this.postCasterComment("/play " + this.musicinfo.video_id,""); // 再生.
+	let str = "/play " + this.musicinfo.video_id;
+	if($('do-subdisplay').checked){
+	    debugprint(this.musicinfo.video_id+"をサブ画面で再生します");
+	    str += " sub";
+	}
+	this.postCasterComment(str,""); // 再生.
 	this._sendMusicInfo(); // 曲情報の送信.
 
 	this.addPlayedList(this.musicinfo);
@@ -683,8 +688,8 @@ var NicoLiveHelper = {
 	clearInterval(this._musicend);
 	this.inplay = false;
     },
-    // 自動再生設定を確認して次曲を再生する.
     checkPlayNext:function(){
+	// 自動再生設定を確認して次曲を再生する.
 	if(this.isautoplay){
 	    debugprint("Auto Play Next Music");
 	    this.playNext();
@@ -694,9 +699,26 @@ var NicoLiveHelper = {
 	    this.inplay = false;
 	}
     },
+    // 再生を止める.
+    stopPlay:function(){
+	let str = "/stop";
+	if($('do-subdisplay').checked){
+	    str += " sub";
+	}
+	this.postCasterComment(str,"");
+	clearInterval(this._musicend);
+    },
 
-    // プレイリストに追加する.
+    dosoundonly:function(){
+	let str = "/soundonly on";
+	if($('do-subdisplay').checked){
+	    str += " sub";
+	}
+	this.postCasterComment(str,"");
+    },
+
     addPlayedList:function(item){
+	// プレイリストに追加する.
 	this.playlist.push(item); // 再生済みリストに登録.
 	let elem = $('played-list-textbox');
 	elem.value += item.video_id+" "+item.title+"\n";
@@ -1089,7 +1111,7 @@ var NicoLiveHelper = {
 		info.title = htmlspecialchars(elem.textContent);
 		break;
 	    case "description":
-		info.description = htmlspecialchars(elem.textContent);
+		info.description = htmlspecialchars(elem.textContent).replace(/　/g,' ');
 		break;
 	    case "thumbnail_url":
 		info.thumbnail_url = elem.textContent;
