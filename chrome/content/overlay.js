@@ -25,7 +25,11 @@ var NicoLiveOverlay = {
     },
 
     onPageLoad:function(e){
-	let player = e.target.getElementById("WatchPlayer");
+	let player;
+	try{
+	    player = e.target.getElementById("WatchPlayer");
+	} catch (x) {
+	}
 	let iscaster = false;
 	if( !player ) return;
 
