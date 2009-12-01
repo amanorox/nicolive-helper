@@ -110,7 +110,7 @@ var NicoLiveHelper = {
 	    }
 	    if(!ismiku||!isoriginal){
 		debugprint("ミクオリジナル曲ではなさそうだ");
-		return {code:-6,msg:"ミクオリジナル曲かどうかを自動判断できませんでした",movieinfo:info};
+		return {code:-6,msg:"オリジナル曲かどうかを自動判断できませんでした<br>主判断をお待ちください",movieinfo:info};
 	    }
 	}
 
@@ -1089,7 +1089,7 @@ var NicoLiveHelper = {
 		info.title = htmlspecialchars(elem.textContent);
 		break;
 	    case "description":
-		info.description = htmlspecialchars(elem.textContent);
+		info.description = htmlspecialchars(elem.textContent).replace(/　/g,' ');
 		break;
 	    case "thumbnail_url":
 		info.thumbnail_url = elem.textContent;
