@@ -243,7 +243,7 @@ var NicoLiveHelper = {
 		    this.musicstarttime = GetCurrentTime();
 		    this.setCurrentVideoInfo(dat[2],false);
 		    this.inplay = true;
-		    $('played-list-textbox').value += dat[2]+" "+dat[4]+"\n";
+		    $('played-list-textbox').value += dat[2]+" "+dat[5]+"\n";
 		}else{
 		    if( this.musicinfo.video_id!=dat[2] ){
 			// 直接運営コマンドを入力したときとかで、
@@ -1532,8 +1532,9 @@ var NicoLiveHelper = {
 		}
 
 		// 現在再生している動画を調べる.
-		let currentplay = xml.getElementsByTagName('contents')[0];
-		if(currentplay){
+		// mainとsubの両方でsm/nm動画を再生しているときは、mainを優先させる.
+		let contents = xml.getElementsByTagName('contents');
+		for(let i=0,currentplay;currentplay=contents[i];i++){
 		    let st = currentplay.attributes.getNamedItem('start_time'); // 再生開始時刻.
 		    let du = currentplay.attributes.getNamedItem('duration');   // 動画の長さ.
 		    st = st && parseInt(st.nodeValue) || 0;
@@ -1555,6 +1556,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.setCurrentVideoInfo(tmp[0],false);
 			    NicoLiveHelper.inplay = true;
 			}
+			break;
 		    }
 		}
 
