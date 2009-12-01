@@ -61,20 +61,17 @@ var NicoLiveRequest = {
 	img.style.marginRight = '0.5em';
 	a.appendChild(img);
 
-	let label = CreateElement('label');
-	label.setAttribute('value',item.video_id+'/'+item.title);
+	let label;
 
+	// 動画ID+タイトル.
 	div.appendChild(a); // thumbnail
-	div.appendChild(label); // video-id and title
+	div.appendChild(document.createTextNode(item.video_id+'/'+item.title));
 	div.appendChild(CreateHTMLElement('br'));
 
-	label = CreateElement('label');
 	let datestr = GetDateString(item.first_retrieve*1000);
-	label.setAttribute("value",
-			   "投稿日:" + datestr +" "
+	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length);
-	div.appendChild(label);
+			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
 	div.appendChild(hr);
 
@@ -194,12 +191,12 @@ var NicoLiveRequest = {
 
 	let vbox = CreateElement('vbox');
 	vbox.setAttribute('context','popup-sort-stock');
+	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
 	let htmlspan = CreateHTMLElement('span');
 	htmlspan.style.display = 'none';
 	htmlspan.appendChild(document.createTextNode(item.video_id));
 	vbox.appendChild(htmlspan);
-	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
 	let div = CreateHTMLElement('div');
 
@@ -215,22 +212,18 @@ var NicoLiveRequest = {
 	img.style.marginRight = '0.5em';
 	a.appendChild(img);
 
-	// 動画ID + タイトル.
-	let label = CreateElement('label');
-	label.setAttribute('value',item.video_id+'/'+item.title);
+	let label;
 
+	// 動画ID + タイトル.
 	div.appendChild(a); // thumbnail
-	div.appendChild(label); // video-id and title
+	div.appendChild( document.createTextNode(item.video_id+"/"+item.title));
 	div.appendChild(CreateHTMLElement('br'));
 
 	// 動画情報.
-	label = CreateElement('label');
 	let datestr = GetDateString(item.first_retrieve*1000);
-	label.setAttribute("value",
-			   "投稿日:" + datestr +" "
+	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length);
-	div.appendChild(label);
+			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
 	hr.className = 'detail';
 	div.appendChild(hr);
