@@ -213,6 +213,9 @@ var NicoLiveHelper = {
     processComment: function(xmlchat){
 	let chat=this.extractComment(xmlchat);
 
+	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
+	if(chat.text.indexOf("/telop")==0) return;
+
 	NicoLiveComment.push(chat);
 	NicoLiveComment.addRow(chat);
 
@@ -493,6 +496,7 @@ var NicoLiveHelper = {
 
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
+	this.flg_pause = false;
 	if(this.isOffline()) return;
 	if(!this.iscaster) return;
 	if(this.requestqueue.length<=0){
@@ -687,9 +691,16 @@ var NicoLiveHelper = {
 	// リクもストックもない.
 	clearInterval(this._musicend);
 	this.inplay = false;
+	this.flg_pause = false;
     },
     checkPlayNext:function(){
 	// 自動再生設定を確認して次曲を再生する.
+	if(this.flg_pause){
+	    clearInterval(this._musicend);
+	    this.inplay = false;
+	    this.flg_pause = false;
+	    return;
+	}
 	if(this.isautoplay){
 	    debugprint("Auto Play Next Music");
 	    this.playNext();
@@ -701,7 +712,8 @@ var NicoLiveHelper = {
     },
     // 自動再生を一時止める.
     pausePlay:function(){
-	clearInterval(this._musicend);
+	//clearInterval(this._musicend);
+	this.flg_pause = true;
     },
 
     // 再生を止める.

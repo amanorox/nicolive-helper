@@ -17,6 +17,7 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivemylist.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivebrowser.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehistory.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewindow.js" />
 
   <script>
   <![CDATA[
@@ -67,8 +68,15 @@
 	<menuitem label="サウンドオンリーを止める(サブ)" tooltiptext="/soundonly off sub" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
 	<menuitem label="カメラ映像に切り替え" tooltiptext="/play" oncommand="NicoLiveHelper.postCasterComment('/play','');"/>
 	<menuitem label="運営コメントを消す" tooltiptext="/cls" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/>
+	<!--
 	<menuseparator/>
 	<menuitem label="放送を終了する" tooltiptext="/disconnect" oncommand="NicoLiveHelper.postCasterComment('/disconnect','');"/>
+	-->
+      </menupopup>
+    </toolbarbutton>
+    <spacer flex="1"/>
+    <toolbarbutton label="ウィンドウ" type="menu">
+      <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">
       </menupopup>
     </toolbarbutton>
   </toolbar>

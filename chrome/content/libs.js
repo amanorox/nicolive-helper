@@ -88,6 +88,21 @@ function FindParentElement(elem,tag){
     return elem;
 }
 
+function WindowEnumerator(){
+    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+    var enumerator = wm.getEnumerator("");
+    let windowlist = new Array();
+    while(enumerator.hasMoreElements()) {
+	var win = enumerator.getNext();
+	// win is [Object ChromeWindow] (just like window), do something with it
+	debugprint("window:"+win.name);
+	if(win.name.match(/^NLH_lv\d+$/)){
+	    windowlist.push(win);
+	}
+    }
+    return windowlist;
+}
+
 function CopyToClipboard(str){
     if(str.length<=0) return;
     let gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].  
