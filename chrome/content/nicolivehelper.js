@@ -1632,6 +1632,8 @@ var NicoLiveHelper = {
     },
 
     heartbeat:function(){
+	return;
+
 	let url = "http://watch.live.nicovideo.jp/api/heartbeat";
 	let req = new XMLHttpRequest();
 	if(!req) return;
