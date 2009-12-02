@@ -482,6 +482,9 @@ var NicoLiveRequest = {
 
     checkDrag:function(event){
 	let b = event.dataTransfer.types.contains("application/x-moz-file");
+	for(let i=0;i<event.dataTransfer.types.length;i++){
+	    debugprint('dragging:'+event.dataTransfer.types.item(i));
+	}
 	if(b){
 	    event.preventDefault();
 	}

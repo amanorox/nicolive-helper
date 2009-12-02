@@ -128,7 +128,7 @@ var NicoLiveComment = {
 	    let datestr = GetDateString(item.date*1000);
 	    str += item.no+' '+item.user_id+' '+item.text+' '+datestr+"\n";
 	}
-	window.openDialog("chrome://nicolivehelper/content/commentdialog.xul","comment","chrome,width=640,height=320,resizable=yes,centerscreen",str);
+	window.openDialog("chrome://nicolivehelper/content/commentdialog.xul","comment","chrome,width=640,height=320,resizable=yes,centerscreen",str).focus();
     },
 
     push:function(chat){

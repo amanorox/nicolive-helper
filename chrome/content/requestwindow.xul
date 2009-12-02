@@ -33,8 +33,14 @@
       debugprint(f);
       window.openDialog('chrome://nicolivehelper/content/preferences.xul','NLHPreference',f).focus();
   }
+
+  function OpenVoteDialog(){
+      var value = null;
+      window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
+  }
   ]]>
   </script>
+
   <toolbar id="global-menu">
     <toolbarbutton label="手動再生" type="menu" id="toolbar-playstyle">
       <menupopup id="toolbar-popup-playstyle">
@@ -62,7 +68,9 @@
     <toolbarbutton label="サブ画面" id="do-subdisplay" autoCheck="true" type="checkbox"/>
     <toolbarbutton label="コマンド" type="menu">
       <menupopup>
-	<menuitem label="アンケート(Lv25+)" tooltiptext="アンケートを行います(Lv25〜)"/>
+	<menuitem label="アンケート(Lv25+)" tooltiptext="アンケートを行います(Lv25〜)" oncommand="OpenVoteDialog();"/>
+	<menuitem label="アンケート結果を表示する" tooltiptext="/vote showresult" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
+	<menuitem label="アンケート結果を消す" tooltiptext="/vote stop" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
 	<menuseparator/>
 	<menuitem label="サウンドオンリーを止める(メイン)" tooltiptext="/soundonly off" oncommand="NicoLiveHelper.postCasterComment('/soundonly off','');"/>
 	<menuitem label="サウンドオンリーを止める(サブ)" tooltiptext="/soundonly off sub" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
@@ -90,6 +98,7 @@
 	<tab label="再生履歴"/>
 	<tab label="コメント"/>
 	<tab label="動画DB"/>
+	<tab label="ニコニコ動画検索"/>
 	<tab label="基本設定"/>
 	<tab label="Debug"/>
       </tabs>
@@ -112,12 +121,12 @@
 	</vbox>
 
 	<!-- stock tab -->
-	<vbox class="tabpanel" ondragenter="return NicoLiveRequest.checkDrag(event)"
-		   ondragover="return NicoLiveRequest.checkDrag(event)"
-		   ondrop="NicoLiveRequest.dropToStock(event)">
+	<vbox class="tabpanel"
+	      ondragenter="return NicoLiveRequest.checkDrag(event)"
+	      ondragover="return NicoLiveRequest.checkDrag(event)"
+	      ondrop="NicoLiveRequest.dropToStock(event)">
 	  <hbox>
 	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleStock();"/>
-
 	    <button type="menu" label="マイリスト読み込み">
 	      <menupopup id="menupopup-from-mylist">
 	      </menupopup>
@@ -236,6 +245,11 @@
 	    <html:table id="database-table" class="requestview">
 	    </html:table>
 	  </vbox>
+	</vbox>
+
+	<!-- search NicoNicoDouga -->
+	<vbox class="tabpanel">
+
 	</vbox>
 
 	<!-- setting tab -->

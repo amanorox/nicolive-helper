@@ -4,7 +4,7 @@ var NicoLiveOverlay = {
 	let feature="chrome,centerscreen,resizable=yes,width=720,height=512";
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
-	window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
+	window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature).focus();
 	Application.console.log(url+' '+title);
     },
 
