@@ -699,6 +699,11 @@ var NicoLiveHelper = {
 	    this.inplay = false;
 	}
     },
+    // 自動再生を一時止める.
+    pausePlay:function(){
+	clearInterval(this._musicend);
+    },
+
     // 再生を止める.
     stopPlay:function(){
 	let str = "/stop";
@@ -1291,7 +1296,7 @@ var NicoLiveHelper = {
 		       !NicoLiveHelper.inplay &&
 		       NicoLiveHelper.requestqueue.length==1){
 			// 自動再生かつ、何も再生していないかつ、キューに1つしかないときは即再生.
-			NicoLiveHelper.playNext();
+			//NicoLiveHelper.playNext();
 		    }
 		    break;
 		default:

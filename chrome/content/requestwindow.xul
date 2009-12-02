@@ -50,7 +50,7 @@
     </toolbarbutton>
     <toolbarbutton label="次曲" tooltiptext="次の動画を再生します" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();">
     </toolbarbutton>
-    <toolbarbutton disabled="true" label="一時停止" tooltiptext="自動再生を停止します" image="chrome://nicolivehelper/content/data/pause.png">
+    <toolbarbutton label="一時停止" tooltiptext="自動再生を停止します" image="chrome://nicolivehelper/content/data/pause.png" oncommand="NicoLiveHelper.pausePlay();">
     </toolbarbutton>
     <toolbarbutton label="停止" tooltiptext="/stop" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();">
     </toolbarbutton>
