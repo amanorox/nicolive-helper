@@ -39,6 +39,11 @@
       if(NicoLiveHelper.isOffline()) return;
       window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
   }
+
+  function SendComment(text,event){
+      return event.keyCode != 13 || NicoLiveComment.postComment(text);
+  }
+
   ]]>
   </script>
 
@@ -181,8 +186,17 @@
 		<menuitem label="niconicowhite big" value="niconicowhite big"/>
 	      </menupopup>
 	    </menulist>
-	    <!--<textbox id="textbox-mail" size="5" emptytext="コマンド"/>-->
-	    <textbox id="textbox-comment" type="timed" timeout="3600000" emptytext="コメントを入力してください" maxlength="1024" oncommand="NicoLiveComment.postComment(this.value);" flex="1"/>
+
+	    <textbox id="textbox-comment"
+		     flex="1"
+		     type="autocomplete"
+		     autocompletesearch="nlh-simple-autocomplete"
+		     enablehistory="true"
+		     emptytext="コメントを入力してください"
+		     onkeypress="return SendComment(this.value,event);"
+		     oncommand="NicoLiveComment.postComment(this.value);"
+		     autocompletesearchparam='[{"value":"いらっしゃいませ〜","comment":"cool dude"},{"value":"ヽ(ﾟ∀ﾟ)ﾉｲｬｰｲｲｬｰｲﾔｯﾊﾊｰｲﾊｰｲ","comment":"nice lady"},{"value":"♪{title}","comment":"very uncool guy"}]' />
+
 	    <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment').value);"/>
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto;">
@@ -255,6 +269,12 @@
 	<!-- search NicoNicoDouga -->
 	<vbox class="tabpanel">
 
+	  <textbox id="text1"
+		   type="autocomplete"
+		   autocompletesearch="nlh-simple-autocomplete"
+		   enablehistory="true"
+		   showcommentcolumn="true"
+		   autocompletesearchparam='[{"value":"mark","comment":"cool dude"},{"value":"mary","comment":"nice lady"},{"value":"jimmy","comment":"very uncool guy"},{"value":"jimbo","comment":null}]' />
 	</vbox>
 
 	<!-- setting tab -->

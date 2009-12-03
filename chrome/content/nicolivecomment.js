@@ -78,6 +78,7 @@ var NicoLiveComment = {
 	    NicoLiveHelper.postListenerComment(str,$('textbox-mail').value);
 	}
 	$('textbox-comment').value = "";
+	return true;
     },
 
     addName:function(){
