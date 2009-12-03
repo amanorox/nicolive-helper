@@ -47,6 +47,10 @@
 	<menuitem label="手動再生" oncommand="NicoLiveHelper.setPlayStyle(0); setLabel('toolbar-playstyle',this.label);" />
 	<menuitem label="自動(順次)" oncommand="NicoLiveHelper.setPlayStyle(1); setLabel('toolbar-playstyle',this.label);" />
 	<menuitem label="自動(ランダム)" oncommand="NicoLiveHelper.setPlayStyle(2); setLabel('toolbar-playstyle',this.label);" />
+	<menuseparator/>
+	<menuitem label="手動(ランダム)" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(3); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem label="手動(消化率順)" tooltiptext="次曲をリクエスト消化率順に選択します" oncommand="NicoLiveHelper.setPlayStyle(4); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem label="自動(消化率順)" tooltiptext="次曲をリクエスト消化率順に選択します" oncommand="NicoLiveHelper.setPlayStyle(5); setLabel('toolbar-playstyle',this.label);" />
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="リクエスト許可" type="menu" id="toolbar-allowrequest">

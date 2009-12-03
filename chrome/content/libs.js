@@ -6,6 +6,7 @@ const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const HTML_NS= "http://www.w3.org/1999/xhtml";
 const MYLIST_URL = "http://www.nicovideo.jp/mylistgroup_edit";
 const COMMENT_LOG = 500;
+const VersionNumber = "NicoLive Helper 0.8.1";
 
 function $(tag){
     return document.getElementById(tag);
@@ -178,7 +179,7 @@ function GetRandomInt(min, max){
 }
 
 function ZenToHan(str){
-    return str.replace(/[ａ-ｚＡ-Ｚ０-９（）]/g,
+    return str.replace(/[ａ-ｚＡ-Ｚ０-９（）＠]/g,
 		       function(s){ return String.fromCharCode(s.charCodeAt(0)-65248); });
 }
 

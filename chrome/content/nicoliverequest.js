@@ -470,7 +470,7 @@ var NicoLiveRequest = {
 	    hasmore = istream.readLine(line);
 	    if( line.value.match(/(sm|nm)\d+/) ){
 		if(first){
-		    NicoLiveHelper.clearStock();
+		    //NicoLiveHelper.clearStock();
 		    first = false;
 		}
 		this.addStock(line.value);

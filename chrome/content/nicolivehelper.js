@@ -307,7 +307,10 @@ var NicoLiveHelper = {
 	    if(!this.iscaster) break;
 	    switch(chat.text){
 	    case "@version":
-		this.postCasterComment("NicoLive Helper 0.8","");
+		this.postCasterComment(VersionNumber,"");
+		break;
+	    case "@s":
+	    case "/s":
 		break;
 	    }
 	    break;
@@ -929,6 +932,7 @@ var NicoLiveHelper = {
 	switch(style){
 	case 0:// 手動.
 	    this.setAutoplay(0);
+	    this.setRandomplay(false);
 	    break;
 	case 1:// 自動順次
 	    this.setAutoplay(1);
@@ -937,6 +941,14 @@ var NicoLiveHelper = {
 	case 2:// 自動ランダム
 	    this.setAutoplay(1);
 	    this.setRandomplay(true);
+	    break;
+	case 3:// 手動ランダム.
+	    this.setAutoplay(0);
+	    this.setRandomplay(true);
+	    break;
+	case 4:// 手動消化率.
+	    break;
+	case 5:// 自動消化率.
 	    break;
 	default:
 	    break;
