@@ -1,12 +1,7 @@
 var NLHPreference = {
 
     initDB:function(){
-	let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-        file.append("nicolivehelper_miku39jp.sqlite");
-
-        let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);
-        this.dbconnect = storageService.openDatabase(file);
-	//Application.console.log('initDB in advanced setting');
+	this.dbconnect = opener.NicoLiveDatabase.dbconnect;
     },
 
     // リク制限のプリセットをDBに登録する.
@@ -186,7 +181,6 @@ var NLHPreference = {
     },
 
     destroy:function(){
-	this.dbconnect.close();
 	//Application.console.log('close advanced setting');
     }
 };

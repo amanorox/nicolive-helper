@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<dialog id="votewindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+	title="アンケートウィンドウ(NicoLive Helper)"
+	buttons="accept,cancel" ondialogaccept="return AcceptFunction();" ondialogcancel="return true;">
+
+  <script>
+  <![CDATA[
+
+  function AcceptFunction(){
+      var texts = document.getElementsByTagName('textbox');
+      var i,txt,str="";
+      for(i=0;txt=texts[i];i++){
+	  if(txt.value){
+	      str += '"'+txt.value+'" '
+	  }
+      }
+      Application.console.log(str);
+      opener.NicoLiveHelper.postCasterComment("/vote start "+str,"");
+      return true;
+  }
+
+  ]]>
+  </script>
+
+  <vbox>
+    <hbox>
+      <label value="質問文"/>
+      <textbox id="question" flex="1"/>
+    </hbox>
+    <hbox>
+      <label value="選択肢1"/>
+      <textbox id="answer1" flex="1"/>
+      <label value="選択肢2"/>
+      <textbox id="answer2" flex="1"/>
+    </hbox>
+    <hbox>
+      <label value="選択肢3"/>
+      <textbox id="answer3" flex="1"/>
+      <label value="選択肢4"/>
+      <textbox id="answer4" flex="1"/>
+    </hbox>
+  </vbox>
+
+</dialog>

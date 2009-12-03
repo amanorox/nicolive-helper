@@ -53,9 +53,12 @@ var NicoLiveDatabase = {
 
 	try{
 	    let l;
-	    l = sm.match(/mylist\/(\d+)$/);
+	    l = sm.match(/mylist\/\d+/g);
 	    if(l){
-		NicoLiveMylist.addDatabase(l[1],"");
+		for(let i=0,mylist;mylist=l[i];i++){
+		    let id = mylist.match(/mylist\/(\d+)/)[1];
+		    NicoLiveMylist.addDatabase(id,"");
+		}
 		return;
 	    }
 	    l = sm.match(/(sm|nm)\d+/g);
