@@ -534,7 +534,14 @@ var NicoLiveHelper = {
 	    }
 	}
 	NicoLiveRequest.updateStockView(this.stock);
+
+	this.updateRemainRequestsAndStocks();
 	this.saveAll();
+    },
+    // ステータスバーのリク数、ストック数の表示を更新
+    updateRemainRequestsAndStocks:function(){
+	$('statusbar-remain-request').label = "R/"+this.requestqueue.length;
+	$('statusbar-remain-stock').label = "S/"+this.countRemainStock();
     },
 
     // ストックから再生する(idx=1,2,3,...).
@@ -761,12 +768,14 @@ var NicoLiveHelper = {
 	this.requestqueue = new Array();
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
+	this.updateRemainRequestsAndStocks();
     },
     // ストックを消去する.
     clearStock:function(){
 	this.stock = new Array();
 	NicoLiveRequest.updateStockView(this.stock);
 	this.saveStock();
+	this.updateRemainRequestsAndStocks();
     },
 
     _sendMusicInfo:function(){
@@ -1030,6 +1039,8 @@ var NicoLiveHelper = {
 	if(this.isStockedMusic(item.video_id)) return;
 	this.stock.push(item);
 	NicoLiveRequest.addStockView(item);
+
+	this.updateRemainRequestsAndStocks();
     },
 
     // ストック--->リクエストキュー
@@ -1087,6 +1098,16 @@ var NicoLiveHelper = {
 	min = parseInt(t/60);
 	sec = t%60;
 	return {"min":min, "sec":sec};
+    },
+    // 残り未再生ストック数を数える.
+    countRemainStock:function(){
+	let i,item,t=0;;
+	for(i=0;item=this.stock[i];i++){
+	    if(!item.isplayed){
+		t++;
+	    }
+	}
+	return t;
     },
 
     // リクエストをシャッフル(てきとー実装).
@@ -1329,6 +1350,7 @@ var NicoLiveHelper = {
 		    //NicoLiveHelper.addStockQueue(ans.movieinfo);
 		    break;
 		}
+		NicoLiveHelper.updateRemainRequestsAndStocks();
 	    }
 	};
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+sm;
@@ -1758,6 +1780,7 @@ var NicoLiveHelper = {
 	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
 	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}
+	NicoLiveHelper.updateRemainRequestsAndStocks();
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");

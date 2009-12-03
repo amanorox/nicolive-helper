@@ -36,6 +36,7 @@
 
   function OpenVoteDialog(){
       var value = null;
+      if(NicoLiveHelper.isOffline()) return;
       window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
   }
   ]]>
@@ -341,6 +342,8 @@
     </stack>
     <spacer flex="1"/>
     <!--<statusbarpanel id="statusbar-n-of-listeners" label="来場者数 0"/>-->
+    <statusbarpanel id="statusbar-remain-request" label="リクエスト 0"/>
+    <statusbarpanel id="statusbar-remain-stock" label="ストック 0"/>
     <statusbarpanel id="statusbar-live-progress" label="0:00"/>
   </statusbar>
 
