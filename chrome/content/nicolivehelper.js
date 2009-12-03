@@ -1716,27 +1716,30 @@ var NicoLiveHelper = {
 	this.savePlaylist();	
     },
     saveStock:function(){
-	debugprint('start:'+GetCurrentTime());
-	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
+	Application.storage.set("nico_live_stock",this.stock);
 	debugprint("save stock");
-	debugprint('end:'+GetCurrentTime());
     },
     saveRequest:function(){
 	// 視聴者ではリクエストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
-	debugprint('start:'+GetCurrentTime());
-	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
+	Application.storage.set("nico_live_requestlist",this.requestqueue);
 	debugprint("save request");
-	debugprint('end:'+GetCurrentTime());
     },
     savePlaylist:function(){
 	// 視聴者ではプレイリストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
-	debugprint('start:'+GetCurrentTime());
+	Application.storage.set("nico_live_playlist",this.playlist);
+	Application.storage.set("nico_live_playlist_txt",$('played-list-textbox').value);
+	debugprint("save play history");
+    },
+    saveToStorage:function(){
+	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
+
+	// 視聴者ではリクエスト、プレイリストは保存しない.
+	if(!this.iscaster && !this.isOffline()) return;
+	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist",this.playlist);
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist_txt",$('played-list-textbox').value);
-	debugprint("save play history");
-	debugprint('end:'+GetCurrentTime());
     },
 
     resetRequestCount:function(){
@@ -1782,6 +1785,7 @@ var NicoLiveHelper = {
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
 	this.saveAll();
+	this.saveToStorage();
 	this.close();
     }
 };

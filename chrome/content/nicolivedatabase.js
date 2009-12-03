@@ -528,6 +528,14 @@ var NicoLiveDatabase = {
 
     // 汎用ストレージからJSON形式のJavascriptオブジェクトを読み込む.
     loadGPStorage:function(name,defitem){
+	let item;
+	debugprint('load '+name);
+	item = Application.storage.get(name,null);
+	if(item!=null){
+	    debugprint("メモリからデータをロードします");
+	    return item;
+	}
+	debugprint("ストレージからデータをロードします");
 	let st = this.dbconnect.createStatement('SELECT value FROM gpstorage where key=?1');
 	st.bindUTF8StringParameter(0,name);
 	let value = "";
@@ -535,9 +543,7 @@ var NicoLiveDatabase = {
 	    value=st.getString(0);
 	}
 	st.finalize();
-	let item;
 	if(value){
-	    debugprint('load '+name);
 	    item = JSON.parse(value);
 	}else{
 	    item = defitem;

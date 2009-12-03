@@ -89,6 +89,7 @@ function FindParentElement(elem,tag){
     return elem;
 }
 
+// NicoLive Helperのウィンドウをリストアップする.
 function WindowEnumerator(){
     var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
     var enumerator = wm.getEnumerator("");
