@@ -341,9 +341,8 @@
       <statusbarpanel id="statusbar-music-name" label="" />
     </stack>
     <spacer flex="1"/>
-    <!--<statusbarpanel id="statusbar-n-of-listeners" label="来場者数 0"/>-->
-    <statusbarpanel id="statusbar-remain-request" label="リクエスト 0"/>
-    <statusbarpanel id="statusbar-remain-stock" label="ストック 0"/>
+    <statusbarpanel id="statusbar-remain" label="R/0 S/0"/>
+    <statusbarpanel id="statusbar-n-of-listeners" label="来場者数 0"/>
     <statusbarpanel id="statusbar-live-progress" label="0:00"/>
   </statusbar>
 

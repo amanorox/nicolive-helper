@@ -540,8 +540,7 @@ var NicoLiveHelper = {
     },
     // ステータスバーのリク数、ストック数の表示を更新
     updateRemainRequestsAndStocks:function(){
-	$('statusbar-remain-request').label = "R/"+this.requestqueue.length;
-	$('statusbar-remain-stock').label = "S/"+this.countRemainStock();
+	$('statusbar-remain').label = "R/"+this.requestqueue.length +" "+"S/"+this.countRemainStock();
     },
 
     // ストックから再生する(idx=1,2,3,...).
@@ -1667,8 +1666,6 @@ var NicoLiveHelper = {
     },
 
     heartbeat:function(){
-	return;
-
 	let url = "http://watch.live.nicovideo.jp/api/heartbeat";
 	let req = new XMLHttpRequest();
 	if(!req) return;
