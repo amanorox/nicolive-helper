@@ -103,7 +103,7 @@
 	<tab label="再生履歴"/>
 	<tab label="コメント"/>
 	<tab label="動画DB"/>
-	<tab label="ニコニコ動画検索"/>
+	<tab label="ニコ動検索"/>
 	<tab label="基本設定"/>
 	<tab label="Debug"/>
       </tabs>
@@ -214,7 +214,7 @@
 	    </vbox>
 	  </groupbox>
 	  <hbox>
-	    <menulist id="db-search-max" value="100">
+	    <menulist id="db-search-max" value="100" oncommand="NicoLiveDatabase.search();">
 	      <menupopup>
 		<menuitem label="10件" value="10"/>
 		<menuitem label="20件" value="20"/>
@@ -225,7 +225,7 @@
 		<menuitem label="1000件" value="1000"/>
 	      </menupopup>
 	    </menulist>
-	    <menulist id="db-search-orderby">
+	    <menulist id="db-search-orderby" oncommand="NicoLiveDatabase.search();">
 	      <menupopup>
 		<menuitem label="タイトル" value="title"/>
 		<menuitem label="時間" value="length"/>
@@ -236,7 +236,7 @@
 		<menuitem label="マイリスト率" value="mylist_rate"/>
 	      </menupopup>
 	    </menulist>
-	    <menulist id="db-search-order">
+	    <menulist id="db-search-order" oncommand="NicoLiveDatabase.search();">
 	      <menupopup>
 		<menuitem label="昇順" value="asc"/>
 		<menuitem label="降順" value="desc"/>

@@ -192,6 +192,7 @@ var NicoLiveDatabase = {
 	elem.appendChild(CreateMenuItem("投稿日",6));
 	elem.appendChild(CreateMenuItem("動画ID",7));
 	menulist = CreateElement('menulist');
+	menulist.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
 	menulist.appendChild(elem);
 	hbox.appendChild(menulist);
 
@@ -202,14 +203,16 @@ var NicoLiveDatabase = {
 	elem.appendChild(CreateMenuItem("等しい",3));
 	elem.appendChild(CreateMenuItem("以下",4));
 	menulist = CreateElement('menulist');
+	menulist.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
 	menulist.appendChild(elem);
 	hbox.appendChild(menulist);
 
 	elem = CreateElement('textbox');
 	elem.setAttribute('flex','1');
-	//elem.setAttribute('type','search');
+	elem.setAttribute('type','search');
 	//elem.setAttribute('autocompletesearch','form-history');
-	//elem.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
+	elem.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
+	elem.setAttribute('timeout','1000');
 	hbox.appendChild(elem);
 
 	//elem = CreateButton('+');
