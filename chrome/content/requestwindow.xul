@@ -207,9 +207,6 @@
 
 	    </stack>
 	  </vbox>
-	  <hbox>
-	    <button label="Open As Textbox" tooltiptext="" oncommand="NicoLiveComment.openDialog();"/>
-	  </hbox>
 	</vbox>
 
 	<!-- database tab -->
