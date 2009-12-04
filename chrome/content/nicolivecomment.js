@@ -71,7 +71,12 @@ var NicoLiveComment = {
 	$('iframe-thumbnail').style.display = 'none';
     },
 
-    postComment:function(str){
+    postComment:function(textbox,event){
+	let str = textbox.value;
+	if(event && event.keyCode != 13) return true;
+
+	textbox.controller.searchString = "";
+
 	if(NicoLiveHelper.iscaster){
 	    NicoLiveHelper.postCasterComment(str,$('textbox-mail').value);
 	}else{

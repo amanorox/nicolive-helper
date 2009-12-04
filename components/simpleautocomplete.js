@@ -1,13 +1,11 @@
 /*
  * https://developer.mozilla.org/en/How_to_implement_custom_autocomplete_search_component
  */
-
 const Ci = Components.interfaces;
 
-// この辺は一応変更しておく.
-const CLASS_ID = Components.ID("A7A40A68-E01C-11DE-8902-638D55D89593");
-const CLASS_NAME = "NLH Simple AutoComplete";
-const CONTRACT_ID = "@mozilla.org/autocomplete/search;1?name=nlh-simple-autocomplete";
+const CLASS_ID = Components.ID("6224daa1-71a2-4d1a-ad90-01ca1c08e323");
+const CLASS_NAME = "Simple AutoComplete";
+const CONTRACT_ID = "@mozilla.org/autocomplete/search;1?name=simple-autocomplete";
 
 // Implements nsIAutoCompleteResult
 function SimpleAutoCompleteResult(searchString, searchResult,

@@ -8,3 +8,71 @@ status=true
 
 --
 ・選曲対象がないときに再生する動画
+
+
+function URLBarSetURI(aURI, aValid) {
+  var value = gBrowser.userTypedValue;
+  var valid = false;
+
+  if (value == null) {
+    let uri = aURI || getWebNavigation().currentURI;
+
+    // Replace initial page URIs with an empty string
+    // only if there's no opener (bug 370555).
+    if (gInitialPages.indexOf(uri.spec) != -1)
+      value = content.opener ? uri.spec : "";
+    else
+      value = losslessDecodeURI(uri);
+
+    let isBlank = (uri.spec == "about:blank");
+    valid = !isBlank && (!aURI || aValid);
+  }
+
+  gURLBar.value = value;
+  SetPageProxyState(valid ? "valid" : "invalid");
+}
+
+function handleRevert() {
+    var isScrolling = this.popupOpen;
+    gBrowser.userTypedValue = null;
+    if (!XULBrowserWindow.isBusy && !isScrolling) {
+        URLBarSetURI();
+        if (this.value && this.hasAttribute("focused")) {
+            this.select();
+        }
+    }
+    return !isScrolling;
+}
+
+function showHistoryPopup() {
+
+    function cleanup(popup) {
+        popup.removeEventListener("popupshowing", onShow, false);
+    }
+
+
+    function onShow(event) {
+        var popup = event.target, input = popup.input;
+        cleanup(popup);
+        input.setAttribute("open", "true");
+
+        function onHide() {
+            input.removeAttribute("open");
+            input.mConsumeRollupEvent = false;
+            popup.removeEventListener("popuphiding", onHide, false);
+        }
+
+        popup.addEventListener("popuphiding", onHide, false);
+    }
+
+    this.popup.addEventListener("popupshowing", onShow, false);
+    setTimeout(cleanup, 1000, this.popup);
+    this.popup._normalMaxRows = this.maxRows;
+    this.maxRows = this.maxDropMarkerRows;
+    if (!this.focused) {
+        this.focus();
+    }
+    this.mConsumeRollupEvent = true;
+    this.attachController();
+    this.mController.startSearch("");
+}

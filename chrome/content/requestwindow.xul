@@ -40,18 +40,6 @@
       window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
   }
 
-  function SendComment(textbox,event){
-      if(event.keyCode != 13) return;
-      var text = textbox.value;
-      textbox.select();
-
-      var req = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor);
-      var utils = req.getInterface(Components.interfaces.nsIDOMWindowUtils);
-      utils.sendKeyEvent("keydown",'a','a',0);
-
-      return NicoLiveComment.postComment(text);
-  }
-
   ]]>
   </script>
 
@@ -116,7 +104,7 @@
 	<tab label="再生履歴"/>
 	<tab label="コメント"/>
 	<tab label="動画DB"/>
-	<tab label="ニコ動検索"/>
+<!--	<tab label="ニコ動検索"/> -->
 	<tab label="基本設定"/>
 	<tab label="Debug"/>
       </tabs>
@@ -195,24 +183,21 @@
 	      </menupopup>
 	    </menulist>
 
-	    <textbox id="textbox-comment" type="timed" timeout="3600000" emptytext="コメントを入力してください" maxlength="1024" oncommand="NicoLiveComment.postComment(this.value);" flex="1"/>
-	    <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment').value);"/>
-
-<!--
 	    <textbox id="textbox-comment"
 		     flex="1"
 		     maxlength="1024"
 		     type="autocomplete"
 		     disableAutocomplete="true"
-		     autocompletesearch="nlh-simple-autocomplete"
+		     autocompletesearch="simple-autocomplete"
 		     enablehistory="true"
 		     emptytext="コメントを入力してください"
-		     onkeypress="return SendComment(this,event);"
-		     ontextreverted="return false;"
-		     autocompletesearchparam='[{"value":"いらっしゃいませ〜","comment":"cool dude"},{"value":"ヽ(ﾟ∀ﾟ)ﾉｲｬｰｲｲｬｰｲﾔｯﾊﾊｰｲﾊｰｲ","comment":"nice lady"},{"value":"♪{title}","comment":"very uncool guy"}]' />
+		     onkeypress="NicoLiveComment.postComment(this,event);"
+		     ontextreverted="this.select();"
+		     autocompletesearchparam='[{"value":"いらっしゃいませ〜","comment":""},{"value":"ヽ(ﾟ∀ﾟ)ﾉｲｬｰｲｲｬｰｲﾔｯﾊﾊｰｲﾊｰｲ","comment":""},{"value":"♪{title}","comment":""}]' />
 
-	    <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment').value); $('textbox-comment').value='';"/>
--->
+	    <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/>
+
+
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto;">
 
@@ -282,15 +267,17 @@
 	</vbox>
 
 	<!-- search NicoNicoDouga -->
+<!--
 	<vbox class="tabpanel">
 
 	  <textbox id="text1"
 		   type="autocomplete"
-		   autocompletesearch="nlh-simple-autocomplete"
+		   autocompletesearch="simple-autocomplete"
 		   enablehistory="true"
 		   showcommentcolumn="true"
 		   autocompletesearchparam='[{"value":"mark","comment":"cool dude"},{"value":"mary","comment":"nice lady"},{"value":"jimmy","comment":"very uncool guy"},{"value":"jimbo","comment":null}]' />
 	</vbox>
+-->
 
 	<!-- setting tab -->
 	<vbox class="tabpanel">
