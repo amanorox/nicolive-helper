@@ -77,6 +77,19 @@ var NicoLiveComment = {
 
 	textbox.controller.searchString = "";
 
+	// update autocomplete
+	let tmp = {value:str,comment:""};
+	for(let i=0,item;item=this.autocomplete[i];i++){
+	    if(item.value==str){
+		this.autocomplete.splice(i,1);
+	    }
+	}
+	this.autocomplete.unshift(tmp);
+	if(this.autocomplete.length>10){
+	    this.autocomplete.pop();
+	}
+	textbox.setAttribute("autocompletesearchparam",JSON.stringify(this.autocomplete));
+
 	if(NicoLiveHelper.iscaster){
 	    NicoLiveHelper.postCasterComment(str,$('textbox-mail').value);
 	}else{
@@ -187,6 +200,7 @@ var NicoLiveComment = {
 	this.colormap = new Object();
 	this.commentlog   = new Array();
 	this.namemap = NicoLiveDatabase.loadGPStorage("nico_live_kotehan",{});
+	this.autocomplete = NicoLiveDatabase.loadGPStorage("nico_live_autocomplete",[]);
     },
     destroy:function(){
 	this.closeFile();

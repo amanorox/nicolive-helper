@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="0.8">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$N3pNz">
-    <RDF:li RDF:resource="rdf:#$O3pNz"/>
-  </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAIKYhQGaGhW84AvCzDusU+mxv8V/bEdJVdiMIhQU+zDWAapGBnlttObs0vqxTUovYKTlChpqTuwdntitf2+0XGS2pXPXoFd46sFnvuj20Ne9fRWgawUDeGlH0PzGoRqP/FoPrH9Idl200PSaaAoEbGknB+5x49ORV6cgKaWx04Kv">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
                    em:maxVersion="3.*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_0.8.xpi"
-                   em:updateHash="sha1:e779a59e34fc9c6cab3aa34961b9d82506d9cded"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_0.9.xpi"
+                   em:updateHash="sha1:f3435370c79712254c1cf6dde9f678b5a3894c08"
                    em:updateInfoURL="http://ch.nicovideo.jp/community/co105163" />
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="0.9">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAAaYWlKOW2JnsTZaSAVWl7viIyrdtt6UsfXTGTmzDzUUvpKEBbvzG160v2UILiitl7yR7e0owOWg24DEALzmQWqekxPvJwNq2Xlzy4mOcMgPQiYZWMwsc56gAq0zEavszC/A7CkFVUmranqskuygS3yq0JboUB7WLmk5WTPMYgnx">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$N3pNz">
+    <RDF:li RDF:resource="rdf:#$O3pNz"/>
+  </RDF:Seq>
 </RDF:RDF>

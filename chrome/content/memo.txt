@@ -9,6 +9,9 @@ status=true
 --
 ・選曲対象がないときに再生する動画
 
+a = JSON.parse(document.getElementById('textbox-comment').getAttribute('autocompletesearchparam'));
+JSON.stringify(a);
+
 
 function URLBarSetURI(aURI, aValid) {
   var value = gBrowser.userTypedValue;

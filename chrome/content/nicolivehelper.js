@@ -568,6 +568,7 @@ var NicoLiveHelper = {
 	this.stock.splice(idx,1);
 	NicoLiveRequest.updateStockView(this.stock);
 	this.saveStock();
+	this.updateRemainRequestsAndStocks();
     },
     // ストックの最上位に移動.
     topToStock:function(idx){
@@ -1000,6 +1001,7 @@ var NicoLiveHelper = {
 	debugprint("Remove request #"+idx);
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
+	this.updateRemainRequestsAndStocks();
 	return removeditem[0];
     },
     topToRequest:function(idx){

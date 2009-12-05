@@ -50,9 +50,9 @@
 	<menuitem label="自動(順次)" oncommand="NicoLiveHelper.setPlayStyle(1); setLabel('toolbar-playstyle',this.label);" />
 	<menuitem label="自動(ランダム)" oncommand="NicoLiveHelper.setPlayStyle(2); setLabel('toolbar-playstyle',this.label);" />
 	<menuseparator/>
-	<menuitem label="手動(ランダム)" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(3); setLabel('toolbar-playstyle',this.label);" />
-	<menuitem label="手動(消化率順)" tooltiptext="次曲をリクエスト消化率順に選択します" oncommand="NicoLiveHelper.setPlayStyle(4); setLabel('toolbar-playstyle',this.label);" />
-	<menuitem label="自動(消化率順)" tooltiptext="次曲をリクエスト消化率順に選択します" oncommand="NicoLiveHelper.setPlayStyle(5); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem disabled="true" label="手動(ランダム)" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(3); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem disabled="true" label="手動(消化率順)" tooltiptext="次曲をリクエスト消化率順に選択します" oncommand="NicoLiveHelper.setPlayStyle(4); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem disabled="true" label="自動(消化率順)" tooltiptext="次曲をリクエスト消化率順に選択します" oncommand="NicoLiveHelper.setPlayStyle(5); setLabel('toolbar-playstyle',this.label);" />
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="リクエスト許可" type="menu" id="toolbar-allowrequest">
@@ -193,7 +193,10 @@
 		     emptytext="コメントを入力してください"
 		     onkeypress="NicoLiveComment.postComment(this,event);"
 		     ontextreverted="this.select();"
-		     autocompletesearchparam='[{"value":"いらっしゃいませ〜","comment":""},{"value":"ヽ(ﾟ∀ﾟ)ﾉｲｬｰｲｲｬｰｲﾔｯﾊﾊｰｲﾊｰｲ","comment":""},{"value":"♪{title}","comment":""}]' />
+		     />
+<!--
+		     autocompletesearchparam='[{"value":"枠乙〜","comment":""},{"value":"ヽ(ﾟ∀ﾟ)ﾉｲｬｰｲｲｬｰｲﾔｯﾊﾊｰｲﾊｰｲ","comment":""},{"value":"♪{title}","comment":""}]'
+-->
 
 	    <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/>
 
