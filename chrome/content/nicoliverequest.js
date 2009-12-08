@@ -370,8 +370,8 @@ var NicoLiveRequest = {
 	    case "end":
 		if(this.playlist_start>NicoLiveHelper.stock.length){
 		    debugprint("ストックの最後まで再生しました");
-		    clearInterval(this.playlist_timer);
-		    return;
+		    // 最初に戻る.
+		    this.playlist_start = 0;
 		}
 		let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
 		this.playlist_start++;
