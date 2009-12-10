@@ -122,6 +122,15 @@ function htmlspecialchars(ch){
     return ch ;
 }
 
+function restorehtmlspecialchars(ch){
+    ch = ch.replace(/&quot;/g,"\"");
+    ch = ch.replace(/&amp;/g,"&");
+    ch = ch.replace(/&lt;/g,"<");
+    ch = ch.replace(/&gt;/g,">");
+    ch = ch.replace(/&nbsp;/g," ");
+    return ch;
+}
+
 function debugprint(txt){
     if( $('debug-textbox') )
 	$('debug-textbox').value += txt + "\n";

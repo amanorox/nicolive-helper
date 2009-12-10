@@ -37,7 +37,7 @@ var NicoLiveDatabase = {
     numvideos: 0,
     addcounter: 0,
     updatecounter: 0,
-    searchtarget: ["title","length","view_counter","comment_num","mylist_counter","tags","first_retrieve","video_id"],
+    searchtarget: ["title","length","view_counter","comment_num","mylist_counter","tags","first_retrieve","video_id","description"],
     searchcond: ["include","exclude","gte","equal","lte"],
 
     addCurrentPlayedVideo:function(){
@@ -191,6 +191,7 @@ var NicoLiveDatabase = {
 	elem.appendChild(CreateMenuItem("タグ",5));
 	elem.appendChild(CreateMenuItem("投稿日",6));
 	elem.appendChild(CreateMenuItem("動画ID",7));
+	elem.appendChild(CreateMenuItem("詳細",8));
 	menulist = CreateElement('menulist');
 	menulist.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
 	menulist.appendChild(elem);

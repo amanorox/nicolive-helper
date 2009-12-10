@@ -1159,10 +1159,10 @@ var NicoLiveHelper = {
 		info.video_id = elem.textContent;
 		break;
 	    case "title":
-		info.title = htmlspecialchars(elem.textContent);
+		info.title = restorehtmlspecialchars(elem.textContent);
 		break;
 	    case "description":
-		info.description = htmlspecialchars(elem.textContent).replace(/　/g,' ');
+		info.description = restorehtmlspecialchars(elem.textContent).replace(/　/g,' ');
 		break;
 	    case "thumbnail_url":
 		info.thumbnail_url = elem.textContent;
@@ -1193,7 +1193,7 @@ var NicoLiveHelper = {
 		    let tag = elem.getElementsByTagName('tag');// DOM object
 		    info.tags = new Array();
 		    for(let i=0,item;item=tag[i];i++){
-			info.tags[i] = ZenToHan(item.textContent); // string
+			info.tags[i] = restorehtmlspecialchars(ZenToHan(item.textContent)); // string
 		    }
 		}
 		break;
