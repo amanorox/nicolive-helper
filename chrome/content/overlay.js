@@ -1,38 +1,45 @@
 
 var NicoLiveOverlay = {
-    open:function(url,title){
+    open:function(url,title,iscaster){
 	let feature="chrome,centerscreen,resizable=yes,width=720,height=512";
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
+	Application.storage.set("nico_live_caster",iscaster);
 	window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature).focus();
 	//Application.console.log(url+' '+title);
     },
 
     openNicoLiveWindow:function(){
 	let url = window.content.location.href;
-	// 生放送のページにいるときだけ反応.
 	url = url.match(/lv\d+/);
 	if(!url) url="lv0";
-	if( url ){
-	    let title;
-	    try{
-		title = window.content.document.getElementById("title").textContent;
-	    } catch (x) {
-		title = "タイトルなし";
-	    }
-	    this.open(url,title);
+
+	let title;
+	let iscaster = true;
+	try{
+	    title = window.content.document.getElementById("title").textContent;
+	} catch (x) {
+	    title = "タイトルなし";
 	}
+	if(url!="lv0"){
+	    if( !window.content.document.body.innerHTML.match(/console\.swf/) ){
+		iscaster = false;
+	    }
+	}
+	this.open(url,title,iscaster);
     },
 
     onPageLoad:function(e){
 	let player;
 	try{
+	    // 生放送のページかどうか.
 	    player = e.target.getElementById("WatchPlayer");
 	} catch (x) {
 	}
 	let iscaster = false;
 	if( !player ) return;
 
+	// innerHTMLを見るしかできないのです.
 	if(player.innerHTML.match(/console\.swf/)){
 	    iscaster = true;
 	}
@@ -46,7 +53,7 @@ var NicoLiveOverlay = {
 		let title;
 		try{
 		    title = e.target.getElementById("title").textContent;
-		    this.open(url,title);
+		    this.open(url,title,iscaster);
 		} catch (x) {
 		}
 	    }

@@ -1757,6 +1757,8 @@ var NicoLiveHelper = {
 	debugprint('Initialized NicoLive Helper');
 	let request_id = Application.storage.get("nico_request_id","lv0");
 	let title      = Application.storage.get("nico_live_title","");
+	let caster = Application.storage.get("nico_live_caster",true);
+	debugprint("Caster:"+caster);
 
 	debugprint(request_id);
 	this.requestqueue = new Array();
