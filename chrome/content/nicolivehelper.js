@@ -1566,11 +1566,11 @@ var NicoLiveHelper = {
 		NicoLiveHelper.addr = xml.getElementsByTagName('addr')[0].textContent;
 		NicoLiveHelper.port = xml.getElementsByTagName('port')[0].textContent;
 		NicoLiveHelper.thread = xml.getElementsByTagName('thread')[0].textContent;
-		NicoLiveHelper.iscaster = parseInt(xml.getElementsByTagName('room_seetno')[0].textContent);
+		NicoLiveHelper.iscaster = xml.getElementsByTagName('room_seetno')[0].textContent;
 		NicoLiveHelper.starttime = parseInt(xml.getElementsByTagName('start_time')[0].textContent);
 		NicoLiveHelper.opentime = parseInt(xml.getElementsByTagName('open_time')[0].textContent);
-		// 座席番号777が主らしい.
-		if( NicoLiveHelper.iscaster==777 ){
+		// 座席番号2525....が主らしい.
+		if( NicoLiveHelper.iscaster.match(/^2525/) ){
 		    NicoLiveHelper.iscaster=true;
 		    // load requests
 		    NicoLiveHelper.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
