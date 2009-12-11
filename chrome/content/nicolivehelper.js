@@ -351,7 +351,7 @@ var NicoLiveHelper = {
 		    if(setinterval){
 			// 手動で/playコマンドを入力したときにここに来る.
 			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
-			NicoLiveHelper.addPlayedList(music);
+			NicoLiveHelper.addPlayList(music);
 			NicoLiveHelper._sendMusicInfo();
 			NicoLiveHelper.inplay = true;
 		    }
@@ -444,6 +444,10 @@ var NicoLiveHelper = {
 				   if(info.video_id==null) break;
 				   tmp = NicoLiveDatabase.getAdditional(info.video_id);
 				   break;
+			       case 'description':
+				   // 詳細を40文字まで(世界の新着と同じ)
+				   tmp = info.description.match(/.{1,40}/);
+				   break;
 			       case 'requestnum': // リク残数.
 				   tmp = NicoLiveHelper.requestqueue.length;
 				   break;
@@ -522,7 +526,7 @@ var NicoLiveHelper = {
 	this.postCasterComment(str,""); // 再生.
 	this._sendMusicInfo(); // 曲情報の送信.
 
-	this.addPlayedList(this.musicinfo);
+	this.addPlayList(this.musicinfo);
 	NicoLiveRequest.update(this.requestqueue);
 
 	// 再生されたストック曲はグレーにする.
@@ -744,10 +748,18 @@ var NicoLiveHelper = {
 	this.postCasterComment(str,"");
     },
 
-    addPlayedList:function(item){
+    addPlayList:function(item){
 	// プレイリストに追加する.
-	this.playlist.push(item); // 再生済みリストに登録.
 	let elem = $('played-list-textbox');
+
+	if( GetCurrentTime()-this.starttime < 180 ){
+	    if( !this._firstflag ){
+		elem.value += "\n"+this.title+" "+this.request_id+"\n";
+		this._firstflag = true;
+	    }
+	}
+
+	this.playlist.push(item); // 再生済みリストに登録.
 	elem.value += item.video_id+" "+item.title+"\n";
 	this.savePlaylist();
     },
@@ -1383,6 +1395,7 @@ var NicoLiveHelper = {
 		this.getpostkey();
 		break;
 	    case 1: // リスナーコメ投稿規制.
+		debugnotice('コメント投稿規制中');
 		break;
 	    default:
 		break;
@@ -1775,7 +1788,9 @@ var NicoLiveHelper = {
 
 	if(request_id!="lv0"){
 	    // online
+	    title = title.replace(/\u200b/g,"");
 	    document.title = request_id+":"+title+" (NicoLive Helper)";
+	    this.title = title;
 	    this.start(request_id);
 	}else{
 	    // offline

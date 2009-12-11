@@ -9,6 +9,34 @@ status=true
 --
 ・選曲対象がないときに再生する動画
 
+
+// through NicoNama
+// プレミアム
+http://www.nicovideo.jp/api/getflv?v=nm8091819&as3=1&ckey=1260522864.e3acb0964ebf37c496f484909401b031e755356f
+
+thread_id=1251651464&l=292&url=http%3A%2F%2Fsmile-pso41.nicovideo.jp%2Fsmile%3Fs%3D8091819.83316as3&link=http%3A%2F%2Fwww.smilevideo.jp%2Fview%2F8091819%2F21693&ms=http%3A%2F%2Fmsg.nicovideo.jp%2F22%2Fapi%2F&user_id=21693&is_premium=1&nickname=amano&time=1260522812&done=true&feedrev=041ae&ng_rv=9&as3=1
+
+// 一般
+http://www.nicovideo.jp/api/getflv?v=sm8997891&as3=1&ckey=1260523566.9120bea044cb10d8612adff2fd0b4e5f04cc57aa
+http://smile-cll48.nicovideo.jp/smile?v=8997891.7142low
+
+
+// through NicoVideo
+// プレミアム
+http://www.nicovideo.jp/api/getflv/sm8861709
+http://flapi.nicovideo.jp/api/getflv?v=sm8861709&ts=1260522234654
+
+thread_id=1258714458&l=226&url=http%3A%2F%2Fsmile-pso42.nicovideo.jp%2Fsmile%3Fm%3D8861709.9460&link=http%3A%2F%2Fwww.smilevideo.jp%2Fview%2F8861709%2F21693&ms=http%3A%2F%2Fmsg.nicovideo.jp%2F16%2Fapi%2F&user_id=21693&is_premium=1&nickname=amano&time=1260522234&done=true&feedrev=041ae&ng_rv=9&hms=hiroba-test8.nicovideo.jp&hmsp=2525&hmst=1000000141&hmstk=1260522294.tpT-Xp7Nr5f7ezsAFsPyi1ewQAc
+
+
+// 一般
+http://www.nicovideo.jp/api/getflv/sm8861709?lo=1
+http://flapi.nicovideo.jp/api/getflv?v=sm8861709&ts=1260522426713&lo=1
+
+thread_id=1258714458&l=226&url=http%3A%2F%2Fsmile-cll41.nicovideo.jp%2Fsmile%3Fv%3D8861709.9460low&link=http%3A%2F%2Fwww.smilevideo.jp%2Fview%2F8861709%2F21693&ms=http%3A%2F%2Fmsg.nicovideo.jp%2F16%2Fapi%2F&user_id=21693&is_premium=1&nickname=amano&time=1260522426&done=true&feedrev=041ae&ng_rv=9&hms=hiroba-test7.nicovideo.jp&hmsp=2533&hmst=1000000129&hmstk=1260522486.P2HU3av2u77SnxpNAzbmGR9l9rY
+
+
+
 a = JSON.parse(document.getElementById('textbox-comment').getAttribute('autocompletesearchparam'));
 JSON.stringify(a);
 

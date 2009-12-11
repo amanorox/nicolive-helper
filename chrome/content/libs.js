@@ -128,6 +128,7 @@ function restorehtmlspecialchars(ch){
     ch = ch.replace(/&lt;/g,"<");
     ch = ch.replace(/&gt;/g,">");
     ch = ch.replace(/&nbsp;/g," ");
+    ch = ch.replace(/&apos;/g,"'");
     return ch;
 }
 

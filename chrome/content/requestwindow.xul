@@ -86,8 +86,18 @@
 	<menuseparator/>
 	<menuitem label="放送を終了する" tooltiptext="/disconnect" oncommand="NicoLiveHelper.postCasterComment('/disconnect','');"/>
 	-->
+	<menuseparator/>
+	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
       </menupopup>
     </toolbarbutton>
+<!--
+    <toolbarbutton label="Experimental" type="menu">
+      <menupopup>
+	<menuitem label="強制エコノミー設定"/>
+	<menuitem label="強制エコノミー解除"/>
+      </menupopup>
+    </toolbarbutton>
+-->
     <spacer flex="1"/>
     <toolbarbutton label="ウィンドウ" type="menu">
       <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">
@@ -335,7 +345,7 @@
 	</vbox>
 
 	<vbox>
-	  <textbox id="debug-textbox" emptytext="デバッグ用" multiline="true" readonly="true" flex="1" />
+	  <textbox id="debug-textbox" emptytext="デバッグ用" multiline="true" flex="1" />
 	</vbox>
 
       </tabpanels>

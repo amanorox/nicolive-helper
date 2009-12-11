@@ -187,6 +187,17 @@
     </hbox>
   </prefpane>
 
+<!--
+  <prefpane id="nicolivehelper-perfpane-playlist" label="プレイリスト" image="chrome://nicolivehelper/content/data/iconplaylist.png">
+    <hbox align="center">
+      <label value="番組名"/><textbox defaultValue="{request_id} {}"/>
+    </hbox>
+    <hbox align="center">
+      <label value="記録フォーマット"/><textbox defaultValue="{id} {title}"/>
+    </hbox>
+  </prefpane>
+-->
+
   <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>

@@ -63,7 +63,7 @@ var NicoLiveOverlay = {
     init:function(){
 	let appcontent = document.getElementById("appcontent");   // ブラウザ
 	if(appcontent){
-	    appcontent.addEventListener("load",
+	    appcontent.addEventListener("DOMContentLoaded",
 					function(e){
 					    NicoLiveOverlay.onPageLoad(e);
 					},true);
