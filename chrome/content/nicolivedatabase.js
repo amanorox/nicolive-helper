@@ -398,7 +398,7 @@ var NicoLiveDatabase = {
 	info.view_counter   = row.getResultByName('view_counter');
 	info.comment_num    = row.getResultByName('comment_num');
 	info.mylist_counter = row.getResultByName('mylist_counter');
-	let tags            = row.getResultByName('tags');
+	let tags            = htmlspecialchars(row.getResultByName('tags'));
 	info.tags           = tags.split(/,/);
 	//info.pname          = row.getResultByName('pname');
 	return info;

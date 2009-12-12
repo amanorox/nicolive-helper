@@ -238,7 +238,7 @@ var NicoLiveHelper = {
 	case 3:
 	    // 主コメの処理.
 	    let dat;
-	    // /play smile:sm00000 "title"
+	    // /play smile:sm00000 main "title"
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		if(!this.iscaster){
