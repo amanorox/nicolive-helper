@@ -26,17 +26,17 @@
   </script>
 
   <vbox>
-    <hbox>
+    <hbox align="center">
       <label value="質問文"/>
       <textbox id="question" flex="1"/>
     </hbox>
-    <hbox>
+    <hbox align="center">
       <label value="選択肢1"/>
       <textbox id="answer1" flex="1"/>
       <label value="選択肢2"/>
       <textbox id="answer2" flex="1"/>
     </hbox>
-    <hbox>
+    <hbox align="center">
       <label value="選択肢3"/>
       <textbox id="answer3" flex="1"/>
       <label value="選択肢4"/>

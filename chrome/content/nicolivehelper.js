@@ -797,25 +797,6 @@ var NicoLiveHelper = {
 	this._sendmusicid = setInterval("NicoLiveHelper.sendMusicInfo2();",5000);
     },
 
-    // 2～4択のアンケートを出題.
-    startVote: function(q,a1,a2,a3,a4){
-	q = q || "";
-	a1 = a1 || "";
-	a2 = a2 || "";
-	a3 = a3 || "";
-	a4 = a4 || "";
-	let str = "/vote start "+q+ " "+a1+" "+a2+" "+a3+" "+a4;
-	this.postCasterComment(str,"");
-    },
-    // 集計結果を表示.
-    showVoteResult: function(){
-	this.postCasterComment("/vote showresult","");
-    },
-    // アンケートの終了.
-    stopVote: function(){
-	this.postCasterComment("/vote stop","");
-    },
-
     // 主コメを投げる.
     postCasterComment: function(comment,mail){
 	if(!this.iscaster) return;
@@ -854,15 +835,15 @@ var NicoLiveHelper = {
 	};
 	comment = this.replaceMacros(comment);
 
-	let anchor = comment.match(/>>(\d+)-(\d+)(@(\d+))?/);
+	let anchor = comment.match(/>>(\d+)-(\d+)?(@(\d+))?/);
 	if(anchor){
 	    let start_cno = anchor[1];
-	    let end_cno   = anchor[2];
-	    let num       = anchor[4];
+	    let end_cno   = anchor[2] ? anchor[2] : 99999;
+	    let num       = anchor[4] ? anchor[4] : 999;
 	    this.anchor = {};
 	    this.anchor.start = start_cno;
 	    this.anchor.end   = end_cno;
-	    this.anchor.num   = num ? num : 999;
+	    this.anchor.num   = num;
 	    this.anchor.counter = 0;
 	    debugprint("アンカー受付:コメ番"+start_cno+"から"+end_cno+"まで"+num+"個");
 	}
@@ -1041,6 +1022,19 @@ var NicoLiveHelper = {
 	let tmp = this.requestqueue[idx+1];
 	this.requestqueue[idx+1] = this.requestqueue[idx];
 	this.requestqueue[idx] = tmp;
+	NicoLiveRequest.update(this.requestqueue);
+	this.saveRequest();
+    },
+
+    // コメ番順にソート.
+    sortRequestByCommentNo:function(){
+	// order:1だと昇順、order:-1だと降順.
+	let order = 1;
+	this.requestqueue.sort( function(a,b){
+				    if(b.cno==0) return -1;
+				    if(a.cno==0) return 1;
+				    return (a.cno - b.cno) * order;
+				});
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
     },

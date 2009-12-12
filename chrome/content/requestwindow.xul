@@ -399,6 +399,8 @@
 
     <!-- request tab -->
     <menupopup id="popup-copyrequest">
+      <menuitem label="コメ番順にソート" oncommand="NicoLiveHelper.sortRequestByCommentNo();"/>
+      <menuseparator/>
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
