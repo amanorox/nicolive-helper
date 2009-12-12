@@ -13,7 +13,8 @@
       var i,txt,str="";
       for(i=0;txt=texts[i];i++){
 	  if(txt.value){
-	      str += '"'+txt.value+'" '
+	      let tmp = text.value.replace(/"/g,"");
+	      str += '"'+tmp+'" '
 	  }
       }
       Application.console.log(str);
