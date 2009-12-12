@@ -187,17 +187,21 @@ var NicoLiveMylist = {
 
 		for(let i=0,item;item=mylists[i];i++){
 		    // マイリストに追加.
-		    let elem = CreateMenuItem(item.name,item.id);
+		    let tmp = item.name.match(/.{1,20}/);
+		    let elem = CreateMenuItem(tmp,item.id);
+		    elem.setAttribute("tooltiptext",item.name);
 		    elem.addEventListener("command", function(e){ NicoLiveMylist.addMyList(e.target.value,e.target.label); },false );
 		    $('popup-mylists').appendChild(elem);
 
 		    // マイリスト読み込み(stock)
-		    elem = CreateMenuItem(item.name,item.id);
+		    elem = CreateMenuItem(tmp,item.id);
+		    elem.setAttribute("tooltiptext",item.name);
 		    elem.addEventListener("command",function(e){ NicoLiveMylist.addStockFromMylist(e.target.value,e.target.label); },false);
 		    $('menupopup-from-mylist').appendChild(elem);
 
 		    // マイリスト読み込み(db)
-		    elem = CreateMenuItem(item.name,item.id);
+		    elem = CreateMenuItem(tmp,item.id);
+		    elem.setAttribute("tooltiptext",item.name);
 		    elem.addEventListener("command",function(e){ NicoLiveMylist.addDatabase(e.target.value,e.target.label);},false);
 		    $('menupopup-from-mylist-to-db').appendChild(elem);
 		}

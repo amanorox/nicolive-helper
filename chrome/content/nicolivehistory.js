@@ -38,7 +38,8 @@ var NicoLiveHistory = {
 
 	for(let i=0,item;item=mylists[i];i++){
 	    let elem;
-	    elem = CreateMenuItem(item.name,item.id);
+	    let tmp = item.name.match(/.{1,20}/);
+	    elem = CreateMenuItem(tmp,item.id);
 	    elem.addEventListener("command",function(e){ NicoLiveHistory.addMylist(e.target.value,e.target.label);},false);
 	    popup.appendChild(elem);
 	}	
