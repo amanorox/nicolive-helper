@@ -515,7 +515,7 @@ var NicoLiveRequest = {
     },
 
     dropToStock:function(event){
-	this.dataTransfer = event.dataTransfer;
+	//this.dataTransfer = event.dataTransfer;
 
 	// ファイルをドロップしたとき.
 	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
@@ -544,6 +544,7 @@ var NicoLiveRequest = {
 		} catch (x) {
 		}
 	    }
+	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
 	    NicoLiveRequest.addStock(str);
 	    return;
 	}
