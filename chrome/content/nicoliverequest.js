@@ -483,23 +483,52 @@ var NicoLiveRequest = {
 	istream.close();
     },
 
+    /* ファイルをドロップしたとき
+     * application/x-moz-file
+     * text/x-moz-url
+     * 
+     * Firefoxからリンクをドロップしたとき
+     * text/x-moz-url
+     * text/x-moz-url-data
+     * text/x-moz-url-desc
+     * text/uri-list
+     * text/_moz_htmlcontext
+     * text/_moz_htmlinfo
+     * text/html
+     * text/plain
+     * 
+     * Firefoxからタブをドロップしたとき
+     * application/x-moz-tabbrowser-tab
+     * text/x-moz-text-internal
+     */
+
     checkDrag:function(event){
-	let b = event.dataTransfer.types.contains("application/x-moz-file");
+	//let b = event.dataTransfer.types.contains("application/x-moz-file");
+	/*
+	debugprint("--");
 	for(let i=0;i<event.dataTransfer.types.length;i++){
 	    debugprint('dragging:'+event.dataTransfer.types.item(i));
 	}
-	if(b){
-	    event.preventDefault();
-	}
-	return b;
+	 */
+	event.preventDefault();
+	return true;
     },
 
     dropToStock:function(event){
+	this.dataTransfer = event.dataTransfer;
+
+	// ファイルをドロップしたとき.
 	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
 	if (file instanceof Components.interfaces.nsIFile){
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("dropped:"+file.path);
 	    this.readFileToStock(file);
+	}
+	// アンカーをドロップしたとき.
+	if( event.dataTransfer.types.contains("text/uri-list") ){
+	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
+	    debugprint("dropped:"+uri);
+	    NicoLiveRequest.addStock(uri);
 	}
     },
 
