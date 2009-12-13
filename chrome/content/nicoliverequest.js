@@ -523,12 +523,29 @@ var NicoLiveRequest = {
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("file dropped:"+file.path);
 	    this.readFileToStock(file);
+	    return;
 	}
 	// アンカーをドロップしたとき.
 	if( event.dataTransfer.types.contains("text/uri-list") ){
 	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
 	    debugprint("uri dropped:"+uri);
 	    NicoLiveRequest.addStock(uri);
+	    return;
+	}
+	// タブをドロップしたとき.
+	if( event.dataTransfer.types.contains("application/x-moz-tabbrowser-tab") ){
+	    debugprint("tab dropped");
+	    let tab = event.dataTransfer.mozGetDataAt("application/x-moz-tabbrowser-tab",0);
+	    let doc = tab.linkedBrowser.contentDocument;
+	    let str = "";
+	    for(let i=1,item; item=doc.getElementById('item'+i);i++){
+		try{
+		    str += item.getElementsByClassName('watch')[0].getAttribute('href') + " ";
+		} catch (x) {
+		}
+	    }
+	    NicoLiveRequest.addStock(str);
+	    return;
 	}
     },
 

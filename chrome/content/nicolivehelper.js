@@ -1232,6 +1232,7 @@ var NicoLiveHelper = {
 	    if( req.readyState==4 && req.status==200 ){
 		// ストックでもリクエスト縛り要件を満たすかチェックする.
 		let ans = NicoLiveHelper.checkAcceptRequest(req.responseXML, 0);
+		//debugprint(sm+'/'+ans.msg);
 		switch(ans.code){
 		case 0:
 		case -2: // リク受けつけてない.
