@@ -352,7 +352,7 @@ var NicoLiveHelper = {
 			// 手動で/playコマンドを入力したときにここに来る.
 			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
 			NicoLiveHelper.addPlayList(music);
-			NicoLiveHelper._sendMusicInfo();
+			NicoLiveHelper.sendMusicInfo();
 			NicoLiveHelper.inplay = true;
 		    }
 		}
@@ -474,7 +474,7 @@ var NicoLiveHelper = {
     },
 
     // 再生する曲の情報を主コメする.
-    sendMusicInfo2:function(){
+    _sendMusicInfo:function(){
 	let sendstr = NicoLivePreference.videoinfo[this._counter];
 	if(!sendstr){
 	    clearInterval(this._sendmusicid);
@@ -524,7 +524,7 @@ var NicoLiveHelper = {
 	    str += " sub";
 	}
 	this.postCasterComment(str,""); // 再生.
-	this._sendMusicInfo(); // 曲情報の送信.
+	this.sendMusicInfo(); // 曲情報の送信.
 
 	this.addPlayList(this.musicinfo);
 	NicoLiveRequest.update(this.requestqueue);
@@ -790,11 +790,12 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
     },
 
-    _sendMusicInfo:function(){
+    sendMusicInfo:function(){
 	// 曲情報の送信.
 	clearInterval(this._sendmusicid);
 	this._counter = 0;
-	this._sendmusicid = setInterval("NicoLiveHelper.sendMusicInfo2();",5000);
+	//NicoLiveHelper._sendMusicInfo();
+	this._sendmusicid = setInterval("NicoLiveHelper._sendMusicInfo();",5000);
     },
 
     // 主コメを投げる.

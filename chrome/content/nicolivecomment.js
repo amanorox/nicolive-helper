@@ -201,9 +201,11 @@ var NicoLiveComment = {
 	this.commentlog   = new Array();
 	this.namemap = NicoLiveDatabase.loadGPStorage("nico_live_kotehan",{});
 	this.autocomplete = NicoLiveDatabase.loadGPStorage("nico_live_autocomplete",[]);
+	$('textbox-comment').setAttribute("autocompletesearchparam",JSON.stringify(this.autocomplete));
     },
     destroy:function(){
 	this.closeFile();
+	NicoLiveDatabase.saveGPStorage("nico_live_autocomplete",this.autocomplete);
     }
 };
 

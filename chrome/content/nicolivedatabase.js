@@ -387,6 +387,7 @@ var NicoLiveDatabase = {
     // 行からmusicinfoに変換.
     rowToMusicInfo:function(row){
 	let info ={};
+	// innerHTMLで流し込むのでhtmlspecialcharsを使う.
 	info.video_id = row.getResultByName('video_id');
 	info.title    = htmlspecialchars(row.getResultByName('title'));
 	info.description = htmlspecialchars(row.getResultByName('description'));
