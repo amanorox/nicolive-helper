@@ -521,13 +521,13 @@ var NicoLiveRequest = {
 	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
 	if (file instanceof Components.interfaces.nsIFile){
 	    if( !file.leafName.match(/\.txt$/) ) return;
-	    debugprint("dropped:"+file.path);
+	    debugprint("file dropped:"+file.path);
 	    this.readFileToStock(file);
 	}
 	// アンカーをドロップしたとき.
 	if( event.dataTransfer.types.contains("text/uri-list") ){
 	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
-	    debugprint("dropped:"+uri);
+	    debugprint("uri dropped:"+uri);
 	    NicoLiveRequest.addStock(uri);
 	}
     },
