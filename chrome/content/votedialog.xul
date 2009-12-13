@@ -13,11 +13,11 @@
       var i,txt,str="";
       for(i=0;txt=texts[i];i++){
 	  if(txt.value){
-	      let tmp = text.value.replace(/"/g,"");
+	      var tmp = txt.value.replace(/"/g,"");
 	      str += '"'+tmp+'" '
 	  }
       }
-      Application.console.log(str);
+      //Application.console.log(str);
       opener.NicoLiveHelper.postCasterComment("/vote start "+str,"");
       return true;
   }
