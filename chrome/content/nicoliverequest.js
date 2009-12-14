@@ -290,6 +290,7 @@ var NicoLiveRequest = {
 					NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
 					NicoLiveRequest.playlist_start = n;
 					clearInterval(NicoLiveRequest.playlist_timer);
+					NicoLiveRequest.playlist_first = true;
 					NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",2000);
 				    }
 				},
@@ -363,25 +364,35 @@ var NicoLiveRequest = {
 
     test:function(){
 	// playing, pauseed, end
-	if(this.opentab.contentDocument){
-	    let status;
-	    status = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject.ext_getStatus();
-	    switch(status){
-	    case "end":
-		if(this.playlist_start>NicoLiveHelper.stock.length){
-		    debugprint("ストックの最後まで再生しました");
-		    // 最初に戻る.
-		    this.playlist_start = 0;
+	try{
+	    if(this.opentab.contentDocument){
+		let status;
+		let flv = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject; 
+		status = flv.ext_getStatus();
+		if(this.playlist_first && flv.ext_getPlayheadTime()==0){
+		    flv.ext_play(true);
+		    this.playlist_first = false;
+		    debugprint("play");
 		}
-		let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
-		this.playlist_start++;
-		debugprint(nextmusic.video_id+"を再生します");
-		this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
-		break;
+		switch(status){
+		case "end":
+		    if(this.playlist_start>NicoLiveHelper.stock.length){
+			debugprint("ストックの最後まで再生しました");
+			// 最初に戻る.
+			this.playlist_start = 0;
+		    }
+		    let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
+		    this.playlist_start++;
+		    debugprint(nextmusic.video_id+"を再生します");
+		    this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
+		    this.playlist_first = true;
+		    break;
+		}
+	    }else{
+		debugprint("動画再生タブがなくなったので停止します");
+		clearInterval(this.playlist_timer);
 	    }
-	}else{
-	    debugprint("動画再生タブがなくなったので停止します");
-	    clearInterval(this.playlist_timer);
+	} catch (x) {
 	}
     },
 
