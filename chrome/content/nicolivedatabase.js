@@ -593,6 +593,37 @@ var NicoLiveDatabase = {
 	}
     },
 
+    checkDrag:function(event){
+	event.preventDefault();
+	return true;
+    },
+
+    dropToStock:function(event){
+	// アンカーをドロップしたとき.
+	if( event.dataTransfer.types.contains("text/uri-list") ){
+	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
+	    debugprint("uri dropped:"+uri);
+	    this.addVideos(uri);
+	    return;
+	}
+	// タブをドロップしたとき.
+	if( event.dataTransfer.types.contains("application/x-moz-tabbrowser-tab") ){
+	    debugprint("tab dropped");
+	    let tab = event.dataTransfer.mozGetDataAt("application/x-moz-tabbrowser-tab",0);
+	    let doc = tab.linkedBrowser.contentDocument;
+	    let str = "";
+	    for(let i=1,item; item=doc.getElementById('item'+i);i++){
+		try{
+		    str += item.getElementsByClassName('watch')[0].getAttribute('href') + " ";
+		} catch (x) {
+		}
+	    }
+	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
+	    this.addVideos(str);
+	    return;
+	}
+    },
+
     init:function(){
 	debugprint('NicoLiveDatabase init');
 	this.addSearchLine();

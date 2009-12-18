@@ -540,7 +540,7 @@ var NicoLiveRequest = {
 	if( event.dataTransfer.types.contains("text/uri-list") ){
 	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
 	    debugprint("uri dropped:"+uri);
-	    NicoLiveRequest.addStock(uri);
+	    this.addStock(uri);
 	    return;
 	}
 	// タブをドロップしたとき.
@@ -556,7 +556,7 @@ var NicoLiveRequest = {
 		}
 	    }
 	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
-	    NicoLiveRequest.addStock(str);
+	    this.addStock(str);
 	    return;
 	}
     },

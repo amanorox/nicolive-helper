@@ -14,5 +14,14 @@ var NicoLiveWindow = {
 	    $('popup-windowlist').appendChild(menuitem);
 	}
 	return true;
+    },
+    init: function(){
+	window.moveTo(0,0);
+	debugprint("window move");
+    },
+    destroy: function(){
     }
 };
+
+window.addEventListener("load", function(e){ NicoLiveWindow.init(); }, false);
+window.addEventListener("unload", function(e){ NicoLiveWindow.destroy(); }, false);

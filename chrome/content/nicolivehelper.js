@@ -98,6 +98,7 @@ var NicoLiveHelper = {
 	    for(let i=0,item;item=info.tags[i];i++){
 		if(item.match(/ミク/)){ ismiku = true; }
 		if(item.match(/オリジナル/)){ isoriginal = true; }
+		if(item.match(/ProjectDIVA-AC楽曲募集/)){ ismiku = true; isoriginal = true; }
 
 		if(item.match(/コモンズ/)){ isoriginal = true; }
 		if(item.match(/VOCALOID→VOCALOIDカバー/)){ isoriginal = true; }
