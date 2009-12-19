@@ -462,9 +462,7 @@ var NicoLiveRequest = {
 	    let flags = 0x02|0x08|0x20;// wronly|create|truncate
 	    os.init(file,flags,0664,0);
 
-	    let cos = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
-	    cos.init(os,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
-
+	    let cos = GetUTF8ConverterOutputStream(os);
 	    cos.writeString(ids.join('\r\n')+"\r\n");
 	    cos.close();
 	}

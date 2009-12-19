@@ -798,11 +798,20 @@ var NicoLiveHelper = {
 	//NicoLiveHelper._sendMusicInfo();
 	this._sendmusicid = setInterval("NicoLiveHelper._sendMusicInfo();",5000);
     },
+    // コメント(主と視聴者を識別してそれぞれのコメント).
+    postComment: function(comment,mail){
+	if(this.iscaster){
+	    this.postCasterComment(comment,mail);
+	}else{
+	    this.postListenerComment(comment,mail);
+	}
+    },
 
     // 主コメを投げる.
     postCasterComment: function(comment,mail){
 	if(!this.iscaster) return;
 	if(this.isOffline()) return;
+	if(comment.length<=0) return;
 
 	var req = new XMLHttpRequest();
 	if( !req ) return;
@@ -863,6 +872,7 @@ var NicoLiveHelper = {
     postListenerComment: function(comment,mail){
 	if(this.isOffline()) return;
 	if(!comment) return;
+	if(comment.length<=0) return;
 	if(this.previouschat==comment){
 	    debugnotice("同じコメの連投はできません");
 	    return;

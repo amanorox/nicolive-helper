@@ -40,6 +40,11 @@
       window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
   }
 
+  function OpenContinuousCommentWindow(){
+      var value = null;
+      window.openDialog("chrome://nicolivehelper/content/continuouscomment.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
+  }
+
   ]]>
   </script>
 
@@ -86,6 +91,8 @@
 	<menuseparator/>
 	<menuitem label="放送を終了する" tooltiptext="/disconnect" oncommand="NicoLiveHelper.postCasterComment('/disconnect','');"/>
 	-->
+	<menuseparator/>
+	<menuitem label="連続コメント" oncommand="OpenContinuousCommentWindow();"/>
 	<menuseparator/>
 	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
       </menupopup>

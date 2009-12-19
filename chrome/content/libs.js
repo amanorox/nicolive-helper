@@ -17,18 +17,18 @@ function $$(tag){
 }
 
 function CreateElement(part){
-    let elem;
+    var elem;
     elem = document.createElementNS(XUL_NS,part);
     return elem;
 }
 function CreateHTMLElement(part){
-    let elem;
+    var elem;
     elem = document.createElementNS(HTML_NS,part);
     return elem;
 }
 
 function CreateMenuItem(label,value){
-    let elem;
+    var elem;
     elem = document.createElementNS(XUL_NS,'menuitem');
     elem.setAttribute('label',label);
     elem.setAttribute('value',value);
@@ -36,24 +36,24 @@ function CreateMenuItem(label,value){
 };
 
 function CreateButton(label){
-    let elem;
+    var elem;
     elem = document.createElementNS(XUL_NS,'button');
     elem.setAttribute('label',label);
     return elem;
 }
 
 function CreateLabel(label){
-    let elem;
+    var elem;
     elem = document.createElementNS(XUL_NS,'label');
     elem.setAttribute('value',label);
     return elem;
 }
 
 function OpenFile(path){
-    let localfileCID = '@mozilla.org/file/local;1';
-    let localfileIID =Components.interfaces.nsILocalFile;
+    var localfileCID = '@mozilla.org/file/local;1';
+    var localfileIID =Components.interfaces.nsILocalFile;
     try {
-	let file = Components.classes[localfileCID].createInstance(localfileIID);
+	var file = Components.classes[localfileCID].createInstance(localfileIID);
 	file.initWithPath(path);
 	return file;
     }
@@ -63,8 +63,8 @@ function OpenFile(path){
 }
 
 function ComfirmPrompt(text,caption){
-    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    let result = prompts.confirm(null, caption, text);
+    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    var result = prompts.confirm(null, caption, text);
     return result;
 }
 
@@ -72,8 +72,8 @@ function InputPrompt(text,caption,input){
     var check = {value: false};
     var input_ = {value: input};
 
-    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    let result = prompts.prompt(null, caption, text, input_, null, check);
+    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    var result = prompts.prompt(null, caption, text, input_, null, check);
     if( result ){
 	return input_.value;
     }else{
@@ -93,7 +93,7 @@ function FindParentElement(elem,tag){
 function WindowEnumerator(){
     var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
     var enumerator = wm.getEnumerator("");
-    let windowlist = new Array();
+    var windowlist = new Array();
     while(enumerator.hasMoreElements()) {
 	var win = enumerator.getNext();
 	// win is [Object ChromeWindow] (just like window), do something with it
@@ -107,7 +107,7 @@ function WindowEnumerator(){
 
 function CopyToClipboard(str){
     if(str.length<=0) return;
-    let gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].  
+    var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].  
 	getService(Components.interfaces.nsIClipboardHelper);  
     gClipboardHelper.copyString(str);
     debugprint('copy to clipboard:'+str);
@@ -159,26 +159,40 @@ function SetWindowTopMost(b){
     XULWindow.zLevel = b ? Ci.nsIXULWindow.raisedZ : Ci.nsIXULWindow.normalZ;
 }
 
+function GetUTF8ConverterInputStream(istream)
+{
+    var cis = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
+    cis.init(istream,"UTF-8",0,Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
+    return cis;
+}
+
+function GetUTF8ConverterOutputStream(os)
+{
+    var cos = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+    cos.init(os,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
+    return cos;
+}
+
 
 // 現在時刻を秒で返す(C言語でいうところのtime()で).
 function GetCurrentTime(){
-    let d = new Date();
+    var d = new Date();
     return Math.floor(d.getTime()/1000);
 }
 
 function GetDateString(ms){
-    let d = new Date(ms);
+    var d = new Date(ms);
     return d.toLocaleFormat("%Y/%m/%d %H:%M:%S");
 }
 
 function GetFormattedDateString(format,ms){
-    let d = new Date(ms);
+    var d = new Date(ms);
     return d.toLocaleFormat(format);
 }
 
 // min:sec の文字列を返す.
 function GetTimeString(sec){
-    let str;
+    var str;
     str = parseInt(sec/60) + ":";
     str += (sec%60)<10?"0"+parseInt(Math.abs(sec)%60):parseInt(Math.abs(sec)%60);
     return str;

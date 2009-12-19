@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<dialog id="continuouscommentwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+	title="連続コメントウィンドウ(NicoLive Helper)"
+	buttons="cancel" ondialogcancel="return true;">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+
+  <script>
+  <![CDATA[
+
+  function SendOneLine()
+  {
+      var str;
+      str = document.getElementById('multiline-comment').value.split(/\n|\r|\r\n/);
+      if(str.length){
+	  opener.NicoLiveHelper.postComment(str[0],"");
+	  str.splice(0,1);
+	  document.getElementById('multiline-comment').value = str.join('\r\n');
+      }
+  }
+
+  function ReadTextFile(file){
+      var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+      istream.init(file, 0x01, 0444, 0);
+      istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+      var cis = GetUTF8ConverterInputStream(istream);
+
+      // 行を配列に読み込む
+      var line = {}, hasmore;
+      var str = "";
+      do {
+	  hasmore = cis.readString(1024,line);
+	  str += line.value;
+      } while(hasmore);
+      istream.close();
+//      Application.console.log(str);
+
+      document.getElementById('multiline-comment').value = str;
+  }
+
+  function FileDropped(event){
+	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	if (file instanceof Components.interfaces.nsIFile){
+	    if( !file.leafName.match(/\.txt$/) ) return;
+//	    Application.console.log("file dropped:"+file.path);
+	    ReadTextFile(file);
+	    return;
+	}
+  }
+
+  ]]>
+  </script>
+
+  <vbox flex="1">
+    <button label="1行送信" oncommand="SendOneLine();"/>
+    <textbox flex="1" id="multiline-comment" multiline="true" rows="10"
+	     ondragenter="event.preventDefault();"
+	     ondragover="event.preventDefault();"
+	     ondrop="FileDropped(event);"
+	     >      
+    </textbox>
+  </vbox>
+
+</dialog>
