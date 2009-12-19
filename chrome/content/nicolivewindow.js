@@ -15,13 +15,54 @@ var NicoLiveWindow = {
 	}
 	return true;
     },
+    move: function(x,y){
+	window.moveTo(x,y);
+    },
+    resize: function(w,h){
+	window.resizeTo(w,h);	
+    },
+    save: function(){
+	let pos = {
+	    "x" : window.screenX,
+	    "y" : window.screenY,
+	    "w" : window.outerWidth,
+	    "h" : window.outerHeight
+	};
+	NicoLiveDatabase.saveGPStorage("xywh",pos);
+    },
+    restore:function(){
+	let def = {
+	    x:0,
+	    y:0,
+	    w:0,
+	    h:0
+	};
+	let pos = NicoLiveDatabase.loadGPStorage("xywh",def);
+	if( !(pos.x==0 && pos.y==0 && pos.w==0 && pos.h==0) ){
+	    this.move(pos.x,pos.y);
+	    this.resize(pos.w,pos.h);
+	}
+    },
     init: function(){
-	window.moveTo(0,0);
-	debugprint("window move");
+	NicoLiveWindow.restore();
+	window.removeEventListener("focus",NicoLiveWindowRestorePosition,false);
+
+	/*
+	let id = setInterval(
+	    function(){ NicoLiveWindow.restore();
+			clearInterval(id); },
+	    1000);
+	 */
     },
     destroy: function(){
+	this.save();
     }
 };
 
-window.addEventListener("load", function(e){ NicoLiveWindow.init(); }, false);
+function NicoLiveWindowRestorePosition()
+{
+    NicoLiveWindow.init();
+}
+
+window.addEventListener("focus", NicoLiveWindowRestorePosition, false);
 window.addEventListener("unload", function(e){ NicoLiveWindow.destroy(); }, false);
