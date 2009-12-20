@@ -400,8 +400,12 @@ var NicoLiveHelper = {
 				   tmp = FormatCommas(info.mylist_counter);
 				   break;
 			       case 'mylistrate':
-				   if(info.mylist_counter==null||info.view_counter==null||info.view_counter==0) break;
-				   tmp = (100*info.mylist_counter/info.view_counter).toFixed(1) + "%";
+				   if(info.mylist_counter==null||info.view_counter==null) break;
+				   if( info.view_counter==0 ){
+				       tmp = "0.0%";
+				   }else{
+				       tmp = (100*info.mylist_counter/info.view_counter).toFixed(1) + "%";
+				   }
 				   break;
 			       case 'tags':
 				   // 1行40文字程度までかなぁ
@@ -947,14 +951,17 @@ var NicoLiveHelper = {
 	case 0:// 手動.
 	    this.setAutoplay(0);
 	    this.setRandomplay(false);
+	    debugprint("手動再生にしました");
 	    break;
 	case 1:// 自動順次
 	    this.setAutoplay(1);
 	    this.setRandomplay(false);
+	    debugprint("自動順次にしました");
 	    break;
 	case 2:// 自動ランダム
 	    this.setAutoplay(1);
 	    this.setRandomplay(true);
+	    debugprint("自動ランダムにしました");
 	    break;
 	case 3:// 手動ランダム.
 	    this.setAutoplay(0);
