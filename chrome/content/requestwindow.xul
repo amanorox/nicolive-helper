@@ -121,7 +121,6 @@
 	<tab label="再生履歴"/>
 	<tab label="コメント"/>
 	<tab label="動画DB"/>
-<!--	<tab label="ニコ動検索"/> -->
 	<tab label="基本設定"/>
 	<tab label="Debug"/>
       </tabs>
@@ -211,20 +210,12 @@
 		     onkeypress="NicoLiveComment.postComment(this,event);"
 		     ontextreverted="this.select();"
 		     />
-<!--
-		     autocompletesearchparam='[{"value":"枠乙〜","comment":""},{"value":"ヽ(ﾟ∀ﾟ)ﾉｲｬｰｲｲｬｰｲﾔｯﾊﾊｰｲﾊｰｲ","comment":""},{"value":"♪{title}","comment":""}]'
--->
-
 	    <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/>
-
-
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto;">
-
 	    <stack>
 	      <html:table id="comment_table" style="width:100%"></html:table>
 	      <html:iframe id="iframe-thumbnail" width="312" height="176" src="about:blank" scrolling="no" style="display:none;border:solid 1px #CCC;float:left;position:fixed;bottom:30px;left:25px;" frameborder="0"></html:iframe>
-
 	    </stack>
 	  </vbox>
 	</vbox>
@@ -285,19 +276,6 @@
 	    </html:table>
 	  </vbox>
 	</vbox>
-
-	<!-- search NicoNicoDouga -->
-<!--
-	<vbox class="tabpanel">
-
-	  <textbox id="text1"
-		   type="autocomplete"
-		   autocompletesearch="simple-autocomplete"
-		   enablehistory="true"
-		   showcommentcolumn="true"
-		   autocompletesearchparam='[{"value":"mark","comment":"cool dude"},{"value":"mary","comment":"nice lady"},{"value":"jimmy","comment":"very uncool guy"},{"value":"jimbo","comment":null}]' />
-	</vbox>
--->
 
 	<!-- setting tab -->
 	<vbox class="tabpanel">
