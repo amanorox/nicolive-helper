@@ -118,6 +118,7 @@
       <tabs>
 	<tab label="リクエスト"/>
 	<tab label="ストック"/>
+	<tab label="エラーリクエスト"/>
 	<tab label="再生履歴"/>
 	<tab label="コメント"/>
 	<tab label="動画DB"/>
@@ -161,6 +162,18 @@
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
 	    <html:table id="stock-table" class="requestview">
+	    </html:table>
+	  </vbox>
+	</vbox>
+
+	<!-- error request tab -->
+	<vbox flex="1">
+	  <hbox>
+	    <spacer flex="1"/>
+	    <button label="全消去" oncommand="NicoLiveHelper.removeErrorRequestAll();"/>
+	  </hbox>
+	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
+	    <html:table id="error-request-table" class="requestview">
 	    </html:table>
 	  </vbox>
 	</vbox>

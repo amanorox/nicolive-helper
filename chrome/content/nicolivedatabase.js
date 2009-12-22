@@ -347,7 +347,7 @@ var NicoLiveDatabase = {
     sendRequestOne:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.firstChild.textContent;
-	if(NicoLiveHelper.iscaster){
+	if(NicoLiveHelper.iscaster || NicoLiveHelper.isOffline()){
 	    NicoLiveRequest.addRequest(video_id);
 	}else{
 	    NicoLiveHelper.postListenerComment(video_id,"");

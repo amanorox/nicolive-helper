@@ -833,14 +833,14 @@ var NicoLiveHelper = {
 			video_id = "";
 		    }
 		    if(video_id){
-			let str = video_id + "は再生できませんでした";
+			let str = video_id + "の再生に失敗しました";
 			NicoLiveHelper.postCasterComment(str,"");
 			$('played-list-textbox').value += str + "\n";
 			// たまに生引用拒否していなくてもエラーになるので.
 			// エラーになった動画はストックにしておく.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
 			    NicoLiveHelper.musicinfo.error = true;
-			    NicoLiveHelper.addStockQueue(NicoLiveHelper.musicinfo);
+			    NicoLiveHelper.addErrorRequest(NicoLiveHelper.musicinfo);
 			}
 			NicoLiveHelper.inplay = false;
 			NicoLiveHelper.musicinfo = {};
@@ -1062,8 +1062,7 @@ var NicoLiveHelper = {
 
     // ストックリストに追加.
     addStockQueue:function(item){
-	if( !item ) return;
-	if( !item.video_id ) return;
+	if( !item || !item.video_id ) return;
 	if(this.isStockedMusic(item.video_id)) return;
 	this.stock.push(item);
 	NicoLiveRequest.addStockView(item);
@@ -1083,21 +1082,19 @@ var NicoLiveHelper = {
 	}
 	this.addRequestQueue(music);
     },
-
-    // リクエストリストをコンソールに表示.
-    printRequestList: function(){
-	let t=0;
-	let i;
-	let item;
-	for(i=0;item=this.requestqueue[i];i++){
-	    debugprint(i+1+":"+item.video_id+"/"+item.title+" ("+item.length_ms/1000 +"sec.)");
-	    t += item.length_ms;
-	}
-	t /= 1000;
-	let min,sec;
-	min = parseInt(t/60);
-	sec = t%60;
-	debugprint("Total:"+min+"min. "+sec+"sec.");
+    // エラーリクエストリストに追加
+    addErrorRequestList:function(item){
+	if(!item || !item.video_id) return;
+	this.error_req[ item.video_id ] = item;
+	NicoLiveRequest.updateErrorRequest(this.error_req);
+    },
+    removeErrorRequest:function(video_id){
+	delete this.error_req[video_id];	
+	NicoLiveRequest.updateErrorRequest(this.error_req);
+    },
+    removeErrorRequestAll:function(){
+	this.error_req = new Object();
+	NicoLiveRequest.updateErrorRequest(this.error_req);
     },
 
     // リクエスト曲の総再生時間を返す.
@@ -1376,7 +1373,7 @@ var NicoLiveHelper = {
 		    break;
 		default:
 		    ans.movieinfo.error = true;
-		    //NicoLiveHelper.addStockQueue(ans.movieinfo);
+		    NicoLiveHelper.addErrorRequestList(ans.movieinfo);
 		    break;
 		}
 		NicoLiveHelper.updateRemainRequestsAndStocks();
@@ -1793,6 +1790,7 @@ var NicoLiveHelper = {
 	this.requestqueue = new Array();
 	this.playlist     = new Array();
 	this.stock        = new Array();
+	this.error_req    = new Object(); // 配列にしない
 	this.isnotified   = new Array(); // 残り3分通知を出したかどうかのフラグ.
 	this.musicinfo    = {};
 	this.request_per_ppl = new Object(); // 1人あたりのリクエスト受け付け数ワーク.
