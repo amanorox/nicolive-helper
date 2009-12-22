@@ -218,3 +218,13 @@ function clearTable(tbody)
       tbody.deleteRow(0);
    }
 }
+
+function IsWINNT()
+{
+    var osString = Components.classes["@mozilla.org/xre/app-info;1"]
+        .getService(Components.interfaces.nsIXULRuntime).OS;
+    if(osString=="WINNT"){
+	return true;
+    }
+    return false;
+}

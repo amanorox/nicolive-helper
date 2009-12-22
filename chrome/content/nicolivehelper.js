@@ -419,6 +419,12 @@ var NicoLiveHelper = {
 				   if(!pn){
 				       let pname = new Array();
 				       for(let i=0,tag;tag=info.tags[i];i++){
+					   // ホワイトリストチェック.
+					   if( pname_whitelist["_"+tag] ){
+					       pname.push(tag);
+					       continue;
+					   }
+
 					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
 					   if(tag.match(/(M[A@]D|MMD|HD|3D|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 					   // P名
@@ -432,10 +438,6 @@ var NicoLiveHelper = {
 					   if(t){
 					       pname.push(t[0]);
 					       continue;
-					   }
-					   // ホワイトリストチェック.
-					   if( pname_whitelist["_"+tag] ){
-					       pname.push(tag);
 					   }
 				       }
 				       if(pname.length) tmp = pname.join(',');
@@ -1814,12 +1816,25 @@ var NicoLiveHelper = {
 	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}
 	NicoLiveHelper.updateRemainRequestsAndStocks();
+
+	if(IsWINNT()){
+	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
+	    if(!this.isOffline()){
+		obj.SetWinLiveMessengerMsg(this.title);
+	    }else{
+	    }
+	}
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
 	this.saveAll();
 	this.saveToStorage();
 	this.close();
+
+	if(IsWINNT()){
+	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
+	    obj.SetWinLiveMessengerMsg("");
+	}
     }
 };
 
