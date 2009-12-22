@@ -147,16 +147,16 @@ function debugnotice(txt){
 				      $('noticewin').PRIORITY_WARNING_LOW,null);
 }
 
-function SetWindowTopMost(b){
+function SetWindowTopMost(w,b){
     var Ci = Components.interfaces;
-    var XULWindow = window
+    var XULWindow = w
 	.QueryInterface(Ci.nsIInterfaceRequestor)
 	.getInterface(Ci.nsIWebNavigation)
 	.QueryInterface(Ci.nsIDocShellTreeItem)
 	.treeOwner
 	.QueryInterface(Ci.nsIInterfaceRequestor)
 	.getInterface(Ci.nsIXULWindow);
-    XULWindow.zLevel = b ? Ci.nsIXULWindow.raisedZ : Ci.nsIXULWindow.normalZ;
+    XULWindow.zLevel = b ? Ci.nsIXULWindow.highestZ : Ci.nsIXULWindow.normalZ;
 }
 
 function GetUTF8ConverterInputStream(istream)

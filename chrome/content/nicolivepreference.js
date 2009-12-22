@@ -22,7 +22,7 @@ var NicoLivePreference = {
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 
 	this.topmost = branch.getBoolPref("z-order");
-	SetWindowTopMost(this.topmost);
+	SetWindowTopMost(window,this.topmost);
 
 	let restrict = {};
 	restrict.dorestrict = branch.getBoolPref("request.restrict");

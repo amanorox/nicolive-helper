@@ -28,21 +28,33 @@
   function OpenAdvancedSettings(){
       var f='chrome,toolbar,modal=no,resizable=yes,centerscreen';
       if(NicoLivePreference.topmost){
-	      f += ',alwaysRaised=yes';
+	  f += ',alwaysRaised=yes';
       }
-      debugprint(f);
-      window.openDialog('chrome://nicolivehelper/content/preferences.xul','NLHPreference',f).focus();
+      var w = window.openDialog('chrome://nicolivehelper/content/preferences.xul','NLHPreference',f);
+      SetWindowTopMost(w,NicoLivePreference.topmost);
+      w.focus();
   }
 
   function OpenVoteDialog(){
       var value = null;
-      if(NicoLiveHelper.isOffline()) return;
-      window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
+      var f = "chrome,resizable=yes,centerscreen";
+      if(NicoLivePreference.topmost){
+	  f += ',alwaysRaised=yes';
+      }
+      var w = window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote",f,value);
+      SetWindowTopMost(w,NicoLivePreference.topmost);
+      w.focus();
   }
 
   function OpenContinuousCommentWindow(){
       var value = null;
-      window.openDialog("chrome://nicolivehelper/content/continuouscomment.xul","vote","chrome,resizable=yes,centerscreen",value).focus();
+      var f = "chrome,resizable=yes,centerscreen";
+      if(NicoLivePreference.topmost){
+	  f += ',alwaysRaised=yes';
+      }
+      var w = window.openDialog("chrome://nicolivehelper/content/continuouscomment.xul","vote",f,value);
+      SetWindowTopMost(w,NicoLivePreference.topmost);
+      w.focus();
   }
 
   ]]>
