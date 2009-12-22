@@ -767,6 +767,7 @@ var NicoLiveHelper = {
 	}
 
 	this.playlist.push(item); // 再生済みリストに登録.
+	this.playlist["_"+item.video_id] = true;
 	elem.value += item.video_id+" "+item.title+"\n";
 	this.savePlaylist();
     },
@@ -776,6 +777,7 @@ var NicoLiveHelper = {
 	let elem = $('played-list-textbox');
 	elem.value = "";
 	this.playlist = new Array();
+	// ストックの再生済み情報をクリアする.
 	for(let i=0,item;item=this.stock[i];i++){
 	    item.isplayed = false;
 	}
@@ -1085,11 +1087,11 @@ var NicoLiveHelper = {
     // エラーリクエストリストに追加
     addErrorRequestList:function(item){
 	if(!item || !item.video_id) return;
-	this.error_req[ item.video_id ] = item;
+	this.error_req["_"+item.video_id] = item;
 	NicoLiveRequest.updateErrorRequest(this.error_req);
     },
     removeErrorRequest:function(video_id){
-	delete this.error_req[video_id];	
+	delete this.error_req["_"+video_id];	
 	NicoLiveRequest.updateErrorRequest(this.error_req);
     },
     removeErrorRequestAll:function(){
@@ -1282,12 +1284,7 @@ var NicoLiveHelper = {
 	    // 現在再生している曲.
 	    return true;
 	}
-	for(let i=0,item;item=this.playlist[i];i++){
-	    if(item.video_id==video_id){
-		// 再生済みの動画.
-		return true;
-	    }
-	}
+	if(this.playlist["_"+video_id]) return true;
 	return false;
     },
     // リクエスト済みチェック.
@@ -1603,6 +1600,9 @@ var NicoLiveHelper = {
 		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
 		    // load playlist
 		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
+		    for(let i=0;i<NicoLiveHelper.playlist.length;i++){
+			NicoLiveHelper.playlist["_"+NicoLiveHelper.playlist[i]] = true;
+		    }
 		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 		    debugprint('You are a caster');
 		}else{
@@ -1811,6 +1811,9 @@ var NicoLiveHelper = {
 	    this.request_id = request_id;
 	    this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
+	    for(let i=0;i<NicoLiveHelper.playlist.length;i++){
+		NicoLiveHelper.playlist["_"+NicoLiveHelper.playlist[i]] = true;
+	    }
 	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}
 	NicoLiveHelper.updateRemainRequestsAndStocks();
