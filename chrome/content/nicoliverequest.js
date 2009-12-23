@@ -211,6 +211,8 @@ var NicoLiveRequest = {
 	img.src = item.thumbnail_url;
 	img.style.cssFloat = 'left';
 	img.style.marginRight = '0.5em';
+	img.setAttribute("width",this.visibleDetail?130:65 +"px");
+	img.setAttribute("height",this.visibleDetail?100:50 + "px");
 	a.appendChild(img);
 
 	let label;
@@ -567,6 +569,7 @@ var NicoLiveRequest = {
 	    elem.setAttribute("width",visible?130:65 +"px");
 	    elem.setAttribute("height",visible?100:50 + "px");
 	}
+	this.visibleDetail = visible;
     },
 
     copyRequestToClipboard:function(){
@@ -700,6 +703,7 @@ var NicoLiveRequest = {
 
     init:function(){
 	debugprint("NicoLiveRequest.init");
+	this.visibleDetail = true;
 	this.setTotalPlayTime({min:0,sec:0});
 	this.setTotalStockTime({min:0,sec:0});
 	this.updateStockView(NicoLiveHelper.stock);
