@@ -349,9 +349,6 @@
 
 	  <hbox>
 	    <button label="Advanced Settings" oncommand="OpenAdvancedSettings();"/>
-	  </hbox>
-	  <spacer flex="1"/>
-	  <hbox>
 	    <spacer flex="1"/>
 	    <button label="適用" oncommand="NicoLivePreference.applyBasicPrefs();"/>
 	  </hbox>

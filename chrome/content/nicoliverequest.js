@@ -205,8 +205,9 @@ var NicoLiveRequest = {
 	a.onclick = function(){
 	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
 	};
-	a.className = 'detail';
+	//a.className = 'detail';
 	let img = CreateHTMLElement('img');
+	img.className = 'stock-thumbnail';
 	img.src = item.thumbnail_url;
 	img.style.cssFloat = 'left';
 	img.style.marginRight = '0.5em';
@@ -546,15 +547,25 @@ var NicoLiveRequest = {
     showhideDetail:function(){
 	// [1]で直接アクセスするなんて卑怯な.
 	let n = document.styleSheets[1].cssRules.length;
-	for(let i=0;i<n;i++){
+	let i;
+	let visible = true;
+	for(i=0;i<n;i++){
 	    let css = document.styleSheets[1].cssRules[i];
 	    if(css.selectorText==".detail"){
 		if(css.style.display=="none"){
 		    css.style.display="block";
+		    visible = true;
 		}else{
 		    css.style.display="none";
+		    visible = false;
 		}
 	    }
+	}
+	let elems = document.getElementsByClassName('stock-thumbnail');
+	let elem;
+	for(i=0;elem=elems[i];i++){
+	    elem.setAttribute("width",visible?130:65 +"px");
+	    elem.setAttribute("height",visible?100:50 + "px");
 	}
     },
 

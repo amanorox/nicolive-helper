@@ -1818,7 +1818,7 @@ var NicoLiveHelper = {
 	}
 	NicoLiveHelper.updateRemainRequestsAndStocks();
 
-	if(IsWINNT()){
+	if(IsWINNT() && !this.isOffline()){
 	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
 	    if(!this.isOffline()){
 		obj.SetWinLiveMessengerMsg(this.title);
@@ -1832,7 +1832,7 @@ var NicoLiveHelper = {
 	this.saveToStorage();
 	this.close();
 
-	if(IsWINNT()){
+	if(IsWINNT() && !this.isOffline()){
 	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
 	    obj.SetWinLiveMessengerMsg("");
 	}
