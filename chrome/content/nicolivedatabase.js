@@ -598,8 +598,38 @@ var NicoLiveDatabase = {
 	return true;
     },
 
+    // ファイルからストックに登録する.
+    readFileToDatabase:function(file){
+	// file は nsIFile
+	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	istream.init(file, 0x01, 0444, 0);
+	istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+	// 行を配列に読み込む
+	let line = {}, hasmore;
+	let str = "";
+	do {
+	    hasmore = istream.readLine(line);
+	    if( line.value.match(/(sm|nm)\d+/) ){
+		str += line.value;
+	    }
+	} while(hasmore);
+
+	this.addVideos(str);
+	istream.close();
+    },
+
     dropToDatabase:function(event){
 	//this.dataTransfer = event.dataTransfer;
+
+	// ファイルをドロップしたとき.
+	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	if (file instanceof Components.interfaces.nsIFile){
+	    if( !file.leafName.match(/\.txt$/) ) return;
+	    debugprint("file dropped:"+file.path);
+	    this.readFileToDatabase(file);
+	    return;
+	}
 
 	if( event.dataTransfer.types.contains('text/plain') ){
 	    let txt = event.dataTransfer.mozGetDataAt("text/plain",0);

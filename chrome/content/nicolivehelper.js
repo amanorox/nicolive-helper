@@ -656,6 +656,43 @@ var NicoLiveHelper = {
 	this.saveStock();
     },
 
+    // ストック内の再生されていない動画のうちどの動画を再生するか選択して再生する.
+    chooseMusicFromStock:function(){
+	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
+	if(tmp<0) tmp = 0;
+	let remain = 30*60 - tmp; // second.
+	let limit30min = NicoLivePreference.limit30min;
+	let carelosstime = NicoLivePreference.carelosstime;
+	let notplayed = new Array();
+	let i,item;
+
+	// 再生できるストック動画リスト作成.
+	for(i=0;item=this.stock[i];i++){
+	    notplayed["_"+item.video_id] = i;
+
+	    if( limit30min ){
+		if(carelosstime && item.length_ms/1000 > remain+90){
+		    // ロスタイムを1:30(90s)として、枠に収まらない動画.
+		    continue;
+		}else if(item.length_ms/1000 > remain){
+		    // 30枠に収まらない動画.
+		    continue;
+		}
+	    }
+	    if( !this.isPlayedMusic(item.video_id) ){
+		notplayed.push(item);
+	    }
+	}
+	if(notplayed.length<=0) return false; // 再生できるストックなし.
+
+	let n = 0;
+	if(this.israndomplay){
+	    n = GetRandomInt(0,notplayed.length-1);
+	}
+	this.playStock(notplayed["_"+notplayed[n].video_id]+1,true);
+	return true;
+    },
+
     // 次曲を再生する.
     playNext: function(){
 	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
@@ -691,22 +728,7 @@ var NicoLiveHelper = {
 	    }
 	}
 	if(this.stock.length){
-	    // リクがなければストックの先頭から再生.
-	    for(let i=0,item;item=this.stock[i];i++){
-		if(!this.isPlayedMusic(item.video_id)){
-		    if( limit30min ){
-			if(carelosstime && item.length_ms/1000 > remain+90){
-			    // ロスタイムを1:30(90s)として、枠に収まらない動画.
-			    continue;
-			}else if(item.length_ms/1000 > remain){
-			    // 30枠に収まらない動画.
-			    continue;
-			}
-		    }
-		    this.playStock(i+1,true);
-		    return;
-		}
-	    }
+	    if( this.chooseMusicFromStock() ) return;
 	}
 	// リクもストックもない.
 	clearInterval(this._musicend);
