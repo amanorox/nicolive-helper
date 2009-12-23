@@ -591,6 +591,17 @@ var NicoLiveHelper = {
 	    this.saveStock();
 	}
     },
+    // ストックの最下位に移動.
+    bottomToStock:function(idx){
+	idx--;
+	let t;
+	t = this.stock.splice(idx,1);
+	if(t){
+	    this.stock.push(t[0]);
+	    NicoLiveRequest.updateStockView(this.stock);
+	    this.saveStock();
+	}
+    },
     // ストックの上に浮かす.
     floatStock:function(idx){
 	idx--; 
@@ -1032,6 +1043,7 @@ var NicoLiveHelper = {
 	if( !item.video_id ) return;
 	this.requestqueue.push(item);
 	NicoLiveRequest.add(item);
+	this.updateRemainRequestsAndStocks();
     },
     // リクエストリストから削除する.
     removeRequest:function(idx){
@@ -1053,6 +1065,17 @@ var NicoLiveHelper = {
 	    this.saveRequest();
 	}
     },
+    bottomToRequest:function(idx){
+	idx--;
+	let t;
+	t = this.requestqueue.splice(idx,1);
+	if(t){
+	    this.requestqueue.push(t[0]);
+	    NicoLiveRequest.update(this.requestqueue);
+	    this.saveRequest();
+	}
+    },
+
     floatRequest:function(idx){
 	idx--; 
 	if(idx<=0) return;

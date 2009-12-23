@@ -139,6 +139,11 @@ var NicoLiveRequest = {
 	button.addEventListener("command",function(){ NicoLiveHelper.sinkRequest(n); },false);
 	hbox.appendChild(button);
 
+	button = CreateElement('button');
+	button.setAttribute("label",'↓↓');
+	button.addEventListener("command",function(){ NicoLiveHelper.bottomToRequest(n); },false);
+	hbox.appendChild(button);
+
 	vbox.appendChild(hbox);
 	td.appendChild(vbox);
 
@@ -320,6 +325,11 @@ var NicoLiveRequest = {
 	button.addEventListener("command",function(){ NicoLiveHelper.sinkStock(n); },false);
 	hbox.appendChild(button);
 
+	button = CreateElement('button');
+	button.setAttribute("label",'↓↓');
+	button.addEventListener("command",function(){ NicoLiveHelper.bottomToStock(n); },false);
+	hbox.appendChild(button);
+
 	vbox.appendChild(hbox);
 	td.appendChild(vbox);
 
@@ -333,8 +343,7 @@ var NicoLiveRequest = {
 
     // ストックからリクエストリストする.
     addRequestFromStock:function(n){
-	if(NicoLiveHelper.isOffline()) return;
-	if(NicoLiveHelper.iscaster){
+	if(NicoLiveHelper.iscaster || NicoLiveHelper.isOffline() ){
 	    // 生主の場合は、リクエストリストに追加.
 	    NicoLiveHelper.addRequestFromStock(n);
 	}else{
