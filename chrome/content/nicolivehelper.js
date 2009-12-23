@@ -558,8 +558,7 @@ var NicoLiveHelper = {
     playStock:function(idx,force){
 	// 再生済みのときだけfalseを返す.
 	// force=trueは再生済みを無視して強制再生.
-	if(this.isOffline()) return true;
-	if(!this.iscaster) return true;
+	if(this.isOffline() || !this.iscaster) return true;
 	if(idx>this.stock.length) return true;
 
 	let playmusic = this.stock[idx-1];
@@ -842,7 +841,8 @@ var NicoLiveHelper = {
 			// エラーになった動画はストックにしておく.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
 			    NicoLiveHelper.musicinfo.error = true;
-			    NicoLiveHelper.addErrorRequest(NicoLiveHelper.musicinfo);
+			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);
+			    debugprint(video_id+'をエラーリクエストタブに追加');
 			}
 			NicoLiveHelper.inplay = false;
 			NicoLiveHelper.musicinfo = {};
