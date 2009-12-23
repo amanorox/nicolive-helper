@@ -863,6 +863,7 @@ var NicoLiveHelper = {
 			// エラーになった動画はストックにしておく.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
 			    NicoLiveHelper.musicinfo.error = true;
+			    NicoLiveHelper.musicinfo.isplayed = true;
 			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);
 			    debugprint(video_id+'をエラーリクエストタブに追加');
 			}

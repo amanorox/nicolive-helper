@@ -367,6 +367,9 @@ var NicoLiveRequest = {
 	if(item.selfrequest){
 	    tr.className = "color6";  // green
 	}
+	if(item.isplayed){
+	    tr.className = "table_played";
+	}
 
 	let td;
 	td = tr.insertCell(tr.cells.length);
