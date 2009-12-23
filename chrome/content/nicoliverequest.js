@@ -647,7 +647,6 @@ var NicoLiveRequest = {
      * application/x-moz-tabbrowser-tab
      * text/x-moz-text-internal
      */
-
     checkDrag:function(event){
 	//let b = event.dataTransfer.types.contains("application/x-moz-file");
 /*
@@ -699,6 +698,41 @@ var NicoLiveRequest = {
 	    this.addStock(str);
 	    return;
 	}
+    },
+
+    addMylist:function(mylist_id,mylist_name){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	let video_id = elem.firstChild.textContent; // 動画IDを取れる.
+	debugprint('add mylist from request tab:'+video_id);
+	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id);
+    },
+    // リク、ストックタブ用のマイリス追加メニューを作る.
+    appendAddMylistMenu:function(mylists){
+
+	let popupmenu = CreateElement('menu');
+	popupmenu.setAttribute('label','マイリストに追加');
+	popupmenu.setAttribute('id','addto-mylist-from-history');
+
+	let popup = CreateElement('menupopup');
+	popupmenu.appendChild(popup);
+
+	let elem = CreateMenuItem('とりあえずマイリスト','default');
+	popup.appendChild(elem);
+
+	for(let i=0,item;item=mylists[i];i++){
+	    let elem;
+	    let tmp = item.name.match(/.{1,20}/);
+	    elem = CreateMenuItem(tmp,item.id);
+	    elem.setAttribute("tooltiptext",item.name);
+	    popup.appendChild(elem);
+	}
+
+	popupmenu.addEventListener("command", function(e){ NicoLiveRequest.addMylist(e.target.value,e.target.label); },false );
+	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
+
+	popupmenu = popupmenu.cloneNode(true);
+	popupmenu.addEventListener("command", function(e){ NicoLiveRequest.addMylist(e.target.value,e.target.label); },false );
+	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
     },
 
     init:function(){

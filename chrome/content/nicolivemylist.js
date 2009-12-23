@@ -180,6 +180,7 @@ var NicoLiveMylist = {
 		let mylists = NicoLiveMylist.mylists.mylistgroup;
 
 		NicoLiveHistory.appendMenu(mylists);
+		NicoLiveRequest.appendAddMylistMenu(mylists);
 
 		let elem = CreateMenuItem('とりあえずマイリスト','default');
 		elem.addEventListener("command", function(e){ NicoLiveMylist.addMyList(e.target.value,e.target.label); },false );

@@ -413,7 +413,7 @@
       <menuseparator/>
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
+      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-request-additionalinfo"/>
       <menuseparator/>
       <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
@@ -457,7 +457,7 @@
       <menuseparator/>
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
+      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-stock-additionalinfo"/>
       <menuseparator/>
       <menuitem label="ストックをファイルに保存" oncommand="NicoLiveRequest.saveStockToFile();"/>
     </menupopup>
