@@ -825,7 +825,7 @@ var NicoLiveHelper = {
 	clearInterval(this._sendmusicid);
 	this._counter = 0;
 	//NicoLiveHelper._sendMusicInfo();
-	this._sendmusicid = setInterval("NicoLiveHelper._sendMusicInfo();",5000);
+	this._sendmusicid = setInterval("NicoLiveHelper._sendMusicInfo();",6000);
     },
     // コメント(主と視聴者を識別してそれぞれのコメント).
     postComment: function(comment,mail){
