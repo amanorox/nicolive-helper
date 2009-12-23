@@ -23,6 +23,17 @@ table.requestview tr {
 /*    display:none; */
 }
 
+hr {
+    padding: 0;
+    margin: 0;
+/*    border: 1px solid gray; */
+}
+
+/* リク、ストックなどのコマンドボタン */
+button.commandbtn {
+    font-size: 8pt;
+}
+
 /* 奇数行 */
 tr.table_oddrow{
     background-color: #ffffee;

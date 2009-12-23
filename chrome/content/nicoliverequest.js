@@ -73,6 +73,7 @@ var NicoLiveRequest = {
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
 			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
+	hr.setAttribute("size","1");
 	div.appendChild(hr);
 
 	let div2 = CreateHTMLElement('div');
@@ -107,6 +108,7 @@ var NicoLiveRequest = {
 	vbox.appendChild(div);
 
 	hr = CreateHTMLElement('hr');
+	hr.setAttribute("size","1");
 	vbox.appendChild(hr);
 
 	label = CreateElement('label');
@@ -116,31 +118,37 @@ var NicoLiveRequest = {
 	let hbox = CreateElement('hbox');
 	let button = CreateElement('button');
 	button.setAttribute("label",'再生');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.playMusic(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'削除');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.removeRequest(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑↑');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.topToRequest(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.floatRequest(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.sinkRequest(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓↓');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.bottomToRequest(n); },false);
 	hbox.appendChild(button);
 
@@ -233,6 +241,7 @@ var NicoLiveRequest = {
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
 			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
+	hr.setAttribute("size","1");
 	hr.className = 'detail';
 	div.appendChild(hr);
 
@@ -274,6 +283,7 @@ var NicoLiveRequest = {
 	vbox.appendChild(div);
 
 	hr = CreateHTMLElement('hr');
+	hr.setAttribute("size","1");
 	hr.className = 'detail';
 	vbox.appendChild(hr);
 
@@ -284,11 +294,13 @@ var NicoLiveRequest = {
 	let hbox = CreateElement('hbox');
 	let button = CreateElement('button');
 	button.setAttribute('label','リクエスト');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveRequest.addRequestFromStock(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'再生');
+	button.className = 'commandbtn';
 	button.addEventListener("command",
 				function(){
 				    if(!NicoLiveHelper.isOffline()){
@@ -307,26 +319,31 @@ var NicoLiveRequest = {
 
 	button = CreateElement('button');
 	button.setAttribute("label",'削除');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.removeStock(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑↑');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.topToStock(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.floatStock(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.sinkStock(n); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓↓');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.bottomToStock(n); },false);
 	hbox.appendChild(button);
 
@@ -425,6 +442,7 @@ var NicoLiveRequest = {
 						+ "再生数:"+item.view_counter+" コメント:"+item.comment_num
 						+ " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
+	hr.setAttribute("size","1");
 	div.appendChild(hr);
 
 	let div2 = CreateHTMLElement('div');
@@ -459,6 +477,7 @@ var NicoLiveRequest = {
 	vbox.appendChild(div);
 
 	hr = CreateHTMLElement('hr');
+	hr.setAttribute("size","1");
 	vbox.appendChild(hr);
 
 	label = CreateElement('label');
@@ -469,11 +488,13 @@ var NicoLiveRequest = {
 	let hbox = CreateElement('hbox');
 	let button = CreateElement('button');
 	button.setAttribute("label",'リクエストに追加');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.addRequestQueue(item); },false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'削除');
+	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.removeErrorRequest(item.video_id); },false);
 	hbox.appendChild(button);
 
