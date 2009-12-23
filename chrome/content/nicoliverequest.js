@@ -647,12 +647,12 @@ var NicoLiveRequest = {
 
     checkDrag:function(event){
 	//let b = event.dataTransfer.types.contains("application/x-moz-file");
-	/*
+/*
 	debugprint("--");
 	for(let i=0;i<event.dataTransfer.types.length;i++){
 	    debugprint('dragging:'+event.dataTransfer.types.item(i));
 	}
-	 */
+*/
 	event.preventDefault();
 	return true;
     },
@@ -666,6 +666,11 @@ var NicoLiveRequest = {
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("file dropped:"+file.path);
 	    this.readFileToStock(file);
+	    return;
+	}
+	if( event.dataTransfer.types.contains('text/plain') ){
+	    let txt = event.dataTransfer.mozGetDataAt("text/plain",0);
+	    this.addStock(txt);
 	    return;
 	}
 	// アンカーをドロップしたとき.

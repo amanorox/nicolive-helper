@@ -249,7 +249,7 @@
 	<vbox class="tabpanel"
 	      ondragenter="return NicoLiveDatabase.checkDrag(event)"
 	      ondragover="return NicoLiveDatabase.checkDrag(event)"
-	      ondrop="NicoLiveDatabase.dropToStock(event)">
+	      ondrop="NicoLiveDatabase.dropToDatabase(event)">
 	  <hbox>
 	    <button type="menu" label="マイリストから登録">
 	      <menupopup id="menupopup-from-mylist-to-db">

@@ -598,7 +598,14 @@ var NicoLiveDatabase = {
 	return true;
     },
 
-    dropToStock:function(event){
+    dropToDatabase:function(event){
+	//this.dataTransfer = event.dataTransfer;
+
+	if( event.dataTransfer.types.contains('text/plain') ){
+	    let txt = event.dataTransfer.mozGetDataAt("text/plain",0);
+	    this.addVideos(txt);
+	    return;
+	}
 	// アンカーをドロップしたとき.
 	if( event.dataTransfer.types.contains("text/uri-list") ){
 	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);

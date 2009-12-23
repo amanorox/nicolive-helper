@@ -8,13 +8,6 @@ table{
     border-collapse: collapse;
 }
 
-img {
-/*    width: 65px;
-    height:50px; */
-/*    width: 130px;
-    height:100px; */
-}
-
 /* コメントの枠線 */
 #comment_table tr{
     border-bottom: 1px solid #cccccc;
@@ -46,10 +39,10 @@ table#database-table tr:hover{
 }
 
 tr.color1{
-    background-color: #c7fefe;
+    background-color: #f2eeff;
 }
 tr.color2{
-    background-color: #f8f4e6;
+    background-color: #eeeeff;
 }
 tr.color3{
     background-color: #eef2ff;
@@ -58,10 +51,10 @@ tr.color4{
     background-color: #eeffff;
 }
 tr.color5{
-    background-color: #f4f4b2;
+    background-color: #eefff2;
 }
 tr.color6{
-    background-color: #f0fbbf;
+    background-color: #eeffee;
 }
 tr.color7{
     background-color: #f2ffee;
