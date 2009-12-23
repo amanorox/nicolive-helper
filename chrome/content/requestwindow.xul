@@ -130,7 +130,8 @@
       <tabs>
 	<tab label="リクエスト"/>
 	<tab label="ストック"/>
-	<tab label="エラーリクエスト"/>
+<!--	<tab label="エラーリクエスト"/> -->
+	<tab label="リク・再生エラー"/>
 	<tab label="再生履歴"/>
 	<tab label="コメント"/>
 	<tab label="動画DB"/>
