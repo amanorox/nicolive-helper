@@ -1,4 +1,3 @@
-pref("extensions.nicolivehelper.test","test default value");
 pref("extensions.nicolivehelper.mikuonly",false);
 
 pref("extensions.nicolivehelper.playstyle",0);
@@ -13,7 +12,7 @@ pref("extensions.nicolivehelper.jingle",false);
 pref("extensions.nicolivehelper.jingle-movie","");
 pref("extensions.nicolivehelper.limit30min",false);
 pref("extensions.nicolivehelper.carelosstime",false);
-pref("extensions.nicolivehelper.nextplay-interval",3);
+pref("extensions.nicolivehelper.nextplay-interval",5);
 pref("extensions.nicolivehelper.max-movieplay-time",0);
 pref("extensions.nicolivehelper.autoreply",true);
 pref("extensions.nicolivehelper.limitnewmovie",false);

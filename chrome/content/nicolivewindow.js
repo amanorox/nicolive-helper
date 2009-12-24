@@ -25,10 +25,11 @@ var NicoLiveWindow = {
 	let pos = {
 	    "x" : window.screenX,
 	    "y" : window.screenY,
-	    "w" : window.outerWidth,
-	    "h" : window.outerHeight
+	    "w" : window.innerWidth,
+	    "h" : window.innerHeight
 	};
-	NicoLiveDatabase.saveGPStorage("xywh",pos);
+	//NicoLiveDatabase.saveGPStorage("xywh",pos);
+	NicoLivePreference.getBranch().setCharPref("window-pos",JSON.stringify(pos));
     },
     restore:function(){
 	let def = {
@@ -45,14 +46,6 @@ var NicoLiveWindow = {
     },
     init: function(){
 	NicoLiveWindow.restore();
-	window.removeEventListener("focus",NicoLiveWindowRestorePosition,false);
-
-	/*
-	let id = setInterval(
-	    function(){ NicoLiveWindow.restore();
-			clearInterval(id); },
-	    1000);
-	 */
     },
     destroy: function(){
 	this.save();
@@ -64,5 +57,5 @@ function NicoLiveWindowRestorePosition()
     NicoLiveWindow.init();
 }
 
-window.addEventListener("focus", NicoLiveWindowRestorePosition, false);
+//window.addEventListener("load", NicoLiveWindowRestorePosition, false);
 window.addEventListener("unload", function(e){ NicoLiveWindow.destroy(); }, false);
