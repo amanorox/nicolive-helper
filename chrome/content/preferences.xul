@@ -4,7 +4,7 @@
 <?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
 
 <prefwindow id="nicolivehelper-advanced-settings"
-	    title="NicoLive Helper Advanced Settings"
+	    title="NicoLive Helper Settings"
 	    windowtype="prefwindow"
 	    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	    xmlns:html="http://www.w3.org/1999/xhtml"
