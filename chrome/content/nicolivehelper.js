@@ -685,7 +685,7 @@ var NicoLiveHelper = {
 		if(carelosstime && item.length_ms/1000 > remain+90){
 		    // ロスタイムを1:30(90s)として、枠に収まらない動画.
 		    continue;
-		}else if(item.length_ms/1000 > remain){
+		}else if(!carelosstime && item.length_ms/1000 > remain){
 		    // 30枠に収まらない動画.
 		    continue;
 		}
@@ -729,7 +729,7 @@ var NicoLiveHelper = {
 		       this.requestqueue[n-1].length_ms/1000 > remain+90){
 			// ロスタイムを1:30(90s)として、枠に収まらない動画.
 			continue;
-		    }else if(this.requestqueue[n-1].length_ms/1000 > remain){
+		    }else if(!carelosstime && this.requestqueue[n-1].length_ms/1000 > remain){
 			// 30枠に収まらない動画.
 			continue;
 		    }

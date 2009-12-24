@@ -74,6 +74,7 @@ var NicoLivePreference = {
 
 	$('toolbar-allowrequest').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
 
+	/*
 	$('pref-jingle').checked = this.isjingle;
 	$('pref-jingle-movie').value = this.jinglemovie;
 	$('pref-limit30min').checked = this.limit30min;
@@ -84,6 +85,7 @@ var NicoLivePreference = {
 	$('pref-limitnewmovie').checked = this.limitnewmovie;
 	$('pref-accept-nreq').value = this.nreq_per_ppl;
 	$('pref-mikuonly').checked = this.mikuonly;
+	 */
     },
 
     // 適用ボタンを押したとき、prefs.jsの保存とHelperへの設定値の適用.

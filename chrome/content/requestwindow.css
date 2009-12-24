@@ -26,6 +26,8 @@ table.requestview tr {
 hr {
     padding: 0;
     margin: 0;
+    border-width: 1px 0px 0px 0px;
+    border-style: dashed;
 /*    border: 1px solid gray; */
 }
 

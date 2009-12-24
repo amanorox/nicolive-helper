@@ -2,7 +2,7 @@
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
 <?xml-stylesheet href="chrome://nicolivehelper/content/requestwindow.css" type="text/css"?>
 
-<window id="requestwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" title="NicoLive Helper">
+<window id="requestwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" title="NicoLive Helper 0.9.4">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -25,7 +25,7 @@
     document.getElementById(textID).label=val;
   }
 
-  function OpenAdvancedSettings(){
+  function OpenSettingsDialog(){
       var f='chrome,toolbar,modal=no,resizable=yes,centerscreen';
       if(NicoLivePreference.topmost){
 	  f += ',alwaysRaised=yes';
@@ -109,6 +109,10 @@
 	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
       </menupopup>
     </toolbarbutton>
+
+    <toolbarbutton label="設定" oncommand="OpenSettingsDialog();">
+    </toolbarbutton>
+
 <!--
     <toolbarbutton label="Experimental" type="menu">
       <menupopup>
@@ -135,7 +139,6 @@
 	<tab label="再生履歴"/>
 	<tab label="コメント"/>
 	<tab label="動画DB"/>
-	<tab label="基本設定"/>
 	<tab label="Debug"/>
       </tabs>
       <tabpanels flex="1">
@@ -304,6 +307,7 @@
 	</vbox>
 
 	<!-- setting tab -->
+<!--
 	<vbox class="tabpanel">
 	  <groupbox>
 	    <caption label="進行"/>
@@ -354,7 +358,8 @@
 	    <button label="適用" oncommand="NicoLivePreference.applyBasicPrefs();"/>
 	  </hbox>
 	</vbox>
-
+-->
+	<!-- debug tab -->
 	<vbox>
 	  <textbox id="debug-textbox" emptytext="デバッグ用" multiline="true" flex="1" />
 	</vbox>

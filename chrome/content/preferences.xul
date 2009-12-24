@@ -10,6 +10,64 @@
 	    xmlns:html="http://www.w3.org/1999/xhtml"
 	    >
 
+  <prefpane id="nicolivehelper-prefpane-basic" label="基本設定" image="chrome://nicolivehelper/content/data/basicsetting.png">
+    <preferences>
+      <preference id="pref-jingle" name="extensions.nicolivehelper.jingle" type="bool"/>
+      <preference id="pref-jingle-movie" name="extensions.nicolivehelper.jingle-movie" type="string"/>
+      <preference id="pref-limit30min" name="extensions.nicolivehelper.limit30min" type="bool"/>
+      <preference id="pref-carelosstime" name="extensions.nicolivehelper.carelosstime" type="bool"/>
+      <preference id="pref-nextplay-interval" name="extensions.nicolivehelper.nextplay-interval" type="int"/>
+      <preference id="pref-max-movieplay-time" name="extensions.nicolivehelper.max-movieplay-time" type="int"/>
+      <preference id="pref-autoreply" name="extensions.nicolivehelper.autoreply" type="bool"/>
+      <preference id="pref-limitnewmovie" name="extensions.nicolivehelper.limitnewmovie" type="bool"/>
+      <preference id="pref-accept-nreq" name="extensions.nicolivehelper.accept-nreq" type="int"/>
+      <preference id="pref-mikuonly" name="extensions.nicolivehelper.mikuonly" type="bool"/>
+    </preferences>
+
+    <groupbox>
+      <caption label="進行"/>
+      <hbox>
+	<checkbox preference="pref-jingle" label="接続時にジングルを再生する"/>
+	<textbox preference="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください"/>
+	<button label="再生" oncommand="opener.NicoLiveHelper.playJingle();"/>
+      </hbox>
+      <checkbox preference="pref-limit30min" label="自動再生時、30分枠に収まるように再生する動画を選択する"/>
+      <checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する"/>
+
+      <grid>
+	<columns>
+	  <column/>
+	  <column/>
+	  <column/>
+	</columns>
+	<rows>
+	  <row>
+	    <hbox align="center"><label value="次の動画を再生するまでの待ち時間(0-99)"/></hbox>
+	    <textbox preference="pref-nextplay-interval" type="number" min="0" max="99" size="3"/>
+	    <hbox align="center"><label value="秒"/></hbox>
+	  </row>
+	  <row>
+	    <hbox align="center"><label value="1つの動画の最大再生時間(0-99)" tooltiptext=""/></hbox>
+	    <textbox preference="pref-max-movieplay-time" type="number" min="0" max="99" size="3"/>
+	    <hbox align="center"><label value="分"/></hbox>
+	  </row>
+	</rows>
+      </grid>
+    </groupbox>
+
+    <groupbox>
+      <caption label="リクエスト"/>
+      <checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/>
+      <checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)制限を行う"/>
+      <hbox align="center">
+	<label value="1枠1人あたりのリクエスト受付数(0-99件)"/>
+	<textbox preference="pref-accept-nreq" type="number" min="0" max="99" size="3"/>
+	<button label="今までの受付数をリセット" oncommand="opener.NicoLiveHelper.resetRequestCount();"/>
+      </hbox>
+      <checkbox preference="pref-mikuonly" label="ミクオリジナル曲のみを受け付ける(開発主用)"/>
+    </groupbox>
+  </prefpane>
+
   <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="$('caster-comment-type').value = $('pref-typeofvideoinfo').value;">
     <preferences>
       <preference id="pref-videoinfo1" name="extensions.nicolivehelper.videoinfo1" type="unichar"/>

@@ -73,7 +73,7 @@ var NicoLiveRequest = {
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
 			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
-	hr.setAttribute("size","1");
+	//hr.setAttribute("size","1");
 	div.appendChild(hr);
 
 	let div2 = CreateHTMLElement('div');
@@ -108,7 +108,7 @@ var NicoLiveRequest = {
 	vbox.appendChild(div);
 
 	hr = CreateHTMLElement('hr');
-	hr.setAttribute("size","1");
+	//hr.setAttribute("size","1");
 	vbox.appendChild(hr);
 
 	label = CreateElement('label');
@@ -241,7 +241,7 @@ var NicoLiveRequest = {
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
 			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
-	hr.setAttribute("size","1");
+	//hr.setAttribute("size","1");
 	hr.className = 'detail';
 	div.appendChild(hr);
 
@@ -283,7 +283,7 @@ var NicoLiveRequest = {
 	vbox.appendChild(div);
 
 	hr = CreateHTMLElement('hr');
-	hr.setAttribute("size","1");
+	//hr.setAttribute("size","1");
 	hr.className = 'detail';
 	vbox.appendChild(hr);
 
@@ -442,7 +442,7 @@ var NicoLiveRequest = {
 						+ "再生数:"+item.view_counter+" コメント:"+item.comment_num
 						+ " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
 	let hr = CreateHTMLElement('hr');
-	hr.setAttribute("size","1");
+	//hr.setAttribute("size","1");
 	div.appendChild(hr);
 
 	let div2 = CreateHTMLElement('div');
@@ -477,7 +477,7 @@ var NicoLiveRequest = {
 	vbox.appendChild(div);
 
 	hr = CreateHTMLElement('hr');
-	hr.setAttribute("size","1");
+	//hr.setAttribute("size","1");
 	vbox.appendChild(hr);
 
 	label = CreateElement('label');
