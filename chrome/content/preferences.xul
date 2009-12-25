@@ -79,7 +79,7 @@
       <preference id="pref-userdefined-uri" name="extensions.nicolivehelper.userdefined-data-uri" type="string"/>
       <preference id="pref-nocomment-for-directplay" name="extensions.nicolivehelper.nocomment-for-directplay" type="bool"/>
     </preferences>
-    <checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、動画情報を主コメしない"/>
+    <checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/>
     <html:hr/>
     <grid>
       <columns>
@@ -280,7 +280,7 @@
       <preference id="pref-184comment" name="extensions.nicolivehelper.184comment" type="bool"/>
     </preferences>
     <vbox>
-      <checkbox preference="pref-save-comment" label="コメントログをファイルに保存する"/>
+      <checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントログ保存先は必ず指定してください"/>
       <hbox align="center">
 	<label control="commentlog" value="コメントログ保存先:"/>
 	<filefield id="commentlog" flex="1"/>
@@ -288,7 +288,7 @@
       </hbox>
     </vbox>
     <html:hr style="margin:1em;"/>
-    <checkbox preference="pref-184comment" label="常に184(匿名)コメントにする"/>
+    <checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="ニコ生の仕様上、視聴者コメントでのみ有効"/>
     <html:hr style="margin:1em;"/>
     <vbox>
       <label value="生放送の開始、終了に合わせて、Helperを自動で"/>
@@ -311,12 +311,8 @@
 	  </row>
 	</rows>
       </grid>
-      <!--
-      <checkbox preference="pref-auto-open" label="生放送のページを開いた時に、自動でHelperを開く"/>
-      <checkbox preference="pref-auto-close" label="生放送終了時、自動でHelperを閉じる"/>
-      -->
       <html:hr style="margin:1em;"/>
-      <checkbox preference="pref-z-order" label="常に最前面に表示"/>
+      <checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ有効"/>
     </vbox>
   </prefpane>
 
