@@ -5,6 +5,7 @@
 var NicoLivePreference = {
     readAdvancedPrefs:function(){
 	let branch = this.getBranch();
+	this.nocomment_for_directplay = branch.getBoolPref("nocomment-for-directplay");
 	this.videoinfo[0] = branch.getUnicharPref("videoinfo1");
 	this.videoinfo[1] = branch.getUnicharPref("videoinfo2");
 	this.videoinfo[2] = branch.getUnicharPref("videoinfo3");

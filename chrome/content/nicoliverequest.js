@@ -763,11 +763,17 @@ var NicoLiveRequest = {
 	    popup.appendChild(elem);
 	}
 
-	popupmenu.addEventListener("command", function(e){ NicoLiveRequest.addMylist(e.target.value,e.target.label); },false );
+	popupmenu.addEventListener("command",
+				   function(e){
+				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
+				   },false );
 	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
 
 	popupmenu = popupmenu.cloneNode(true);
-	popupmenu.addEventListener("command", function(e){ NicoLiveRequest.addMylist(e.target.value,e.target.label); },false );
+	popupmenu.addEventListener("command",
+				   function(e){
+				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
+				   },false );
 	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
     },
 

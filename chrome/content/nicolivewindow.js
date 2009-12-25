@@ -47,8 +47,11 @@ var NicoLiveWindow = {
     init: function(){
 	let prefs = NicoLivePreference.getBranch();
 	if( prefs.getBoolPref("autoscroll") ){
-	    let player = window.opener.content.document.getElementById('WatchPlayer');
-	    window.opener.content.scroll(0,player.offsetTop-32);
+	    try{
+		let player = window.opener.content.document.getElementById('WatchPlayer');
+		window.opener.content.scroll(0,player.offsetTop-32);
+	    } catch (x) {
+	    }
 	}
     },
     destroy: function(){

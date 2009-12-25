@@ -353,7 +353,9 @@ var NicoLiveHelper = {
 			// 手動で/playコマンドを入力したときにここに来る.
 			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
 			NicoLiveHelper.addPlayList(music);
-			NicoLiveHelper.sendMusicInfo();
+			if( !NicoLivePreference.nocomment_for_directplay ){
+			    NicoLiveHelper.sendMusicInfo();
+			}
 			NicoLiveHelper.inplay = true;
 		    }
 		}
@@ -1651,6 +1653,7 @@ var NicoLiveHelper = {
 		NicoLiveHelper.iscaster = xml.getElementsByTagName('room_seetno')[0].textContent;
 		NicoLiveHelper.starttime = parseInt(xml.getElementsByTagName('start_time')[0].textContent);
 		NicoLiveHelper.opentime = parseInt(xml.getElementsByTagName('open_time')[0].textContent);
+		NicoLiveHelper.community = xml.getElementsByTagName('default_community')[0].textContent;
 		// 座席番号2525....が主らしい.
 		if( NicoLiveHelper.iscaster.match(/^2525/) ){
 		    NicoLiveHelper.iscaster=true;

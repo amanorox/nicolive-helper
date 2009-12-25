@@ -13,6 +13,17 @@ status=true
 obtain token
 * configurestream
 
+枠取り
+
+GET http://live.nicovideo.jp/editstream -> 情報入力 -> 確認するボタン
+ -> POST http://live.nicovideo.jp/editstream -> 確認画面 -> 放送を開始するボタン
+ -> POST http://live.nicovideo.jp/editstream -> 999人待ちです。最後尾に並ぶ
+ -> POST http://live.nicovideo.jp/editstream -> 現在込み合っております。しばらく時間をおいてから、再度お試しください -> 情報入力画面 -> 確認するボタン
+ -> POST http://live.nicovideo.jp/editstream
+ -> 999人待ちです。最後尾に並ぶ
+ -> GET http://live.nicovideo.jp/editstream/lv8708792
+ -> 並んでいます -> GET http://live.nicovideo.jp/api/waitinfo/lv8709367 -> ピンポンパンポン
+ -> GET http://live.nicovideo.jp/watch/lv8708792
 
 --
 ・選曲対象がないときに再生する動画

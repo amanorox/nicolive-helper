@@ -121,6 +121,7 @@ var NLHPreference = {
 	$('pref-videoinfo3').value = "";
 	$('pref-videoinfo4').value = "";
 	$('pref-typeofvideoinfo').value = 0;
+	$('pref-userdefined-uri').value = "";
     },
 
     // 自動応答をデフォルトにする.
