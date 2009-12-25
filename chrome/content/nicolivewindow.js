@@ -45,7 +45,11 @@ var NicoLiveWindow = {
 	}
     },
     init: function(){
-	NicoLiveWindow.restore();
+	let prefs = NicoLivePreference.getBranch();
+	if( prefs.getBoolPref("autoscroll") ){
+	    let player = window.opener.content.document.getElementById('WatchPlayer');
+	    window.opener.content.scroll(0,player.offsetTop-32);
+	}
     },
     destroy: function(){
 	this.save();
@@ -57,5 +61,5 @@ function NicoLiveWindowRestorePosition()
     NicoLiveWindow.init();
 }
 
-//window.addEventListener("load", NicoLiveWindowRestorePosition, false);
+window.addEventListener("load", function(e){ NicoLiveWindow.init(); }, false);
 window.addEventListener("unload", function(e){ NicoLiveWindow.destroy(); }, false);

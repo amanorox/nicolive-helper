@@ -522,7 +522,7 @@ var NicoLiveRequest = {
     },
 
     test:function(){
-	// playing, pauseed, end
+	// playing, paused, end
 	try{
 	    if(this.opentab.contentDocument){
 		let status;
@@ -531,6 +531,9 @@ var NicoLiveRequest = {
 		if(this.playlist_first && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
 		    this.playlist_first = false;
+		    
+		    let flvcontainer = this.opentab.contentDocument.getElementById('flvplayer_container').wrappedJSObject;
+		    this.opentab.contentWindow.scroll(0,flvcontainer.offsetTop-32);
 		    debugprint("play");
 		}
 		switch(status){
