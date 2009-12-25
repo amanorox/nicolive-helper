@@ -1838,17 +1838,27 @@ var NicoLiveHelper = {
     retrieveUserDefinedValue:function(){
 	let req = new XMLHttpRequest();
 	if( !req ) return;
-	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		let txt = req.responseText;
-		// JSON.parseの方がいいのだけどミクノ度jsonファイルに余計なデータが付いているので.
-		NicoLiveHelper.userdefinedvalue = eval('('+txt+')');
-	    }
-	};
 	let url = NicoLivePreference.readUserDefinedValueURI();
-	req.open('GET', url );
+	if( !url.match(/^file:/) ){
+	    req.onreadystatechange = function(){
+		if( req.readyState==4 && req.status==200 ){
+		    let txt = req.responseText;
+		    // JSON.parseの方がいいのだけどミクノ度jsonファイルに余計なデータが付いているので.
+		    NicoLiveHelper.userdefinedvalue = eval('('+txt+')');
+		}
+	    };
+	    req.open('GET', url );
+	    debugprint("Retrieving User-Defined Value from URI:"+url);
+	}else{
+	    req.open('GET', url, false );
+	    debugprint("Retrieving User-Defined Value from FILE:"+url);
+	}
 	req.send("");
-	debugprint("Retrieving User-Defined Value from "+url);
+	if( url.match(/^file:/) ){
+	    if(req.status == 0){
+		NicoLiveHelper.userdefinedvalue = eval('('+req.responseText+')');
+	    }
+	}
     },
 
     isOffline:function(){
