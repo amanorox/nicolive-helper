@@ -475,6 +475,19 @@ var NicoLiveHelper = {
 				   let stocktime = NicoLiveHelper.getTotalStockTime();
 				   tmp = GetTimeString(stocktime.min*60+stocktime.sec);
 				   break;
+
+			       case 'json':
+				   try {
+				       let t = NicoLiveHelper.userdefinedvalue[info.video_id];
+				       if( t ){
+					   tmp = t;
+				       }else{
+					   tmp = "0";
+				       }
+				   } catch (x) {
+				       tmp = "";
+				   }
+				   break;
 			       }
 			       return tmp;
 			   });
@@ -1821,6 +1834,23 @@ var NicoLiveHelper = {
 	this.request_per_ppl = new Object();
     },
 
+    // ユーザー定義値を取得する.
+    retrieveUserDefinedValue:function(){
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let txt = req.responseText;
+		// JSON.parseの方がいいのだけどミクノ度jsonファイルに余計なデータが付いているので.
+		NicoLiveHelper.userdefinedvalue = eval('('+txt+')');
+	    }
+	};
+	let url = NicoLivePreference.readUserDefinedValueURI();
+	req.open('GET', url );
+	req.send("");
+	debugprint("Retrieving User-Defined Value from "+url);
+    },
+
     isOffline:function(){
 	return this.request_id=="lv0";
     },
@@ -1864,6 +1894,11 @@ var NicoLiveHelper = {
 	}
 	NicoLiveHelper.updateRemainRequestsAndStocks();
 
+	if( !this.isOffline() && caster ){
+	    this.retrieveUserDefinedValue();
+	}
+
+	// Windows Live Messengerに番組名を通知する.
 	if(IsWINNT() && !this.isOffline()){
 	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
 	    if(!this.isOffline()){

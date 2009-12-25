@@ -119,6 +119,18 @@ var NicoLivePreference = {
 	$('noticewin').removeAllNotifications(false);
 	$('noticewin').appendNotification('設定を反映しました',null,null,$('noticewin').PRIORITY_INFO_HIGH,null);
     },
+
+    readUserDefinedValueURI:function(){
+	let branch = this.getBranch();
+	let uri;
+	try{
+	    uri = branch.getCharPref("userdefined-data-uri");
+	} catch (x) {
+	    uri = "";
+	}
+	return uri;
+    },
+
     writePlayStyle:function(){
 	let branch = this.getBranch();
 	branch.setBoolPref("allowrequest",NicoLiveHelper.allowrequest);

@@ -75,6 +75,7 @@
       <preference id="pref-videoinfo3" name="extensions.nicolivehelper.videoinfo3" type="unichar"/>
       <preference id="pref-videoinfo4" name="extensions.nicolivehelper.videoinfo4" type="unichar"/>
       <preference id="pref-typeofvideoinfo" name="extensions.nicolivehelper.comment-type-of-videoinfo" type="int"/>
+      <preference id="pref-userdefined-uri" name="extensions.nicolivehelper.userdefined-data-uri" type="string"/>
     </preferences>
     <grid>
       <columns>
@@ -98,6 +99,8 @@
 	  <hbox align="center"><label control="videoinfo4" value="動画情報(4行目)"/></hbox>
 	  <textbox preference="pref-videoinfo4" id="videoinfo4" flex="1"/>
 	</row>
+	<row>
+	</row>
       </rows>
     </grid>
     <vbox>
@@ -108,6 +111,10 @@
 	<listitem label="/perm + hiddenで運営コメント" value="3"/>
       </listbox>
     </vbox>
+    <hbox align="center">
+      <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
+      <textbox preference="pref-userdefined-uri" id="userdefined-uri" flex="1"/>
+    </hbox>
     <hbox>
       <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
     </hbox>
