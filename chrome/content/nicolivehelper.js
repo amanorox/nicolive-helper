@@ -938,7 +938,7 @@ var NicoLiveHelper = {
 	    + " ticket=\""+this.ticket+"\""
 	    + " vpos=\""+vpos+"\""
 	    + " postkey=\""+this.postkey+"\""
-	    + " mail=\""+mail+" 184\""
+	    + " mail=\""+mail+(NicoLivePreference.comment184?" 184\"":"\"")
 	    + " user_id=\""+this.user_id+"\""
 	    + " premium=\""+this.is_premium+"\">"
 	    + htmlspecialchars(comment)

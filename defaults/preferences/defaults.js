@@ -35,6 +35,7 @@ pref("extensions.nicolivehelper.msg-requestng","");
 
 pref("extensions.nicolivehelper.savecomment",false);
 pref("extensions.nicolivehelper.commentlogDir","");
+pref("extensions.nicolivehelper.184comment",true);
 
 pref("extensions.nicolivehelper.request.restrict",false);
 pref("extensions.nicolivehelper.request.date-from","2007-08-31");

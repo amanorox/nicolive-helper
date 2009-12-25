@@ -21,6 +21,8 @@ var NicoLivePreference = {
 
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 
+	this.comment184 = branch.getBoolPref("184comment");
+
 	this.topmost = branch.getBoolPref("z-order");
 	SetWindowTopMost(window,this.topmost);
 

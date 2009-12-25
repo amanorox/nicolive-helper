@@ -266,6 +266,7 @@
       <preference id="pref-auto-open-listener" name="extensions.nicolivehelper.autowindowopen-listener" type="bool"/>
       <preference id="pref-auto-close-listener" name="extensions.nicolivehelper.autowindowclose-listener" type="bool"/>
       <preference id="pref-z-order" name="extensions.nicolivehelper.z-order" type="bool"/>
+      <preference id="pref-184comment" name="extensions.nicolivehelper.184comment" type="bool"/>
     </preferences>
     <vbox>
       <checkbox preference="pref-save-comment" label="コメントログをファイルに保存する"/>
@@ -275,6 +276,8 @@
 	<button label="参照..." oncommand="NLHPreference.refDirectory();"/>
       </hbox>
     </vbox>
+    <html:hr style="margin:1em;"/>
+    <checkbox preference="pref-184comment" label="常に184(匿名)コメントにする"/>
     <html:hr style="margin:1em;"/>
     <vbox>
       <label value="生放送の開始、終了に合わせて、Helperを自動で"/>
