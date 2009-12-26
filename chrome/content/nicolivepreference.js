@@ -139,7 +139,18 @@ var NicoLivePreference = {
     },
 
     getCommentDir:function(){
-	return this.getBranch().getFilePref('commentlogDir');
+	try{
+	    return this.getBranch().getFilePref('commentlogDir');
+	} catch (x) {
+	    return null;
+	}
+    },
+    getContinuousCommentDir:function(){
+	try{
+	    return this.getBranch().getFilePref('continuous-commentDir');
+	} catch (x) {
+	    return null;
+	}
     },
 
     getBranch:function(){

@@ -107,6 +107,8 @@
 	<menuitem label="連続コメント" oncommand="OpenContinuousCommentWindow();"/>
 	<menuseparator/>
 	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
+	<menuseparator/>
+	<menuitem label="テスト(Experimental)" oncommand="NicoLiveHelper.test();"/>
       </menupopup>
     </toolbarbutton>
 

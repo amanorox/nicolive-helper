@@ -162,6 +162,7 @@ var NicoLiveComment = {
 
     openFile:function(request_id){
 	let f = NicoLivePreference.getCommentDir();
+	if(!f) return;
 	f.append(request_id+'.txt');
 	let file;
 	let os;

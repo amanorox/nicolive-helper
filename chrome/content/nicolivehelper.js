@@ -1930,6 +1930,10 @@ var NicoLiveHelper = {
 	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
 	    obj.SetWinLiveMessengerMsg("");
 	}
+    },
+
+    test: function(){
+	let f = "resizable,chrome,dialog=no";
     }
 };
 

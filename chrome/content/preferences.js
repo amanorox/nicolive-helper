@@ -136,6 +136,7 @@ var NLHPreference = {
 	$('pref-msg-requestng').value = "";
     },
 
+    // コメントログの保存先を選択.
     refDirectory:function(){
 	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
@@ -152,6 +153,25 @@ var NLHPreference = {
 	    $('pref-commentlogDir').value = file;
 	    $('commentlog').file = file;
 	    $('commentlog').label = path;
+	}
+    },
+
+    refContinuousCommentDirectory:function(){
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "連続コメント用テキストファイルの保存先を指定してください", nsIFilePicker.modeGetFolder);
+	var rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    var file = fp.file;
+	    // Get the path as string. Note that you usually won't 
+	    // need to work with the string paths.
+	    var path = fp.file.path;
+	    // work with returned nsILocalFile...
+	    debugprint('continuous comment dir='+path);
+
+	    $('pref-continuousCommentDir').value = file;
+	    $('continuouscomment').file = file;
+	    $('continuouscomment').label = path;
 	}
     },
 
@@ -176,6 +196,12 @@ var NLHPreference = {
         var file = $('pref-commentlogDir').value;
         if (file) {
             var fileField = $('commentlog');
+            fileField.file = file;
+            fileField.label = file.path;
+        }
+	file = $('pref-continuousCommentDir').value;
+        if (file) {
+            var fileField = $('continuouscomment');
             fileField.file = file;
             fileField.label = file.path;
         }

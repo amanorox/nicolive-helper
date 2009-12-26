@@ -29,7 +29,9 @@ var NicoLiveWindow = {
 	    "h" : window.innerHeight
 	};
 	//NicoLiveDatabase.saveGPStorage("xywh",pos);
-	NicoLivePreference.getBranch().setCharPref("window-pos",JSON.stringify(pos));
+	if(!window.fullScreen){
+	    NicoLivePreference.getBranch().setCharPref("window-pos",JSON.stringify(pos));
+	}
     },
     restore:function(){
 	let def = {

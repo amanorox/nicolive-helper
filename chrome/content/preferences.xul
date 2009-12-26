@@ -134,49 +134,59 @@
       <preference id="pref-msg-accept" name="extensions.nicolivehelper.msg-accept" type="unichar"/>
       <preference id="pref-msg-requestok" name="extensions.nicolivehelper.msg-requestok" type="unichar"/>
       <preference id="pref-msg-requestng" name="extensions.nicolivehelper.msg-requestng" type="unichar"/>
+      <preference id="pref-continuousCommentDir" name="extensions.nicolivehelper.continuous-commentDir" type="file"/>
     </preferences>
-    <grid>
-      <columns>
-	<column/>
-	<column flex="1" />
-      </columns>
-      <rows>
-	<row>
-	  <hbox align="center"><label control="msg-accept" value="リクエストを受け付けた時"/></hbox>
-	  <textbox preference="pref-msg-accept" id="msg-accept" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="msg-notaccept" value="リクエストを受け付けていない時"/></hbox>
-	  <textbox preference="pref-msg-notaccept" id="msg-notaccept" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="msg-deleted" value="削除、存在しない動画の時"/></hbox>
-	  <textbox preference="pref-msg-deleted" id="msg-deleted" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="msg-newmovie" value="新着の動画の時"/></hbox>
-	  <textbox preference="pref-msg-newmovie" id="msg-newmovie" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="msg-played" value="再生済みの動画の時"/></hbox>
-	  <textbox preference="pref-msg-played" id="msg-played" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="msg-requested" value="リクエスト受付済みの動画の時"/></hbox>
-	  <textbox preference="pref-msg-requested" id="msg-requested" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="msg-requestok" value="リクエスト許可に切り替えた時"/></hbox>
-	  <textbox preference="pref-msg-requestok" id="msg-requestok" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="msg-requestng" value="リクエスト不可に切り替えた時"/></hbox>
-	  <textbox preference="pref-msg-requestng" id="msg-requestng" flex="1"/>
-	</row>
-      </rows>
-    </grid>
-    <hbox>
-      <button label="デフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
+    <groupbox>
+      <caption label="リクエストへの応答コメント"/>
+      <grid>
+	<columns>
+	  <column/>
+	  <column flex="1" />
+	</columns>
+	<rows>
+	  <row>
+	    <hbox align="center"><label control="msg-accept" value="リクエストを受け付けた時"/></hbox>
+	    <textbox preference="pref-msg-accept" id="msg-accept" flex="1"/>
+	  </row>
+	  <row>
+	    <hbox align="center"><label control="msg-notaccept" value="リクエストを受け付けていない時"/></hbox>
+	    <textbox preference="pref-msg-notaccept" id="msg-notaccept" flex="1"/>
+	  </row>
+	  <row>
+	    <hbox align="center"><label control="msg-deleted" value="削除、存在しない動画の時"/></hbox>
+	    <textbox preference="pref-msg-deleted" id="msg-deleted" flex="1"/>
+	  </row>
+	  <row>
+	    <hbox align="center"><label control="msg-newmovie" value="新着の動画の時"/></hbox>
+	    <textbox preference="pref-msg-newmovie" id="msg-newmovie" flex="1"/>
+	  </row>
+	  <row>
+	    <hbox align="center"><label control="msg-played" value="再生済みの動画の時"/></hbox>
+	    <textbox preference="pref-msg-played" id="msg-played" flex="1"/>
+	  </row>
+	  <row>
+	    <hbox align="center"><label control="msg-requested" value="リクエスト受付済みの動画の時"/></hbox>
+	    <textbox preference="pref-msg-requested" id="msg-requested" flex="1"/>
+	  </row>
+	  <row>
+	    <hbox align="center"><label control="msg-requestok" value="リクエスト許可に切り替えた時"/></hbox>
+	    <textbox preference="pref-msg-requestok" id="msg-requestok" flex="1"/>
+	  </row>
+	  <row>
+	    <hbox align="center"><label control="msg-requestng" value="リクエスト不可に切り替えた時"/></hbox>
+	    <textbox preference="pref-msg-requestng" id="msg-requestng" flex="1"/>
+	  </row>
+	</rows>
+      </grid>
+      <hbox>
+	<button label="デフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
+      </hbox>
+    </groupbox>
+    
+    <hbox align="center">
+      <label control="continuouscomment" value="連続コメント用テキストファイル保存先:"/>
+      <filefield id="continuouscomment" flex="1"/>
+      <button label="参照..." oncommand="NLHPreference.refContinuousCommentDirectory();"/>
     </hbox>
   </prefpane>
     
@@ -278,6 +288,7 @@
       <preference id="pref-auto-close-listener" name="extensions.nicolivehelper.autowindowclose-listener" type="bool"/>
       <preference id="pref-z-order" name="extensions.nicolivehelper.z-order" type="bool"/>
       <preference id="pref-184comment" name="extensions.nicolivehelper.184comment" type="bool"/>
+      <preference id="pref-autoscroll" name="extensions.nicolivehelper.autoscroll" type="bool"/>
     </preferences>
     <vbox>
       <checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントログ保存先は必ず指定してください"/>
@@ -311,6 +322,7 @@
 	  </row>
 	</rows>
       </grid>
+      <checkbox preference="pref-autoscroll" label="Helperを開いたとき、自動で生放送プレイヤーの位置までスクロールする"/>
       <html:hr style="margin:1em;"/>
       <checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ有効"/>
     </vbox>
