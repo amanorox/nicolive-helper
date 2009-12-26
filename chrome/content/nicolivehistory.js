@@ -45,6 +45,13 @@ var NicoLiveHistory = {
 	}	
     },
 
+    restorePlaylistText:function(){
+	$('played-list-textbox').value = "";
+	for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
+	    $('played-list-textbox').value += item.video_id + " " + item.title + "\n";
+	}
+    },
+
     handleEvent:function(event){
 	if(event.type=='popupshowing'){
 	    let hidden = true;

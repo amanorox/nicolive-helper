@@ -110,7 +110,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	    if(!ismiku||!isoriginal){
-		debugprint("ミクオリジナル曲ではなさそうだ");
+		debugprint(info.video_id+":ミクオリジナル曲ではなさそうだ");
 		return {code:-6,msg:"ミクオリジナル曲かどうかを自動判断できませんでした<br>主判断をお待ちください",movieinfo:info};
 	    }
 	}
@@ -428,7 +428,7 @@ var NicoLiveHelper = {
 					   }
 
 					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
-					   if(tag.match(/(M[A@]D|MMD|HD|3D|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
+					   if(tag.match(/(M[A@]D|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 					   // P名
 					   let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
 					   if(t){

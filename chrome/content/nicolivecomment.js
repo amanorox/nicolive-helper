@@ -179,7 +179,7 @@ var NicoLiveComment = {
 
 	this.ostream = cos;
 
-	cos.writeString('--- begin log ---\r\n');
+	cos.writeString('--- '+NicoLiveHelper.title+' ---\r\n');
     },
     closeFile:function(){
 	try{

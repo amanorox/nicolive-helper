@@ -202,6 +202,7 @@
 	  <hbox>
 	    <!--<button label="Save As..." oncommand=""/>-->
 	    <button label="消去" tooltiptext="消去すると、再度リクエストを受け付けることができるようになります" oncommand="NicoLiveHelper.clearPlayedList();"/>
+	    <button label="復旧" tooltiptext="" oncommand="NicoLiveHistory.restorePlaylistText();"/>
 	  </hbox>
 	</vbox>
 
