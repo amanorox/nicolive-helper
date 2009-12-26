@@ -108,7 +108,7 @@
 	<menuseparator/>
 	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
 	<menuseparator/>
-	<menuitem label="テスト(Experimental)" oncommand="NicoLiveHelper.test();"/>
+	<menuitem label="テスト" disabled="true" oncommand="NicoLiveHelper.test();"/>
       </menupopup>
     </toolbarbutton>
 
@@ -201,8 +201,8 @@
 	  <textbox id="played-list-textbox" emptytext="プレイリストスレッドにコピペする用" multiline="true" flex="1" />
 	  <hbox>
 	    <!--<button label="Save As..." oncommand=""/>-->
-	    <button label="消去" tooltiptext="消去すると、再度リクエストを受け付けることができるようになります" oncommand="NicoLiveHelper.clearPlayedList();"/>
-	    <button label="復旧" tooltiptext="" oncommand="NicoLiveHistory.restorePlaylistText();"/>
+	    <button label="完全消去" tooltiptext="再生済みの動画を再度リクエストを受け付けることができるようになります。テキスト復旧は行えません。" oncommand="NicoLiveHelper.clearPlayedList();"/>
+	    <button label="テキスト復旧" tooltiptext="再生履歴を元にテキストを復旧します(番組名は復元できません)" oncommand="NicoLiveHistory.restorePlaylistText();"/>
 	  </hbox>
 	</vbox>
 

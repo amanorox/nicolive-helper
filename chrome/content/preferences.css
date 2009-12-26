@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+hr {
+    padding: 0;
+    margin: 10px;
+    border-width: 1px 0px 0px 0px;
+    border-style: solid; /*dashed;*/
+}
