@@ -1637,7 +1637,22 @@ var NicoLiveHelper = {
     },
 
     // プログレスバーの時間表示で、progressとremainの表示を切り替え.
-    toggleDisplayProgressTime:function(){
+    toggleDisplayProgressTime:function(event){
+	event = event || window.event;
+	let btnCode;
+
+	if ('object' == typeof event){
+	    btnCode = event.button;
+	    switch (btnCode){
+	    case 0: // left
+                break;
+	    case 1: // middle
+	    case 2: // right
+	    default: // unknown
+		return;
+	    }
+	}
+
 	if(this.flg_displayprogresstime){
 	    this.flg_displayprogresstime = false;
 	}else{
@@ -1741,7 +1756,8 @@ var NicoLiveHelper = {
 	clearInterval(this._prepare);
 	let interval = parseInt(NicoLivePreference.nextplay_interval*1000);
 	let maxplay  = parseInt(NicoLivePreference.max_movieplay_time*60*1000);
-	if( maxplay>0 && du > maxplay ){
+	if( this.isautoplay && maxplay>0 && du > maxplay ){
+	    // 自動再生のときだけ最大再生時間に合わせる.
 	    du = maxplay;
 	}
 	this._musicend = setInterval("NicoLiveHelper.checkPlayNext();", du+interval);
