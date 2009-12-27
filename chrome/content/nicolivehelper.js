@@ -1623,7 +1623,11 @@ var NicoLiveHelper = {
 	progressbar = Math.floor(progress / (this.musicinfo.length_ms/1000) * 100);
 	if(this.inplay){
 	    playprogress.value = progressbar;
-	    let remain = this.musicinfo.length_ms/1000 - progress; if(remain<0){ remain = 0; }
+	    let remain = this.musicinfo.length_ms/1000 - progress;
+	    if(remain<0){
+		remain = 0;
+		progress = this.musicinfo.length_ms/1000;
+	    }
 	    str = this.musicinfo.title+"("+(this.flg_displayprogresstime ? GetTimeString(progress): "-"+GetTimeString(remain))+"/"+this.musicinfo.length+")";
 	    musictime.label = str;
 	}else{
