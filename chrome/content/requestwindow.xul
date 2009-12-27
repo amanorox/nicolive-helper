@@ -91,6 +91,9 @@
     <toolbarbutton label="サブ画面" id="do-subdisplay" autoCheck="true" type="checkbox"/>
     <toolbarbutton label="コマンド" type="menu">
       <menupopup>
+	<menuitem label="連続コメント" oncommand="OpenContinuousCommentWindow();"/>
+	<menuseparator/>
+
 	<menuitem label="アンケート(Lv25+)" tooltiptext="アンケートを行います(Lv25〜)" oncommand="OpenVoteDialog();"/>
 	<menuitem label="アンケート結果を表示する" tooltiptext="/vote showresult" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
 	<menuitem label="アンケート結果を消す" tooltiptext="/vote stop" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
@@ -103,8 +106,6 @@
 	<menuseparator/>
 	<menuitem label="放送を終了する" tooltiptext="/disconnect" oncommand="NicoLiveHelper.postCasterComment('/disconnect','');"/>
 	-->
-	<menuseparator/>
-	<menuitem label="連続コメント" oncommand="OpenContinuousCommentWindow();"/>
 	<menuseparator/>
 	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
 	<menuseparator/>
