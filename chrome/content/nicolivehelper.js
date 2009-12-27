@@ -428,7 +428,7 @@ var NicoLiveHelper = {
 					   }
 
 					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
-					   if(tag.match(/(M[A@]D|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
+					   if(tag.match(/(M[A@]D|MMD|HD|3D|mikunopop|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 					   // P名
 					   let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
 					   if(t){
@@ -1624,11 +1624,20 @@ var NicoLiveHelper = {
 	if(this.inplay){
 	    playprogress.value = progressbar;
 	    let remain = this.musicinfo.length_ms/1000 - progress; if(remain<0){ remain = 0; }
-	    str = this.musicinfo.title+"("+GetTimeString(remain)+"/"+this.musicinfo.length+")";
+	    str = this.musicinfo.title+"("+(this.flg_displayprogresstime ? GetTimeString(progress): "-"+GetTimeString(remain))+"/"+this.musicinfo.length+")";
 	    musictime.label = str;
 	}else{
 	    playprogress.value = 0;
 	    musictime.label = "";
+	}
+    },
+
+    // プログレスバーの時間表示で、progressとremainの表示を切り替え.
+    toggleDisplayProgressTime:function(){
+	if(this.flg_displayprogresstime){
+	    this.flg_displayprogresstime = false;
+	}else{
+	    this.flg_displayprogresstime = true;
 	}
     },
 

@@ -388,7 +388,7 @@
   
   <!-- statusbar -->
   <statusbar>
-    <stack id="statusbar-currentmusic" context="popup-add-mylist">
+    <stack id="statusbar-currentmusic" context="popup-add-mylist" onclick="NicoLiveHelper.toggleDisplayProgressTime();">
       <progressmeter id="statusbar-music-progressmeter" mode="determined" value="0" />
       <statusbarpanel id="statusbar-music-name" label="" />
     </stack>

@@ -28,6 +28,8 @@ GET http://live.nicovideo.jp/editstream -> 情報入力 -> 確認するボタン
 --
 ・選曲対象がないときに再生する動画
 
+getflv には ckey を渡している
+
 
 // through NicoNama
 // プレミアム
