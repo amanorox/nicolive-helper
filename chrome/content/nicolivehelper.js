@@ -1028,6 +1028,7 @@ var NicoLiveHelper = {
 	default:
 	    break;
 	}
+	NicoLivePreference.writePlayStyle();
     },
 
     // 自動再生の設定をする.

@@ -1,6 +1,8 @@
 
 var NicoLiveOverlay = {
     insertHistory:function(url,title){
+	if(url=="lv0") return;
+
 	let menu = document.getElementById('nicolive-menu-popup');
 	for(let i=0,item;item=menu.children[i];i++){
 	    if(item.value==url){
