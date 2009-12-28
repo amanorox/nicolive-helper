@@ -55,7 +55,11 @@ var NicoLiveOverlay = {
 	try{
 	    title = window.content.document.getElementById("title").textContent;
 	} catch (x) {
-	    title = "タイトルなし";
+	    try{
+		title = window.content.document.getElementsByTagName('title')[0].textContent;
+	    } catch (x) {
+		title = "タイトルなし";
+	    }
 	}
 	if(url!="lv0"){
 	    if( !window.content.document.body.innerHTML.match(/console\.swf/) ){
@@ -88,7 +92,15 @@ var NicoLiveOverlay = {
 	    if(url){
 		let title;
 		try{
-		    title = e.target.getElementById("title").textContent;
+		    try{
+			title = e.target.getElementById("title").textContent;
+		    } catch (x) {
+			try{
+			    title = e.target.getElementsByTagName('title')[0].textContent;
+			} catch (x) {
+			    title = "タイトルなし";
+			}
+		    }
 		    this.open(url,title,iscaster);
 		} catch (x) {
 		}

@@ -428,8 +428,8 @@ var NicoLiveHelper = {
 					       continue;
 					   }
 
-					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap)$/i)) continue;
-					   if(tag.match(/(M[A@]D|MMD|HD|3D|mikunopop|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
+					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap|mikunopop|mikupop)$/i)) continue;
+					   if(tag.match(/(M[A@]D|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 					   // P名
 					   let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
 					   if(t){
@@ -1814,6 +1814,31 @@ var NicoLiveHelper = {
 	// 何も再生していないときに、ジングルを再生開始する.
 	let jingle = NicoLivePreference.jinglemovie;
 	if( !jingle ){ debugprint('ジングル動画が指定されていないので再生しない'); return; }
+
+	// sm0 sm1/co154 sm3/co154 sm2/co13879
+	let jingles = jingle.split(/\s+/);
+	let candidates = new Array();
+	let all;
+	for(let i=0,s;s=jingles[i];i++){
+	    let tmp;
+	    tmp = s.split(/\//);
+	    if(tmp.length==2){
+		if(tmp[1]==this.community){
+		    candidates.push(tmp[0]);
+		}
+	    }else if(tmp.length==1){
+		all = tmp[0];
+	    }
+	}
+	if(candidates.length<=0){
+	    jingle = all;
+	}else{
+	    let n = GetRandomInt(0,candidates.length-1);
+	    jingle = candidates[n];
+	}
+	debugprint('jingle:'+jingle);
+	if(!jingle) return;
+
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){
 		this.inplay = true;
@@ -1834,7 +1859,7 @@ var NicoLiveHelper = {
     saveAll:function(){
 	this.saveStock();
 	this.saveRequest();
-	this.savePlaylist();	
+	this.savePlaylist();
     },
     saveStock:function(){
 	Application.storage.set("nico_live_stock",this.stock);
