@@ -99,6 +99,7 @@ var NicoLiveHelper = {
 		if(item.match(/ミク/)){ ismiku = true; }
 		if(item.match(/オリジナル/)){ isoriginal = true; }
 		if(item.match(/ProjectDIVA-AC楽曲募集/)){ ismiku = true; isoriginal = true; }
+		if(item.match(/森之宮神療所/)){ isoriginal = true; }
 
 		if(item.match(/コモンズ/)){ isoriginal = true; }
 		if(item.match(/VOCALOID→VOCALOIDカバー/)){ isoriginal = true; }

@@ -1,5 +1,24 @@
 
 var NicoLiveOverlay = {
+    insertHistory:function(url,title){
+	let menu = document.getElementById('nicolive-menu-popup');
+	for(let i=0,item;item=menu.children[i];i++){
+	    if(item.value==url){
+		return;
+	    }
+	}
+
+	if(menu.children.length>=20){
+	    menu.removeChild(menu.lastChild);
+	}
+	
+	let elem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",'menuitem');
+	elem.setAttribute('label',title);
+	elem.setAttribute('value',url);
+	elem.addEventListener('command', function(e){ window.content.location.href = "http://live.nicovideo.jp/watch/"+e.target.value; }, false );
+	menu.insertBefore(elem,menu.firstChild);
+    },
+
     open:function(url,title,iscaster){
 	let prefs = new PrefsWrapper1("extensions.nicolivehelper.");
 	let pos;
@@ -19,6 +38,8 @@ var NicoLiveOverlay = {
 	Application.storage.set("nico_live_title",title);
 	Application.storage.set("nico_live_caster",iscaster);
 	window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature).focus();
+
+	this.insertHistory(url,title);
 	//Application.console.log(url+' '+title);
     },
 
@@ -81,6 +102,7 @@ var NicoLiveOverlay = {
 					    NicoLiveOverlay.onPageLoad(e);
 					},true);
 	}
+	this.nicolivehistory = new Array();
     }
 };
 

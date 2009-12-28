@@ -442,7 +442,7 @@
     <!-- for stock-view -->
     <menupopup id="popup-sort-stock">
       <menu label="昇順">
-	<menupopup id="popup-mylists">
+	<menupopup>
 	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortStock(0,1)"/>
 	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortStock(1,1)"/>
 	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortStock(2,1)"/>
@@ -453,7 +453,7 @@
 	</menupopup>
       </menu>
       <menu label="降順">
-	<menupopup id="popup-mylists">
+	<menupopup>
 	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortStock(0,-1)"/>
 	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortStock(1,-1)"/>
 	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortStock(2,-1)"/>

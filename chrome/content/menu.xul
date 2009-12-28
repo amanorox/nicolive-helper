@@ -5,11 +5,14 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/overlay.js" />
 
-<!--
+
   <menupopup id="menu_ToolsPopup">
-    <menuitem id="nicolive-menu-item" label="NicoLive Helper" insertbefore="menu_pageInfo" />
+    <menu label="NicoLive Helper" insertbefore="menu_pageInfo">
+      <menupopup id="nicolive-menu-popup">
+	
+      </menupopup>
+    </menu>
   </menupopup>
--->
 
   <popup id="contentAreaContextMenu">
     <menuitem id="nicolive-popup-menu" label="NicoLive Helper" oncommand="NicoLiveOverlay.openNicoLiveWindow();" />
