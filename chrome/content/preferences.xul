@@ -29,7 +29,7 @@
       <caption label="進行"/>
       <hbox>
 	<checkbox preference="pref-jingle" label="接続時にジングルを再生する"/>
-	<textbox preference="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください"/>
+	<textbox preference="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください" flex="1"/>
 	<button label="再生" oncommand="opener.NicoLiveHelper.playJingle();"/>
       </hbox>
       <checkbox preference="pref-limit30min" label="自動再生時、30分枠に収まるように再生する動画を選択する"/>
@@ -190,7 +190,7 @@
     </hbox>
   </prefpane>
     
-  <prefpane id="nicolivehelper-prefpane-request" label="リクエスト制限" image="chrome://nicolivehelper/content/data/icon3.png" onpaneload="NLHPreference.updateRestrictPane();">
+  <prefpane id="nicolivehelper-prefpane-request" label="リク制限" image="chrome://nicolivehelper/content/data/icon3.png" onpaneload="NLHPreference.updateRestrictPane();">
     <preferences>
       <preference id="pref-restrict-request"   name="extensions.nicolivehelper.request.restrict" type="bool"/>
       <preference id="pref-restrict-date-from" name="extensions.nicolivehelper.request.date-from" type="string"/>
@@ -277,6 +277,13 @@
     </hbox>
   </prefpane>
 -->
+
+  <prefpane id="nicolivehelper-prefpane-whitelist" label="P名ホワイトリスト" image="chrome://nicolivehelper/content/data/preficon_whitelist.png" onpaneload="NLHPreference.loadPNameWhitelist();">
+    <textbox id="pname-whitelist" multiline="true" flex="1" emptytext="1行につき1人のP名、D名を入力してください" tooltiptext="1行につき1人のP名,D名を入力してください"/>
+    <hbox>
+      <button label="保存" oncommand="NLHPreference.savePNameWhitelist();"/>
+    </hbox>
+  </prefpane>
 
   <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>

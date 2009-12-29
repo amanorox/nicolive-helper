@@ -1558,6 +1558,8 @@ var NicoLiveHelper = {
 	debugprint('PC clock:'+GetDateString(this.connecttime*1000));
 	// サーバ時刻にしておけば間違いないかな.
 	this.connecttime = this.serverconnecttime;
+
+	this.updatePNameWhitelist();
     },
 
     keepConnection:function(){
@@ -1587,6 +1589,16 @@ var NicoLiveHelper = {
 	    this.ciStream.close();
 	    delete this.ciStream;
 	}
+    },
+    updatePNameWhitelist:function(){
+	let pnames = NicoLiveDatabase.loadGPStorage('nicolive_pnamewhitelist','');
+	pnames = pnames.split(/[\r\n]/gm);
+	for(let i=0,pname;pname=pnames[i];i++){
+	    if(pname){
+		pname_whitelist["_"+ZenToHan(pname)] = true;
+	    }
+	}
+	debugprint('update PName Whitelist');
     },
 
     // 現在の再生曲の再生時間と、生放送の経過時間をプログレスバーで表示.

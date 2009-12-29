@@ -4,6 +4,14 @@ var NLHPreference = {
 	this.dbconnect = opener.NicoLiveDatabase.dbconnect;
     },
 
+    savePNameWhitelist:function(){
+	opener.NicoLiveDatabase.saveGPStorage('nicolive_pnamewhitelist',$('pname-whitelist').value);
+    },
+    loadPNameWhitelist:function(){
+	let pname = opener.NicoLiveDatabase.loadGPStorage('nicolive_pnamewhitelist','');
+	$('pname-whitelist').value = pname;
+    },
+
     // リク制限のプリセットをDBに登録する.
     savePresetRequestCond:function(name,obj){
 	let st;

@@ -567,7 +567,6 @@ var NicoLiveDatabase = {
 		let sql = "alter table nicovideo add favorite integer";
 		this.dbconnect.executeSimpleSQL(sql);
 	    } catch (x) {
-		debugprint('favorite column was already exist');
 	    }
 	}
     },
@@ -661,10 +660,7 @@ var NicoLiveDatabase = {
 	}
     },
 
-    init:function(){
-	debugprint('NicoLiveDatabase init');
-	this.addSearchLine();
-
+    init1st:function(){
         let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
         file.append("nicolivehelper_miku39jp.sqlite");
 
@@ -674,6 +670,11 @@ var NicoLiveDatabase = {
 	this.createRequestCondDB();
 	this.createGPStorageDB();
 	this.createPnameDB();
+    },
+
+    init:function(){
+	debugprint('NicoLiveDatabase init');
+	this.addSearchLine();
 	this.setRegisterdVideoNumber();
     },
     destroy:function(){
@@ -683,6 +684,8 @@ var NicoLiveDatabase = {
 	//this.dbconnect.close();
     }
 };
+
+NicoLiveDatabase.init1st();
 
 window.addEventListener("load", function(e){ NicoLiveDatabase.init(); }, false);
 window.addEventListener("unload", function(e){ NicoLiveDatabase.destroy(); }, false);
