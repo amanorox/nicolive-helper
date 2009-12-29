@@ -190,5 +190,13 @@ var NicoLivePreference = {
     }
 };
 
+function NicoLiveUpdateWindowZOrder(){
+    let branch = NicoLivePreference.getBranch();
+    let topmost = branch.getBoolPref("z-order");
+    SetWindowTopMost(window,topmost);
+    //Application.console.log('update z-order');
+}
+
 window.addEventListener("load", function(e){ NicoLivePreference.init(); }, false);
 window.addEventListener("unload", function(e){ NicoLivePreference.destroy(); }, false);
+window.addEventListener("resize", NicoLiveUpdateWindowZOrder, false );
