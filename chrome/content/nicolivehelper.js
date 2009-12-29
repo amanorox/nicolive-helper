@@ -42,6 +42,7 @@ var NicoLiveHelper = {
     isautoplay: false,     // 自動再生フラグ.
     israndomplay: false,   // ランダム再生フラグ.
     anchor: {},            // アンカー処理用.
+    userdefinedvalue: {},
 
     // リクを受け付けるかどうかチェック.
     checkAcceptRequest: function(xml, comment_no){
@@ -1910,6 +1911,7 @@ var NicoLiveHelper = {
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	let url = NicoLivePreference.readUserDefinedValueURI();
+	if( !url ) return;
 	if( !url.match(/^file:/) ){
 	    req.onreadystatechange = function(){
 		if( req.readyState==4 && req.status==200 ){

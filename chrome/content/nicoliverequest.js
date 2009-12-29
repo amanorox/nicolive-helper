@@ -71,7 +71,7 @@ var NicoLiveRequest = {
 	let datestr = GetDateString(item.first_retrieve*1000);
 	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
+			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
 	let hr = CreateHTMLElement('hr');
 	//hr.setAttribute("size","1");
 	div.appendChild(hr);
@@ -239,7 +239,7 @@ var NicoLiveRequest = {
 	let datestr = GetDateString(item.first_retrieve*1000);
 	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
 			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
+			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
 	let hr = CreateHTMLElement('hr');
 	//hr.setAttribute("size","1");
 	hr.className = 'detail';
@@ -439,8 +439,8 @@ var NicoLiveRequest = {
 
 	let datestr = GetDateString(item.first_retrieve*1000);
 	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
-						+ "再生数:"+item.view_counter+" コメント:"+item.comment_num
-						+ " マイリスト:"+item.mylist_counter+" 時間:"+item.length));
+			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
+			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
 	let hr = CreateHTMLElement('hr');
 	//hr.setAttribute("size","1");
 	div.appendChild(hr);
