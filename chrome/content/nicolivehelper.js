@@ -494,6 +494,11 @@ var NicoLiveHelper = {
 				       tmp = "";
 				   }
 				   break;
+
+			       case 'mylistcomment':
+				   tmp = info.mylistcomment;
+				   if(!tmp) tmp = "";
+				   break;
 			       }
 			       return tmp;
 			   });
@@ -1372,6 +1377,8 @@ var NicoLiveHelper = {
 	}
 	// video_id がないときはエラーとしておこう、念のため.
 	if( !info.video_id ) return null;
+
+	info.mylistcomment = NicoLiveMylist.mylistcomment["_"+info.video_id];
 	return info;
     },
 
@@ -1771,13 +1778,22 @@ var NicoLiveHelper = {
 		NicoLiveHelper.community = xml.getElementsByTagName('default_community')[0].textContent;
 		// 座席番号2525....が主らしい.
 		if( NicoLiveHelper.iscaster.match(/^2525/) ){
+		    let i,item;
 		    NicoLiveHelper.iscaster=true;
 		    // load requests
 		    NicoLiveHelper.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
+		    // rebuild request/ppl
+		    for(i=0;item=NicoLiveHelper.requestqueue[i];i++){
+			if(!item.user_id) item.user_id = "1";
+			if(!NicoLiveHelper.request_per_ppl[item.user_id]){
+			    NicoLiveHelper.request_per_ppl[item.user_id]=0;
+			}
+			NicoLiveHelper.request_per_ppl[item.user_id]++;
+		    }
 		    // load playlist
 		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-		    for(let i=0;i<NicoLiveHelper.playlist.length;i++){
+		    for(i=0;i<NicoLiveHelper.playlist.length;i++){
 			NicoLiveHelper.playlist["_"+NicoLiveHelper.playlist[i]] = true;
 		    }
 		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");

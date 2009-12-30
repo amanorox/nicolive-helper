@@ -117,7 +117,49 @@ var NicoLiveMylist = {
 	this._addMyList(mylist_id,mylist_name,video_id);
     },
 
+    addStockFromMylistWithComment:function(mylist_id,mylist_name){
+	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let xml = req.responseXML;
+		let items = xml.getElementsByTagName('item');
+		let videos = new Array();
+		debugprint('mylist rss items:'+items.length);
+		for(let i=0,item;item=items[i];i++){
+		    let video_id;
+		    let description;
+		    try{
+			video_id = item.getElementsByTagName('link')[0].textContent.match(/(sm|nm)\d+/);
+		    } catch (x) {
+			video_id = "";
+		    }
+		    if(video_id){
+			videos.push(video_id[0]);
+		    }
+
+		    try{
+			description = item.getElementsByTagName('description')[0].textContent;
+			description = description.replace(/[\r\n]/mg,'<br>');
+			description = description.match(/<p class="nico-memo">(.*?)<\/p>/)[1];
+		    } catch (x) {
+			description = "";
+		    }
+		    if( description ){
+			NicoLiveMylist.mylistcomment["_"+video_id[0]] = description;
+		    }
+		}// end for.
+		NicoLiveRequest.addStock(videos.join(','));
+	    }
+	};
+	req.open('GET', url );
+	req.send('');
+    },
+
     addStockFromMylist:function(mylist_id,mylist_name){
+	this.addStockFromMylistWithComment(mylist_id, mylist_name); return;
+
 	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
 	let req = new XMLHttpRequest();
 	if(!req) return;
@@ -165,6 +207,7 @@ var NicoLiveMylist = {
     init:function(){
 	debugprint("NicoLiveMylist.init");
 	this.mylists = new Array();
+	this.mylistcomment = new Object();
 
 	let req = new XMLHttpRequest();
 	if(!req) return;
