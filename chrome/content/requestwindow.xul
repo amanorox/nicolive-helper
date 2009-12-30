@@ -469,6 +469,7 @@
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-stock-additionalinfo"/>
+      <menuitem label="再生済みを解除" oncommand="NicoLiveRequest.offPlayed();"/>
       <menuseparator/>
       <menuitem label="ストックをファイルに保存" oncommand="NicoLiveRequest.saveStockToFile();"/>
     </menupopup>

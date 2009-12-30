@@ -1430,6 +1430,17 @@ var NicoLiveHelper = {
 	if(this.playlist["_"+video_id]) return true;
 	return false;
     },
+
+    offPlayed:function(video_id){
+	this.playlist["_"+video_id] = false;
+	for(let i=0,item; item=this.stock[i];i++){
+	    if(item.video_id==video_id){
+		item.isplayed = false;		
+	    }
+	}
+	NicoLiveRequest.updateStockView(this.stock);
+    },
+
     // リクエスト済みチェック.
     isRequestedMusic:function(video_id){
 	for(let i=0,item;item=this.requestqueue[i];i++){

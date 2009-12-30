@@ -615,6 +615,17 @@ var NicoLiveRequest = {
 	}
 	if(ids.length>0) CopyToClipboard(ids.join('\r\n'));
     },
+
+
+    offPlayed:function(){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	let video_id = elem.firstChild.textContent;
+	if(video_id.length<=0) return;
+
+	debugprint('off played flag:'+video_id);
+	NicoLiveHelper.offPlayed(video_id);
+    },
+
     saveStockToFile:function(){
 	let ids = new Array();
 	for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
