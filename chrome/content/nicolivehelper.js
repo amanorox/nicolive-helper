@@ -41,6 +41,7 @@ var NicoLiveHelper = {
     allowrequest: true,    // リクを受け付けるフラグ.
     isautoplay: false,     // 自動再生フラグ.
     israndomplay: false,   // ランダム再生フラグ.
+    isconsumptionrateplay: false, // リク消費率順再生フラグ.
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},
 
@@ -97,6 +98,7 @@ var NicoLiveHelper = {
 	    if(info.title.match(/オリジナル/)){ isoriginal = true; }
 
 	    for(let i=0,item;item=info.tags[i];i++){
+		item = ZenToHan(item);
 		if(item.match(/ミク/)){ ismiku = true; }
 		if(item.match(/オリジナル/)){ isoriginal = true; }
 		if(item.match(/ProjectDIVA-AC楽曲募集/)){ ismiku = true; isoriginal = true; }
@@ -553,6 +555,13 @@ var NicoLiveHelper = {
 	this.addPlayList(this.musicinfo);
 	NicoLiveRequest.update(this.requestqueue);
 
+	// 再生数をカウントアップ.
+	if(!item.user_id) item.user_id = "1";
+	if(this.play_per_ppl[item.user_id]){
+	    this.play_per_ppl[item.user_id] = 0;
+	}
+	this.play_per_ppl[item.user_id]++;
+
 	// 再生されたストック曲はグレーにする.
 	let i,item;
 	for(i=0;item=this.stock[i];i++){
@@ -721,6 +730,47 @@ var NicoLiveHelper = {
 	return true;
     },
 
+    // リクエストから再生できる動画をピックアップして再生.
+    chooseMusicFromRequest:function(){
+	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
+	if(tmp<0) tmp = 0;
+	let remain = 30*60 - tmp; // second.
+	let limit30min = NicoLivePreference.limit30min;
+	let carelosstime = NicoLivePreference.carelosstime;
+	let notplayed = new Array();
+	let i,item;
+
+	// 再生できるリクエスト動画リスト作成.
+	for(i=0;item=this.requestqueue[i];i++){
+	    notplayed["_"+item.video_id] = i;
+	    if( limit30min ){
+		if(carelosstime && item.length_ms/1000 > remain+90){
+		    // ロスタイムを1:30(90s)として、枠に収まらない動画.
+		    continue;
+		}else if(!carelosstime && item.length_ms/1000 > remain){
+		    // 30枠に収まらない動画.
+		    continue;
+		}
+	    }
+	    notplayed.push(item);
+	}
+	if(notplayed.length<=0) return false; // 再生できるストックなし.
+
+	let n = 0;
+	if(this.israndomplay){
+	    n = GetRandomInt(0,notplayed.length-1);
+	}
+	if(this.isconsumptionrateplay){
+	    let tmp = this.calcConsumptionRate();
+	    if(tmp.length){
+		n = this.findRequestByUserId(notplayed, tmp[0].user_id);
+		if(n<0) n=0;
+	    }
+	}
+	this.playMusic(notplayed["_"+notplayed[n].video_id]+1,true);
+	return true;
+    },
+
     // 次曲を再生する.
     playNext: function(){
 	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
@@ -732,28 +782,7 @@ var NicoLiveHelper = {
 	if(!this.stock) return;
 
 	if(this.requestqueue.length){
-	    // リクエストがあればそれを優先に再生.
-	    let n = 0;
-	    let len = this.requestqueue.length;
-	    for(let i=0;i<len;i++){
-		if(this.israndomplay){
-		    n = GetRandomInt(1,len);
-		}else{
-		    n++; // 1,2,3,...
-		}
-		if( limit30min ){
-		    if(carelosstime &&
-		       this.requestqueue[n-1].length_ms/1000 > remain+90){
-			// ロスタイムを1:30(90s)として、枠に収まらない動画.
-			continue;
-		    }else if(!carelosstime && this.requestqueue[n-1].length_ms/1000 > remain){
-			// 30枠に収まらない動画.
-			continue;
-		    }
-		}
-		this.playMusic(n);
-		return;
-	    }
+	    if( this.chooseMusicFromRequest() ) return;
 	}
 	if(this.stock.length){
 	    if( this.chooseMusicFromStock() ) return;
@@ -999,9 +1028,46 @@ var NicoLiveHelper = {
 	return;
     },
 
+    // リクエスト消費率にソート.
+    calcConsumptionRate:function(){
+	let rate = new Array();
+	let tmp;
+	for (ppl in this.request_per_ppl){
+	    if(!this.play_per_ppl[ppl]){
+		this.play_per_ppl[ppl]=0;
+	    }
+	    tmp = this.play_per_ppl[ppl] / this.request_per_ppl[ppl];
+	    rate.push( {"user_id":ppl, "rate":tmp } );
+	}
+	rate.sort( function(a,b){
+		       return a.rate - b.rate;
+		   } );
+	return rate;
+    },
+
+    // ユーザーIDをキーに配列を検索して配列インデックス(0,1,2,...)を返す.
+    // 見つからないときは -1 
+    // arr 検索する配列
+    // user_id 検索するユーザーID
+    findRequestByUserId:function(arr,user_id){
+	for(let i=0,item; item=arr[i]; i++){
+	    if( item.user_id == user_id ){
+		return i;
+	    }
+	}
+	return -1;
+    },
+
+    setConsumptionRatePlay:function(b){
+	this.isconsumptionrateplay = b;	
+    },
+
     // 再生方式を指定.
     setPlayStyle:function(style){
 	this.playstyle = style;
+
+	this.setConsumptionRatePlay(false);
+
 	switch(style){
 	case 0:// 手動.
 	    this.setAutoplay(0);
@@ -1023,8 +1089,12 @@ var NicoLiveHelper = {
 	    this.setRandomplay(true);
 	    break;
 	case 4:// 手動消化率.
+	    this.setAutoplay(0);
+	    this.setConsumptionRatePlay(true);
 	    break;
 	case 5:// 自動消化率.
+	    this.setAutoplay(1);
+	    this.setConsumptionRatePlay(true);
 	    break;
 	default:
 	    break;
@@ -1325,6 +1395,7 @@ var NicoLiveHelper = {
 		    if(NicoLiveHelper.isPlayedMusic(ans.movieinfo.video_id)){
 			ans.movieinfo.isplayed = true;
 		    }
+		    ans.movieinfo.user_id = "1";
 		    NicoLiveHelper.addStockQueue(ans.movieinfo);
 		    break;
 		default:
@@ -1786,7 +1857,15 @@ var NicoLiveHelper = {
 		    // 自動順次再生のときは次の再生曲が予測できるので準備する.
 		    // ただし30枠収める指定は加味しない.
 		    if(NicoLiveHelper.requestqueue.length){
-			NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[0].video_id,"");
+			let n = 0;
+			if( NicoLiveHelper.isconsumptionrateplay ){
+			    let rate = NicoLiveHelper.calcConsumptionRate();
+			    if(rate.length){
+				n = NicoLiveHelper.findRequestByUserId(NicoLiveHelper.requestqueue, rate[0].user_id);
+				if(n<0) n=0;
+			    }
+			}
+			NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[n].video_id,"");
 		    }else if(NicoLiveHelper.stock.length){
 			for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
 			    if(!NicoLiveHelper.isPlayedMusic(item.video_id)){
@@ -1904,6 +1983,7 @@ var NicoLiveHelper = {
     resetRequestCount:function(){
 	// リクエストカウントのリセット.
 	this.request_per_ppl = new Object();
+	this.play_per_ppl = new Object();
     },
 
     // ユーザー定義値を取得する.
@@ -1952,7 +2032,7 @@ var NicoLiveHelper = {
 	this.error_req    = new Object(); // 配列にしない
 	this.isnotified   = new Array(); // 残り3分通知を出したかどうかのフラグ.
 	this.musicinfo    = {};
-	this.request_per_ppl = new Object(); // 1人あたりのリクエスト受け付け数ワーク.
+	this.resetRequestCount(); // 1人あたりのリクエスト受け付け数ワーク.
 
 	this.allowrequest = NicoLivePreference.allowrequest;
 	this.setPlayStyle(NicoLivePreference.playstyle);

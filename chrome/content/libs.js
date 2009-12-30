@@ -204,7 +204,7 @@ function GetRandomInt(min, max){
 }
 
 function ZenToHan(str){
-    return str.replace(/[ａ-ｚＡ-Ｚ０-９（）＠]/g,
+    return str.replace(/[ａ-ｚＡ-Ｚ０-９－（）＠]/g,
 		       function(s){ return String.fromCharCode(s.charCodeAt(0)-65248); });
 }
 
