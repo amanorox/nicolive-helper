@@ -33,6 +33,7 @@ var NicoLiveHelper = {
     secofweek: 604800,    // 1週間の秒数(60*60*24*7).
 
     starttime: 0,          // 放送の始まった時刻(sec).
+    endtime: 0,            // 放送の終わる時刻(sec) by getpublishstatus
     musicstarttime: 0,     // 曲の再生開始時刻(sec).
     musicendtime: 0,       // 曲の終了予定時刻(sec).
 
@@ -1926,6 +1927,44 @@ var NicoLiveHelper = {
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	let data = "v="+this.request_id;
 	req.send(data);
+    },
+
+
+    configureStream:function(token){
+	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=exclude&value=0&token="+token;
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
+		if( confstatus.getAttribute('status')=='ok' ){
+		}else{
+		    debugalert('配信開始に失敗しました。\n生放送ページにある公式の配信開始ボタンを押してください。');
+		}
+	    }
+	};
+	req.open('GET', conf );
+	req.send("");
+    },
+
+    // 配信開始.
+    startBroadcasting:function(){
+	// getpublishstatus + configurestream
+	if( !this.request_id || this.request_id=="lv0" ) return;
+	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + this.request_id;
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let publishstatus = req.responseXML;
+		NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
+		NicoLiveHelper.endtime = publishstatus.getElementsByTagName('end_time')[0].textContent;
+		debugprint('token='+NicoLiveHelper.token);
+		NicoLiveHelper.configureStream( NicoLiveHelper.token );
+	    }
+	};
+	req.open('GET', url );
+	req.send("");
     },
 
     // ジングルを再生する.

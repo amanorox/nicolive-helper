@@ -62,7 +62,7 @@ function OpenFile(path){
     }
 }
 
-function ComfirmPrompt(text,caption){
+function ConfirmPrompt(text,caption){
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
     var result = prompts.confirm(null, caption, text);
     return result;

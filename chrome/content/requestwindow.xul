@@ -108,6 +108,8 @@
 	-->
 	<menuseparator/>
 	<menuitem label="JSONファイルダウンロード" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
+	<menuseparator/>
+	<menuitem label="配信開始(Experimental)" tooltiptext="配信開始します" oncommand="NicoLiveHelper.startBroadcasting();"/>
 	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
 	<menuseparator/>
 	<menuitem label="テスト" disabled="true" oncommand="NicoLiveHelper.test();"/>
