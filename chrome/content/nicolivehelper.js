@@ -556,11 +556,11 @@ var NicoLiveHelper = {
 	NicoLiveRequest.update(this.requestqueue);
 
 	// 再生数をカウントアップ.
-	if(!item.user_id) item.user_id = "1";
-	if(this.play_per_ppl[item.user_id]){
-	    this.play_per_ppl[item.user_id] = 0;
+	if(!music.user_id) music.user_id = "1";
+	if(!this.play_per_ppl[music.user_id]){
+	    this.play_per_ppl[music.user_id] = 0;
 	}
-	this.play_per_ppl[item.user_id]++;
+	this.play_per_ppl[music.user_id]++;
 
 	// 再生されたストック曲はグレーにする.
 	let i,item;
@@ -762,11 +762,12 @@ var NicoLiveHelper = {
 	}
 	if(this.isconsumptionrateplay){
 	    let tmp = this.calcConsumptionRate();
-	    if(tmp.length){
-		n = this.findRequestByUserId(notplayed, tmp[0].user_id);
-		if(n<0) n=0;
+	    for(let i=0;i<tmp.length;i++){
+		n = this.findRequestByUserId(notplayed, tmp[i].user_id);
+		if(n>=0) break;
 	    }
 	}
+	if(n<0) n=0;
 	this.playMusic(notplayed["_"+notplayed[n].video_id]+1,true);
 	return true;
     },
@@ -1028,7 +1029,7 @@ var NicoLiveHelper = {
 	return;
     },
 
-    // リクエスト消費率にソート.
+    // リクエスト消費順にソート.
     calcConsumptionRate:function(){
 	let rate = new Array();
 	let tmp;
@@ -1036,7 +1037,7 @@ var NicoLiveHelper = {
 	    if(!this.play_per_ppl[ppl]){
 		this.play_per_ppl[ppl]=0;
 	    }
-	    tmp = this.play_per_ppl[ppl] / this.request_per_ppl[ppl];
+	    tmp = this.play_per_ppl[ppl];// / this.request_per_ppl[ppl];
 	    rate.push( {"user_id":ppl, "rate":tmp } );
 	}
 	rate.sort( function(a,b){
@@ -1860,10 +1861,11 @@ var NicoLiveHelper = {
 			let n = 0;
 			if( NicoLiveHelper.isconsumptionrateplay ){
 			    let rate = NicoLiveHelper.calcConsumptionRate();
-			    if(rate.length){
-				n = NicoLiveHelper.findRequestByUserId(NicoLiveHelper.requestqueue, rate[0].user_id);
-				if(n<0) n=0;
+			    for(let i=0;i<rate.length;i++){
+				n = NicoLiveHelper.findRequestByUserId(NicoLiveHelper.requestqueue, rate[i].user_id);
+				if(n>=0) break;
 			    }
+			    if(n<0) n=0;
 			}
 			NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[n].video_id,"");
 		    }else if(NicoLiveHelper.stock.length){
