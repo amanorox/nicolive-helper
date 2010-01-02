@@ -195,7 +195,7 @@ var NicoLiveHelper = {
 		    flg = true;
 		}
 	    }
-	    if( !flg ) return str + "タグに指定のキーワードが含まれていません";
+	    if( !flg ) return str + "タグにキーワードが含まれていません<br>" + restrict.tag_include.join(',');
 	}
 
 	// タグにキーワードが含まれていなければOK
@@ -432,7 +432,7 @@ var NicoLiveHelper = {
 					       continue;
 					   }
 
-					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap|mikunopop|mikupop)$/i)) continue;
+					   if(tag.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap|mikunopop|mikupop|space_ship)$/i)) continue;
 					   if(tag.match(/(M[A@]D|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) continue;
 					   // P名
 					   let t = tag.match(/.*[^OＯ][pｐPＰ][)）]?$/);
@@ -584,6 +584,9 @@ var NicoLiveHelper = {
     // ステータスバーのリク数、ストック数の表示を更新
     updateRemainRequestsAndStocks:function(){
 	$('statusbar-remain').label = "R/"+this.requestqueue.length +" "+"S/"+this.countRemainStock();
+	let t = this.getTotalMusicTime();
+	let str = "再生時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
+	$('statusbar-remain').setAttribute("tooltiptext",str);
     },
 
     // ストックから再生する(idx=1,2,3,...).
@@ -901,7 +904,7 @@ var NicoLiveHelper = {
     },
 
     // 主コメを投げる.
-    postCasterComment: function(comment,mail){
+    postCasterComment: function(comment,mail,retry){
 	if(!this.iscaster) return;
 	if(this.isOffline()) return;
 	if(comment.length<=0) return;
@@ -919,7 +922,11 @@ var NicoLiveHelper = {
 		    } catch (x) {
 			video_id = "";
 		    }
-		    if(video_id){
+		    if( !retry ){
+			debugprint('failed: '+comment);
+			NicoLiveHelper.postCasterComment(comment,mail,true);
+		    }
+		    if(video_id && retry){
 			let str = video_id + "の再生に失敗しました";
 			NicoLiveHelper.postCasterComment(str,"");
 			$('played-list-textbox').value += str + "\n";
@@ -1882,8 +1889,8 @@ var NicoLiveHelper = {
 	this._prepare = setInterval(
 	    function(){
 		clearInterval(NicoLiveHelper._prepare);
-		if(!NicoLiveHelper.israndomplay && NicoLiveHelper.isautoplay){
-		    // 自動順次再生のときは次の再生曲が予測できるので準備する.
+		if(!NicoLiveHelper.israndomplay){
+		    // ランダム再生以外のときは次の再生曲が予測できるので準備する.
 		    // ただし30枠収める指定は加味しない.
 		    if(NicoLiveHelper.requestqueue.length){
 			let n = 0;

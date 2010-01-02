@@ -65,7 +65,7 @@
 	<textbox preference="pref-accept-nreq" type="number" min="0" max="99" size="3"/>
 	<button label="今までの受付数をリセット" oncommand="opener.NicoLiveHelper.resetRequestCount();"/>
       </hbox>
-      <checkbox preference="pref-mikuonly" label="ミクオリジナル曲のみを受け付ける(開発主用)"/>
+      <checkbox preference="pref-mikuonly" label="初音ミクのライブ(co154)モード(開発主用)" tooltiptext="初音ミクのライブ(co154)に特化した開発主用のモードです"/>
     </groupbox>
   </prefpane>
 
