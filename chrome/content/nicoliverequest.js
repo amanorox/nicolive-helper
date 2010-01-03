@@ -3,6 +3,106 @@
  */
 
 var NicoLiveRequest = {
+    addVideoInformation:function(vbox,item, isstock){
+	let htmlspan = CreateHTMLElement('span');
+	htmlspan.style.display = 'none';
+	htmlspan.appendChild(document.createTextNode(item.video_id));
+	vbox.appendChild(htmlspan);
+
+	let div = CreateHTMLElement('div');
+	let a = CreateHTMLElement('a');
+	a.onclick = function(){
+	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
+	};
+
+	let img = CreateHTMLElement('img');
+	img.src = item.thumbnail_url;
+	img.style.cssFloat = 'left';
+	img.style.marginRight = '0.5em';
+	if(isstock){
+	    img.className = 'stock-thumbnail';
+	    img.setAttribute("width",this.visibleDetail?130:65 +"px");
+	    img.setAttribute("height",this.visibleDetail?100:50 + "px");
+	}
+	a.appendChild(img);
+
+	let label;
+
+	// 動画ID+タイトル.
+	div.appendChild(a); // thumbnail
+	div.appendChild(document.createTextNode(item.video_id+'/'+item.title));
+
+	// P名.
+	let pname = NicoLiveDatabase.getPName(item.video_id);
+	if(!pname){
+	    pname = new Array();
+	    for(let i=0,tag;tag=item.tags[i];i++){
+		if( NicoLiveHelper.isPName(tag) ){
+		    pname.push(tag);
+		}
+	    }
+	    if(pname.length) pname = pname.join(',');
+	    else pname = "";
+	}
+	if(pname){
+	    let text = document.createTextNode(' P名:'+pname);
+	    text.className = "requestview-pname";
+	    div.appendChild(text);
+	}
+
+	div.appendChild(CreateHTMLElement('br'));
+
+	let datestr = GetDateString(item.first_retrieve*1000);
+	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
+			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
+			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
+	
+	let hr = CreateHTMLElement('hr');
+	if(isstock) hr.className = 'detail';
+	div.appendChild(hr);
+
+	let div2 = CreateHTMLElement('div');
+	if(isstock) div2.className = 'detail';
+	//div2.appendChild(document.createTextNode(item.description));
+	let str;
+	// innerHTMLが使えないのでひたすらDOM操作.
+	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
+	for(let i=0,s;s=str[i];i++){
+	    if( s.indexOf('mylist/')!=-1 ){
+		let a = CreateHTMLElement('a');
+		let mylist = s;
+		a.onclick = function(){
+		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
+		};
+		a.appendChild(document.createTextNode(s));
+		div2.appendChild(a);
+	    }else if( s.match(/(sm|nm)\d+/) ){
+		let a = CreateHTMLElement('a');
+		let vid = s;
+		a.onclick = function(){
+		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
+		};
+		a.appendChild(document.createTextNode(s));
+		div2.appendChild(a);
+	    }else{
+		div2.appendChild(document.createTextNode(s));
+	    }
+	}
+
+	div.appendChild(div2);
+
+	vbox.appendChild(div);
+
+	hr = CreateHTMLElement('hr');
+	if(isstock) hr.className = 'detail';
+	//hr.setAttribute("size","1");
+	vbox.appendChild(hr);
+
+	label = CreateElement('label');
+	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
+	vbox.appendChild(label);	
+    },
+
     // アイテムを全更新.
     update:function(requestqueue){
 	let table = $('request-table');
@@ -44,76 +144,7 @@ var NicoLiveRequest = {
 	vbox.setAttribute('context','popup-copyrequest');
 	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
-	let htmlspan = CreateHTMLElement('span');
-	htmlspan.style.display = 'none';
-	htmlspan.appendChild(document.createTextNode(item.video_id));
-	vbox.appendChild(htmlspan);
-
-	let div = CreateHTMLElement('div');
-	let a = CreateHTMLElement('a');
-	a.onclick = function(){
-	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
-	};
-
-	let img = CreateHTMLElement('img');
-	img.src = item.thumbnail_url;
-	img.style.cssFloat = 'left';
-	img.style.marginRight = '0.5em';
-	a.appendChild(img);
-
-	let label;
-
-	// 動画ID+タイトル.
-	div.appendChild(a); // thumbnail
-	div.appendChild(document.createTextNode(item.video_id+'/'+item.title));
-	div.appendChild(CreateHTMLElement('br'));
-
-	let datestr = GetDateString(item.first_retrieve*1000);
-	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
-			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
-	let hr = CreateHTMLElement('hr');
-	//hr.setAttribute("size","1");
-	div.appendChild(hr);
-
-	let div2 = CreateHTMLElement('div');
-	//div2.appendChild(document.createTextNode(item.description));
-	let str;
-	// innerHTMLが使えないのでひたすらDOM操作.
-	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
-	for(let i=0,s;s=str[i];i++){
-	    if( s.indexOf('mylist/')!=-1 ){
-		let a = CreateHTMLElement('a');
-		let mylist = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
-		};
-		a.appendChild(document.createTextNode(s));
-		div2.appendChild(a);
-	    }else if( s.match(/(sm|nm)\d+/) ){
-		let a = CreateHTMLElement('a');
-		let vid = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
-		};
-		a.appendChild(document.createTextNode(s));
-		div2.appendChild(a);
-	    }else{
-		div2.appendChild(document.createTextNode(s));
-	    }
-	}
-
-	div.appendChild(div2);
-
-	vbox.appendChild(div);
-
-	hr = CreateHTMLElement('hr');
-	//hr.setAttribute("size","1");
-	vbox.appendChild(hr);
-
-	label = CreateElement('label');
-	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
-	vbox.appendChild(label);
+	this.addVideoInformation(vbox,item);
 
 	let hbox = CreateElement('hbox');
 	let button = CreateElement('button');
@@ -206,90 +237,7 @@ var NicoLiveRequest = {
 	vbox.setAttribute('context','popup-sort-stock');
 	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
-	let htmlspan = CreateHTMLElement('span');
-	htmlspan.style.display = 'none';
-	htmlspan.appendChild(document.createTextNode(item.video_id));
-	vbox.appendChild(htmlspan);
-
-	let div = CreateHTMLElement('div');
-
-	// サムネ.
-	let a = CreateHTMLElement('a');
-	a.onclick = function(){
-	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
-	};
-	//a.className = 'detail';
-	let img = CreateHTMLElement('img');
-	img.className = 'stock-thumbnail';
-	img.src = item.thumbnail_url;
-	img.style.cssFloat = 'left';
-	img.style.marginRight = '0.5em';
-	img.setAttribute("width",this.visibleDetail?130:65 +"px");
-	img.setAttribute("height",this.visibleDetail?100:50 + "px");
-	a.appendChild(img);
-
-	let label;
-
-	// 動画ID + タイトル.
-	div.appendChild(a); // thumbnail
-	div.appendChild( document.createTextNode(item.video_id+"/"+item.title));
-	div.appendChild(CreateHTMLElement('br'));
-
-	// 動画情報.
-	let datestr = GetDateString(item.first_retrieve*1000);
-	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
-			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
-	let hr = CreateHTMLElement('hr');
-	//hr.setAttribute("size","1");
-	hr.className = 'detail';
-	div.appendChild(hr);
-
-	// 詳細.
-	let div2 = CreateHTMLElement('div');
-	div2.className = 'detail';
-	//div2.appendChild(document.createTextNode(item.description));
-
-	// descriptionにリンクを張る.
-	let str,len;
-	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
-	len = str.length;
-	for(let i=0,s;i<len;i++){
-	    s = str[i];
-	    if(!s) continue;
-	    if( s.indexOf('mylist/')!=-1 ){
-		let a = CreateHTMLElement('a');
-		let mylist = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
-		};
-		a.appendChild(document.createTextNode(s));
-		div2.appendChild(a);
-	    }else if( s.match(/(sm|nm)\d+/) ){
-		let a = CreateHTMLElement('a');
-		let vid = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
-		};
-		a.appendChild(document.createTextNode(s));
-		div2.appendChild(a);
-	    }else{
-		div2.appendChild(document.createTextNode(s));
-	    }
-	}
-
-	div.appendChild(div2);
-
-	vbox.appendChild(div);
-
-	hr = CreateHTMLElement('hr');
-	//hr.setAttribute("size","1");
-	hr.className = 'detail';
-	vbox.appendChild(hr);
-
-	label = CreateElement('label');
-	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
-	vbox.appendChild(label);
+	this.addVideoInformation(vbox,item,true);
 
 	let hbox = CreateElement('hbox');
 	let button = CreateElement('button');
@@ -413,77 +361,7 @@ var NicoLiveRequest = {
 	//vbox.setAttribute('context','popup-copyrequest');
 	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
-	let htmlspan = CreateHTMLElement('span');
-	htmlspan.style.display = 'none';
-	htmlspan.appendChild(document.createTextNode(item.video_id));
-	vbox.appendChild(htmlspan);
-
-	let div = CreateHTMLElement('div');
-	let a = CreateHTMLElement('a');
-	a.onclick = function(){
-	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
-	};
-
-	let img = CreateHTMLElement('img');
-	img.src = item.thumbnail_url;
-	img.style.cssFloat = 'left';
-	img.style.marginRight = '0.5em';
-	a.appendChild(img);
-
-	let label;
-
-	// 動画ID+タイトル.
-	div.appendChild(a); // thumbnail
-	div.appendChild(document.createTextNode(item.video_id+'/'+item.title));
-	div.appendChild(CreateHTMLElement('br'));
-
-	let datestr = GetDateString(item.first_retrieve*1000);
-	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
-			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
-	let hr = CreateHTMLElement('hr');
-	//hr.setAttribute("size","1");
-	div.appendChild(hr);
-
-	let div2 = CreateHTMLElement('div');
-	//div2.appendChild(document.createTextNode(item.description));
-	let str;
-	// innerHTMLが使えないのでひたすらDOM操作.
-	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
-	for(let i=0,s;s=str[i];i++){
-	    if( s.indexOf('mylist/')!=-1 ){
-		let a = CreateHTMLElement('a');
-		let mylist = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
-		};
-		a.appendChild(document.createTextNode(s));
-		div2.appendChild(a);
-	    }else if( s.match(/(sm|nm)\d+/) ){
-		let a = CreateHTMLElement('a');
-		let vid = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
-		};
-		a.appendChild(document.createTextNode(s));
-		div2.appendChild(a);
-	    }else{
-		div2.appendChild(document.createTextNode(s));
-	    }
-	}
-
-	div.appendChild(div2);
-
-	vbox.appendChild(div);
-
-	hr = CreateHTMLElement('hr');
-	//hr.setAttribute("size","1");
-	vbox.appendChild(hr);
-
-	label = CreateElement('label');
-	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
-	label.setAttribute("crop","end");
-	vbox.appendChild(label);
+	this.addVideoInformation(vbox,item);
 
 	let hbox = CreateElement('hbox');
 	let button = CreateElement('button');
