@@ -753,8 +753,8 @@ var NicoLiveHelper = {
 	    notplayed["_"+item.video_id] = i;
 
 	    if( limit30min ){
-		if(carelosstime && item.length_ms/1000 > remain+90){
-		    // ロスタイムを1:30(90s)として、枠に収まらない動画.
+		if(carelosstime && item.length_ms/1000 > remain+75){
+		    // ロスタイムを75sとして、枠に収まらない動画.
 		    continue;
 		}else if(!carelosstime && item.length_ms/1000 > remain){
 		    // 30枠に収まらない動画.
@@ -789,8 +789,8 @@ var NicoLiveHelper = {
 	for(i=0;item=this.requestqueue[i];i++){
 	    notplayed["_"+item.video_id] = i;
 	    if( limit30min ){
-		if(carelosstime && item.length_ms/1000 > remain+90){
-		    // ロスタイムを1:30(90s)として、枠に収まらない動画.
+		if(carelosstime && item.length_ms/1000 > remain+75){
+		    // ロスタイムを75sとして、枠に収まらない動画.
 		    continue;
 		}else if(!carelosstime && item.length_ms/1000 > remain){
 		    // 30枠に収まらない動画.
@@ -1693,8 +1693,6 @@ var NicoLiveHelper = {
 	debugprint('PC clock:'+GetDateString(this.connecttime*1000));
 	// サーバ時刻にしておけば間違いないかな.
 	this.connecttime = this.serverconnecttime;
-
-	this.updatePNameWhitelist();
     },
 
     keepConnection:function(){
@@ -1948,7 +1946,7 @@ var NicoLiveHelper = {
 			}
 		    }
 		}
-	    }, parseInt((du+interval)/4*3) );
+	    }, parseInt((du+interval)/5*4) );
     },
 
     heartbeat:function(){
@@ -2171,6 +2169,8 @@ var NicoLiveHelper = {
 	if( !this.isOffline() && caster ){
 	    this.retrieveUserDefinedValue();
 	}
+
+	this.updatePNameWhitelist();
 
 	// Windows Live Messengerに番組名を通知する.
 	if(IsWINNT() && !this.isOffline()){

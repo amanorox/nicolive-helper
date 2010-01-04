@@ -245,7 +245,7 @@ var NicoLiveRequest = {
 					NicoLiveHelper.playStock(n,true);
 				    }else{
 					try{
-					    let nextmusic = NicoLiveHelper.stock[ n ];
+					    let nextmusic = NicoLiveHelper.stock[ n-1 ];
 					    NicoLiveRequest.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
 					} catch (x) {
 					    let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
