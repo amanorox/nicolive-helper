@@ -62,6 +62,7 @@
 
   <keyset>
     <key id="redraw-stock" keycode="VK_F5" oncommand="NicoLiveRequest.redrawStock();"></key>
+    <key id="addto-defaultmylist" key="m" modifiers="control" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id);"></key>
   </keyset>
 
   <toolbar id="global-menu">

@@ -31,6 +31,7 @@ var NicoLiveMylist = {
     },
     addDeflist:function(video_id){
 	// 一段階目はトークンを取得する.
+	if( !video_id ) return;
 	var url = "http://www.nicovideo.jp/watch/"+video_id;
 	var xmlhttp = new XMLHttpRequest();
 	if( !xmlhttp ) return;
