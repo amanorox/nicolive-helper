@@ -390,6 +390,46 @@ var NicoLiveHelper = {
 	return false;
     },
 
+    // P名文字列を取得.
+    getPName:function(item){
+	// DBに設定してあるP名があればそれを優先.
+	let pname = NicoLiveDatabase.getPName(item.video_id);
+	if(!pname){
+	    pname = new Array();
+	    let i,j,tag;
+	    // まずはP名候補をリストアップ.
+	    for(i=0;tag=item.tags[i];i++){
+		if( this.isPName(tag) ){
+		    pname.push(tag);
+		}
+	    }
+	    if(pname.length){
+		/* ラマーズP,嫁に囲まれて本気出すラマーズP
+		 * とあるときに、後者だけを出すようにフィルタ.
+		 * てきとう実装.
+		 * 組み合わせの問題なのでnlognで出来るけど、
+		 * P名タグは数少ないしn*nでもいいよね.
+		 */
+		let n = pname.length;
+		let tmp = new Array();
+		for(i=0;i<n;i++){
+		    let flg=false;
+		    for(j=0;j<n;j++){
+			if(i==j) continue;
+			if(pname[j].match(pname[i]+'$')){
+			    flg = true;
+			}
+		    }
+		    if(!flg) tmp.push(pname[i]);
+		}
+		pname = tmp.join(',');
+	    }else{
+		pname = "";
+	    }
+	}
+	return pname;
+    },
+
     // 文字列のマクロ展開を行う.
     replaceMacros:function(str){
 	let info = this.musicinfo;
@@ -441,20 +481,7 @@ var NicoLiveHelper = {
 				   break;
 			       case 'pname':
 				   if(info.video_id==null || info.tags==null) break;
-				   let pn = NicoLiveDatabase.getPName(info.video_id);
-				   if(!pn){
-				       let pname = new Array();
-				       for(let i=0,tag;tag=info.tags[i];i++){
-					   if( this.isPName(tag) ){
-					       pname.push(tag);
-					   }
-				       }
-				       if(pname.length) tmp = pname.join(',');
-				       else tmp = "";
-				   }else{
-				       // DBのP名優先.
-				       tmp = pn;
-				   }
+				   tmp = NicoLiveHelper.getPName(info);
 				   break;
 			       case 'additional':
 				   if(info.video_id==null) break;

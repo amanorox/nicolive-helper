@@ -33,6 +33,7 @@ var NicoLiveRequest = {
 	div.appendChild(document.createTextNode(item.video_id+'/'+item.title));
 
 	// P名.
+/*
 	let pname = NicoLiveDatabase.getPName(item.video_id);
 	if(!pname){
 	    pname = new Array();
@@ -44,6 +45,8 @@ var NicoLiveRequest = {
 	    if(pname.length) pname = pname.join(',');
 	    else pname = "";
 	}
+*/
+	let pname = NicoLiveHelper.getPName(item);
 	if(pname){
 	    let text = document.createTextNode(' P名:'+pname);
 	    text.className = "requestview-pname";
