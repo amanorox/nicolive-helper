@@ -33,19 +33,6 @@ var NicoLiveRequest = {
 	div.appendChild(document.createTextNode(item.video_id+'/'+item.title));
 
 	// P名.
-/*
-	let pname = NicoLiveDatabase.getPName(item.video_id);
-	if(!pname){
-	    pname = new Array();
-	    for(let i=0,tag;tag=item.tags[i];i++){
-		if( NicoLiveHelper.isPName(tag) ){
-		    pname.push(tag);
-		}
-	    }
-	    if(pname.length) pname = pname.join(',');
-	    else pname = "";
-	}
-*/
 	let pname = NicoLiveHelper.getPName(item);
 	if(pname){
 	    let text = document.createTextNode(' P名:'+pname);
@@ -257,8 +244,13 @@ var NicoLiveRequest = {
 				    if(!NicoLiveHelper.isOffline()){
 					NicoLiveHelper.playStock(n,true);
 				    }else{
-					let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
-					NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
+					try{
+					    let nextmusic = NicoLiveHelper.stock[ n ];
+					    NicoLiveRequest.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
+					} catch (x) {
+					    let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
+					    NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
+					}
 					NicoLiveRequest.playlist_start = n;
 					clearInterval(NicoLiveRequest.playlist_timer);
 					NicoLiveRequest.playlist_first = true;

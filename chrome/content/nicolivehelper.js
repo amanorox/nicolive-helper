@@ -378,7 +378,7 @@ var NicoLiveHelper = {
 	}
 	if(str.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap|mikunopop|mikupop|space_ship)$/i)) return false;
 	if(str.match(/(M[A@]D|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) return false;
-	let t = str.match(/.*[^OＯ][pｐPＰ][)）]?$/);
+	let t = str.match(/.*[^jOＯ][pｐPＰ][)）]?$/);
 	if(t){
 	    return true;
 	}
@@ -414,13 +414,20 @@ var NicoLiveHelper = {
 		let tmp = new Array();
 		for(i=0;i<n;i++){
 		    let flg=false;
+		    if(!pname[i]) continue;
 		    for(j=0;j<n;j++){
 			if(i==j) continue;
 			if(pname[j].match(pname[i]+'$')){
 			    flg = true;
 			}
+			/* 曲名(誰P)となっているものが含まれていたらそれを除外する
+			 * ために (誰P) を含むものを除外する.
+			 */
+			if(pname[j].match('\('+pname[i]+'\)')){
+			    pname[j] = "";
+			}
 		    }
-		    if(!flg) tmp.push(pname[i]);
+		    if(!flg && pname[i]) tmp.push(pname[i]);
 		}
 		pname = tmp.join(',');
 	    }else{
