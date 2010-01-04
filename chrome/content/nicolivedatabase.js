@@ -462,9 +462,12 @@ var NicoLiveDatabase = {
 		st.execute();
 		st.finalize();
 	    }
+	    this.pnamecache["_"+video_id] = pname;
 	}
     },
     getPName:function(video_id){
+	if( this.pnamecache["_"+video_id] ) return this.pnamecache["_"+video_id];
+
 	let st = this.dbconnect.createStatement('SELECT pname FROM pname WHERE video_id = ?1');
 	let pname;
 	st.bindUTF8StringParameter(0,video_id);
@@ -473,6 +476,9 @@ var NicoLiveDatabase = {
 	}
 	st.finalize();
 	if(!pname) pname = "";
+	if(pname){
+	    this.pnamecache["_"+video_id] = pname;
+	}
 	return pname;
     },
 
@@ -674,6 +680,7 @@ var NicoLiveDatabase = {
 
     init:function(){
 	debugprint('NicoLiveDatabase init');
+	this.pnamecache = new Object();
 	this.addSearchLine();
 	this.setRegisterdVideoNumber();
     },

@@ -60,6 +60,10 @@
   ]]>
   </script>
 
+  <keyset>
+    <key id="redraw-stock" keycode="VK_F5" oncommand="NicoLiveRequest.redrawStock();"></key>
+  </keyset>
+
   <toolbar id="global-menu">
     <toolbarbutton label="手動再生" type="menu" id="toolbar-playstyle">
       <menupopup id="toolbar-popup-playstyle">
@@ -166,10 +170,11 @@
 	</vbox>
 
 	<!-- stock tab -->
-	<vbox class="tabpanel"
+	<vbox class="tabpanel" id="tab-stock"
 	      ondragenter="return NicoLiveRequest.checkDrag(event)"
 	      ondragover="return NicoLiveRequest.checkDrag(event)"
 	      ondrop="NicoLiveRequest.dropToStock(event)">
+
 	  <hbox>
 	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleStock();"/>
 	    <button type="menu" label="マイリスト読み込み">

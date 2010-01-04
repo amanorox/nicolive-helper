@@ -666,6 +666,10 @@ var NicoLiveRequest = {
 	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
     },
 
+    redrawStock:function(){
+	this.updateStockView(NicoLiveHelper.stock);
+    },
+
     init:function(){
 	debugprint("NicoLiveRequest.init");
 	this.visibleDetail = true;
