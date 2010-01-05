@@ -681,7 +681,8 @@ var NicoLiveHelper = {
 	let tmp = this.stock[idx-1];
 	this.stock[idx-1] = this.stock[idx];
 	this.stock[idx] = tmp;
-	NicoLiveRequest.updateStockView(this.stock);
+	//NicoLiveRequest.updateStockView(this.stock);
+	NicoLiveRequest.exchangeStockRow(idx-1,idx);
 	this.saveStock();
     },
     // ストックの下に沈める.
@@ -691,7 +692,8 @@ var NicoLiveHelper = {
 	let tmp = this.stock[idx+1];
 	this.stock[idx+1] = this.stock[idx];
 	this.stock[idx] = tmp;
-	NicoLiveRequest.updateStockView(this.stock);
+	//NicoLiveRequest.updateStockView(this.stock);
+	NicoLiveRequest.exchangeStockRow(idx+1,idx);
 	this.saveStock();
     },
     // ストックソート.
@@ -906,7 +908,8 @@ var NicoLiveHelper = {
 	for(let i=0,item;item=this.stock[i];i++){
 	    item.isplayed = false;
 	}
-	NicoLiveRequest.updateStockView(this.stock);
+	//NicoLiveRequest.updateStockView(this.stock);
+	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
 	this.savePlaylist();
     },
     // リクエストを消去する.

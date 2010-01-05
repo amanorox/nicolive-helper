@@ -3,7 +3,11 @@
  */
 
 var NicoLiveRequest = {
-    addVideoInformation:function(vbox,item, isstock){
+    // 動画情報を表示しているvboxを作成して返す.
+    createVideoInformation:function(item,isstock){
+	let vbox = CreateElement('vbox');
+	if(isstock) vbox.className = 'stock-videoinfo';
+
 	let htmlspan = CreateHTMLElement('span');
 	htmlspan.style.display = 'none';
 	htmlspan.appendChild(document.createTextNode(item.video_id));
@@ -90,7 +94,14 @@ var NicoLiveRequest = {
 
 	label = CreateElement('label');
 	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
-	vbox.appendChild(label);	
+	vbox.appendChild(label);
+	return vbox;
+    },
+
+    // 指定のvboxに動画情報のvboxを追加する.
+    addVideoInformation:function(vbox_parent,item, isstock){
+	let vbox = this.createVideoInformation(item,isstock);
+	vbox_parent.appendChild(vbox);
     },
 
     // アイテムを全更新.
@@ -219,6 +230,21 @@ var NicoLiveRequest = {
 	}
     },
 
+    // ストックの行を交換する.
+    // 行を丸々交換するのは、事前にコマンドや関数仕込んでいるので面倒くさいので
+    // 動画情報表示部分だけ交換すればいいのに気付いた.
+    exchangeStockRow:function(row1,row2){
+	let vbox = document.getElementsByClassName('stock-videoinfo');
+	let parent1 = vbox[row1].parentNode;
+	let parent2 = vbox[row2].parentNode;
+
+	let tmp1 = this.createVideoInformation( NicoLiveHelper.stock[row1], true );
+	let tmp2 = this.createVideoInformation( NicoLiveHelper.stock[row2], true );
+
+	parent1.replaceChild( tmp1, vbox[row1] );
+	parent2.replaceChild( tmp2, vbox[row2] );
+    },
+
     // ストックテーブルの行の中身を作成する.
     // tr : 行
     // n : n行目(1,2,...n)
@@ -260,11 +286,11 @@ var NicoLiveRequest = {
 				    if(!NicoLiveHelper.isOffline()){
 					NicoLiveHelper.playStock(n,true);
 				    }else{
+					let nextmusic = NicoLiveHelper.stock[ n-1 ];
 					try{
-					    let nextmusic = NicoLiveHelper.stock[ n-1 ];
 					    NicoLiveRequest.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
 					} catch (x) {
-					    let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
+					    let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+nextmusic.video_id);
 					    NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
 					}
 					NicoLiveRequest.playlist_start = n;
