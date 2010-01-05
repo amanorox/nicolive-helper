@@ -250,47 +250,48 @@ var NicoLiveRequest = {
     // ストックの行を削除する.
     // row : 0,1,2,3,...
     deleteStockRow:function(row){
-	let vbox = document.getElementsByClassName('stock-videoinfo');
-	let parent;
-	let n = vbox.length-1;
-	let node;
-
-	for(let i=row;i<n;i++){
-	    parent = vbox[i].parentNode;
-	    node = this.createVideoInformation( NicoLiveHelper.stock[i], true );
-	    parent.replaceChild( node, vbox[i] );
-	}
-
 	let table = $('stock-table');
-	table.deleteRow( table.rows.length-1 );
-
+	table.deleteRow(row);
+	this.resetStockIndex();
 	this.setTotalStockTime(NicoLiveHelper.getTotalStockTime());
+    },
+
+    // stock-indexを全部付け直す.
+    resetStockIndex:function(){
+	let tr = $('stock-table').getElementsByTagName('tr');	
+	for(let i=0,row;row=tr[i];i++){
+	    row.setAttribute("stock-index",i+1);
+	    let td = row.firstChild;
+	    td.replaceChild( document.createTextNode("#"+(i+1)), td.firstChild );
+	}
     },
 
     // row : 0,1,2,...
     topToStock:function(row){
-	let vbox = document.getElementsByClassName('stock-videoinfo');
-	let parent;
-	let node;
-	
-	for(let i=row;i>=0;i--){
-	    parent = vbox[i].parentNode;
-	    node = this.createVideoInformation( NicoLiveHelper.stock[i], true );
-	    parent.replaceChild( node, vbox[i] );
-	}
+	debugprint( (new Date()).getTime() );
+
+	let table = $('stock-table');
+	table.deleteRow(row);
+	let tr = table.insertRow(0);
+
+	this.createRowOfStock(tr,1,NicoLiveHelper.stock[0]);
+
+	this.resetStockIndex();
+
+	debugprint( (new Date()).getTime() );
     },
     // row : 0,1,2,...
     bottomToStock:function(row){
-	let vbox = document.getElementsByClassName('stock-videoinfo');
-	let parent;
-	let node;
-	let n = vbox.length;
+	debugprint( (new Date()).getTime() );
 
-	for(let i=row;i<n;i--){
-	    parent = vbox[i].parentNode;
-	    node = this.createVideoInformation( NicoLiveHelper.stock[i], true );
-	    parent.replaceChild( node, vbox[i] );
-	}
+	let table = $('stock-table');
+	table.deleteRow(row);
+	
+	let n = NicoLiveHelper.stock.length-1;
+	this._addStockView(table,NicoLiveHelper.stock[n]);
+
+	this.resetStockIndex();
+	debugprint( (new Date()).getTime() );
     },
 
     // ストックテーブルの行の中身を作成する.
@@ -299,6 +300,8 @@ var NicoLiveRequest = {
     // item : 動画情報.
     createRowOfStock:function(tr,n,item){
 	tr.className = "table_casterselection";
+	tr.setAttribute("stock-index",n);
+
 	if(item.isplayed){
 	    tr.className = "table_played";
 	}
@@ -318,18 +321,28 @@ var NicoLiveRequest = {
 
 	this.addVideoInformation(vbox,item,true);
 
+	// コマンドボタンに作用するストックのインデックスはtrの属性から取ることにしよう.
 	let hbox = CreateElement('hbox');
 	let button = CreateElement('button');
 	button.setAttribute('label','リクエスト');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveRequest.addRequestFromStock(n); },false);
+	button.addEventListener("command",
+				function(event){
+				    let n = FindParentElement(event.target,'tr');
+				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
+				    n = tr.getAttribute('stock-index');
+				    NicoLiveRequest.addRequestFromStock(n);
+				},false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'再生');
 	button.className = 'commandbtn';
 	button.addEventListener("command",
-				function(){
+				function(event){
+				    let n = FindParentElement(event.target,'tr');
+				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
+				    n = tr.getAttribute('stock-index');
 				    if(!NicoLiveHelper.isOffline()){
 					NicoLiveHelper.playStock(n,true);
 				    }else{
@@ -352,31 +365,61 @@ var NicoLiveRequest = {
 	button = CreateElement('button');
 	button.setAttribute("label",'削除');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.removeStock(n); },false);
+	button.addEventListener("command",
+				function(event){
+				    let n = FindParentElement(event.target,'tr');
+				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
+				    n = tr.getAttribute('stock-index');
+				    NicoLiveHelper.removeStock(n);
+				},false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑↑');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.topToStock(n); },false);
+	button.addEventListener("command",
+				function(event){
+				    let n = FindParentElement(event.target,'tr');
+				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
+				    n = tr.getAttribute('stock-index');
+				    NicoLiveHelper.topToStock(n);
+				},false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.floatStock(n); },false);
+	button.addEventListener("command",
+				function(event){
+				    let n = FindParentElement(event.target,'tr');
+				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
+				    n = tr.getAttribute('stock-index');
+				    NicoLiveHelper.floatStock(n);
+				},false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.sinkStock(n); },false);
+	button.addEventListener("command",
+				function(event){
+				    let n = FindParentElement(event.target,'tr');
+				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
+				    n = tr.getAttribute('stock-index');
+				    NicoLiveHelper.sinkStock(n);
+				},false);
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓↓');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.bottomToStock(n); },false);
+	button.addEventListener("command",
+				function(event){
+				    let n = FindParentElement(event.target,'tr');
+				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
+				    n = tr.getAttribute('stock-index');
+				    NicoLiveHelper.bottomToStock(n);
+				},false);
 	hbox.appendChild(button);
 
 	vbox.appendChild(hbox);
@@ -757,8 +800,12 @@ var NicoLiveRequest = {
     },
 
     // ストックを再描画.
+    // F5を押したときに使用.
     redrawStock:function(){
+	debugprint( (new Date()).getTime() );
 	this.updateStockView(NicoLiveHelper.stock);
+	debugprint( (new Date()).getTime() );
+	debugprint('redraw stock is done.');
     },
 
     // ストック、リクエストを検索.
