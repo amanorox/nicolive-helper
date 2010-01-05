@@ -660,7 +660,8 @@ var NicoLiveHelper = {
 	t = this.stock.splice(idx,1);
 	if(t){
 	    this.stock.unshift(t[0]);
-	    NicoLiveRequest.updateStockView(this.stock);
+	    //NicoLiveRequest.updateStockView(this.stock);
+	    NicoLiveRequest.topToStock(idx);
 	    this.saveStock();
 	}
     },

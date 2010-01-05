@@ -267,6 +267,32 @@ var NicoLiveRequest = {
 	this.setTotalStockTime(NicoLiveHelper.getTotalStockTime());
     },
 
+    // row : 0,1,2,...
+    topToStock:function(row){
+	let vbox = document.getElementsByClassName('stock-videoinfo');
+	let parent;
+	let node;
+	
+	for(let i=row;i>=0;i--){
+	    parent = vbox[i].parentNode;
+	    node = this.createVideoInformation( NicoLiveHelper.stock[i], true );
+	    parent.replaceChild( node, vbox[i] );
+	}
+    },
+    // row : 0,1,2,...
+    bottomToStock:function(row){
+	let vbox = document.getElementsByClassName('stock-videoinfo');
+	let parent;
+	let node;
+	let n = vbox.length;
+
+	for(let i=row;i<n;i--){
+	    parent = vbox[i].parentNode;
+	    node = this.createVideoInformation( NicoLiveHelper.stock[i], true );
+	    parent.replaceChild( node, vbox[i] );
+	}
+    },
+
     // ストックテーブルの行の中身を作成する.
     // tr : 行
     // n : n行目(1,2,...n)
