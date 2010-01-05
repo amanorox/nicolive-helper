@@ -62,6 +62,7 @@
 
   <keyset>
     <key id="redraw-stock" keycode="VK_F5" oncommand="NicoLiveRequest.redrawStock();"></key>
+    <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"></key>
     <key id="addto-defaultmylist" key="m" modifiers="control" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id);"></key>
     <key id="search-stock" key="f" modifiers="control" oncommand="NicoLiveRequest.findRequestStock();"></key>
   </keyset>
@@ -153,7 +154,7 @@
 	<tab label="動画DB"/>
 	<tab label="Debug"/>
       </tabs>
-      <tabpanels flex="1">
+      <tabpanels flex="1" id="tabpanels">
 	<!-- request tab -->
 	<vbox class="tabpanel">
 	  <!-- command buttons -->

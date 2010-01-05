@@ -810,7 +810,54 @@ var NicoLiveRequest = {
 
     // ストック、リクエストを検索.
     findRequestStock:function(){
-	debugprint('find from stock/request');
+	let tr;
+	let tabindex = $('tabpanels').selectedIndex;
+	if( tabindex==1 ){
+	    debugprint('find from stock');
+	    tr = $('stock-table').getElementsByTagName('tr');
+	}else if( tabindex==0 ){
+	    debugprint('find from request');
+	    tr = $('request-table').getElementsByTagName('html:tr');
+	}else return;
+
+	let searchword = InputPrompt('検索文字列を入力してください','検索','');
+	if(searchword==null) return;
+
+	//debugprint(tr.length);
+
+	this.searchword = searchword;
+	this.searchfoundidx = 0;
+	this.searchtab = tabindex;
+
+	for(let i=0,row;row=tr[i];i++){
+	    if(row.innerHTML.match(searchword)){
+		row.scrollIntoView(true);
+		this.searchfoundidx = i;
+		break;
+	    }
+	}
+    },
+
+    findNextRequestStock:function(){
+	let tr;
+	let tabindex = $('tabpanels').selectedIndex;
+	if( this.searchtab!=tabindex ) return;
+
+	if( tabindex==1 ){
+	    tr = $('stock-table').getElementsByTagName('tr');
+	}else if( tabindex==0 ){
+	    tr = $('request-table').getElementsByTagName('html:tr');
+	}else return;
+
+	let searchword = this.searchword;
+
+	for(let i=this.searchfoundidx+1,row;row=tr[i];i++){
+	    if(row.innerHTML.match(searchword)){
+		row.scrollIntoView(true);
+		this.searchfoundidx = i;
+		break;
+	    }
+	}
     },
 
     init:function(){
