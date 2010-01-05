@@ -860,6 +860,11 @@ var NicoLiveRequest = {
 	}
     },
 
+    prepare:function(){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	NicoLiveHelper.postCasterComment('/prepare '+elem.firstChild.textContent,""); // 動画IDを取れる.
+    },
+
     init:function(){
 	debugprint("NicoLiveRequest.init");
 	this.visibleDetail = true;
