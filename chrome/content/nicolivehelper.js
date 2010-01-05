@@ -1483,7 +1483,8 @@ var NicoLiveHelper = {
 		item.isplayed = false;		
 	    }
 	}
-	NicoLiveRequest.updateStockView(this.stock);
+	//NicoLiveRequest.updateStockView(this.stock);
+	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
     },
 
     // リクエスト済みチェック.

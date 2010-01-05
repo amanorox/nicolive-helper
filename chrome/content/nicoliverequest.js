@@ -194,6 +194,8 @@ var NicoLiveRequest = {
 	for(let i=0,item;item=q[i];i++){
 	    if(NicoLiveHelper.isPlayedMusic(item.video_id)){
 		rows[i].className = "table_played";
+	    }else{
+		rows[i].className = "table_casterselection";		
 	    }
 	}
     },
@@ -678,6 +680,11 @@ var NicoLiveRequest = {
     // ストックを再描画.
     redrawStock:function(){
 	this.updateStockView(NicoLiveHelper.stock);
+    },
+
+    // ストック、リクエストを検索.
+    findRequestStock:function(){
+	debugprint('find from stock/request');
     },
 
     init:function(){
