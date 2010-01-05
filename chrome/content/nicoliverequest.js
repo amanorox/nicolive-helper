@@ -219,9 +219,11 @@ var NicoLiveRequest = {
 	}
     },
 
-    _addStockView:function(table,item){
-	let tr = table.insertRow(table.rows.length);
-	tr.id ="stock-music-"+table.rows.length;
+    // ストックテーブルの行の中身を作成する.
+    // tr : 行
+    // n : n行目(1,2,...n)
+    // item : 動画情報.
+    createRowOfStock:function(tr,n,item){
 	tr.className = "table_casterselection";
 	if(item.isplayed){
 	    tr.className = "table_played";
@@ -233,10 +235,8 @@ var NicoLiveRequest = {
 
 	let td;
 	td = tr.insertCell(tr.cells.length);
-	td.appendChild(document.createTextNode("#"+table.rows.length));
-
-	let n = table.rows.length;
-
+	td.appendChild(document.createTextNode("#"+n));
+	
 	td = tr.insertCell(tr.cells.length);
 
 	let vbox = CreateElement('vbox');
@@ -308,6 +308,13 @@ var NicoLiveRequest = {
 
 	vbox.appendChild(hbox);
 	td.appendChild(vbox);
+    },
+
+    _addStockView:function(table,item){
+	let tr = table.insertRow(table.rows.length);
+	let n = table.rows.length;
+
+	this.createRowOfStock(tr,n,item);
 
 	this.setTotalStockTime(NicoLiveHelper.getTotalStockTime());
     },
