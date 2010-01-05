@@ -686,6 +686,7 @@ var NicoLiveHelper = {
 	this.stock[idx] = tmp;
 	//NicoLiveRequest.updateStockView(this.stock);
 	NicoLiveRequest.exchangeStockRow(idx-1,idx);
+	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
 	this.saveStock();
     },
     // ストックの下に沈める.
@@ -697,6 +698,7 @@ var NicoLiveHelper = {
 	this.stock[idx] = tmp;
 	//NicoLiveRequest.updateStockView(this.stock);
 	NicoLiveRequest.exchangeStockRow(idx+1,idx);
+	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
 	this.saveStock();
     },
     // ストックソート.
