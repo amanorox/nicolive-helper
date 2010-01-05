@@ -1933,7 +1933,8 @@ var NicoLiveHelper = {
 	this._prepare = setInterval(
 	    function(){
 		clearInterval(NicoLiveHelper._prepare);
-		if(!NicoLiveHelper.israndomplay){
+		if( !NicoLivePreference.doprepare ) return; // /prepareしない.
+		if( !NicoLiveHelper.israndomplay ){
 		    // ランダム再生以外のときは次の再生曲が予測できるので準備する.
 		    // ただし30枠収める指定は加味しない.
 		    if(NicoLiveHelper.requestqueue.length){

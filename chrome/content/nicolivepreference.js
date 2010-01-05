@@ -67,6 +67,7 @@ var NicoLivePreference = {
 	this.nreq_per_ppl = branch.getIntPref("accept-nreq");
 
 	this.mikuonly = branch.getBoolPref("mikuonly");
+	this.doprepare = branch.getBoolPref("prepare");
 
 	try{
 	    $('toolbar-playstyle').label = $('toolbar-popup-playstyle').getElementsByTagName('menuitem')[this.playstyle].label;

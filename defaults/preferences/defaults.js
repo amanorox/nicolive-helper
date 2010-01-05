@@ -1,4 +1,5 @@
 pref("extensions.nicolivehelper.mikuonly",false);
+pref("extensions.nicolivehelper.prepare",true);
 pref("extensions.nicolivehelper.autoscroll",false);
 pref("extensions.nicolivehelper.playstyle",0);
 pref("extensions.nicolivehelper.allowrequest",true);
