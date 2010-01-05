@@ -6,6 +6,8 @@ var NicoLiveRequest = {
     // 動画情報を表示しているvboxを作成して返す.
     createVideoInformation:function(item,isstock){
 	let vbox = CreateElement('vbox');
+	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
+
 	if(isstock) vbox.className = 'stock-videoinfo';
 
 	let htmlspan = CreateHTMLElement('span');
@@ -143,7 +145,6 @@ var NicoLiveRequest = {
 
 	let vbox = CreateElement('vbox');
 	vbox.setAttribute('context','popup-copyrequest');
-	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
 	this.addVideoInformation(vbox,item);
 
@@ -267,7 +268,6 @@ var NicoLiveRequest = {
 
 	let vbox = CreateElement('vbox');
 	vbox.setAttribute('context','popup-sort-stock');
-	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
 	this.addVideoInformation(vbox,item,true);
 
@@ -403,7 +403,6 @@ var NicoLiveRequest = {
 
 	let vbox = CreateElement('vbox');
 	//vbox.setAttribute('context','popup-copyrequest');
-	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
 
 	this.addVideoInformation(vbox,item);
 
