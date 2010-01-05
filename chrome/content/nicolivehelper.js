@@ -612,7 +612,8 @@ var NicoLiveHelper = {
 		item.error = false;
 	    }
 	}
-	NicoLiveRequest.updateStockView(this.stock);
+	//NicoLiveRequest.updateStockView(this.stock);
+	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
 
 	this.updateRemainRequestsAndStocks();
 	this.saveAll();

@@ -185,6 +185,19 @@ var NicoLiveRequest = {
 	if(!table){ return; }
 	this._add(table,item);
     },
+
+
+    // 再生済み動画の表示更新.
+    updateStockViewForPlayedVideo:function(q){
+	// ストックの配列とテーブルの行が1対1で対応しているので.
+	let rows = $('stock-table').getElementsByTagName('tr');
+	for(let i=0,item;item=q[i];i++){
+	    if(NicoLiveHelper.isPlayedMusic(item.video_id)){
+		rows[i].className = "table_played";
+	    }
+	}
+    },
+
     // ストックを全更新.
     updateStockView:function(requestqueue){
 	//let table = $('stock-table');
@@ -212,6 +225,7 @@ var NicoLiveRequest = {
 	    tr.className = "table_played";
 	}
 	if(item.error){
+	    // エラー動画タブ用意したから必要ないかも.
 	    tr.className = "white";
 	}
 
@@ -661,6 +675,7 @@ var NicoLiveRequest = {
 	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
     },
 
+    // ストックを再描画.
     redrawStock:function(){
 	this.updateStockView(NicoLiveHelper.stock);
     },
