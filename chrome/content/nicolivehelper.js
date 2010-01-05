@@ -648,7 +648,8 @@ var NicoLiveHelper = {
     removeStock:function(idx){
 	idx--;
 	this.stock.splice(idx,1);
-	NicoLiveRequest.updateStockView(this.stock);
+	//NicoLiveRequest.updateStockView(this.stock);
+	NicoLiveRequest.deleteStockRow(idx);
 	this.saveStock();
 	this.updateRemainRequestsAndStocks();
     },

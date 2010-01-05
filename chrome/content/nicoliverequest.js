@@ -234,6 +234,7 @@ var NicoLiveRequest = {
     // ストックの行を交換する.
     // 行を丸々交換するのは、事前にコマンドや関数仕込んでいるので面倒くさいので
     // 動画情報表示部分だけ交換すればいいのに気付いた.
+    // row1,row2 : 0,1,2,3,....
     exchangeStockRow:function(row1,row2){
 	let vbox = document.getElementsByClassName('stock-videoinfo');
 	let parent1 = vbox[row1].parentNode;
@@ -244,6 +245,26 @@ var NicoLiveRequest = {
 
 	parent1.replaceChild( tmp1, vbox[row1] );
 	parent2.replaceChild( tmp2, vbox[row2] );
+    },
+
+    // ストックの行を削除する.
+    // row : 0,1,2,3,...
+    deleteStockRow:function(row){
+	let vbox = document.getElementsByClassName('stock-videoinfo');
+	let parent;
+	let n = vbox.length-1;
+	let node;
+
+	for(let i=row;i<n;i++){
+	    parent = vbox[i].parentNode;
+	    node = this.createVideoInformation( NicoLiveHelper.stock[i], true );
+	    parent.replaceChild( node, vbox[i] );
+	}
+
+	let table = $('stock-table');
+	table.deleteRow( table.rows.length-1 );
+
+	this.setTotalStockTime(NicoLiveHelper.getTotalStockTime());
     },
 
     // ストックテーブルの行の中身を作成する.
