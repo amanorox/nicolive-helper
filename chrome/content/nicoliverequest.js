@@ -555,8 +555,8 @@ var NicoLiveRequest = {
 			this.playlist_start = 0;
 		    }
 		    let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
+		    this.playlist_start++;
 		    if(nextmusic){
-			this.playlist_start++;
 			debugprint(nextmusic.video_id+"を再生します");
 			this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
 			this.playlist_first = true;
