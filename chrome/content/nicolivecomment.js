@@ -43,9 +43,14 @@ var NicoLiveComment = {
 	td.innerHTML = "<hbox context=\"popup-comment\"><html:span style=\"display:none;\">"+comment.user_id+"</html:span>"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
-	// sm,nmにリンクを貼り付け.
-	str = comment.text.replace(/<.*?>/g,"");
+	if(comment.premium==3){
+	    str = comment.text.replace(/<.*?>/g,""); // 主コメだけタグ除去.
+	}else{
+	    str = comment.text;
+	}
 	str = htmlspecialchars(str);
+
+	// sm,nmにリンクを貼り付け.
 	str = str.replace(/((sm|nm)\d+)/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
 	td.innerHTML = "<hbox flex=\"1\" context=\"popup-copycomment\">"+str+"</hbox>";
 
