@@ -7,6 +7,17 @@ GET http://watch.live.nicovideo.jp/api/vote?v=lv000000&id=3
 status=true
 
 
+50MB=51200KB=52428800(bytes)
+中の人のTweetによるとニコニコ高負荷時で1Mbpsらしい。
+50MBをDLするのにかかる時間は 51200KB/128KB/s で約400秒。約7分。
+
+Video's average bitrate * 30sec.
+e.g.) 2Mbps * 30sec.   = 60Mbit(8.0MB)
+      600kbps * 30sec. = 18Mbit(2.5MB)
+
+sm9178243 80MB 2Mbps 5:18
+
+
 配信開始の手続き
 
 * getpublishstatus
@@ -55,76 +66,3 @@ http://www.nicovideo.jp/api/getflv/sm8861709?lo=1
 http://flapi.nicovideo.jp/api/getflv?v=sm8861709&ts=1260522426713&lo=1
 
 thread_id=1258714458&l=226&url=http%3A%2F%2Fsmile-cll41.nicovideo.jp%2Fsmile%3Fv%3D8861709.9460low&link=http%3A%2F%2Fwww.smilevideo.jp%2Fview%2F8861709%2F21693&ms=http%3A%2F%2Fmsg.nicovideo.jp%2F16%2Fapi%2F&user_id=21693&is_premium=1&nickname=amano&time=1260522426&done=true&feedrev=041ae&ng_rv=9&hms=hiroba-test7.nicovideo.jp&hmsp=2533&hmst=1000000129&hmstk=1260522486.P2HU3av2u77SnxpNAzbmGR9l9rY
-
-
-
-a = JSON.parse(document.getElementById('textbox-comment').getAttribute('autocompletesearchparam'));
-JSON.stringify(a);
-
-
-function URLBarSetURI(aURI, aValid) {
-  var value = gBrowser.userTypedValue;
-  var valid = false;
-
-  if (value == null) {
-    let uri = aURI || getWebNavigation().currentURI;
-
-    // Replace initial page URIs with an empty string
-    // only if there's no opener (bug 370555).
-    if (gInitialPages.indexOf(uri.spec) != -1)
-      value = content.opener ? uri.spec : "";
-    else
-      value = losslessDecodeURI(uri);
-
-    let isBlank = (uri.spec == "about:blank");
-    valid = !isBlank && (!aURI || aValid);
-  }
-
-  gURLBar.value = value;
-  SetPageProxyState(valid ? "valid" : "invalid");
-}
-
-function handleRevert() {
-    var isScrolling = this.popupOpen;
-    gBrowser.userTypedValue = null;
-    if (!XULBrowserWindow.isBusy && !isScrolling) {
-        URLBarSetURI();
-        if (this.value && this.hasAttribute("focused")) {
-            this.select();
-        }
-    }
-    return !isScrolling;
-}
-
-function showHistoryPopup() {
-
-    function cleanup(popup) {
-        popup.removeEventListener("popupshowing", onShow, false);
-    }
-
-
-    function onShow(event) {
-        var popup = event.target, input = popup.input;
-        cleanup(popup);
-        input.setAttribute("open", "true");
-
-        function onHide() {
-            input.removeAttribute("open");
-            input.mConsumeRollupEvent = false;
-            popup.removeEventListener("popuphiding", onHide, false);
-        }
-
-        popup.addEventListener("popuphiding", onHide, false);
-    }
-
-    this.popup.addEventListener("popupshowing", onShow, false);
-    setTimeout(cleanup, 1000, this.popup);
-    this.popup._normalMaxRows = this.maxRows;
-    this.maxRows = this.maxDropMarkerRows;
-    if (!this.focused) {
-        this.focus();
-    }
-    this.mConsumeRollupEvent = true;
-    this.attachController();
-    this.mController.startSearch("");
-}
