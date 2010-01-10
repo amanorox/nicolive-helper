@@ -701,47 +701,59 @@ var NicoLiveHelper = {
 	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
 	this.saveStock();
     },
+
+
+    sortRequestStock:function(queue,type,order){
+	// order:1だと昇順、order:-1だと降順.
+	queue.sort( function(a,b){
+			let tmpa, tmpb;
+			switch(type){
+			case 0:// 再生数.
+			    tmpa = a.view_counter;
+			    tmpb = b.view_counter;
+			    break;
+			case 1:// コメ.
+			    tmpa = a.comment_num;
+			    tmpb = b.comment_num;
+			    break;
+			case 2:// マイリス.
+			    tmpa = a.mylist_counter;
+			    tmpb = b.mylist_counter;
+			    break;
+			case 3:// 時間.
+			    tmpa = a.length_ms;
+			    tmpb = b.length_ms;
+			    break;
+			case 4:// 投稿日.
+			default:
+			    tmpa = a.first_retrieve;
+			    tmpb = b.first_retrieve;
+			    break;
+			case 5:// マイリス率.
+			    tmpa = a.mylist_counter / a.view_counter;
+			    tmpb = b.mylist_counter / b.view_counter;
+			    break;
+			case 6:// タイトル.
+			    if(a.title < b.title){
+				return -order;
+			    }else{
+				return order;
+			    }
+			    break;
+			}
+			return (tmpa - tmpb) * order;
+		    });
+    },
+
+    sortRequest:function(type,order){
+	this.sortRequestStock(this.requestqueue,type,order);
+	NicoLiveRequest.update(this.requestqueue);
+	this.saveRequest();	
+    },
+
     // ストックソート.
     sortStock:function(type,order){
-	// order:1だと昇順、order:-1だと降順.
-	this.stock.sort( function(a,b){
-			     let tmpa, tmpb;
-			     switch(type){
-			     case 0:// 再生数.
-				 tmpa = a.view_counter;
-				 tmpb = b.view_counter;
-				 break;
-			     case 1:// コメ.
-				 tmpa = a.comment_num;
-				 tmpb = b.comment_num;
-				 break;
-			     case 2:// マイリス.
-				 tmpa = a.mylist_counter;
-				 tmpb = b.mylist_counter;
-				 break;
-			     case 3:// 時間.
-				 tmpa = a.length_ms;
-				 tmpb = b.length_ms;
-				 break;
-			     case 4:// 投稿日.
-			     default:
-				 tmpa = a.first_retrieve;
-				 tmpb = b.first_retrieve;
-				 break;
-			     case 5:// マイリス率.
-				 tmpa = a.mylist_counter / a.view_counter;
-				 tmpb = b.mylist_counter / b.view_counter;
-				 break;
-			     case 6:// タイトル.
-				 if(a.title < b.title){
-				     return -order;
-				 }else{
-				     return order;
-				 }
-				 break;
-			     }
-			     return (tmpa - tmpb) * order;
-			 });
+	this.sortRequestStock(this.stock,type,order);
 	NicoLiveRequest.updateStockView(this.stock);
 	this.saveStock();
     },

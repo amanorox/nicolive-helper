@@ -2,7 +2,7 @@
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
 <?xml-stylesheet href="chrome://nicolivehelper/content/requestwindow.css" type="text/css"?>
 
-<window id="requestwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" title="NicoLive Helper 0.9.6">
+<window id="requestwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" title="NicoLive Helper 0.9.7">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -431,6 +431,29 @@
     <!-- request tab -->
     <menupopup id="popup-copyrequest">
       <menuitem label="コメ番順にソート" oncommand="NicoLiveHelper.sortRequestByCommentNo();"/>
+      <menu label="昇順">
+	<menupopup>
+	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortRequest(0,1)"/>
+	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortRequest(1,1)"/>
+	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortRequest(2,1)"/>
+	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortRequest(3,1)"/>
+	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortRequest(4,1)"/>
+	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortRequest(5,1)"/>
+	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortRequest(6,1)"/>
+	</menupopup>
+      </menu>
+      <menu label="降順">
+	<menupopup>
+	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortRequest(0,-1)"/>
+	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortRequest(1,-1)"/>
+	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortRequest(2,-1)"/>
+	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortRequest(3,-1)"/>
+	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortRequest(4,-1)"/>
+	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortRequest(5,-1)"/>
+	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortRequest(6,-1)"/>
+	</menupopup>
+      </menu>
+
       <menuseparator/>
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>

@@ -106,7 +106,7 @@ var NicoLiveRequest = {
 	vbox_parent.appendChild(vbox);
     },
 
-    // アイテムを全更新.
+    // リクエストを全更新.
     update:function(requestqueue){
 	let table = $('request-table');
 	if(!table){ return; }
