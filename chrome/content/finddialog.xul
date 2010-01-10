@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<dialog id="votewindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+	title="検索ダイアログ(NicoLive Helper)"
+	buttons="accept,cancel" ondialogaccept="return true;" ondialogcancel="return true;">
+
+  <script>
+  <![CDATA[
+
+  ]]>
+  </script>
+
+  <vbox>
+    <hbox align="center">
+      <label value="検索文字列"/>
+      <textbox id="search-word" flex="1"/>
+    </hbox>
+  </vbox>
+
+</dialog>
