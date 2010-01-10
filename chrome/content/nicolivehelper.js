@@ -413,12 +413,12 @@ var NicoLiveHelper = {
 		let n = pname.length;
 		let tmp = new Array();
 		for(i=0;i<n;i++){
-		    let flg=false;
+		    let omitflg=false;
 		    if(!pname[i]) continue;
 		    for(j=0;j<n;j++){
 			if(i==j) continue;
 			if(pname[j].match(pname[i]+'$')){
-			    flg = true;
+			    omitflg = true;
 			}
 			/* 曲名(誰P)となっているものが含まれていたらそれを除外する
 			 * ために (誰P) を含むものを除外する.
@@ -427,7 +427,10 @@ var NicoLiveHelper = {
 			    pname[j] = "";
 			}
 		    }
-		    if(!flg && pname[i]) tmp.push(pname[i]);
+		    if(omitflg) pname[i] = "";
+		}
+		for(i=0;i<n;i++){
+		    if(pname[i]) tmp.push(pname[i]);
 		}
 		pname = tmp.join(',');
 	    }else{
