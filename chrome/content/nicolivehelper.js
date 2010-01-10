@@ -761,8 +761,10 @@ var NicoLiveHelper = {
 	this.saveStock();
     },
 
-    // ストック内の再生されていない動画のうちどの動画を再生するか選択して再生する.
-    chooseMusicFromStock:function(){
+    /*
+     * 次に再生する動画をmusiclistから探し、1,2,3,...のインデックスを返す.
+     */
+    chooseNextMusicToPlay:function(musiclist){
 	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
 	if(tmp<0) tmp = 0;
 	let remain = 30*60 - tmp; // second.
@@ -771,8 +773,8 @@ var NicoLiveHelper = {
 	let notplayed = new Array();
 	let i,item;
 
-	// 再生できるストック動画リスト作成.
-	for(i=0;item=this.stock[i];i++){
+	// 再生できる動画リスト作成.
+	for(i=0;item=musiclist[i];i++){
 	    notplayed["_"+item.video_id] = i;
 
 	    if( limit30min ){
@@ -788,41 +790,7 @@ var NicoLiveHelper = {
 		notplayed.push(item);
 	    }
 	}
-	if(notplayed.length<=0) return false; // 再生できるストックなし.
-
-	let n = 0;
-	if(this.israndomplay){
-	    n = GetRandomInt(0,notplayed.length-1);
-	}
-	this.playStock(notplayed["_"+notplayed[n].video_id]+1,true);
-	return true;
-    },
-
-    // リクエストから再生できる動画をピックアップして再生.
-    chooseMusicFromRequest:function(){
-	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
-	if(tmp<0) tmp = 0;
-	let remain = 30*60 - tmp; // second.
-	let limit30min = NicoLivePreference.limit30min;
-	let carelosstime = NicoLivePreference.carelosstime;
-	let notplayed = new Array();
-	let i,item;
-
-	// 再生できるリクエスト動画リスト作成.
-	for(i=0;item=this.requestqueue[i];i++){
-	    notplayed["_"+item.video_id] = i;
-	    if( limit30min ){
-		if(carelosstime && item.length_ms/1000 > remain+75){
-		    // ロスタイムを75sとして、枠に収まらない動画.
-		    continue;
-		}else if(!carelosstime && item.length_ms/1000 > remain){
-		    // 30枠に収まらない動画.
-		    continue;
-		}
-	    }
-	    notplayed.push(item);
-	}
-	if(notplayed.length<=0) return false; // 再生できるストックなし.
+	if(notplayed.length<=0) return false; // 再生できるものなし.
 
 	let n = 0;
 	if(this.israndomplay){
@@ -831,13 +799,33 @@ var NicoLiveHelper = {
 	if(this.isconsumptionrateplay){
 	    let tmp = this.calcConsumptionRate();
 	    for(let i=0;i<tmp.length;i++){
+		// ストックの動画にはuser_idがないので、ここを処理しても必ず n = -1 になる.
 		n = this.findRequestByUserId(notplayed, tmp[i].user_id);
 		if(n>=0) break;
 	    }
 	}
 	if(n<0) n=0;
-	this.playMusic(notplayed["_"+notplayed[n].video_id]+1,true);
-	return true;
+	return notplayed["_"+notplayed[n].video_id]+1;
+    },
+
+    // ストック内の再生されていない動画のうちどの動画を再生するか選択して再生する.
+    chooseMusicFromStockAndPlay:function(){
+	let n = this.chooseNextMusicToPlay( this.stock );
+	if( n ){
+	    this.playStock( n, true);
+	    return true;
+	}
+	return false;
+    },
+
+    // リクエストから再生できる動画をピックアップして再生.
+    chooseMusicFromRequestAndPlay:function(){
+	let n = this.chooseNextMusicToPlay( this.requestqueue );
+	if( n ){
+	    this.playMusic( n );
+	    return true;
+	}
+	return false;
     },
 
     // 次曲を再生する.
@@ -851,10 +839,10 @@ var NicoLiveHelper = {
 	if(!this.stock) return;
 
 	if(this.requestqueue.length){
-	    if( this.chooseMusicFromRequest() ) return;
+	    if( this.chooseMusicFromRequestAndPlay() ) return;
 	}
 	if(this.stock.length){
-	    if( this.chooseMusicFromStock() ) return;
+	    if( this.chooseMusicFromStockAndPlay() ) return;
 	}
 	// リクもストックもない.
 	clearInterval(this._musicend);
@@ -1944,6 +1932,7 @@ var NicoLiveHelper = {
 	this._musicend = setInterval("NicoLiveHelper.checkPlayNext();", du+interval);
 
 	if(du<30*1000) return;
+
 	// 30秒未満のときはやらない.
 	this._prepare = setInterval(
 	    function(){
