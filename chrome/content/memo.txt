@@ -12,8 +12,9 @@ status=true
 50MBをDLするのにかかる時間は 51200KB/128KB/s で約400秒。約7分。
 
 Video's average bitrate * 30sec.
-e.g.) 2Mbps * 30sec.   = 60Mbit(8.0MB)
-      600kbps * 30sec. = 18Mbit(2.5MB)
+e.g.) 2000bps  * 30sec. = 60000kbit 1Mbpsで60秒
+       600kbps * 30sec. = 18000kbit 1Mbpsで18秒.
+       100kbps * 30sec. =  3000kbit 1Mbpsで 3秒.
 
 
 
