@@ -86,7 +86,7 @@ var NicoLiveHelper = {
 	if(NicoLivePreference.restrict.dorestrict){
 	    let msg = this.checkMovieRestriction(info);
 	    if( msg ){
-		debugprint(info.video_id+'/'+msg);
+		debugprint(info.video_id+'/'+info.title+'/'+msg);
 		return {code:-6,"msg":msg,movieinfo:info};
 	    }
 	}
