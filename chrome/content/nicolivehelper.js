@@ -1772,9 +1772,7 @@ var NicoLiveHelper = {
 	if(p<0) p = 0;
 	liveprogress.label = GetTimeString(p);
 
-	if( this.endtime ){
-	    
-	}else if( n>=0 && p > 27*60 + 30*60*n ){
+	if( n>=0 && p > 27*60 + 30*60*n ){
 	    // 27分+30*n(n=0,1,2,...)越えたら
 	    if(!this.isnotified[n]){
 		this.showNotice3minleft();
