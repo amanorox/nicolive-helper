@@ -62,6 +62,12 @@ function OpenFile(path){
     }
 }
 
+function AlertPrompt(text,caption){
+    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    var result = prompts.alert(null, caption, text);
+    return result;
+}
+
 function ConfirmPrompt(text,caption){
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
     var result = prompts.confirm(null, caption, text);

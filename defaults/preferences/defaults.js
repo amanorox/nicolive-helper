@@ -44,3 +44,6 @@ pref("extensions.nicolivehelper.request.mylist-to",0);
 pref("extensions.nicolivehelper.request.videolength",0);
 pref("extensions.nicolivehelper.request.tag-include","");
 pref("extensions.nicolivehelper.request.tag-exclude","");
+pref("extensions.nicolivehelper.notice.area",true);
+pref("extensions.nicolivehelper.notice.dialog",false);
+pref("extensions.nicolivehelper.notice.comment",false);

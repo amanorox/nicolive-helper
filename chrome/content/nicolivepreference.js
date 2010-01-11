@@ -24,6 +24,11 @@ var NicoLivePreference = {
 
 	this.comment184 = branch.getBoolPref("184comment");
 
+	this.notice = {};
+	this.notice.area    = branch.getBoolPref("notice.area");
+	this.notice.dialog  = branch.getBoolPref("notice.dialog");
+	this.notice.comment = branch.getBoolPref("notice.comment");
+
 	this.topmost = branch.getBoolPref("z-order");
 	SetWindowTopMost(window,this.topmost);
 

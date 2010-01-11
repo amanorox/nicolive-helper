@@ -102,13 +102,15 @@ var NicoLiveHelper = {
 		item = ZenToHan(item);
 		if(item.match(/ミク/)){ ismiku = true; }
 		if(item.match(/オリジナル/)){ isoriginal = true; }
-		if(item.match(/ProjectDIVA-AC楽曲募集/)){ ismiku = true; isoriginal = true; }
-		if(item.match(/森之宮神療所/)){ isoriginal = true; }
 
+		if(item.match(/森之宮神療所/)){ isoriginal = true; }
+		if(item.match(/UTAU→VOCALOIDカバー/)){ isoriginal = true; }
 		if(item.match(/コモンズ/)){ isoriginal = true; }
 		if(item.match(/VOCALOID→VOCALOIDカバー/)){ isoriginal = true; }
 		if(item.match(/VOCALOIDアレンジ曲/)){ isoriginal = true; }
 		if(item.match(/VOCALOID-PV/i)){ isoriginal = true; }
+
+		if(item.match(/ProjectDIVA-AC楽曲募集/)){ ismiku = true; isoriginal = true; }
 		if(item.match(/ミクオリジナル/)){
 		    ismiku = true;
 		    isoriginal = true;
@@ -830,11 +832,6 @@ var NicoLiveHelper = {
 
     // 次曲を再生する.
     playNext: function(){
-	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
-	if(tmp<0) tmp = 0;
-	let remain = 30*60 - tmp; // second.
-	let limit30min = NicoLivePreference.limit30min;
-	let carelosstime = NicoLivePreference.carelosstime;
 	if(!this.requestqueue) return;
 	if(!this.stock) return;
 
@@ -1747,6 +1744,21 @@ var NicoLiveHelper = {
 	debugprint('update PName Whitelist');
     },
 
+    showNotice3minleft:function(){
+	let str = "放送時間残り3分になりました";
+	if( NicoLivePreference.notice.area ){
+	    $('noticewin').removeAllNotifications(false);
+	    $('noticewin').appendNotification(str,null,null,
+					      $('noticewin').PRIORITY_WARNING_LOW,null);
+	}
+	if( NicoLivePreference.notice.comment ){
+	    this.postCasterComment(str,"");
+	}
+	if( NicoLivePreference.notice.dialog ){
+	    AlertPrompt(str, this.request_id+":"+this.title);
+	}
+    },
+
     // 現在の再生曲の再生時間と、生放送の経過時間をプログレスバーで表示.
     updateProgressBar:function(){
 	let currentmusic = $('statusbar-currentmusic');
@@ -1760,12 +1772,12 @@ var NicoLiveHelper = {
 	if(p<0) p = 0;
 	liveprogress.label = GetTimeString(p);
 
-	// 27分+30*n(n=0,1,2,...)越えたら
-	if( n>=0 && p > 27*60 + 30*60*n ){
+	if( this.endtime ){
+	    
+	}else if( n>=0 && p > 27*60 + 30*60*n ){
+	    // 27分+30*n(n=0,1,2,...)越えたら
 	    if(!this.isnotified[n]){
-		$('noticewin').removeAllNotifications(false);
-		$('noticewin').appendNotification('枠残り3分です',null,null,
-						  $('noticewin').PRIORITY_WARNING_LOW,null);
+		this.showNotice3minleft();
 		this.isnotified[n] = true;
 	    }
 	}
@@ -1788,7 +1800,9 @@ var NicoLiveHelper = {
 		remain = 0;
 		progress = this.musicinfo.length_ms/1000;
 	    }
-	    str = this.musicinfo.title+"("+(this.flg_displayprogresstime ? GetTimeString(progress): "-"+GetTimeString(remain))+"/"+this.musicinfo.length+")";
+	    str = this.musicinfo.title
+		+ "("+(this.flg_displayprogresstime ? GetTimeString(progress) : "-"+GetTimeString(remain))
+		+ "/"+this.musicinfo.length+")";
 	    musictime.label = str;
 	}else{
 	    playprogress.value = 0;
@@ -1800,7 +1814,6 @@ var NicoLiveHelper = {
     toggleDisplayProgressTime:function(event){
 	event = event || window.event;
 	let btnCode;
-
 	if ('object' == typeof event){
 	    btnCode = event.button;
 	    switch (btnCode){
@@ -1812,12 +1825,7 @@ var NicoLiveHelper = {
 		return;
 	    }
 	}
-
-	if(this.flg_displayprogresstime){
-	    this.flg_displayprogresstime = false;
-	}else{
-	    this.flg_displayprogresstime = true;
-	}
+	this.flg_displayprogresstime = !this.flg_displayprogresstime;
     },
 
     // getplayerstatus APIから生放送情報を取得する.
@@ -1881,7 +1889,7 @@ var NicoLiveHelper = {
 			// 動画の長さが設定されているときは何か再生中.
 			let remain;
 			remain = (st+du)-GetCurrentTime(); // second.
-			remain *= 1000; // to ms.
+			remain *= 1000; // convert to ms.
 			remain = Math.floor(remain);
 			if( NicoLiveHelper.iscaster ){
 			    // 生主モードなら次曲再生できるようにセット.
