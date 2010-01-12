@@ -385,7 +385,7 @@ var NicoLiveHelper = {
 	    return true;
 	}
 	// D名
-	t = str.match(/.*[DＤ]$/);
+	t = str.match(/.*[^E][DＤ]$/);
 	if(t){
 	    return true;
 	}
