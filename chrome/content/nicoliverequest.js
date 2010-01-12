@@ -631,13 +631,13 @@ var NicoLiveRequest = {
     },
 
 
-    offPlayed:function(){
+    offPlayedStatus:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.firstChild.textContent;
 	if(video_id.length<=0) return;
 
 	debugprint('off played flag:'+video_id);
-	NicoLiveHelper.offPlayed(video_id);
+	NicoLiveHelper.offPlayedStatus(video_id);
     },
 
     saveStockToFile:function(){
@@ -767,34 +767,17 @@ var NicoLiveRequest = {
 	debugprint('add mylist from request tab:'+video_id);
 	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id);
     },
+
     // リク、ストックタブ用のマイリス追加メニューを作る.
     appendAddMylistMenu:function(mylists){
-
-	let popupmenu = CreateElement('menu');
-	popupmenu.setAttribute('label','マイリストに追加');
-	popupmenu.setAttribute('id','addto-mylist-from-history');
-
-	let popup = CreateElement('menupopup');
-	popupmenu.appendChild(popup);
-
-	let elem = CreateMenuItem('とりあえずマイリスト','default');
-	popup.appendChild(elem);
-
-	for(let i=0,item;item=mylists[i];i++){
-	    let elem;
-	    let tmp = item.name.match(/.{1,20}/);
-	    elem = CreateMenuItem(tmp,item.id);
-	    elem.setAttribute("tooltiptext",item.name);
-	    popup.appendChild(elem);
-	}
-
+	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.addEventListener("command",
 				   function(e){
 				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
 				   },false );
 	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
 
-	popupmenu = popupmenu.cloneNode(true);
+	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.addEventListener("command",
 				   function(e){
 				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
@@ -826,8 +809,6 @@ var NicoLiveRequest = {
 	let searchword = InputPrompt('検索文字列を入力してください','検索','');
 	if(searchword==null) return;
 
-	//debugprint(tr.length);
-
 	this.searchword = searchword;
 	this.searchfoundidx = 0;
 	this.searchtab = tabindex;
@@ -841,6 +822,7 @@ var NicoLiveRequest = {
 	}
     },
 
+    // 次を検索.
     findNextRequestStock:function(){
 	let tr;
 	let tabindex = $('tabpanels').selectedIndex;

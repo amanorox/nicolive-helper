@@ -423,20 +423,16 @@
   </statusbar>
 
   <popupset>
+    <!-- for statusbar -->
     <menupopup id="popup-add-mylist">
-      <menu label="マイリストに追加">
-	<menupopup id="popup-mylists">
-	  <!-- append mylists by program -->
-	</menupopup>
-      </menu>
       <menuitem label="動画DBに追加" oncommand="NicoLiveDatabase.addCurrentPlayedVideo();"/>
     </menupopup>
 
+    <!-- for comment -->
     <menupopup id="popup-comment">
       <menuitem label="コテハン設定" oncommand="NicoLiveComment.addName();"/>
       <!-- <menuitem label="色変更(未作成)"/> -->
     </menupopup>
-
     <menupopup id="popup-copycomment">
       <menuitem label="コメントをコピー" oncommand="NicoLiveComment.copyComment();"/>
     </menupopup>
@@ -476,7 +472,7 @@
       <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
 
-    <!-- for DB result -->
+    <!-- for database -->
     <menupopup id="popup-db-result">
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="ストック追加" oncommand="NicoLiveDatabase.addStockOne();"/>
@@ -487,7 +483,7 @@
       <menuitem label="DBから削除" oncommand="NicoLiveDatabase.deleteMovie();"/>
     </menupopup>
 
-    <!-- for stock-view -->
+    <!-- for stock -->
     <menupopup id="popup-sort-stock">
       <menu label="昇順">
 	<menupopup>
@@ -517,10 +513,18 @@
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-stock-additionalinfo"/>
       <menuitem label="先読み" oncommand="NicoLiveRequest.prepare();" tooltiptext="/prepareを送信する"/>
-      <menuitem label="再生済みを解除" oncommand="NicoLiveRequest.offPlayed();"/>
+      <menuitem label="再生済みを解除" oncommand="NicoLiveRequest.offPlayedStatus();"/>
       <menuseparator/>
       <menuitem label="ストックをファイルに保存" oncommand="NicoLiveRequest.saveStockToFile();"/>
     </menupopup>
+
+    <!-- for playlist -->
+    <menupopup id="popup-playlist">
+      <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
+      <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-playlist-additionalinfo"/>
+    </menupopup>
+
   </popupset>
   
 </window>

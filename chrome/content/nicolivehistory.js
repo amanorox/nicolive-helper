@@ -10,6 +10,8 @@ var NicoLiveHistory = {
 
 	td = tr.insertCell(tr.cells.length);
 	let vbox = CreateElement('vbox');
+	vbox.setAttribute('context','popup-playlist');
+
 	NicoLiveRequest.addVideoInformation(vbox,item);
 	td.appendChild(vbox);
     },
@@ -29,34 +31,31 @@ var NicoLiveHistory = {
 	}
     },
 
+    // 再生履歴にマイリストに追加メニューを追加.
     appendMenu:function(mylists){
+	// テキストボックスのコンテキストメニュー
 	let notes = $('played-list-textbox');
 	let input = document.getAnonymousElementByAttribute(notes, 'anonid', 'input');
 	let menu = document.getAnonymousElementByAttribute(input.parentNode, "anonid", "input-box-contextmenu");
 
 	notes.addEventListener('popupshowing',this,false);
 
-	menu.insertBefore( CreateElement('menuseparator'),menu.firstChild );
+	menu.insertBefore( CreateElement('menuseparator'), menu.firstChild );
 
-	let popupmenu = CreateElement('menu');
-	popupmenu.setAttribute('label','マイリストに追加');
+	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute('id','addto-mylist-from-history');
+	popupmenu.addEventListener("command", function(e){
+				       NicoLiveHistory.addMylist(e.target.value,e.target.label);
+				   },false );
 	menu.insertBefore( popupmenu, menu.firstChild);
 
-	let popup = CreateElement('menupopup');
-	popupmenu.appendChild(popup);
-
-	let elem = CreateMenuItem('とりあえずマイリスト','default');
-	elem.addEventListener("command", function(e){ NicoLiveHistory.addMylist(e.target.value,e.target.label); },false );
-	popup.appendChild(elem);
-
-	for(let i=0,item;item=mylists[i];i++){
-	    let elem;
-	    let tmp = item.name.match(/.{1,20}/);
-	    elem = CreateMenuItem(tmp,item.id);
-	    elem.addEventListener("command",function(e){ NicoLiveHistory.addMylist(e.target.value,e.target.label);},false);
-	    popup.appendChild(elem);
-	}	
+	// 詳細表示用のコンテキストメニュー.
+	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
+	popupmenu.addEventListener("command",
+				   function(e){
+				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
+				   },false );
+	$('popup-playlist').appendChild( popupmenu );
     },
 
     restorePlaylistText:function(){

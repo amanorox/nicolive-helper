@@ -113,6 +113,7 @@ var NicoLiveMylist = {
 	}
     },
 
+    // 現在再生中の動画をマイリストする.
     addMyList:function(mylist_id,mylist_name){
 	let video_id = NicoLiveHelper.musicinfo.video_id;
 	this._addMyList(mylist_id,mylist_name,video_id);
@@ -159,29 +160,9 @@ var NicoLiveMylist = {
     },
 
     addStockFromMylist:function(mylist_id,mylist_name){
-	this.addStockFromMylistWithComment(mylist_id, mylist_name); return;
-
-	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	let req = new XMLHttpRequest();
-	if(!req) return;
-	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		let xml = req.responseXML;
-		let link = xml.getElementsByTagName('link');
-		let videos = new Array();
-		for(let i=0,item;item=link[i];i++){
-		    let video_id = item.textContent.match(/(sm|nm)\d+/);
-		    if(video_id){
-			//debugprint('mylist:'+video_id[0]);
-			videos.push(video_id[0]);
-		    }
-		}
-		NicoLiveRequest.addStock(videos.join(','));
-	    }
-	};
-	req.open('GET', url );
-	req.send('');
+	this.addStockFromMylistWithComment(mylist_id, mylist_name);
     },
+
     // 似たようなコード整理したいなー.
     addDatabase:function(mylist_id,mylist_name){
 	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
@@ -205,6 +186,28 @@ var NicoLiveMylist = {
 	req.open('GET', url );
 	req.send('');
     },
+
+    // マイリストに追加メニューを作成する.
+    createAddMylistMenu:function(mylists){
+	let popupmenu = CreateElement('menu');
+	popupmenu.setAttribute('label','マイリストに追加');
+
+	let popup = CreateElement('menupopup');
+	popupmenu.appendChild(popup);
+
+	let elem = CreateMenuItem('とりあえずマイリスト','default');
+	popup.appendChild(elem);
+
+	for(let i=0,item;item=mylists[i];i++){
+	    let elem;
+	    let tmp = item.name.match(/.{1,20}/);
+	    elem = CreateMenuItem(tmp,item.id);
+	    elem.setAttribute("tooltiptext",item.name);
+	    popup.appendChild(elem);
+	}
+	return popupmenu;
+    },
+
     init:function(){
 	debugprint("NicoLiveMylist.init");
 	this.mylists = new Array();
@@ -226,17 +229,17 @@ var NicoLiveMylist = {
 		NicoLiveHistory.appendMenu(mylists);
 		NicoLiveRequest.appendAddMylistMenu(mylists);
 
-		let elem = CreateMenuItem('とりあえずマイリスト','default');
-		elem.addEventListener("command", function(e){ NicoLiveMylist.addMyList(e.target.value,e.target.label); },false );
-		$('popup-mylists').appendChild(elem);
+		let popupmenu;
+		// ステータスバー用.
+		popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
+		popupmenu.addEventListener("command", function(e){
+					       NicoLiveMylist.addMyList(e.target.value,e.target.label);
+					   },false );
+		$('popup-add-mylist').insertBefore( popupmenu, $('popup-add-mylist').firstChild );
 
+		let elem;
 		for(let i=0,item;item=mylists[i];i++){
-		    // マイリストに追加.
 		    let tmp = item.name.match(/.{1,20}/);
-		    let elem = CreateMenuItem(tmp,item.id);
-		    elem.setAttribute("tooltiptext",item.name);
-		    elem.addEventListener("command", function(e){ NicoLiveMylist.addMyList(e.target.value,e.target.label); },false );
-		    $('popup-mylists').appendChild(elem);
 
 		    // マイリスト読み込み(stock)
 		    elem = CreateMenuItem(tmp,item.id);

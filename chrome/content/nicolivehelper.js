@@ -254,7 +254,6 @@ var NicoLiveHelper = {
 		    this.musicstarttime = GetCurrentTime();
 		    this.setCurrentVideoInfo(dat[2],false);
 		    this.inplay = true;
-		    $('played-list-textbox').value += dat[2]+" "+dat[5]+"\n";
 		}else{
 		    if( this.musicinfo.video_id!=dat[2] ){
 			// 直接運営コマンドを入力したときとかで、
@@ -356,6 +355,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.musicinfo = music;
 		    let du = Math.floor(NicoLiveHelper.musicinfo.length_ms/1000)+1;
 		    NicoLiveHelper.musicendtime   = NicoLiveHelper.musicstarttime+du;
+
 		    if(setinterval){
 			// 手動で/playコマンドを入力したときにここに来る.
 			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
@@ -364,6 +364,11 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.sendMusicInfo();
 			}
 			NicoLiveHelper.inplay = true;
+		    }
+		    if(!NicoLiveHelper.iscaster){
+			// リスナーのプレイリストはNicoLiveHelper.addPlayList()を使ってはいけない.
+			$('played-list-textbox').value += music.video_id+" "+music.title+"\n";
+			NicoLiveHistory.addPlayList(music);
 		    }
 		}
 	    }
@@ -1487,7 +1492,8 @@ var NicoLiveHelper = {
 	return false;
     },
 
-    offPlayed:function(video_id){
+    // ストックの再生済みステータスを解除する.
+    offPlayedStatus:function(video_id){
 	this.playlist["_"+video_id] = false;
 	for(let i=0,item; item=this.stock[i];i++){
 	    if(item.video_id==video_id){
