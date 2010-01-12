@@ -111,7 +111,7 @@ var NicoLiveHelper = {
 		if(item.match(/VOCALOID-PV/i)){ isoriginal = true; }
 
 		if(item.match(/ProjectDIVA-AC楽曲募集/)){ ismiku = true; isoriginal = true; }
-		if(item.match(/ミクオリジナル/)){
+		if(item.match(/ミクオリジナル/) || item.match(/ハクオリジナル/)){
 		    ismiku = true;
 		    isoriginal = true;
 		}
@@ -548,23 +548,24 @@ var NicoLiveHelper = {
 
     // 再生する曲の情報を主コメする.
     _sendMusicInfo:function(){
-	let sendstr = NicoLivePreference.videoinfo[this._counter];
+	let sendstr = NicoLivePreference.videoinfo[this._counter].comment;
 	if(!sendstr){
 	    clearInterval(this._sendmusicid);
 	    this._counter = 0;
 	    return;
 	}
-	let cmd = "";
+	let cmd = NicoLivePreference.videoinfo[this._counter].command;
+	if(!cmd) cmd = "";
 	switch(NicoLivePreference.caster_comment_type){
 	case 1: // /perm
 	    sendstr = "/perm "+sendstr;
 	    break;
 	case 2: // hidden
-	    cmd = "hidden";
+	    cmd += " hidden";
 	    break;
 	case 3: // /perm + hidden
 	    sendstr = "/perm "+sendstr;
-	    cmd = "hidden";
+	    cmd += " hidden";
 	    break;
 	case 0: // default
 	default:

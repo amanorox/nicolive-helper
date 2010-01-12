@@ -6,10 +6,12 @@ var NicoLivePreference = {
     readAdvancedPrefs:function(){
 	let branch = this.getBranch();
 	this.nocomment_for_directplay = branch.getBoolPref("nocomment-for-directplay");
-	this.videoinfo[0] = branch.getUnicharPref("videoinfo1");
-	this.videoinfo[1] = branch.getUnicharPref("videoinfo2");
-	this.videoinfo[2] = branch.getUnicharPref("videoinfo3");
-	this.videoinfo[3] = branch.getUnicharPref("videoinfo4");
+
+	for(let i=0;i<4;i++){
+	    this.videoinfo[i] = new Object();
+	    this.videoinfo[i].comment = branch.getUnicharPref("videoinfo"+(i+1));
+	    this.videoinfo[i].command = branch.getUnicharPref("videoinfo"+(i+1)+"-command");
+	}
 
 	this.msg_deleted   = branch.getUnicharPref("msg-deleted");
 	this.msg_notaccept = branch.getUnicharPref("msg-notaccept");

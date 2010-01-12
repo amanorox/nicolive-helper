@@ -22,6 +22,10 @@ pref("extensions.nicolivehelper.videoinfo1","♪Length:{length} Views:{view} Com
 pref("extensions.nicolivehelper.videoinfo2","♪{title}<br>Date:{date}");
 pref("extensions.nicolivehelper.videoinfo3","");
 pref("extensions.nicolivehelper.videoinfo4","");
+pref("extensions.nicolivehelper.videoinfo1-command","");
+pref("extensions.nicolivehelper.videoinfo2-command","");
+pref("extensions.nicolivehelper.videoinfo3-command","");
+pref("extensions.nicolivehelper.videoinfo4-command","");
 pref("extensions.nicolivehelper.comment-type-of-videoinfo",0);
 pref("extensions.nicolivehelper.msg-deleted","その動画は削除されているか、見つかりません");
 pref("extensions.nicolivehelper.msg-notaccept","現在リクエストを受け付けていません");

@@ -555,6 +555,7 @@ var NicoLiveRequest = {
 			this.playlist_start = 0;
 		    }
 		    let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
+		    if(!NicoLiveHelper.isautoplay) break;
 		    this.playlist_start++;
 		    if(nextmusic){
 			debugprint(nextmusic.video_id+"を再生します");

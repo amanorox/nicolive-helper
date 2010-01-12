@@ -34,7 +34,7 @@
 	<button label="再生" oncommand="opener.NicoLiveHelper.playJingle();"/>
       </hbox>
       <checkbox preference="pref-limit30min" label="自動再生時、30分枠に収まるように再生する動画を選択する"/>
-      <checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する"/>
+      <checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する" style="margin-left: 2em"/>
 
       <checkbox preference="pref-prepare" label="動画の先読み(/prepare)を行う" tooltiptext="次の動画の先読みを行います(ランダム再生を除く)"/>
       <grid>
@@ -71,59 +71,95 @@
     </groupbox>
   </prefpane>
 
-  <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="$('caster-comment-type').value = $('pref-typeofvideoinfo').value;">
+  <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="$('caster-comment-type').value = $('pref-typeofvideoinfo').value; NLHPreference.loadPNameWhitelist();">
     <preferences>
       <preference id="pref-videoinfo1" name="extensions.nicolivehelper.videoinfo1" type="unichar"/>
       <preference id="pref-videoinfo2" name="extensions.nicolivehelper.videoinfo2" type="unichar"/>
       <preference id="pref-videoinfo3" name="extensions.nicolivehelper.videoinfo3" type="unichar"/>
       <preference id="pref-videoinfo4" name="extensions.nicolivehelper.videoinfo4" type="unichar"/>
+      <preference id="pref-videoinfo1-command" name="extensions.nicolivehelper.videoinfo1-command" type="unichar"/>
+      <preference id="pref-videoinfo2-command" name="extensions.nicolivehelper.videoinfo2-command" type="unichar"/>
+      <preference id="pref-videoinfo3-command" name="extensions.nicolivehelper.videoinfo3-command" type="unichar"/>
+      <preference id="pref-videoinfo4-command" name="extensions.nicolivehelper.videoinfo4-command" type="unichar"/>
       <preference id="pref-typeofvideoinfo" name="extensions.nicolivehelper.comment-type-of-videoinfo" type="int"/>
       <preference id="pref-userdefined-uri" name="extensions.nicolivehelper.userdefined-data-uri" type="string"/>
       <preference id="pref-nocomment-for-directplay" name="extensions.nicolivehelper.nocomment-for-directplay" type="bool"/>
     </preferences>
-    <checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/>
-    <html:hr/>
-    <grid>
-      <columns>
-	<column/>
-	<column flex="1" />
-      </columns>
-      <rows>
-	<row>
-	  <hbox align="center"><label control="videoinfo1" value="動画情報(1行目)"/></hbox>
-	  <textbox preference="pref-videoinfo1" id="videoinfo1" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="videoinfo2" value="動画情報(2行目)"/></hbox>
-	  <textbox preference="pref-videoinfo2" id="videoinfo2" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="videoinfo3" value="動画情報(3行目)"/></hbox>
-	  <textbox preference="pref-videoinfo3" id="videoinfo3" flex="1"/>
-	</row>
-	<row>
-	  <hbox align="center"><label control="videoinfo4" value="動画情報(4行目)"/></hbox>
-	  <textbox preference="pref-videoinfo4" id="videoinfo4" flex="1"/>
-	</row>
-	<row>
-	</row>
-      </rows>
-    </grid>
-    <vbox>
-      <listbox id="caster-comment-type" rows="5" onselect="$('pref-typeofvideoinfo').value = parseInt(this.value);">
-	<listitem label="通常の運営コメント" value="0"/>
-	<listitem label="/permで運営コメント" value="1"/>
-	<listitem label="hiddenで運営コメント" value="2"/>
-	<listitem label="/perm + hiddenで運営コメント" value="3"/>
-      </listbox>
-    </vbox>
-    <hbox align="center">
-      <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
-      <textbox preference="pref-userdefined-uri" id="userdefined-uri" flex="1"/>
-    </hbox>
-    <hbox>
-      <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
-    </hbox>
+
+    <tabbox flex="1">
+      <tabs>
+	<tab label="動画情報"></tab>
+	<tab label="P名ホワイトリスト"></tab>
+      </tabs>
+      <tabpanels flex="1">
+	<tabpanel orient="vertical">
+	  <groupbox>
+	    <caption label="動画情報"/>
+	    <grid>
+	      <columns>
+		<column/>
+		<column flex="1" />
+	      </columns>
+	      <rows>
+		<row>
+		  <hbox align="center"><label control="videoinfo1" value="1行目"/></hbox>
+		  <hbox>
+		    <textbox preference="pref-videoinfo1-command" size="5" emptytext="コマンドを入力してください"/>
+		    <textbox preference="pref-videoinfo1" id="videoinfo1" flex="1"/>
+		  </hbox>
+		</row>
+		<row>
+		  <hbox align="center"><label control="videoinfo2" value="2行目"/></hbox>
+		  <hbox>
+		    <textbox preference="pref-videoinfo2-command" size="5" emptytext="コマンドを入力してください"/>
+		    <textbox preference="pref-videoinfo2" id="videoinfo2" flex="1"/>
+		  </hbox>
+		</row>
+		<row>
+		  <hbox align="center"><label control="videoinfo3" value="3行目"/></hbox>
+		  <hbox>
+		    <textbox preference="pref-videoinfo3-command" size="5" emptytext="コマンドを入力してください"/>
+		    <textbox preference="pref-videoinfo3" id="videoinfo3" flex="1"/>
+		  </hbox>
+		</row>
+		<row>
+		  <hbox align="center"><label control="videoinfo4" value="4行目"/></hbox>
+		  <hbox>
+		    <textbox preference="pref-videoinfo4-command" size="5" emptytext="コマンドを入力してください"/>
+		    <textbox preference="pref-videoinfo4" id="videoinfo4" flex="1"/>
+		  </hbox>
+		</row>
+		<row>
+		</row>
+	      </rows>
+	    </grid>
+	    <vbox>
+	      <listbox id="caster-comment-type" rows="4" onselect="$('pref-typeofvideoinfo').value = parseInt(this.value);">
+		<listitem label="通常の運営コメント" value="0"/>
+		<listitem label="/permで運営コメント" value="1"/>
+		<listitem label="hiddenで運営コメント" value="2"/>
+		<listitem label="/perm + hiddenで運営コメント" value="3"/>
+	      </listbox>
+	    </vbox>
+	    <checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/>
+	  </groupbox>
+	  <hbox align="center">
+	    <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
+	    <textbox preference="pref-userdefined-uri" id="userdefined-uri" flex="1"/>
+	  </hbox>
+	  <hbox>
+	    <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
+	  </hbox>
+	  
+	</tabpanel>
+	<tabpanel orient="vertical">
+	  <textbox id="pname-whitelist" multiline="true" flex="1" emptytext="1行につき1人のP名、D名を入力してください" tooltiptext="1行につき1人のP名,D名を入力してください"/>
+	  <hbox>
+	    <button label="保存" oncommand="NLHPreference.savePNameWhitelist();"/>
+	  </hbox>
+	</tabpanel>
+      </tabpanels>
+    </tabbox>
   </prefpane>
 
   <prefpane id="nicolivehelper-prefpane-castercomment" label="運営コメント" image="chrome://nicolivehelper/content/data/icon2.png">
@@ -279,13 +315,6 @@
     </hbox>
   </prefpane>
 -->
-
-  <prefpane id="nicolivehelper-prefpane-whitelist" label="P名ホワイトリスト" image="chrome://nicolivehelper/content/data/preficon_whitelist.png" onpaneload="NLHPreference.loadPNameWhitelist();">
-    <textbox id="pname-whitelist" multiline="true" flex="1" emptytext="1行につき1人のP名、D名を入力してください" tooltiptext="1行につき1人のP名,D名を入力してください"/>
-    <hbox>
-      <button label="保存" oncommand="NLHPreference.savePNameWhitelist();"/>
-    </hbox>
-  </prefpane>
 
   <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>

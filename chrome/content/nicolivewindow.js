@@ -33,6 +33,10 @@ var NicoLiveWindow = {
 	    NicoLivePreference.getBranch().setCharPref("window-pos",JSON.stringify(pos));
 	}
     },
+
+    defaultSize:function(){
+	this.resize(720,512);
+    },
     restore:function(){
 	let def = {
 	    x:0,
