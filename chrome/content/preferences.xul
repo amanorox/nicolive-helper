@@ -93,56 +93,56 @@
       </tabs>
       <tabpanels flex="1">
 	<tabpanel orient="vertical">
-	  <groupbox>
-	    <caption label="動画情報"/>
-	    <grid>
-	      <columns>
-		<column/>
-		<column flex="1" />
-	      </columns>
-	      <rows>
-		<row>
-		  <hbox align="center"><label control="videoinfo1" value="1行目"/></hbox>
-		  <hbox>
-		    <textbox preference="pref-videoinfo1-command" size="5" emptytext="コマンドを入力してください"/>
-		    <textbox preference="pref-videoinfo1" id="videoinfo1" flex="1"/>
-		  </hbox>
-		</row>
-		<row>
-		  <hbox align="center"><label control="videoinfo2" value="2行目"/></hbox>
-		  <hbox>
-		    <textbox preference="pref-videoinfo2-command" size="5" emptytext="コマンドを入力してください"/>
-		    <textbox preference="pref-videoinfo2" id="videoinfo2" flex="1"/>
-		  </hbox>
-		</row>
-		<row>
-		  <hbox align="center"><label control="videoinfo3" value="3行目"/></hbox>
-		  <hbox>
-		    <textbox preference="pref-videoinfo3-command" size="5" emptytext="コマンドを入力してください"/>
-		    <textbox preference="pref-videoinfo3" id="videoinfo3" flex="1"/>
-		  </hbox>
-		</row>
-		<row>
-		  <hbox align="center"><label control="videoinfo4" value="4行目"/></hbox>
-		  <hbox>
-		    <textbox preference="pref-videoinfo4-command" size="5" emptytext="コマンドを入力してください"/>
-		    <textbox preference="pref-videoinfo4" id="videoinfo4" flex="1"/>
-		  </hbox>
-		</row>
-		<row>
-		</row>
-	      </rows>
-	    </grid>
-	    <vbox>
-	      <listbox id="caster-comment-type" rows="4" onselect="$('pref-typeofvideoinfo').value = parseInt(this.value);">
-		<listitem label="通常の運営コメント" value="0"/>
-		<listitem label="/permで運営コメント" value="1"/>
-		<listitem label="hiddenで運営コメント" value="2"/>
-		<listitem label="/perm + hiddenで運営コメント" value="3"/>
-	      </listbox>
-	    </vbox>
-	    <checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/>
-	  </groupbox>
+
+	  <grid>
+	    <columns>
+	      <column/>
+	      <column flex="1" />
+	    </columns>
+	    <rows>
+	      <row>
+		<hbox align="center"><label control="videoinfo1" value="1行目"/></hbox>
+		<hbox>
+		  <textbox preference="pref-videoinfo1-command" size="5" emptytext="コマンドを入力してください"/>
+		  <textbox preference="pref-videoinfo1" id="videoinfo1" flex="1"/>
+		</hbox>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="videoinfo2" value="2行目"/></hbox>
+		<hbox>
+		  <textbox preference="pref-videoinfo2-command" size="5" emptytext="コマンドを入力してください"/>
+		  <textbox preference="pref-videoinfo2" id="videoinfo2" flex="1"/>
+		</hbox>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="videoinfo3" value="3行目"/></hbox>
+		<hbox>
+		  <textbox preference="pref-videoinfo3-command" size="5" emptytext="コマンドを入力してください"/>
+		  <textbox preference="pref-videoinfo3" id="videoinfo3" flex="1"/>
+		</hbox>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="videoinfo4" value="4行目"/></hbox>
+		<hbox>
+		  <textbox preference="pref-videoinfo4-command" size="5" emptytext="コマンドを入力してください"/>
+		  <textbox preference="pref-videoinfo4" id="videoinfo4" flex="1"/>
+		</hbox>
+	      </row>
+	      <row>
+	      </row>
+	    </rows>
+	  </grid>
+	  <vbox>
+	    <listbox id="caster-comment-type" rows="4" onselect="$('pref-typeofvideoinfo').value = parseInt(this.value);">
+	      <listitem label="通常の運営コメント" value="0"/>
+	      <listitem label="/permで運営コメント" value="1"/>
+	      <listitem label="hiddenで運営コメント" value="2"/>
+	      <listitem label="/perm + hiddenで運営コメント" value="3"/>
+	    </listbox>
+	  </vbox>
+	  <checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/>
+	  <html:hr size="1"/>
+
 	  <hbox align="center">
 	    <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
 	    <textbox preference="pref-userdefined-uri" id="userdefined-uri" flex="1"/>
