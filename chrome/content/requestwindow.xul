@@ -208,13 +208,25 @@
 	  </vbox>
 	</vbox>
 
-	<!-- played list(history) tab -->
+	<!-- playlist(history) tab -->
 	<vbox flex="1" class="tabpanel">
-	  <textbox id="played-list-textbox" emptytext="プレイリストスレッドにコピペする用" multiline="true" flex="1" />
+	  <deck id="playlist-deck" flex="1">
+	    <textbox id="played-list-textbox" emptytext="プレイリストスレッドにコピペする用" multiline="true" flex="1" />
+	    <vbox flex="1" style="overflow:auto">
+	      <html:table id="playlist-table" class="requestview">
+	      </html:table>
+	    </vbox>
+	  </deck>
 	  <hbox>
-	    <!--<button label="Save As..." oncommand=""/>-->
-	    <button label="完全消去" tooltiptext="再生済みの動画を再度リクエストを受け付けることができるようになります。テキスト復旧は行えません。" oncommand="NicoLiveHelper.clearPlayedList();"/>
+	    <button label="完全消去" tooltiptext="再生済みの動画を再度リクエストを受け付けることができるようになります。テキスト復旧は行えません。" oncommand="NicoLiveHelper.clearPlayList();"/>
 	    <button label="テキスト復旧" tooltiptext="再生履歴を元にテキストを復旧します(番組名は復元できません)" oncommand="NicoLiveHistory.restorePlaylistText();"/>
+	    <spacer flex="1"/>
+	    <menulist oncommand="$('playlist-deck').selectedIndex=this.value;">
+	      <menupopup>
+		<menuitem label="テキスト表示" value="0"/>
+		<menuitem label="詳細表示" value="1"/>
+	      </menupopup>
+	    </menulist>
 	  </hbox>
 	</vbox>
 

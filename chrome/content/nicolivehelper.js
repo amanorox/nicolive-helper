@@ -891,22 +891,23 @@ var NicoLiveHelper = {
     addPlayList:function(item){
 	// プレイリストに追加する.
 	let elem = $('played-list-textbox');
-
 	if( GetCurrentTime()-this.starttime < 180 ){
+	    // 放送開始して最初の再生らしきときには番組名と番組IDを付加.
 	    if( !this._firstflag ){
 		elem.value += "\n"+this.title+" "+this.request_id+"\n";
 		this._firstflag = true;
 	    }
 	}
-
 	this.playlist.push(item); // 再生済みリストに登録.
 	this.playlist["_"+item.video_id] = true;
 	elem.value += item.video_id+" "+item.title+"\n";
+
+	NicoLiveHistory.addPlayList(item);
 	this.savePlaylist();
     },
 
     // プレイリストをクリアする.
-    clearPlayedList:function(){
+    clearPlayList:function(){
 	let elem = $('played-list-textbox');
 	elem.value = "";
 	this.playlist = new Array();
@@ -915,6 +916,7 @@ var NicoLiveHelper = {
 	    item.isplayed = false;
 	}
 	//NicoLiveRequest.updateStockView(this.stock);
+	clearTable( $('playlist-table') );
 	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
 	this.savePlaylist();
     },
@@ -1868,6 +1870,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
 		    for(i=0;i<NicoLiveHelper.playlist.length;i++){
 			NicoLiveHelper.playlist["_"+NicoLiveHelper.playlist[i]] = true;
+			NicoLiveHistory.addPlayList( NicoLiveHelper.playlist[i] );
 		    }
 		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 		    debugprint('You are a caster');

@@ -1,4 +1,18 @@
 var NicoLiveHistory = {
+    addPlayList:function(item){
+	let table = $('playlist-table');
+	if(!table) return;
+
+	let tr = table.insertRow(table.rows.length);
+	tr.className="table_played";
+	let td = tr.insertCell(tr.cells.length);
+	td.appendChild(document.createTextNode("#"+table.rows.length));
+
+	td = tr.insertCell(tr.cells.length);
+	let vbox = CreateElement('vbox');
+	NicoLiveRequest.addVideoInformation(vbox,item);
+	td.appendChild(vbox);
+    },
 
     addMylist:function(mylist_id,mylist_name){
 	let notes = $('played-list-textbox');
