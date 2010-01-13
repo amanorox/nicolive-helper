@@ -456,9 +456,13 @@ var NicoLiveHelper = {
 			       let expression;
 			       // {=(info.mylist_counter+info.view_counter)/(info.mylist_counter+info.view_counter+info.comment_num)}
 			       if(expression = p.match(/^=(.*)/)){
-				   tmp = eval(expression[1]);
-				   if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
-				   if(tmp==undefined || tmp==null) tmp = "";
+				   try{
+				       tmp = eval(expression[1]);
+				       if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
+				       if(tmp==undefined || tmp==null) tmp = "";
+				   } catch (x) {
+				       tmp = "";
+				   }
 				   return tmp;
 			       }
 			       switch(p){
