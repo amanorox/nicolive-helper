@@ -130,6 +130,11 @@ var NLHPreference = {
 	$('pref-videoinfo4').value = "";
 	$('pref-typeofvideoinfo').value = 0;
 	$('pref-userdefined-uri').value = "";
+
+	$('pref-videoinfo1-command').value = "";	
+	$('pref-videoinfo2-command').value = "";	
+	$('pref-videoinfo3-command').value = "";	
+	$('pref-videoinfo4-command').value = "";	
     },
 
     // 自動応答をデフォルトにする.
