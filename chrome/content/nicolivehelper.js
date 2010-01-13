@@ -458,7 +458,7 @@ var NicoLiveHelper = {
 			       if(expression = p.match(/^=(.*)/)){
 				   tmp = eval(expression[1]);
 				   if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
-				   if(tmp==undefined) tmp = "";
+				   if(tmp==undefined || tmp==null) tmp = "";
 				   return tmp;
 			       }
 			       switch(p){
