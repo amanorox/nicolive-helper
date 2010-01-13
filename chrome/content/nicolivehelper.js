@@ -1414,13 +1414,13 @@ var NicoLiveHelper = {
 		info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1]))*1000;
 		break;
 	    case "view_counter":
-		info.view_counter = elem.textContent;
+		info.view_counter = parseInt(elem.textContent);
 		break;
 	    case "comment_num":
-		info.comment_num = elem.textContent;
+		info.comment_num = parseInt(elem.textContent);
 		break;
 	    case "mylist_counter":
-		info.mylist_counter = elem.textContent;
+		info.mylist_counter = parseInt(elem.textContent);
 		break;
 	    case "tags":
 		// attribute domain=jp のチェックが必要.
@@ -1434,11 +1434,11 @@ var NicoLiveHelper = {
 		break;
 	    case "size_high":
 		info.highbitrate = elem.textContent;
-		info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
+		info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
 		break;
 	    case "size_low":
 		info.lowbitrate = elem.textContent;
-		info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps
+		info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
 		break;
 	    default:
 		break;
