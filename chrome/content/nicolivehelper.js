@@ -453,6 +453,14 @@ var NicoLiveHelper = {
 	return str.replace(/{(.*?)}/g,
 			   function(s,p){
 			       let tmp = s;
+			       let expression;
+			       // {=(info.mylist_counter+info.view_counter)/(info.mylist_counter+info.view_counter+info.comment_num)}
+			       if(expression = p.match(/^=(.*)/)){
+				   tmp = eval(expression[1]);
+				   if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
+				   if(tmp==undefined) tmp = "";
+				   return tmp;
+			       }
 			       switch(p){
 			       case 'id':
 				   if(info.video_id==null) break;
@@ -1438,6 +1446,8 @@ var NicoLiveHelper = {
 	}
 	// video_id がないときはエラーとしておこう、念のため.
 	if( !info.video_id ) return null;
+
+	info.pname = this.getPName(info);
 
 	info.mylistcomment = NicoLiveMylist.mylistcomment["_"+info.video_id];
 	return info;
