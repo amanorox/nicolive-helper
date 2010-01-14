@@ -35,6 +35,15 @@ pref("extensions.nicolivehelper.msg-requested","その動画は既にリクエ�
 pref("extensions.nicolivehelper.msg-accept","リクエストを受け付けました");
 pref("extensions.nicolivehelper.msg-requestok","");
 pref("extensions.nicolivehelper.msg-requestng","");
+pref("extensions.nicolivehelper.msg-lessmylists","リクエストエラー:マイリスト数が少ないです");
+pref("extensions.nicolivehelper.msg-greatermylists","リクエストエラー:マイリスト数が多いです");
+pref("extensions.nicolivehelper.msg-lessviews","リクエストエラー:再生数が少ないです");
+pref("extensions.nicolivehelper.msg-greaterviews","リクエストエラー:再生数が多いです");
+pref("extensions.nicolivehelper.msg-longertime","リクエストエラー:再生時間が長いです");
+pref("extensions.nicolivehelper.msg-outofdaterange","リクエストエラー:投稿日時が範囲外です");
+pref("extensions.nicolivehelper.msg-requiredkeyword","リクエストエラー:タグにキーワードが含まれていません<br>{=info.restrict.requiredkeyword}");
+pref("extensions.nicolivehelper.msg-forbiddenkeyword","リクエストエラー:タグに「{=info.restrict.forbiddenkeyword}」が含まれています");
+pref("extensions.nicolivehelper.msg-limitnumberofrequests","リクエストは1人{=info.restrict.numberofrequests.toString()}件までです");
 pref("extensions.nicolivehelper.savecomment",false);
 pref("extensions.nicolivehelper.commentlogDir","");
 pref("extensions.nicolivehelper.184comment",true);

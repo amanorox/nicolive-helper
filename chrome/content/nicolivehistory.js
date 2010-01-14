@@ -13,6 +13,14 @@ var NicoLiveHistory = {
 	vbox.setAttribute('context','popup-playlist');
 
 	NicoLiveRequest.addVideoInformation(vbox,item);
+
+	let hbox = CreateElement('hbox');
+	let button = CreateElement('button');
+	button.setAttribute("label",'リクエストに追加');
+	button.className = 'commandbtn';
+	button.addEventListener("command",function(){ NicoLiveHelper.addRequestQueue(item); },false);
+	hbox.appendChild(button);
+	vbox.appendChild(hbox);
 	td.appendChild(vbox);
     },
 

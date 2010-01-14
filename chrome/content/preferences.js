@@ -147,6 +147,16 @@ var NLHPreference = {
 	$('pref-msg-accept').value    = "リクエストを受け付けました";
 	$('pref-msg-requestok').value = "";
 	$('pref-msg-requestng').value = "";
+
+	$('pref-msg-lessmylists').value = "リクエストエラー:マイリスト数が少ないです";
+	$('pref-msg-greatermylists').value = "リクエストエラー:マイリスト数が多いです";
+	$('pref-msg-lessviews').value = "リクエストエラー:再生数が少ないです";
+	$('pref-msg-greaterviews').value = "リクエストエラー:再生数が多いです";
+	$('pref-msg-longertime').value = "リクエストエラー:再生時間が長いです";
+	$('pref-msg-outofdaterange').value = "リクエストエラー:投稿日時が範囲外です";
+	$('pref-msg-requiredkeyword').value = "リクエストエラー:タグにキーワードが含まれていません<br>{=info.restrict.requiredkeyword}";
+	$('pref-msg-forbiddenkeyword').value = "リクエストエラー:タグに「{=info.restrict.forbiddenkeyword}」が含まれています";
+	$('pref-msg-limitnumberofrequests').value = "リクエストは1人{=info.restrict.numberofrequests.toString()}件までです";
     },
 
     // コメントログの保存先を選択.

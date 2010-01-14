@@ -50,7 +50,7 @@ var NicoLiveHelper = {
     checkAcceptRequest: function(xml, comment_no){
 	if(xml.getElementsByTagName('error').length){
 	    // 動画がない.
-	    return {code:-1,msg:NicoLivePreference.msg_deleted,movieinfo:{}};
+	    return {code:-1,msg:NicoLivePreference.msg.deleted,movieinfo:{}};
 	}
 	let info = this.xmlToMovieInfo(xml);
 	if( !info ){
@@ -64,29 +64,28 @@ var NicoLiveHelper = {
 		this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
 		    // アンカー範囲内なので無問題.
 	    }else{
-		return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
+		return {code:-2,msg:NicoLivePreference.msg.notaccept,movieinfo:info};
 	    }
 	}
 
 	if(NicoLivePreference.limitnewmovie){
 	    // 7日内に投稿された動画.
 	    if( GetCurrentTime()-info.first_retrieve < this.secofweek )
-		return {code:-3,msg:NicoLivePreference.msg_newmovie,movieinfo:info};
+		return {code:-3,msg:NicoLivePreference.msg.newmovie,movieinfo:info};
 	}
 
 	// 再生済み.
 	if(this.isPlayedMusic(info.video_id))
-	    return {code:-4,msg:NicoLivePreference.msg_played,movieinfo:info};
+	    return {code:-4,msg:NicoLivePreference.msg.played,movieinfo:info};
 
 	// リクエストキューに既にある動画.
 	if(this.isRequestedMusic(info.video_id))
-	    return {code:-5,msg:NicoLivePreference.msg_requested,movieinfo:info};
+	    return {code:-5,msg:NicoLivePreference.msg.requested,movieinfo:info};
 
 	// リクエスト制限のチェック.
 	if(NicoLivePreference.restrict.dorestrict){
 	    let msg = this.checkMovieRestriction(info);
 	    if( msg ){
-		debugprint(info.video_id+'/'+info.title+'/'+msg);
 		return {code:-6,"msg":msg,movieinfo:info};
 	    }
 	}
@@ -122,14 +121,14 @@ var NicoLiveHelper = {
 	    }
 	}
 
-	let success_msg = NicoLivePreference.msg_accept;
+	let success_msg = NicoLivePreference.msg.accept;
 
 	// アンカー受付の個数チェック.
 	if( !this.allowrequest ){
 	    if( this.anchor.start && this.anchor.end && this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
 		this.anchor.counter++;
 		if( this.anchor.num && this.anchor.num < this.anchor.counter ){
-		    return {code:-2,msg:NicoLivePreference.msg_notaccept,movieinfo:info};
+		    return {code:-2,msg:NicoLivePreference.msg.notaccept,movieinfo:info};
 		}
 		success_msg = "";
 	    }
@@ -143,32 +142,31 @@ var NicoLiveHelper = {
     // リク制限のチェック.
     checkMovieRestriction:function(videoinfo){
 	let restrict = NicoLivePreference.restrict;
-	let str = "リクエストエラー:";
 
 	if(restrict.mylist_from>0){
 	    if( videoinfo.mylist_counter<restrict.mylist_from ){
-		return str + "マイリスト数が少ないです";
+		return NicoLivePreference.msg.lessmylists;
 	    }
 	}
 	if(restrict.mylist_to>0){
 	    if( videoinfo.mylist_counter>restrict.mylist_to ){
-		return str + "マイリスト数が多いです";
+		return NicoLivePreference.msg.greatermylists;
 	    }
 	}
 	if(restrict.view_from>0){
 	    if( videoinfo.view_counter<restrict.view_from ){
-		return str + "再生数が少ないです";
+		return NicoLivePreference.msg.lessviews;
 	    }
 	}
 	if(restrict.view_to>0){
 	    if( videoinfo.view_counter>restrict.view_to ){
-		return str + "再生数が多いです";
+		return NicoLivePreference.msg.greaterviews;
 	    }
 	}
 	if(restrict.videolength>0){
 	    // 指定秒数以下かどうか.
 	    if( videoinfo.length_ms/1000 > restrict.videolength ){
-		return str + "動画時間が長いです";
+		return NicoLivePreference.msg.longertime;
 	    }
 	}
 
@@ -183,7 +181,7 @@ var NicoLiveHelper = {
 	    if( date_from <= posted && posted <= date_to ){
 		// OK
 	    }else{
-		return str + "投稿日時が範囲外です";
+		return NicoLivePreference.msg.outofdaterange;
 	    }
 	}
 
@@ -197,7 +195,10 @@ var NicoLiveHelper = {
 		    flg = true;
 		}
 	    }
-	    if( !flg ) return str + "タグにキーワードが含まれていません<br>" + restrict.tag_include.join(',');
+	    if( !flg ){
+		restrict.requiredkeyword = restrict.tag_include.join(',');
+		return NicoLivePreference.msg.requiredkeyword;
+	    }
 	}
 
 	// タグにキーワードが含まれていなければOK
@@ -212,7 +213,10 @@ var NicoLiveHelper = {
 		    break;
 		}
 	    }
-	    if( !flg ) return str +"タグに「"+tag+"」が含まれています";
+	    if( !flg ){
+		restrict.forbiddenkeyword = tag;
+		return NicoLivePreference.msg.forbiddenkeyword;
+	    }
 	}
 	return null;
     },
@@ -448,8 +452,9 @@ var NicoLiveHelper = {
     },
 
     // 文字列のマクロ展開を行う.
-    replaceMacros:function(str){
-	let info = this.musicinfo;
+    // str : 置換元も文字列
+    // info : 動画情報
+    replaceMacros:function(str,info){
 	return str.replace(/{(.*?)}/g,
 			   function(s,p){
 			       let tmp = s;
@@ -1011,7 +1016,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	comment = this.replaceMacros(comment);
+	comment = this.replaceMacros(comment,this.musicinfo);
 
 	let anchor = comment.match(/>>(\d+)-(\d+)?(@(\d+))?/);
 	if(anchor){
@@ -1198,7 +1203,7 @@ var NicoLiveHelper = {
     // リクを受け付ける.
     setAcceptRequest:function(flg){
 	this.allowrequest = flg;
-	let str = flg?NicoLivePreference.msg_requestok:NicoLivePreference.msg_requestng;
+	let str = flg ? NicoLivePreference.msg.requestok : NicoLivePreference.msg.requestng;
 	if(str){
 	    this.postCasterComment(str,"");
 	}
@@ -1492,8 +1497,81 @@ var NicoLiveHelper = {
     },
 
     // 動画情報を取得してリクエストに追加する.
-    addRequest: function(sm,cno,uid){
-	this.getthumbinfo(sm,cno,uid);
+    addRequest: function(sm,cno,userid){
+	/*
+	 * sm動画ID,cnoコメ番
+	 * cnoが0のときは、リクエストじゃないとき.
+	 * useridが"0"のときは自張り. 
+	 */
+	if(sm.length<3) return;
+
+	var req = new XMLHttpRequest();
+	if( !req ) return;
+
+	req.comment_no = cno;
+	req.video_id = sm;
+	req.user_id  = userid;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		// リクのあった動画をチェック.
+		let ans = NicoLiveHelper.checkAcceptRequest( req.responseXML, req.comment_no );
+		ans.movieinfo.iscasterselection = req.comment_no==0?true:false; // コメ番0はリクエストではない.
+		ans.movieinfo.selfrequest = req.user_id=="0"?true:false;        // 自貼りのユーザーIDは0.
+
+		// リクエスト制限数をチェック.
+		let nlim = NicoLivePreference.nreq_per_ppl;
+		if(!NicoLiveHelper.request_per_ppl[req.user_id]){
+		    NicoLiveHelper.request_per_ppl[req.user_id] = 0;
+		}
+		if( ans.code==0 && req.user_id!="0"){
+		    // 自貼りはカウントしなくてOK.
+		    NicoLiveHelper.request_per_ppl[req.user_id]++;
+		}
+		let n = NicoLiveHelper.request_per_ppl[req.user_id];
+		if(ans.code==0 && n>nlim && nlim>0){
+		    NicoLiveHelper.request_per_ppl[req.user_id]--;
+		    ans.msg = NicoLivePreference.msg.limitnumberofrequests;
+		    ans.code = -1;
+		}
+
+		// 動画情報にはコメ番とユーザーIDを含む.
+		ans.movieinfo.cno = req.comment_no;
+		ans.movieinfo.user_id = req.user_id;
+
+		switch(ans.code){
+		case 0:
+		    ans.movieinfo.error = false;
+		    NicoLiveHelper.addRequestQueue(ans.movieinfo);
+		    if(NicoLiveHelper.iscaster &&
+		       NicoLiveHelper.isautoplay &&
+		       !NicoLiveHelper.inplay &&
+		       NicoLiveHelper.requestqueue.length==1){
+			// 自動再生かつ、何も再生していないかつ、キューに1つしかないときは即再生.
+			//NicoLiveHelper.playNext();
+		    }
+		    break;
+		default:
+		    ans.movieinfo.error = true;
+		    NicoLiveHelper.addErrorRequestList(ans.movieinfo);
+		    break;
+		}
+
+		if(NicoLivePreference.isautoreply && ans.msg){
+		    // 返答メッセージが指定してあれば主コメする.
+		    let msg = ">>"+req.comment_no+" " + ans.msg;
+		    let info = ans.movieinfo;
+		    info.restrict = NicoLivePreference.restrict;
+		    msg = NicoLiveHelper.replaceMacros(msg, info);
+		    if( req.comment_no!=0 ) NicoLiveHelper.postCasterComment(msg,"");
+		    debugprint(msg);
+		}
+
+		NicoLiveHelper.updateRemainRequestsAndStocks();
+	    }
+	};
+	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+sm;
+	req.open('GET', url );
+	req.send("");
     },
 
     // 再生済みかどうか.
@@ -1540,76 +1618,7 @@ var NicoLiveHelper = {
 
     // 動画情報を取得してリクエストに追加する.
     getthumbinfo:function(sm,cno,userid){
-	/*
-	 * sm動画ID,cnoコメ番
-	 * cnoが0のときは、リクエストじゃないとき.
-	 * useridが"0"のときは自張り. 
-	 */
-	if(sm.length<3) return;
-
-	var req = new XMLHttpRequest();
-	if( !req ) return;
-
-	req.comment_no = cno;
-	req.video_id = sm;
-	req.user_id  = userid;
-	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		// リクのあった動画をチェック.
-		let ans = NicoLiveHelper.checkAcceptRequest( req.responseXML, req.comment_no );
-		ans.movieinfo.iscasterselection = req.comment_no==0?true:false; // コメ番0は主セレ.
-		ans.movieinfo.selfrequest = req.user_id=="0"?true:false;        // 自貼りのユーザーIDは0.
-
-		// リクエスト制限数をチェック.
-		let nlim = NicoLivePreference.nreq_per_ppl;
-		if(!NicoLiveHelper.request_per_ppl[req.user_id]){
-		    NicoLiveHelper.request_per_ppl[req.user_id] = 0;
-		}
-		if( ans.code==0 && req.user_id!="0"){
-		    // 自貼りはカウントしなくてOK.
-		    NicoLiveHelper.request_per_ppl[req.user_id]++;
-		}
-		let n = NicoLiveHelper.request_per_ppl[req.user_id];
-		if(ans.code==0 && n>nlim && nlim>0){
-		    NicoLiveHelper.request_per_ppl[req.user_id]--;
-		    ans.msg = "リクエストは1人"+NicoLivePreference.nreq_per_ppl+"件までです";
-		    ans.code = -1;
-		}
-
-		if(NicoLivePreference.isautoreply && ans.msg && req.comment_no!=0){
-		    // 返答メッセージが指定してあれば.
-		    let msg = ">>"+req.comment_no+" " + ans.msg;
-		    NicoLiveHelper.postCasterComment(msg,"");
-		    debugprint(msg);
-		}
-
-		// 動画情報にはコメ番とユーザーIDを含む.
-		ans.movieinfo.cno = req.comment_no;
-		ans.movieinfo.user_id = req.user_id;
-
-		switch(ans.code){
-		case 0:
-		    ans.movieinfo.error = false;
-		    NicoLiveHelper.addRequestQueue(ans.movieinfo);
-		    if(NicoLiveHelper.iscaster &&
-		       NicoLiveHelper.isautoplay &&
-		       !NicoLiveHelper.inplay &&
-		       NicoLiveHelper.requestqueue.length==1){
-			// 自動再生かつ、何も再生していないかつ、キューに1つしかないときは即再生.
-			//NicoLiveHelper.playNext();
-		    }
-		    break;
-		default:
-		    ans.movieinfo.error = true;
-		    NicoLiveHelper.addErrorRequestList(ans.movieinfo);
-		    break;
-		}
-		NicoLiveHelper.updateRemainRequestsAndStocks();
-	    }
-	};
-	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+sm;
-	req.open('GET', url );
-	req.send("");
+	this.addRequest(sm,cno,userid);
     },
 
     // コメントサーバからやってくる行を処理する.
@@ -2206,6 +2215,7 @@ var NicoLiveHelper = {
 	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
 	    for(let i=0;i<NicoLiveHelper.playlist.length;i++){
 		NicoLiveHelper.playlist["_"+NicoLiveHelper.playlist[i]] = true;
+		NicoLiveHistory.addPlayList( NicoLiveHelper.playlist[i] );
 	    }
 	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}

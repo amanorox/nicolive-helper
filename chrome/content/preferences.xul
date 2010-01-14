@@ -172,55 +172,119 @@
       <preference id="pref-msg-accept" name="extensions.nicolivehelper.msg-accept" type="unichar"/>
       <preference id="pref-msg-requestok" name="extensions.nicolivehelper.msg-requestok" type="unichar"/>
       <preference id="pref-msg-requestng" name="extensions.nicolivehelper.msg-requestng" type="unichar"/>
+
+      <preference id="pref-msg-lessmylists" name="extensions.nicolivehelper.msg-lessmylists" type="unichar"/>
+      <preference id="pref-msg-greatermylists" name="extensions.nicolivehelper.msg-greatermylists" type="unichar"/>
+      <preference id="pref-msg-lessviews" name="extensions.nicolivehelper.msg-lessviews" type="unichar"/>
+      <preference id="pref-msg-greaterviews" name="extensions.nicolivehelper.msg-greaterviews" type="unichar"/>
+      <preference id="pref-msg-longertime" name="extensions.nicolivehelper.msg-longertime" type="unichar"/>
+      <preference id="pref-msg-outofdaterange" name="extensions.nicolivehelper.msg-outofdaterange" type="unichar"/>
+      <preference id="pref-msg-requiredkeyword" name="extensions.nicolivehelper.msg-requiredkeyword" type="unichar"/>
+      <preference id="pref-msg-forbiddenkeyword" name="extensions.nicolivehelper.msg-forbiddenkeyword" type="unichar"/>
+      <preference id="pref-msg-limitnumberofrequests" name="extensions.nicolivehelper.msg-limitnumberofrequests" type="unichar"/>
+
       <preference id="pref-continuousCommentDir" name="extensions.nicolivehelper.continuous-commentDir" type="file"/>
     </preferences>
-    <groupbox>
-      <caption label="リクエストへの応答コメント"/>
-      <grid>
-	<columns>
-	  <column/>
-	  <column flex="1" />
-	</columns>
-	<rows>
-	  <row>
-	    <hbox align="center"><label control="msg-accept" value="リクエストを受け付けた時"/></hbox>
-	    <textbox preference="pref-msg-accept" id="msg-accept" flex="1"/>
-	  </row>
-	  <row>
-	    <hbox align="center"><label control="msg-notaccept" value="リクエストを受け付けていない時"/></hbox>
-	    <textbox preference="pref-msg-notaccept" id="msg-notaccept" flex="1"/>
-	  </row>
-	  <row>
-	    <hbox align="center"><label control="msg-deleted" value="削除、存在しない動画の時"/></hbox>
-	    <textbox preference="pref-msg-deleted" id="msg-deleted" flex="1"/>
-	  </row>
-	  <row>
-	    <hbox align="center"><label control="msg-newmovie" value="新着の動画の時"/></hbox>
-	    <textbox preference="pref-msg-newmovie" id="msg-newmovie" flex="1"/>
-	  </row>
-	  <row>
-	    <hbox align="center"><label control="msg-played" value="再生済みの動画の時"/></hbox>
-	    <textbox preference="pref-msg-played" id="msg-played" flex="1"/>
-	  </row>
-	  <row>
-	    <hbox align="center"><label control="msg-requested" value="リクエスト受付済みの動画の時"/></hbox>
-	    <textbox preference="pref-msg-requested" id="msg-requested" flex="1"/>
-	  </row>
-	  <row>
-	    <hbox align="center"><label control="msg-requestok" value="リクエスト許可に切り替えた時"/></hbox>
-	    <textbox preference="pref-msg-requestok" id="msg-requestok" flex="1"/>
-	  </row>
-	  <row>
-	    <hbox align="center"><label control="msg-requestng" value="リクエスト不可に切り替えた時"/></hbox>
-	    <textbox preference="pref-msg-requestng" id="msg-requestng" flex="1"/>
-	  </row>
-	</rows>
-      </grid>
-      <hbox>
-	<button label="デフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
-      </hbox>
-    </groupbox>
-    
+
+    <tabbox flex="1">
+      <tabs>
+	<tab label="リクエストの応答"></tab>
+	<tab label="リクエスト制限の応答"></tab>
+      </tabs>
+      <tabpanels flex="1">
+	<tabpanel orient="vertical">
+	  <grid>
+	    <columns>
+	      <column/>
+	      <column flex="1" />
+	    </columns>
+	    <rows>
+	      <row>
+		<hbox align="center"><label control="msg-accept" value="リクエストを受け付けた時"/></hbox>
+		<textbox preference="pref-msg-accept" id="msg-accept" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-notaccept" value="リクエストを受け付けていない時"/></hbox>
+		<textbox preference="pref-msg-notaccept" id="msg-notaccept" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-deleted" value="削除、存在しない動画の時"/></hbox>
+		<textbox preference="pref-msg-deleted" id="msg-deleted" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-newmovie" value="新着の動画の時"/></hbox>
+		<textbox preference="pref-msg-newmovie" id="msg-newmovie" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-played" value="再生済みの動画の時"/></hbox>
+		<textbox preference="pref-msg-played" id="msg-played" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-requested" value="リクエスト受付済みの動画の時"/></hbox>
+		<textbox preference="pref-msg-requested" id="msg-requested" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-requestok" value="リクエスト許可に切り替えた時"/></hbox>
+		<textbox preference="pref-msg-requestok" id="msg-requestok" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-requestng" value="リクエスト不可に切り替えた時"/></hbox>
+		<textbox preference="pref-msg-requestng" id="msg-requestng" flex="1"/>
+	      </row>
+	    </rows>
+	  </grid>
+	</tabpanel>
+	<tabpanel orient="vertical">
+	  <grid>
+	    <columns>
+	      <column/>
+	      <column flex="1" />
+	    </columns>
+	    <rows>
+	      <row>
+		<hbox align="center"><label control="msg-limitnumberofrequests" value="リクエスト受付数上限を越えた時"/></hbox>
+		<textbox preference="pref-msg-limitnumberofrequests" id="msg-limitnumberofrequests" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-lessmylists" value="マイリスト数が少ない時"/></hbox>
+		<textbox preference="pref-msg-lessmylists" id="msg-lessmylists" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-greatermylists" value="マイリスト数が多い時"/></hbox>
+		<textbox preference="pref-msg-greatermylists" id="msg-greatermylists" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-lessviews" value="再生数が少ない時"/></hbox>
+		<textbox preference="pref-msg-lessviews" id="msg-lessviews" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-greaterviews" value="再生数が多い時"/></hbox>
+		<textbox preference="pref-msg-greaterviews" id="msg-greaterviews" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-longertime" value="再生時間が長い時"/></hbox>
+		<textbox preference="pref-msg-longertime" id="msg-longertime" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-outofdaterange" value="投稿日時が範囲外の時"/></hbox>
+		<textbox preference="pref-msg-outofdaterange" id="msg-outofdaterange" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-requiredkeyword" value="タグが指定キーワードを含まない時"/></hbox>
+		<textbox preference="pref-msg-requiredkeyword" id="msg-requiredkeyword" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-forbiddenkeyword" value="タグが指定キーワードを含む時"/></hbox>
+		<textbox preference="pref-msg-forbiddenkeyword" id="msg-requestngforbiddenkeyword" flex="1"/>
+	      </row>
+	    </rows>
+	  </grid>
+	</tabpanel>
+      </tabpanels>
+    </tabbox>
+    <hbox>
+      <button label="デフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
+    </hbox>
     <hbox align="center">
       <label control="continuouscomment" value="連続コメント用テキストファイル保存先:"/>
       <filefield id="continuouscomment" flex="1"/>
@@ -228,7 +292,7 @@
     </hbox>
   </prefpane>
     
-  <prefpane id="nicolivehelper-prefpane-request" label="リク制限" image="chrome://nicolivehelper/content/data/icon3.png" onpaneload="NLHPreference.updateRestrictPane();">
+  <prefpane id="nicolivehelper-prefpane-request" label="リクエスト制限" image="chrome://nicolivehelper/content/data/icon3.png" onpaneload="NLHPreference.updateRestrictPane();">
     <preferences>
       <preference id="pref-restrict-request"   name="extensions.nicolivehelper.request.restrict" type="bool"/>
       <preference id="pref-restrict-date-from" name="extensions.nicolivehelper.request.date-from" type="string"/>

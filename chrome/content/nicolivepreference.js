@@ -12,15 +12,25 @@ var NicoLivePreference = {
 	    this.videoinfo[i].comment = branch.getUnicharPref("videoinfo"+(i+1));
 	    this.videoinfo[i].command = branch.getUnicharPref("videoinfo"+(i+1)+"-command");
 	}
+	this.msg = new Object();
 
-	this.msg_deleted   = branch.getUnicharPref("msg-deleted");
-	this.msg_notaccept = branch.getUnicharPref("msg-notaccept");
-	this.msg_newmovie  = branch.getUnicharPref("msg-newmovie");
-	this.msg_played    = branch.getUnicharPref("msg-played");
-	this.msg_requested = branch.getUnicharPref("msg-requested");
-	this.msg_accept    = branch.getUnicharPref("msg-accept");
-	this.msg_requestok = branch.getUnicharPref("msg-requestok");
-	this.msg_requestng = branch.getUnicharPref("msg-requestng");
+	this.msg.deleted   = branch.getUnicharPref("msg-deleted");
+	this.msg.notaccept = branch.getUnicharPref("msg-notaccept");
+	this.msg.newmovie  = branch.getUnicharPref("msg-newmovie");
+	this.msg.played    = branch.getUnicharPref("msg-played");
+	this.msg.requested = branch.getUnicharPref("msg-requested");
+	this.msg.accept    = branch.getUnicharPref("msg-accept");
+	this.msg.requestok = branch.getUnicharPref("msg-requestok");
+	this.msg.requestng = branch.getUnicharPref("msg-requestng");
+	this.msg.lessmylists = branch.getUnicharPref("msg-lessmylists");
+	this.msg.greatermylists = branch.getUnicharPref("msg-greatermylists");
+	this.msg.lessviews = branch.getUnicharPref("msg-lessviews");
+	this.msg.greaterviews = branch.getUnicharPref("msg-greaterviews");
+	this.msg.longertime = branch.getUnicharPref("msg-longertime");
+	this.msg.outofdaterange = branch.getUnicharPref("msg-outofdaterange");
+	this.msg.requiredkeyword = branch.getUnicharPref("msg-requiredkeyword");
+	this.msg.forbiddenkeyword = branch.getUnicharPref("msg-forbiddenkeyword");
+	this.msg.limitnumberofrequests = branch.getUnicharPref("msg-limitnumberofrequests");
 
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 
@@ -35,6 +45,7 @@ var NicoLivePreference = {
 	SetWindowTopMost(window,this.topmost);
 
 	let restrict = {};
+	restrict.numberofrequests = this.nreq_per_ppl;
 	restrict.dorestrict = branch.getBoolPref("request.restrict");
 	restrict.date_from  = branch.getCharPref("request.date-from");
 	restrict.date_to    = branch.getCharPref("request.date-to");
