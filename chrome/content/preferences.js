@@ -147,6 +147,8 @@ var NLHPreference = {
 	$('pref-msg-accept').value    = "リクエストを受け付けました";
 	$('pref-msg-requestok').value = "";
 	$('pref-msg-requestng').value = "";
+	$('pref-msg-requestok-command').value = "";
+	$('pref-msg-requestng-command').value = "";
 
 	$('pref-msg-lessmylists').value = "リクエストエラー:マイリスト数が少ないです";
 	$('pref-msg-greatermylists').value = "リクエストエラー:マイリスト数が多いです";

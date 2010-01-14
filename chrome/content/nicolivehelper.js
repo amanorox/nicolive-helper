@@ -1201,11 +1201,13 @@ var NicoLiveHelper = {
     },
 
     // リクを受け付ける.
-    setAcceptRequest:function(flg){
+    setAllowRequest:function(flg){
 	this.allowrequest = flg;
 	let str = flg ? NicoLivePreference.msg.requestok : NicoLivePreference.msg.requestng;
+	let command = flg ? NicoLivePreference.msg.requestok_command : NicoLivePreference.msg.requestng_command;
+	if(!command) command = "";
 	if(str){
-	    this.postCasterComment(str,"");
+	    this.postCasterComment(str,command);
 	}
     },
 

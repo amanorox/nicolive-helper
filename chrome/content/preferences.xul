@@ -172,6 +172,8 @@
       <preference id="pref-msg-accept" name="extensions.nicolivehelper.msg-accept" type="unichar"/>
       <preference id="pref-msg-requestok" name="extensions.nicolivehelper.msg-requestok" type="unichar"/>
       <preference id="pref-msg-requestng" name="extensions.nicolivehelper.msg-requestng" type="unichar"/>
+      <preference id="pref-msg-requestok-command" name="extensions.nicolivehelper.msg-requestok-command" type="unichar"/>
+      <preference id="pref-msg-requestng-command" name="extensions.nicolivehelper.msg-requestng-command" type="unichar"/>
 
       <preference id="pref-msg-lessmylists" name="extensions.nicolivehelper.msg-lessmylists" type="unichar"/>
       <preference id="pref-msg-greatermylists" name="extensions.nicolivehelper.msg-greatermylists" type="unichar"/>
@@ -282,11 +284,17 @@
 	    <rows>
 	      <row>
 		<hbox align="center"><label control="msg-requestok" value="リクエスト許可に切り替えた時"/></hbox>
-		<textbox preference="pref-msg-requestok" id="msg-requestok" flex="1"/>
+		<hbox>
+		  <textbox preference="pref-msg-requestok-command" size="5" emptytext="コマンド"/>
+		  <textbox preference="pref-msg-requestok" id="msg-requestok" flex="1" emptytext="運営コメントを入力してください"/>
+		</hbox>
 	      </row>
 	      <row>
 		<hbox align="center"><label control="msg-requestng" value="リクエスト不可に切り替えた時"/></hbox>
-		<textbox preference="pref-msg-requestng" id="msg-requestng" flex="1"/>
+		<hbox>
+		  <textbox preference="pref-msg-requestng-command" size="5" emptytext="コマンド"/>
+		  <textbox preference="pref-msg-requestng" id="msg-requestng" flex="1" emptytext="運営コメントを入力してください"/>
+		</hbox>
 	      </row>
 	    </rows>
 	  </grid>
@@ -294,7 +302,7 @@
       </tabpanels>
     </tabbox>
     <hbox>
-      <button label="デフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
+      <button label="全てデフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
     </hbox>
     <hbox align="center">
       <label control="continuouscomment" value="連続コメント用テキストファイル保存先:"/>

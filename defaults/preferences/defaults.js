@@ -34,7 +34,9 @@ pref("extensions.nicolivehelper.msg-played","その動画は既に再生され�
 pref("extensions.nicolivehelper.msg-requested","その動画は既にリクエストされています");
 pref("extensions.nicolivehelper.msg-accept","リクエストを受け付けました");
 pref("extensions.nicolivehelper.msg-requestok","");
+pref("extensions.nicolivehelper.msg-requestok-command","");
 pref("extensions.nicolivehelper.msg-requestng","");
+pref("extensions.nicolivehelper.msg-requestng-command","");
 pref("extensions.nicolivehelper.msg-lessmylists","リクエストエラー:マイリスト数が少ないです");
 pref("extensions.nicolivehelper.msg-greatermylists","リクエストエラー:マイリスト数が多いです");
 pref("extensions.nicolivehelper.msg-lessviews","リクエストエラー:再生数が少ないです");

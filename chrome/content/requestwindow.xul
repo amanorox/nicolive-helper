@@ -81,8 +81,8 @@
     </toolbarbutton>
     <toolbarbutton label="リクエスト許可" type="menu" id="toolbar-allowrequest">
       <menupopup>
-	<menuitem label="リクエスト許可" oncommand="NicoLiveHelper.setAcceptRequest(true); setLabel('toolbar-allowrequest',this.label);" />
-	<menuitem label="リクエスト不可" oncommand="NicoLiveHelper.setAcceptRequest(false); setLabel('toolbar-allowrequest',this.label);" />
+	<menuitem label="リクエスト許可" oncommand="NicoLiveHelper.setAllowRequest(true); setLabel('toolbar-allowrequest',this.label);" />
+	<menuitem label="リクエスト不可" oncommand="NicoLiveHelper.setAllowRequest(false); setLabel('toolbar-allowrequest',this.label);" />
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="次曲" tooltiptext="次の動画を再生します" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();">
