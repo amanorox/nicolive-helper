@@ -91,6 +91,29 @@ var NicoLiveDatabase = {
 	req.send("");
     },
 
+    updateOneVideo:function(id){
+	// 動画IDで渡す.
+	if(id.length<3) return;
+
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
+		if( music ){
+		    let nomessage = true;  // n件更新を表示しない.
+		    NicoLiveDatabase.updateRow(music,nomessage);
+		}else{
+		    debugprint(id+'は削除されています');
+		}
+	    }
+	};
+	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+id;
+	req.open('GET', url );
+	req.send("");
+    },
+
+
     addDatabase:function(music){
 	// xmlToMovieInfoが作る構造でmusicを渡す.
 	let st;
@@ -130,7 +153,7 @@ var NicoLiveDatabase = {
 	st.executeAsync(callback);
     },
 
-    updateRow:function(music){
+    updateRow:function(music,nomessage){
 	let st = this.dbconnect.createStatement('update nicovideo set title=?1,description=?2,thumbnail_url=?3,first_retrieve=?4,length=?5,view_counter=?6,comment_num=?7,mylist_counter=?8,tags=?9,update_date=?10 where video_id=?11');
 	st.bindUTF8StringParameter(0,music.title);
 	st.bindUTF8StringParameter(1,music.description);
@@ -147,6 +170,7 @@ var NicoLiveDatabase = {
 	let callback = {
 	    handleCompletion:function(reason){
 		NicoLiveDatabase.updatecounter++;
+		if(nomessage) return;
 		$('db-label').value = "追加:"+NicoLiveDatabase.addcounter +"件/"
 		    + "更新:"+NicoLiveDatabase.updatecounter + "件";
 	    },
@@ -310,6 +334,7 @@ var NicoLiveDatabase = {
 	    handleCompletion:function(reason){
 		debugprint('search complete');
 		$('db-label').value = NicoLiveDatabase._searchresult.length + '件ありました';
+		NicoLiveDatabase.updateDatabase( NicoLiveDatabase._searchresult );
 	    },
 	    handleError:function(error){
 		debugprint('search error/'+error.result+'/'+error.message);
@@ -327,6 +352,35 @@ var NicoLiveDatabase = {
 	clearTable($('database-table'));
 	st.executeAsync(callback);
     },
+
+    // データベースを更新する.
+    // movies : 現在の動画情報の配列.
+    updateDatabase:function(movies){
+	clearInterval(this._updatehandle);
+	this._updatehandle = setInterval(
+	    function(){
+		NicoLiveDatabase.delayedUpdate(movies);
+	    },
+	    10*1000 );
+    },
+
+    delayedUpdate:function(movies){
+	let now = GetCurrentTime();
+	let cnt=0;
+	debugprint('updating db...'+movies.length);
+	for(let i=0,item;item=movies[i];i++){
+	    if (cnt<20 && !item.done && (now-item.update_date) > 60*60*24*7 ){
+		cnt++;
+		item.done = true;
+		this.updateOneVideo(item.video_id);
+	    }
+	}
+	if(cnt==0){
+	    clearInterval(this._updatehandle);
+	    debugprint('updating done.');
+	}
+    },
+
 
     // 検索結果を全部ストックに追加する.
     addStockAll:function(){
@@ -402,6 +456,7 @@ var NicoLiveDatabase = {
 	let tags            = htmlspecialchars(row.getResultByName('tags'));
 	info.tags           = tags.split(/,/);
 	//info.pname          = row.getResultByName('pname');
+	info.update_date = row.getResultByName('update_date');
 	return info;
     },
 

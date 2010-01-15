@@ -180,7 +180,7 @@ function GetUTF8ConverterOutputStream(os)
 }
 
 
-// 現在時刻を秒で返す(C言語でいうところのtime()で).
+// 現在時刻を秒で返す(UNIX時間).
 function GetCurrentTime(){
     var d = new Date();
     return Math.floor(d.getTime()/1000);
