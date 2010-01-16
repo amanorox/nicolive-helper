@@ -62,3 +62,4 @@ pref("extensions.nicolivehelper.request.tag-exclude","");
 pref("extensions.nicolivehelper.notice.area",true);
 pref("extensions.nicolivehelper.notice.dialog",false);
 pref("extensions.nicolivehelper.notice.comment",false);
+pref("extensions.nicolivehelper.startup-comment","");

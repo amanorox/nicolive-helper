@@ -46,6 +46,8 @@ var NicoLivePreference = {
 	this.topmost = branch.getBoolPref("z-order");
 	SetWindowTopMost(window,this.topmost);
 
+	this.startup_comment = branch.getUnicharPref("startup-comment");
+
 	let restrict = {};
 	restrict.numberofrequests = this.nreq_per_ppl;
 	restrict.dorestrict = branch.getBoolPref("request.restrict");

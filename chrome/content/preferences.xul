@@ -414,16 +414,24 @@
       <preference id="pref-notice-area"    name="extensions.nicolivehelper.notice.area" type="bool"/>
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
+
+      <preference id="pref-startup-comment" name="extensions.nicolivehelper.startup-comment" type="unichar"/>
     </preferences>
     <vbox>
 
       <tabbox flex="1">
 	<tabs>
+	  <tab label="スタートアップ"/>
 	  <tab label="コメント"/>
 	  <tab label="その他"/>
 	</tabs>
 
 	<tabpanels flex="1">
+	  <tabpanel orient="vertical">
+	    <label value="スタートアップ時に行うコメント:" control="startup-comment"/>
+	    <textbox preference="pref-startup-comment" id="startup-comment" multiline="true" flex="1" emptytext=""/>
+	  </tabpanel>
+
 	  <tabpanel orient="vertical">
 	    <!-- comment -->
 	    <vbox flex="1">
