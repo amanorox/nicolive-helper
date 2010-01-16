@@ -1740,16 +1740,18 @@ var NicoLiveHelper = {
 	this.heartbeat();
 	this._heartbeat = setInterval("NicoLiveHelper.heartbeat();",1*60*1000);
 
+	this.sendStartupComment();
+
 	if( NicoLivePreference.isjingle ){
 	    this.playJingle();
 	}
-
-	this.sendStartupComment();
 
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
 	    NicoLiveComment.openFile(this.request_id);
 	}
+	NicoLiveComment.getNGWords();
+
 	debugprint('Server clock:'+GetDateString(this.serverconnecttime*1000));
 	debugprint('PC clock:'+GetDateString(this.connecttime*1000));
 	// サーバ時刻にしておけば間違いないかな.
@@ -2086,7 +2088,7 @@ var NicoLiveHelper = {
 	if( GetCurrentTime()-this.starttime > 180 ) return;
 	if( this.inplay ) return;
 
-	this.startup_comments = NicoLivePreference.startup_comment.split(/\n|\r|\r\n/);;
+	this.startup_comments = NicoLivePreference.startup_comment.split(/\n|\r|\r\n/);
 	if(this.startup_comments.length){
 	    debugprint("Send Startup Comments");
 	    this._startupcomment = setInterval("NicoLiveHelper._sendStartupComment();",5000);
@@ -2095,9 +2097,10 @@ var NicoLiveHelper = {
     _sendStartupComment:function(){
 	let str = this.startup_comments.shift();
 	if(str){
+	    debugprint('startupcomment:'+str);
 	    this.postCasterComment(str,"");
 	}else{
-	    debugprint('Sending Startup Comments has done.');
+	    debugprint('Sending Startup Comments was done.');
 	    clearInterval(this._startupcomment);
 	}
     },

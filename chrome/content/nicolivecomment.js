@@ -23,6 +23,9 @@ var NicoLiveComment = {
 	}else{
 	    tr.className = this.colormap[comment.user_id];
 	}
+	if( this.isNGWord(comment.text) ){
+	    tr.className = "table_played";
+	}
 
 	if(comment.premium==3){
 	    tr.className = "table_casterselection";
@@ -138,12 +141,56 @@ var NicoLiveComment = {
 	if( !req ) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		let ngwords = req.responseXML.getElementsByTagName('ngclient');
+		NicoLiveComment.parseNGWordXML(req.responseXML);
 	    }
 	};
 	let url = "http://watch.live.nicovideo.jp/api/configurengword?video="+NicoLiveHelper.request_id+"&mode=get";
 	req.open('GET', url );
 	req.send(null);
+    },
+    parseNGWordXML:function(xml){
+	this.regexstrings = evaluateXPath(xml,"//ngclient[@is_regex='true']/source");
+	this.caseinsensitivestrings = evaluateXPath(xml,"//ngclient[not(@is_regex='true') and @use_case_unify='true']/source");
+	this.casesensitivestrings = evaluateXPath(xml,"//ngclient[not(@is_regex='true') and not(@use_case_unify='true')]/source");
+
+	let i,item;
+	for(i=0;item=this.casesensitivestrings[i];i++){
+	    this.casesensitivestrings[i] = item.textContent;
+	}
+	for(i=0;item=this.caseinsensitivestrings[i];i++){
+	    this.caseinsensitivestrings[i] = HiraToKana(item.textContent);
+	}
+	for(i=0;item=this.regexstrings[i];i++){
+	    this.regexstrings[i] = item.textContent;
+	}
+    },
+    isNGWord:function(str){
+	let i,item;
+	let normalizedstr;
+	// case-sensitiveなのでindexOfでOK
+	for(i=0;item=this.casesensitivestrings[i];i++){
+	    if( str.indexOf(item) != -1 ){
+		return true;
+	    }
+	}
+
+	// case-insensitiveなので大文字小文字、ひらがなカタカナを区別しない.
+	normalizedstr = HiraToKana(str);
+	normalizedstr = ZenToHan(normalizedstr);
+	for(i=0;item=this.caseinsensitivestrings[i];i++){
+	    let regex = new RegExp(item,"i");
+	    if(normalizedstr.match(regex)){
+		return true;
+	    }
+	}
+	// 正規表現.
+	for(i=0;item=this.regexstrings[i];i++){
+	    let regex = new RegExp(item);
+	    if(str.match(regex)){
+		return true;
+	    }
+	}
+	return false;
     },
 
     openDialog:function(){
@@ -203,6 +250,10 @@ var NicoLiveComment = {
     },
 
     init:function(){
+	this.regexstrings = new Array();
+	this.caseinsensitivestrings = new Array();
+	this.casesensitivestrings = new Array();
+
 	this.colormap = new Object();
 	this.commentlog   = new Array();
 	this.namemap = NicoLiveDatabase.loadGPStorage("nico_live_kotehan",{});

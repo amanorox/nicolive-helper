@@ -229,6 +229,11 @@ function ZenToHan(str){
 		       function(s){ return String.fromCharCode(s.charCodeAt(0)-65248); });
 }
 
+function HiraToKana(str){
+    return str.replace(/[\u3041-\u3094]/g,
+		      function(s){ return String.fromCharCode(s.charCodeAt(0)+0x60); });
+}
+
 function FormatCommas(str){
     return str.toString().replace(/(\d)(?=(?:\d{3})+$)/g,"$1,");
 }
