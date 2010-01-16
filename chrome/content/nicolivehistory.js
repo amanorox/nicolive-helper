@@ -63,7 +63,7 @@ var NicoLiveHistory = {
 				   function(e){
 				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
 				   },false );
-	$('popup-playlist').appendChild( popupmenu );
+	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-additionalinfo').nextSibling );
     },
 
     restorePlaylistText:function(){

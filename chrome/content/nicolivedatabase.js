@@ -572,6 +572,13 @@ var NicoLiveDatabase = {
 	return additional;
     },
 
+    // レート(お気に入り度)をセット.
+    setFavorite:function(e){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	let video_id = elem.firstChild.textContent;
+	alert(video_id);
+    },
+
     // 汎用ストレージにname,JavascriptオブジェクトをJSON形式で保存.
     saveGPStorage:function(name,obj){
 	let st;
