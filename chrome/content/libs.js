@@ -16,6 +16,21 @@ function $$(tag){
     return document.getElementsByTagName(tag);
 }
 
+// 特定の DOM ノードもしくは Document オブジェクト (aNode) に対して
+// XPath 式 aExpression を評価し、その結果を配列として返す。
+// 最初の作業を行った wanderingstan at morethanwarm dot mail dot com に感謝します。
+function evaluateXPath(aNode, aExpr) {
+    var xpe = new XPathEvaluator();
+    var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
+					  aNode.documentElement : aNode.ownerDocument.documentElement);
+    var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+    var found = [];
+    var res;
+    while (res = result.iterateNext())
+	found.push(res);
+    return found;
+}
+
 function CreateElement(part){
     var elem;
     elem = document.createElementNS(XUL_NS,part);
