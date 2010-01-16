@@ -63,8 +63,8 @@
   <keyset>
     <key id="redraw-stock" keycode="VK_F5" oncommand="NicoLiveRequest.redrawStock();"></key>
     <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"></key>
-    <key id="addto-defaultmylist" key="m" modifiers="control" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id);"></key>
-    <key id="search-stock" key="f" modifiers="control" oncommand="NicoLiveRequest.findRequestStock();"></key>
+    <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id);"></key>
+    <key id="search-stock" key="f" modifiers="accel" oncommand="NicoLiveRequest.findRequestStock();"></key>
   </keyset>
 
   <toolbar id="global-menu">
