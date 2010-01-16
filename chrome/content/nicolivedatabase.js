@@ -576,7 +576,19 @@ var NicoLiveDatabase = {
     setFavorite:function(e){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.firstChild.textContent;
-	alert(video_id);
+	let rate = e.target.value;
+
+	let st;
+	try{
+	    st = this.dbconnect.createStatement('update nicovideo set favorite=?1 where video_id=?2');
+	    st.bindUTF8StringParameter(0,rate);
+	    st.bindUTF8StringParameter(1,video_id);
+	    st.execute();
+	    st.finalize();
+	} catch (x) {
+	    debugnotice('動画DBに存在しない動画はレート設定できません');
+	}
+	this.ratecache["_"+video_id] = rate;
     },
 
     // 汎用ストレージにname,JavascriptオブジェクトをJSON形式で保存.
@@ -743,6 +755,7 @@ var NicoLiveDatabase = {
     init:function(){
 	debugprint('NicoLiveDatabase init');
 	this.pnamecache = new Object();
+	this.ratecache  = new Object();
 	this.addSearchLine();
 	this.setRegisterdVideoNumber();
     },
