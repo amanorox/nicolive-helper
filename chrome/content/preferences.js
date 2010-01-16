@@ -137,7 +137,7 @@ var NLHPreference = {
 	$('pref-videoinfo4-command').value = "";	
     },
 
-    // 自動応答をデフォルトにする.
+    // 運営コメントをデフォルトにする.
     resetAutoReply:function(){
 	$('pref-msg-deleted').value   = "その動画は削除されているか、見つかりません";
 	$('pref-msg-notaccept').value = "現在リクエストを受け付けていません";
@@ -149,6 +149,7 @@ var NLHPreference = {
 	$('pref-msg-requestng').value = "";
 	$('pref-msg-requestok-command').value = "";
 	$('pref-msg-requestng-command').value = "";
+	$('pref-startup-comment').value = "";
 
 	$('pref-msg-lessmylists').value = "リクエストエラー:マイリスト数が少ないです";
 	$('pref-msg-greatermylists').value = "リクエストエラー:マイリスト数が多いです";

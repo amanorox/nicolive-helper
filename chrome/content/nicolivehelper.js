@@ -1744,6 +1744,8 @@ var NicoLiveHelper = {
 	    this.playJingle();
 	}
 
+	this.sendStartupComment();
+
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
 	    NicoLiveComment.openFile(this.request_id);
@@ -2077,6 +2079,27 @@ var NicoLiveHelper = {
 	};
 	req.open('GET', url );
 	req.send("");
+    },
+
+    sendStartupComment:function(){
+	if( !this.iscaster ) return;
+	if( GetCurrentTime()-this.starttime > 180 ) return;
+	if( this.inplay ) return;
+
+	this.startup_comments = NicoLivePreference.startup_comment.split(/\n|\r|\r\n/);;
+	if(this.startup_comments.length){
+	    debugprint("Send Startup Comments");
+	    this._startupcomment = setInterval("NicoLiveHelper._sendStartupComment();",5000);
+	}
+    },
+    _sendStartupComment:function(){
+	let str = this.startup_comments.shift();
+	if(str){
+	    this.postCasterComment(str,"");
+	}else{
+	    debugprint('Sending Startup Comments has done.');
+	    clearInterval(this._startupcomment);
+	}
     },
 
     // ジングルを再生する.

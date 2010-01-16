@@ -185,6 +185,8 @@
       <preference id="pref-msg-forbiddenkeyword" name="extensions.nicolivehelper.msg-forbiddenkeyword" type="unichar"/>
       <preference id="pref-msg-limitnumberofrequests" name="extensions.nicolivehelper.msg-limitnumberofrequests" type="unichar"/>
 
+      <preference id="pref-startup-comment" name="extensions.nicolivehelper.startup-comment" type="unichar"/>
+
       <preference id="pref-continuousCommentDir" name="extensions.nicolivehelper.continuous-commentDir" type="file"/>
     </preferences>
 
@@ -193,6 +195,7 @@
 	<tab label="リクエストの応答"></tab>
 	<tab label="リクエスト制限の応答"></tab>
 	<tab label="リクエスト可否"></tab>
+	<tab label="スタートアップ"></tab>
       </tabs>
       <tabpanels flex="1">
 	<tabpanel orient="vertical">
@@ -298,6 +301,12 @@
 	      </row>
 	    </rows>
 	  </grid>
+	</tabpanel>
+	<tabpanel orient="vertical">
+	  <vbox flex="1">
+	    <label value="スタートアップ時に行うコメント:" control="startup-comment"/>
+	    <textbox preference="pref-startup-comment" id="startup-comment" multiline="true" flex="1" emptytext="5秒間隔で1行ずつ送信します"/>
+	  </vbox>
 	</tabpanel>
       </tabpanels>
     </tabbox>
@@ -415,23 +424,16 @@
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
 
-      <preference id="pref-startup-comment" name="extensions.nicolivehelper.startup-comment" type="unichar"/>
     </preferences>
     <vbox>
 
       <tabbox flex="1">
 	<tabs>
-	  <tab label="スタートアップ"/>
 	  <tab label="コメント"/>
 	  <tab label="その他"/>
 	</tabs>
 
 	<tabpanels flex="1">
-	  <tabpanel orient="vertical">
-	    <label value="スタートアップ時に行うコメント:" control="startup-comment"/>
-	    <textbox preference="pref-startup-comment" id="startup-comment" multiline="true" flex="1" emptytext=""/>
-	  </tabpanel>
-
 	  <tabpanel orient="vertical">
 	    <!-- comment -->
 	    <vbox flex="1">
