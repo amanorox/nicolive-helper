@@ -6,7 +6,18 @@ var NicoLiveRequest = {
     // 動画情報を表示しているvboxを作成して返す.
     createVideoInformation:function(item,isstock){
 	let vbox = CreateElement('vbox');
-	vbox.setAttribute('tooltiptext',item.highbitrate+"kbps/"+item.lowbitrate+"kbps");
+	let tmp,tooltip="";
+	tmp = NicoLiveDatabase.getFavorite(item.video_id) / 10;
+	for(let i=0;i<tmp;i++){
+	    tooltip += "★";
+	}
+	if(tooltip){
+	    tooltip = "レート:"+tooltip+"\n";
+	}else{
+	    tooltip = "レート:なし\n";
+	}
+	tooltip += item.highbitrate+"kbps/"+item.lowbitrate+"kbps";
+	vbox.setAttribute('tooltiptext',tooltip);
 
 	if(isstock) vbox.className = 'stock-videoinfo';
 

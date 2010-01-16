@@ -578,6 +578,25 @@ var NicoLiveDatabase = {
 	let video_id = elem.firstChild.textContent;
 	let rate = e.target.value;
 
+	let oldtooltip;
+	try{
+	    // リク、ストック、履歴を横断して更新は大変なので、設定した場所のみレート表示を更新.
+	    oldtooltip = evaluateXPath(elem,"@tooltiptext")[0].value;
+	    let tooltip="";
+	    for(let i=0;i<rate/10;i++){
+		tooltip += "★";
+	    }
+	    if(tooltip){
+		tooltip = "レート:"+tooltip;
+	    }else{
+		tooltip = "レート:なし";
+	    }
+	    tooltip = oldtooltip.replace(/^レート:.*$/m,tooltip);
+	    debugprint(tooltip);
+	    elem.setAttribute('tooltiptext',tooltip);
+	} catch (x) {
+	}
+
 	let st;
 	try{
 	    st = this.dbconnect.createStatement('update nicovideo set favorite=?1 where video_id=?2');
@@ -586,9 +605,22 @@ var NicoLiveDatabase = {
 	    st.execute();
 	    st.finalize();
 	} catch (x) {
-	    debugnotice('動画DBに存在しない動画はレート設定できません');
 	}
 	this.ratecache["_"+video_id] = rate;
+    },
+    getFavorite:function(video_id){
+	if( this.ratecache["_"+video_id] ) return this.ratecache["_"+video_id];
+
+	let st = this.dbconnect.createStatement('SELECT favorite FROM nicovideo WHERE video_id = ?1');
+	let rate;
+	st.bindUTF8StringParameter(0,video_id);
+	while(st.step()){
+	    rate = st.getInt32(0);
+	}
+	st.finalize();
+	if(!rate) rate = 0;
+	this.ratecache["_"+video_id] = rate;
+	return rate;
     },
 
     // 汎用ストレージにname,JavascriptオブジェクトをJSON形式で保存.
