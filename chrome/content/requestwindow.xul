@@ -142,7 +142,8 @@
     </toolbarbutton>
   </toolbar>
 
-  <groupbox orient="horizontal" flex="1">
+
+  <hbox flex="1">
 
     <tabbox flex="1">
       <tabs>
@@ -157,7 +158,7 @@
       </tabs>
       <tabpanels flex="1" id="tabpanels">
 	<!-- request tab -->
-	<vbox class="tabpanel">
+	<vbox class="tabpanel" id="tab-request">
 	  <!-- command buttons -->
 	  <hbox>
 	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleRequest();"/>
@@ -198,19 +199,19 @@
 	</vbox>
 
 	<!-- error request tab -->
-	<vbox flex="1">
+	<vbox flex="1" id="tab-requesterror">
 	  <hbox>
 	    <spacer flex="1"/>
 	    <button label="全消去" oncommand="NicoLiveHelper.removeErrorRequestAll();"/>
 	  </hbox>
-	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
+	  <vbox flex="1" style="overflow:auto">
 	    <html:table id="error-request-table" class="requestview">
 	    </html:table>
 	  </vbox>
 	</vbox>
 
 	<!-- playlist(history) tab -->
-	<vbox flex="1" class="tabpanel">
+	<vbox flex="1" class="tabpanel" id="tab-playlist">
 	  <deck id="playlist-deck" flex="1">
 	    <textbox id="played-list-textbox" emptytext="プレイリストスレッドにコピペする用" multiline="true" flex="1" />
 	    <vbox flex="1" style="overflow:auto">
@@ -232,7 +233,7 @@
 	</vbox>
 
 	<!-- comment tab -->
-	<vbox class="tabpanel">
+	<vbox class="tabpanel" id="tab-comment">
 	  <hbox id="box-caster-comment">
 	    <menulist id="textbox-mail" label="" editable="true" value="">
 	      <menupopup>
@@ -278,7 +279,7 @@
 	</vbox>
 
 	<!-- database tab -->
-	<vbox class="tabpanel"
+	<vbox class="tabpanel" id="tab-database"
 	      ondragenter="return NicoLiveDatabase.checkDrag(event)"
 	      ondragover="return NicoLiveDatabase.checkDrag(event)"
 	      ondrop="NicoLiveDatabase.dropToDatabase(event)">
@@ -334,61 +335,8 @@
 	  </vbox>
 	</vbox>
 
-	<!-- setting tab -->
-<!--
-	<vbox class="tabpanel">
-	  <groupbox>
-	    <caption label="進行"/>
-	    <hbox>
-	      <checkbox id="pref-jingle" label="接続時にジングルを再生する"/>
-	      <textbox id="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください"/>
-	      <button label="再生" oncommand="NicoLiveHelper.playJingle();"/>
-	    </hbox>
-	    <checkbox id="pref-limit30min" label="自動再生時、30分枠に収まるように再生する動画を選択する"/>
-	    <checkbox id="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する"/>
-
-	    <grid>
-	      <columns>
-		<column/>
-		<column/>
-		<column/>
-	      </columns>
-	      <rows>
-		<row>
-		  <hbox align="center"><label value="次の動画を再生するまでの待ち時間(0-99)"/></hbox>
-		  <textbox id="pref-nextplay-interval" type="number" min="0" max="99" size="3"/>
-		  <hbox align="center"><label value="秒"/></hbox>
-		</row>
-		<row>
-		  <hbox align="center"><label value="1つの動画の最大再生時間(0-99)" tooltiptext=""/></hbox>
-		  <textbox id="pref-movieplay-time" type="number" min="0" max="99" size="3"/>
-		  <hbox align="center"><label value="分"/></hbox>
-		</row>
-	      </rows>
-	    </grid>
-	  </groupbox>
-
-	  <groupbox>
-	    <caption label="リクエスト"/>
-	    <checkbox id="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/>
-	    <checkbox id="pref-limitnewmovie" label="リクエストの新着(7日)制限を行う"/>
-	    <hbox align="center">
-	      <label value="1枠1人あたりのリクエスト受付数(0-99件)"/>
-	      <textbox id="pref-accept-nreq" type="number" min="0" max="99" size="3"/>
-	      <button label="今までの受付数をリセット" oncommand="NicoLiveHelper.resetRequestCount();"/>
-	    </hbox>
-	    <checkbox id="pref-mikuonly" label="ミクオリジナル曲のみを受け付ける(開発主用)"/>
-	  </groupbox>
-
-	  <hbox>
-	    <button label="Advanced Settings" oncommand="OpenAdvancedSettings();"/>
-	    <spacer flex="1"/>
-	    <button label="適用" oncommand="NicoLivePreference.applyBasicPrefs();"/>
-	  </hbox>
-	</vbox>
--->
 	<!-- debug tab -->
-	<vbox>
+	<vbox id="tab-debug">
 	  <textbox id="debug-textbox" emptytext="デバッグ用" multiline="true" flex="1" />
 	</vbox>
 
@@ -400,15 +348,15 @@
     <splitter collapse="after" ><grippy /></splitter>
 
     <!-- live pane (want 600px) -->
-    <groupbox flex="1">
+    <vbox flex="1">
       <browser id="live-page" src="about:blank" type="content" flex="1"/>
       <hbox>
 	<button label="開く" oncommand="NicoLiveBrowser.open();"/>
 	<button label="閉じる" oncommand="NicoLiveBrowser.close();"/>
       </hbox>
-    </groupbox>
+    </vbox>
 
-  </groupbox>
+  </hbox>
   
   <!-- statusbar -->
   <statusbar>

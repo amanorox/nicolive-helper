@@ -394,13 +394,13 @@ var NicoLiveDatabase = {
     // 選択した1つをストックに追加.
     addStockOne:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	NicoLiveRequest.addStock(elem.firstChild.textContent);
+	NicoLiveRequest.addStock(elem.getAttribute('nicovideo_id'));
     },
 
     // 選択した1つをリクエスト送信.
     sendRequestOne:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.firstChild.textContent;
+	let video_id = elem.getAttribute('nicovideo_id');
 	if(NicoLiveHelper.iscaster || NicoLiveHelper.isOffline()){
 	    NicoLiveRequest.addRequest(video_id);
 	}else{
@@ -424,7 +424,7 @@ var NicoLiveDatabase = {
 
 	td = tr.insertCell(tr.cells.length);
 	let str;
-	str = "<vbox context=\"popup-db-result\"><html:span style=\"display:none;\">"+item.video_id+"</html:span>"
+	str = "<vbox context=\"popup-db-result\" nicovideo_id=\""+item.video_id+"\">"
 	    + "<html:div>"
 	    + "<label><html:a onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+item.video_id+"');\">"+item.video_id+"</html:a>/"+item.title+"</label><html:br/>";
 
@@ -473,17 +473,12 @@ var NicoLiveDatabase = {
     // 現在のvbox内の動画IDをコピーする(リク、ストック、DBで共通利用可)
     copyToClipboard:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	CopyToClipboard(elem.firstChild.textContent); // 動画IDを取れる.
-    },
-    // 動画のページを開く
-    openVideoPage:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
-	window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+elem.firstChild.textContent);
+	CopyToClipboard(elem.getAttribute('nicovideo_id')); // 動画IDを取れる.
     },
 
     deleteMovie:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.firstChild.textContent;
+	let video_id = elem.getAttribute('nicovideo_id');
 	let st;
 	try{
 	    st = this.dbconnect.createStatement('delete from nicovideo where video_id=?1');
@@ -498,8 +493,7 @@ var NicoLiveDatabase = {
 
     setPName:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.firstChild.textContent;
-	if(video_id.length<=0) return;
+	let video_id = elem.getAttribute('nicovideo_id');
 	let oldpname = this.getPName(video_id);
 	let pname = InputPrompt("「"+video_id+"」のP名を入力してください","P名(D名)の入力",oldpname);
 	if(pname!=null){
@@ -539,8 +533,8 @@ var NicoLiveDatabase = {
 
     setAdditional:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.firstChild.textContent;
-	if(video_id.length<=0) return;
+	let video_id = elem.getAttribute('nicovideo_id');
+
 	let oldadditional = this.getAdditional(video_id);
 	let additional = InputPrompt("「"+video_id+"」の追加情報を入力してください","追加情報の入力",oldadditional);
 	if(additional!=null){
@@ -575,7 +569,7 @@ var NicoLiveDatabase = {
     // レート(お気に入り度)をセット.
     setFavorite:function(e){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.firstChild.textContent;
+	let video_id = elem.getAttribute('nicovideo_id');
 	let rate = e.target.value;
 
 	let oldtooltip;

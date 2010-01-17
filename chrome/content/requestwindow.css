@@ -23,7 +23,7 @@ table.requestview tr {
 /*    display:none; */
 }
 
-hr {
+.requestview hr {
     padding: 0;
     margin: 0;
     border-width: 1px 0px 0px 0px;
