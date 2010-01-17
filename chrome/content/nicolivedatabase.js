@@ -575,9 +575,14 @@ var NicoLiveDatabase = {
     },
 
     // レート(お気に入り度)をセット.
-    setFavorite:function(e){
+    setFavorite:function(e,vid){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.getAttribute('nicovideo_id');
+	let video_id;
+	if(vid){
+	    video_id = vid;
+	}else{
+	    video_id = elem.getAttribute('nicovideo_id');
+	}
 	let rate = e.target.value;
 	let videolist = evaluateXPath(document,"//html:table[@class='requestview']/descendant::html:tr/descendant::*[@nicovideo_id='"+video_id+"']");
 
@@ -632,9 +637,14 @@ var NicoLiveDatabase = {
     },
 
     // レート設定メニューが開かれるとき.
-    showingRateMenu:function(e){
+    showingRateMenu:function(e,vid){
 	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.getAttribute('nicovideo_id');
+	let video_id;
+	if(vid){
+	    video_id = vid;
+	}else{
+	    video_id = elem.getAttribute('nicovideo_id');
+	}
 	let rate = this.getFavorite(video_id);
 	if(rate<0) rate = 0;
 	let menuitems = evaluateXPath(e.target,"*");

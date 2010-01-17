@@ -317,31 +317,37 @@ var NicoLiveHelper = {
 	    }
 	    if(!this.iscaster) break;
 	    switch(chat.text){
-	    case "@version":
+	    case "/version":
 		this.postCasterComment(VersionNumber,"");
 		break;
-	    case "@s":
-	    case "/s":
+	    default:
+		this.processListenersCommand(chat);
 		break;
 	    }
 	    break;
 	}
     },
 
+    processListenersCommand:function(chat){
+	
+    },
+
     extractComment: function(xmlchat){
 	let chat = {};
 	chat.text = xmlchat.textContent;
+
 	let attrs = xmlchat.attributes;
-	chat.date = attrs.getNamedItem('date');
-	chat.premium = attrs.getNamedItem('premium');
-	chat.user_id = attrs.getNamedItem('user_id');
-	chat.no = attrs.getNamedItem('no');
+	chat.date      = attrs.getNamedItem('date');
+	chat.premium   = attrs.getNamedItem('premium');
+	chat.user_id   = attrs.getNamedItem('user_id');
+	chat.no        = attrs.getNamedItem('no');
 	chat.anonymity = attrs.getNamedItem('anonymity');
-	chat.date = chat.date && parseInt(chat.date.nodeValue) || 0;
-	chat.premium = chat.premium && parseInt(chat.premium.nodeValue) || 0;
-	chat.user_id = chat.user_id && chat.user_id.nodeValue || "0";
-	chat.no = chat.no && parseInt(chat.no.nodeValue) || 0;
-	chat.anonymity = chat.anonymity && parseInt(chat.anonymity.nodeValue) || 0;	
+	chat.date      = chat.date && parseInt(chat.date.nodeValue) || 0;
+	chat.premium   = chat.premium && parseInt(chat.premium.nodeValue) || 0;
+	chat.user_id   = chat.user_id && chat.user_id.nodeValue || "0";
+	chat.no        = chat.no && parseInt(chat.no.nodeValue) || 0;
+	chat.anonymity = chat.anonymity && parseInt(chat.anonymity.nodeValue) || 0;
+
 	this.last_res = chat.no;
 	return chat;
     },

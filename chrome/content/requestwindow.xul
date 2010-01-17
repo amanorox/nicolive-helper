@@ -374,6 +374,17 @@
   <popupset>
     <!-- for statusbar -->
     <menupopup id="popup-add-mylist">
+      <menu label="レート">
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,NicoLiveHelper.musicinfo.video_id);"
+		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,NicoLiveHelper.musicinfo.video_id);">
+	  <menuitem label="なし" value="0" type="checkbox"/>
+	  <menuitem label="★" value="10" type="checkbox"/>
+	  <menuitem label="★★" value="20" type="checkbox"/>
+	  <menuitem label="★★★" value="30" type="checkbox"/>
+	  <menuitem label="★★★★" value="40" type="checkbox"/>
+	  <menuitem label="★★★★★" value="50" type="checkbox"/>
+	</menupopup>
+      </menu>
       <menuitem label="動画DBに追加" oncommand="NicoLiveDatabase.addCurrentPlayedVideo();"/>
     </menupopup>
 
