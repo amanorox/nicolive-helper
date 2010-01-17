@@ -143,7 +143,7 @@
   </toolbar>
 
 
-  <hbox flex="1">
+  <hbox flex="1" style="margin-top: 5px;">
 
     <tabbox flex="1">
       <tabs>
@@ -345,7 +345,7 @@
       </notificationbox>
     </tabbox>
 
-    <splitter collapse="after" ><grippy /></splitter>
+    <splitter collapse="after" state="collapsed"><grippy /></splitter>
 
     <!-- live pane (want 600px) -->
     <vbox flex="1">
@@ -415,6 +415,16 @@
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-request-additionalinfo"/>
+      <menu label="レート">
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);">
+	  <menuitem label="なし" value="0"/>
+	  <menuitem label="★" value="10"/>
+	  <menuitem label="★★" value="20"/>
+	  <menuitem label="★★★" value="30"/>
+	  <menuitem label="★★★★" value="40"/>
+	  <menuitem label="★★★★★" value="50"/>
+	</menupopup>
+      </menu>
       <menuitem label="先読み" oncommand="NicoLiveRequest.prepare();" tooltiptext="/prepareを送信する"/>
       <menuseparator/>
       <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>

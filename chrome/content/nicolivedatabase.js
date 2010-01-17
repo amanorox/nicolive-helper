@@ -571,24 +571,26 @@ var NicoLiveDatabase = {
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 	let rate = e.target.value;
+	let videolist = evaluateXPath(document,"//html:table[@class='requestview']/descendant::html:tr/descendant::*[@nicovideo_id='"+video_id+"']");
 
-	let oldtooltip;
-	try{
-	    // リク、ストック、履歴を横断して更新は大変なので、設定した場所のみレート表示を更新.
-	    oldtooltip = evaluateXPath(elem,"@tooltiptext")[0].value;
-	    let tooltip="";
-	    for(let i=0;i<rate/10;i++){
-		tooltip += "★";
+	for(let i=0,item; item=videolist[i]; i++){
+	    if( video_id==item.getAttribute('nicovideo_id') ){
+		try{
+		    let tooltip="";
+		    let oldtooltip = item.getAttribute("tooltiptext");
+		    for(let i=0;i<rate/10;i++){
+			tooltip += "★";
+		    }
+		    if(tooltip){
+			tooltip = "レート:"+tooltip;
+		    }else{
+			tooltip = "レート:なし";
+		    }
+		    tooltip = oldtooltip.replace(/^レート:.*$/m,tooltip);
+		    item.setAttribute('tooltiptext',tooltip);
+		} catch (x) {
+		}
 	    }
-	    if(tooltip){
-		tooltip = "レート:"+tooltip;
-	    }else{
-		tooltip = "レート:なし";
-	    }
-	    tooltip = oldtooltip.replace(/^レート:.*$/m,tooltip);
-	    debugprint(tooltip);
-	    elem.setAttribute('tooltiptext',tooltip);
-	} catch (x) {
 	}
 
 	let st;
