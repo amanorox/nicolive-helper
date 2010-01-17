@@ -637,10 +637,8 @@ var NicoLiveDatabase = {
 	let video_id = elem.getAttribute('nicovideo_id');
 	let rate = this.getFavorite(video_id);
 	if(rate<0) rate = 0;
-	debugprint(e+"/"+video_id+"/"+rate);
 	let menuitems = evaluateXPath(e.target,"*");
 	for(let i=0,item;item=menuitems[i];i++){
-	    debugprint(item.value);
 	    if(item.value==rate) item.setAttribute('checked','true');
 	    else item.setAttribute('checked','false');
 	}
