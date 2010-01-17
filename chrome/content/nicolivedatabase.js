@@ -631,6 +631,22 @@ var NicoLiveDatabase = {
 	return rate;
     },
 
+    // レート設定メニューが開かれるとき.
+    showingRateMenu:function(e){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	let video_id = elem.getAttribute('nicovideo_id');
+	let rate = this.getFavorite(video_id);
+	if(rate<0) rate = 0;
+	debugprint(e+"/"+video_id+"/"+rate);
+	let menuitems = evaluateXPath(e.target,"*");
+	for(let i=0,item;item=menuitems[i];i++){
+	    debugprint(item.value);
+	    if(item.value==rate) item.setAttribute('checked','true');
+	    else item.setAttribute('checked','false');
+	}
+	return true;
+    },
+
     // 汎用ストレージにname,JavascriptオブジェクトをJSON形式で保存.
     saveGPStorage:function(name,obj){
 	let st;

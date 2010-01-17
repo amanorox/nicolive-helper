@@ -417,13 +417,13 @@
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-request-additionalinfo"/>
       <menu label="レート">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);">
-	  <menuitem label="なし" value="0"/>
-	  <menuitem label="★" value="10"/>
-	  <menuitem label="★★" value="20"/>
-	  <menuitem label="★★★" value="30"/>
-	  <menuitem label="★★★★" value="40"/>
-	  <menuitem label="★★★★★" value="50"/>
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	  <menuitem label="なし" value="0" type="checkbox"/>
+	  <menuitem label="★" value="10" type="checkbox"/>
+	  <menuitem label="★★" value="20" type="checkbox"/>
+	  <menuitem label="★★★" value="30" type="checkbox"/>
+	  <menuitem label="★★★★" value="40" type="checkbox"/>
+	  <menuitem label="★★★★★" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
       <menuitem label="先読み" oncommand="NicoLiveRequest.prepare();" tooltiptext="/prepareを送信する"/>
@@ -439,13 +439,13 @@
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
       <menu label="レート">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);">
-	  <menuitem label="なし" value="0"/>
-	  <menuitem label="★" value="10"/>
-	  <menuitem label="★★" value="20"/>
-	  <menuitem label="★★★" value="30"/>
-	  <menuitem label="★★★★" value="40"/>
-	  <menuitem label="★★★★★" value="50"/>
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	  <menuitem label="なし" value="0" type="checkbox"/>
+	  <menuitem label="★" value="10" type="checkbox"/>
+	  <menuitem label="★★" value="20" type="checkbox"/>
+	  <menuitem label="★★★" value="30" type="checkbox"/>
+	  <menuitem label="★★★★" value="40" type="checkbox"/>
+	  <menuitem label="★★★★★" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
       <menuseparator/>
@@ -482,13 +482,13 @@
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-stock-additionalinfo"/>
       <menu label="レート">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);">
-	  <menuitem label="なし" value="0"/>
-	  <menuitem label="★" value="10"/>
-	  <menuitem label="★★" value="20"/>
-	  <menuitem label="★★★" value="30"/>
-	  <menuitem label="★★★★" value="40"/>
-	  <menuitem label="★★★★★" value="50"/>
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	  <menuitem label="なし" value="0" type="checkbox"/>
+	  <menuitem label="★" value="10" type="checkbox"/>
+	  <menuitem label="★★" value="20" type="checkbox"/>
+	  <menuitem label="★★★" value="30" type="checkbox"/>
+	  <menuitem label="★★★★" value="40" type="checkbox"/>
+	  <menuitem label="★★★★★" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
       <menuitem label="先読み" oncommand="NicoLiveRequest.prepare();" tooltiptext="/prepareを送信する"/>
@@ -503,13 +503,13 @@
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-playlist-additionalinfo"/>
       <menu label="レート">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);">
-	  <menuitem label="なし" value="0"/>
-	  <menuitem label="★" value="10"/>
-	  <menuitem label="★★" value="20"/>
-	  <menuitem label="★★★" value="30"/>
-	  <menuitem label="★★★★" value="40"/>
-	  <menuitem label="★★★★★" value="50"/>
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	  <menuitem label="なし" value="0" type="checkbox"/>
+	  <menuitem label="★" value="10" type="checkbox"/>
+	  <menuitem label="★★" value="20" type="checkbox"/>
+	  <menuitem label="★★★" value="30" type="checkbox"/>
+	  <menuitem label="★★★★" value="40" type="checkbox"/>
+	  <menuitem label="★★★★★" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
     </menupopup>
