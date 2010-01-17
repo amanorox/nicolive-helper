@@ -307,16 +307,18 @@ var NicoLiveHelper = {
 
 	default:
 	    // リスナーコメの処理.
-	    if(1 || this.iscaster){
+	    if( chat.text.indexOf("/")!=0 ){
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
-		    let selfreq = chat.text.match(/自貼/);
+		    let selfreq = chat.text.match(/自(貼|張)/);
 		    this.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
 		    return;
 		}
 	    }
+
 	    if(!this.iscaster) break;
 	    switch(chat.text){
+	    case "/ver":
 	    case "/version":
 		this.postCasterComment(VersionNumber,"");
 		break;
@@ -329,7 +331,70 @@ var NicoLiveHelper = {
     },
 
     processListenersCommand:function(chat){
-	
+	let command = chat.text.match(/\/(\w+)\s*(.*)/);
+	let tmp,n;
+	if(command){
+	    switch(command[1]){
+	    case 's':
+		this.postCasterComment("リクエスト:{requestnum}件 ストック:{stocknum}<br>現在:{=NicoLiveHelper.allowrequest?\"リクエスト受付中\":\"リクエスト受付停止中\"}","");
+		break;
+
+	    case 'dice':
+		// 2d+3 とか 4D+2 とか.
+		tmp = command[2].match(/(\d+)[Dd](\+(\d+))*/);
+		if(tmp){
+		    n = parseInt(tmp[1]);
+		    if(!tmp[3]) tmp[3] = "0";
+		    let result = 0;
+		    let resultstr = new Array();
+		    for(let i=0;i<n;i++){
+			let dice = GetRandomInt(1,6);
+			resultstr.push(dice);
+			result += dice;
+		    }
+		    resultstr = resultstr.join(",");
+		    result += parseInt(tmp[3]);
+		    resultstr += " + "+tmp[3] +" = " + result;
+		    this.postCasterComment(">>"+chat.no+" "+resultstr,"");
+		}
+		break;
+
+	    case 'del':
+		let target;
+		if(command[2]=='all'){
+		    target = null;
+		}
+		tmp = command[2].match(/(sm|nm)\d+/);
+		if(tmp){
+		    target = tmp[0];
+		}
+		let cancelnum = this.cancelRequest(chat.user_id, target);
+		if(cancelnum){
+		    this.postCasterComment(">>"+chat.no+" "+cancelnum+"件のリクエストを削除しました","");
+		}
+		break;
+	    }
+	}
+    },
+
+    // リクエストをキャンセルする.
+    cancelRequest:function(user_id,vid){
+	let tmp = new Array();
+	let cnt=0;
+	// 単純なループの中で単純にspliceで取るわけにはいかないので
+	// 削除しないもののリスト作って取り替えることに
+	for(let i=0,item;item=this.requestqueue[i];i++){
+	    if(item.user_id==user_id){
+		if( !vid || item.video_id==vid ){
+		    cnt++;
+		    continue;
+		}
+	    }
+	    tmp.push(item);
+	}
+	this.requestqueue = tmp;
+	NicoLiveRequest.update(this.requestqueue);
+	return cnt;
     },
 
     extractComment: function(xmlchat){
@@ -393,7 +458,7 @@ var NicoLiveHelper = {
 	if( pname_whitelist["_"+str] ){
 	    return true;
 	}
-	if(str.match(/(PSP|アイドルマスターSP|m[a@]shup|overlap|mikunopop|mikupop|space_ship)$/i)) return false;
+	if(str.match(/(PSP|アイドルマスターSP|m[a@]shup|step|overlap|mikunopop|mikupop|space_ship)$/i)) return false;
 	if(str.match(/(M[A@]D|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) return false;
 	let t = str.match(/.*[^jOＯ][pｐPＰ][)）]?$/);
 	if(t){
@@ -428,24 +493,25 @@ var NicoLiveHelper = {
 		 * P名タグは数少ないしn*nでもいいよね.
 		 */
 		let n = pname.length;
-		let tmp = new Array();
 		for(i=0;i<n;i++){
 		    let omitflg=false;
 		    if(!pname[i]) continue;
 		    for(j=0;j<n;j++){
 			if(i==j) continue;
+
 			if(pname[j].match(pname[i]+'$')){
 			    omitflg = true;
 			}
 			/* 曲名(誰P)となっているものが含まれていたらそれを除外する
 			 * ために (誰P) を含むものを除外する.
 			 */
-			if(pname[j].match('\('+pname[i]+'\)')){
+			if(pname[j].indexOf('('+pname[i]+')') != -1 ){
 			    pname[j] = "";
 			}
 		    }
 		    if(omitflg) pname[i] = "";
 		}
+		let tmp = new Array();
 		for(i=0;i<n;i++){
 		    if(pname[i]) tmp.push(pname[i]);
 		}
@@ -1226,6 +1292,7 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
     },
     // リクエストリストから削除する.
+    // idx: 1,2,3,...
     removeRequest:function(idx){
 	idx--;
 	let removeditem = this.requestqueue.splice(idx,1);

@@ -397,16 +397,12 @@
     </hbox>
   </prefpane>
 
-<!--
-  <prefpane id="nicolivehelper-perfpane-playlist" label="プレイリスト" image="chrome://nicolivehelper/content/data/iconplaylist.png">
-    <hbox align="center">
-      <label value="番組名"/><textbox defaultValue="{request_id} {}"/>
-    </hbox>
-    <hbox align="center">
-      <label value="記録フォーマット"/><textbox defaultValue="{id} {title}"/>
-    </hbox>
+  <prefpane id="nicolivehelper-prefpane-listenercommand" label="視聴者コマンド" image="chrome://nicolivehelper/content/data/listenercommand.png">
+    <preferences>
+    </preferences>
+    <vbox>
+    </vbox>
   </prefpane>
--->
 
   <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>
@@ -424,14 +420,12 @@
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
 
-      <preference id="pref-listeners-command" name="extensions.nicolivehelper.listeners-command" type="unichar"/>
     </preferences>
     <vbox>
 
       <tabbox flex="1">
 	<tabs>
 	  <tab label="コメント"/>
-	  <tab label="視聴者コマンド"/>
 	  <tab label="その他"/>
 	</tabs>
 
@@ -448,11 +442,6 @@
 	      <html:hr style="margin:1em;"/>
 	      <checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="ニコ生の仕様上、視聴者コメントでのみ有効"/>
 	    </vbox>
-	  </tabpanel>
-
-	  <tabpanel orient="vertical">
-	    <textbox preference="pref-listeners-command" id="listeners-command" multiline="true" flex="1"
-		     emptytext="視聴者コマンドを作成してください"/>
 	  </tabpanel>
 
 	  <tabpanel orient="vertical">
