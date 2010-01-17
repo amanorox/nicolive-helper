@@ -369,7 +369,7 @@ var NicoLiveDatabase = {
 	let cnt=0;
 	debugprint('updating db...'+movies.length);
 	for(let i=0,item;item=movies[i];i++){
-	    if (cnt<20 && !item.done && (now-item.update_date) > 60*60*24*7 ){
+	    if (cnt<10 && !item.done && (now-item.update_date) > 60*60*24*7 ){
 		cnt++;
 		item.done = true;
 		this.updateOneVideo(item.video_id);
@@ -423,10 +423,17 @@ var NicoLiveDatabase = {
 	let n = table.rows.length;
 
 	td = tr.insertCell(tr.cells.length);
+
+	let tooltip = "";
+	for(let i=0;i<item.favorite/10;i++){
+	    tooltip += "★";
+	}
+	if(tooltip) tooltip = "レート:"+tooltip;
+	else tooltip="レート:なし";
 	let str;
-	str = "<vbox context=\"popup-db-result\" nicovideo_id=\""+item.video_id+"\">"
+	str = "<vbox context=\"popup-db-result\" nicovideo_id=\""+item.video_id+"\" tooltiptext=\""+tooltip+"\">"
 	    + "<html:div>"
-	    + "<label><html:a onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+item.video_id+"');\">"+item.video_id+"</html:a>/"+item.title+"</label><html:br/>";
+	    + "<label crop=\"end\"><html:a onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+item.video_id+"');\">"+item.video_id+"</html:a>/"+item.title+" ("+tooltip+")</label><html:br/>";
 
 	let datestr = GetDateString(item.first_retrieve*1000);
 	str+= "<label value=\"投稿日:" + datestr +" "
@@ -457,6 +464,7 @@ var NicoLiveDatabase = {
 	info.tags           = tags.split(/,/);
 	//info.pname          = row.getResultByName('pname');
 	info.update_date = row.getResultByName('update_date');
+	info.favorite = row.getResultByName('favorite');
 	return info;
     },
 
@@ -593,6 +601,10 @@ var NicoLiveDatabase = {
 	    }
 	}
 
+	if( this.getFavorite(video_id)<0 ){
+	    debugnotice(video_id+"は動画DBにない動画のため、レートは保存されません");
+	}
+
 	let st;
 	try{
 	    st = this.dbconnect.createStatement('update nicovideo set favorite=?1 where video_id=?2');
@@ -608,7 +620,7 @@ var NicoLiveDatabase = {
 	if( this.ratecache["_"+video_id] ) return this.ratecache["_"+video_id];
 
 	let st = this.dbconnect.createStatement('SELECT favorite FROM nicovideo WHERE video_id = ?1');
-	let rate;
+	let rate = -1;
 	st.bindUTF8StringParameter(0,video_id);
 	while(st.step()){
 	    rate = st.getInt32(0);

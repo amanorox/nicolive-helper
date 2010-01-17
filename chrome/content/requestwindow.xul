@@ -317,6 +317,7 @@
 		<menuitem label="マイリスト数" value="mylist_counter"/>
 		<menuitem label="投稿日" value="first_retrieve"/>
 		<menuitem label="マイリスト率" value="mylist_rate"/>
+		<menuitem label="レート" value="favorite"/>
 	      </menupopup>
 	    </menulist>
 	    <menulist id="db-search-order" oncommand="NicoLiveDatabase.search();">
