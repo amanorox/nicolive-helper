@@ -106,7 +106,7 @@
 		  <menuitem label="4" value="4"></menuitem>
 		</menupopup>
 	      </menulist>
-	      <label value="行目の動画情報を自動で復帰する" tooltiptext="動画情報以外の何かをコメントした場合、自動で動画情報を復帰します"/>
+	      <label value="行目の動画情報を再送信する" tooltiptext="動画情報以外の何かをコメントした場合、自動で動画情報を再送信します"/>
 	    </hbox>
 	  </hbox>
 	  <groupbox>
@@ -428,7 +428,7 @@
 	</rows>
       </grid>
       <label value="カスタムコマンド:"/>
-      <textbox disabled="true" multiline="true" emptytext="好きな視聴者コマンドを作成してください" flex="1"/>
+      <textbox disabled="true" multiline="true" emptytext="好きな視聴者コマンドを作成してください(未実装)" flex="1"/>
       <hbox><button label="デフォルトに戻す"/></hbox>
     </vbox>
   </prefpane>
@@ -470,7 +470,7 @@
 		<button label="参照..." oncommand="NLHPreference.refDirectory();"/>
 	      </hbox>
 	      <label value="コメント入力補完プリセット:"/>
-	      <textbox multiline="true" flex="1"/>
+	      <textbox disabled="true" emptytext="未実装" multiline="true" flex="1"/>
 	    </vbox>
 	  </tabpanel>
 

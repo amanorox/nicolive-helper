@@ -93,7 +93,7 @@ var NicoLiveHelper = {
 	// リクエスト制限のチェック.
 	if(NicoLivePreference.restrict.dorestrict){
 	    let msg = this.checkMovieRestriction(info);
-	    if( msg ){
+	    if( msg!=null ){
 		return {code:-6,"msg":msg,movieinfo:info};
 	    }
 	}
@@ -373,14 +373,19 @@ var NicoLiveHelper = {
 
 	    case 'del':
 		let target;
+		if(!command[2]) break;
+		let cancelnum = -1;
+
 		if(command[2]=='all'){
 		    target = null;
+		    cancelnum = this.cancelRequest(chat.user_id, target);
 		}
 		tmp = command[2].match(/(sm|nm)\d+/);
 		if(tmp){
 		    target = tmp[0];
+		    cancelnum = this.cancelRequest(chat.user_id, target);
 		}
-		let cancelnum = this.cancelRequest(chat.user_id, target);
+		if(cancelnum<0) break;
 		chat.cancelnum = cancelnum;
 		str = this.replaceMacros(NicoLivePreference.listenercommand.del,chat);
 		if(str) this.postCasterComment(str,"");
@@ -686,6 +691,13 @@ var NicoLiveHelper = {
 	this.commentstate = COMMENT_STATE_MOVIEINFO_BEGIN;
 	let ismovieinfo = true;
 	this.postCasterComment(sendstr,cmd,ismovieinfo);
+
+	sendstr = NicoLivePreference.videoinfo[this._counter].comment;
+	if(!sendstr){
+	    clearInterval(this._sendmusicid);
+	    this._counter = -1;
+	    this.commentstate = COMMENT_STATE_MOVIEINFO_DONE;
+	}
     },
 
     // 動画情報を送信開始する.
