@@ -481,7 +481,7 @@
 	      <vbox style="margin-left: 1em;">
 		<hbox><checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します" flex="0"/></hbox>
 		<hbox><checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します"/></hbox>
-		<hbox><checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コエントを使用して警告します"/></hbox>
+		<hbox><checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コメントを使用して警告します"/></hbox>
 	      </vbox>
 
 	      <separator/>
