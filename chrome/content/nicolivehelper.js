@@ -15,6 +15,12 @@
  * ・/playを送信してstatus=errorになったとき
  */
 
+const COMMENT_STATE_NONE = 0;
+const COMMENT_STATE_MOVIEINFO_BEGIN = 1;
+const COMMENT_STATE_MOVIEINFO_DONE = 2;
+const COMMENT_STATE_SEND = 3;
+
+
 var NicoLiveHelper = {
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
@@ -32,10 +38,10 @@ var NicoLiveHelper = {
     connecttime: 0,       // 接続したときのローカルPC時刻(epoc).
     secofweek: 604800,    // 1週間の秒数(60*60*24*7).
 
-    starttime: 0,          // 放送の始まった時刻(sec).
-    endtime: 0,            // 放送の終わる時刻(sec) by getpublishstatus
-    musicstarttime: 0,     // 曲の再生開始時刻(sec).
-    musicendtime: 0,       // 曲の終了予定時刻(sec).
+    starttime: 0,          // 放送の始まった時刻(sec) by getplayerstatus.
+    endtime: 0,            // 放送の終わる時刻(sec) by getpublishstatus.
+    musicstarttime: 0,     // 曲の再生開始時刻(sec) /playを受け取った時刻.
+    musicendtime: 0,       // 曲の終了予定時刻(sec) 上記+再生時間.
 
     iscaster: false,       // 主フラグ.
     inplay: false,         // 再生中フラグ.
@@ -45,6 +51,8 @@ var NicoLiveHelper = {
     isconsumptionrateplay: false, // リク消費率順再生フラグ.
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},
+
+    commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用.
 
     // リクを受け付けるかどうかチェック.
     checkAcceptRequest: function(xml, comment_no){
@@ -653,7 +661,8 @@ var NicoLiveHelper = {
 	let sendstr = NicoLivePreference.videoinfo[this._counter].comment;
 	if(!sendstr){
 	    clearInterval(this._sendmusicid);
-	    this._counter = 0;
+	    this._counter = -1;
+	    this.commentstate = COMMENT_STATE_MOVIEINFO_DONE;
 	    return;
 	}
 	let cmd = NicoLivePreference.videoinfo[this._counter].command;
@@ -673,8 +682,43 @@ var NicoLiveHelper = {
 	default:
 	    break;
 	}
-	this.postCasterComment(sendstr,cmd);
 	this._counter++;
+	this.commentstate = COMMENT_STATE_MOVIEINFO_BEGIN;
+	this.postCasterComment(sendstr,cmd);
+    },
+
+    // 動画情報を送信開始する.
+    sendMusicInfo:function(){
+	clearInterval(this._sendmusicid);
+	this._counter = 0;
+	//NicoLiveHelper._sendMusicInfo();
+	this._sendmusicid = setInterval( function(){ NicoLiveHelper._sendMusicInfo(); }, 6000);
+    },
+
+    // 動画情報を復元する.
+    revertMusicInfo:function(){
+	let n = NicoLivePreference.revert_videoinfo;
+	if(n<=0) return;
+	let sendstr = NicoLivePreference.videoinfo[n-1].comment;
+	if(!sendstr) return;
+	let cmd = NicoLivePreference.videoinfo[n-1].command;
+	if(!cmd) cmd = "";
+	switch(NicoLivePreference.caster_comment_type){
+	case 1: // /perm
+	    sendstr = "/perm "+sendstr;
+	    break;
+	case 2: // hidden
+	    cmd += " hidden";
+	    break;
+	case 3: // /perm + hidden
+	    sendstr = "/perm "+sendstr;
+	    cmd += " hidden";
+	    break;
+	case 0: // default
+	default:
+	    break;
+	}
+	this.postCasterComment(sendstr,cmd);
     },
 
     // 指定リク番号の曲を再生する(idxは1〜).
@@ -700,7 +744,7 @@ var NicoLiveHelper = {
 	    str += " sub";
 	}
 	this.postCasterComment(str,""); // 再生.
-	this.sendMusicInfo(); // 曲情報の送信.
+	this.sendMusicInfo(); // 曲情報の送信開始.
 
 	this.addPlayList(this.musicinfo);
 	NicoLiveRequest.update(this.requestqueue);
@@ -949,9 +993,14 @@ var NicoLiveHelper = {
 	this.inplay = false;
 	this.flg_pause = false;
     },
+
+    // 現在の動画が再生終了したときに、次曲再生についてチェックする.
+    // 動画を再生すると、必ずここに来る.
     checkPlayNext:function(){
-	// 自動再生設定を確認して次曲を再生する.
+	this.commentstate = COMMENT_STATE_NONE;
+
 	if(this.flg_pause){
+	    // 一時停止が押されているので自動で次曲に行かない.
 	    clearInterval(this._musicend);
 	    this.inplay = false;
 	    this.flg_pause = false;
@@ -1037,13 +1086,6 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
     },
 
-    sendMusicInfo:function(){
-	// 曲情報の送信.
-	clearInterval(this._sendmusicid);
-	this._counter = 0;
-	//NicoLiveHelper._sendMusicInfo();
-	this._sendmusicid = setInterval("NicoLiveHelper._sendMusicInfo();",6000);
-    },
     // コメント(主と視聴者を識別してそれぞれのコメント).
     postComment: function(comment,mail){
 	if(this.iscaster){
@@ -1072,7 +1114,7 @@ var NicoLiveHelper = {
 		    } catch (x) {
 			video_id = "";
 		    }
-		    if( !retry ){
+		    if( !retry ){ // 1回再送.
 			debugprint('failed: '+comment);
 			NicoLiveHelper.postCasterComment(comment,mail,true);
 		    }
@@ -1081,7 +1123,7 @@ var NicoLiveHelper = {
 			NicoLiveHelper.postCasterComment(str,"");
 			$('played-list-textbox').value += str + "\n";
 			// たまに生引用拒否していなくてもエラーになるので.
-			// エラーになった動画はストックにしておく.
+			// 再生エラータブ行き.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
 			    NicoLiveHelper.musicinfo.error = true;
 			    NicoLiveHelper.musicinfo.isplayed = true;
@@ -1092,6 +1134,19 @@ var NicoLiveHelper = {
 			NicoLiveHelper.musicinfo = {};
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
+		    }
+		}else{
+		    switch( NicoLiveHelper.commentstate ){
+		    case COMMENT_STATE_MOVIEINFO_DONE:
+			clearInterval( NicoLiveHelper._commentrevertid );
+			NicoLiveHelper._commentrevertid = setInterval(
+			    function(){
+				NicoLiveHelper.revertMusicInfo();
+				clearInterval( NicoLiveHelper._commentrevertid );
+			    }, 10*1000 );
+			break;
+		    default:
+			break;
 		    }
 		}
 	    }
@@ -1816,16 +1871,19 @@ var NicoLiveHelper = {
 	this.pump.asyncRead(dataListener,null);
 
 	// 30分に1回送ってればいいのかね.
-	this._keepconnection = setInterval("NicoLiveHelper.keepConnection();",1000*60*30);
-	this._updateprogressid = setInterval("NicoLiveHelper.updateProgressBar();",1000);
+	this._keepconnection = setInterval( function(){
+						NicoLiveHelper.keepConnection();
+					    }, 1000*60*30);
+	this._updateprogressid = setInterval( function(){
+						  NicoLiveHelper.updateProgressBar();
+					      }, 1000);
 	this.heartbeat();
-	this._heartbeat = setInterval("NicoLiveHelper.heartbeat();",1*60*1000);
-
+	this._heartbeat = setInterval( function(){
+					   NicoLiveHelper.heartbeat();
+				       }, 1*60*1000);
 	this.sendStartupComment();
 
-	if( NicoLivePreference.isjingle ){
-	    this.playJingle();
-	}
+	if( NicoLivePreference.isjingle ) this.playJingle();
 
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
@@ -2070,11 +2128,13 @@ var NicoLiveHelper = {
 	    // 自動再生のときだけ最大再生時間に合わせる.
 	    du = maxplay;
 	}
-	this._musicend = setInterval("NicoLiveHelper.checkPlayNext();", du+interval);
-
-	if(du<30*1000) return;
+	this._musicend = setInterval(
+	    function(){
+		NicoLiveHelper.checkPlayNext();
+	    }, du+interval);
 
 	// 30秒未満のときはやらない.
+	if(du<30*1000) return;
 	this._prepare = setInterval(
 	    function(){
 		clearInterval(NicoLiveHelper._prepare);
@@ -2164,6 +2224,7 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    // スタートアップコメントを送信開始する.
     sendStartupComment:function(){
 	if( !this.iscaster ) return;
 	if( GetCurrentTime()-this.starttime > 180 ) return;
@@ -2172,7 +2233,9 @@ var NicoLiveHelper = {
 	this.startup_comments = NicoLivePreference.startup_comment.split(/\n|\r|\r\n/);
 	if(this.startup_comments.length){
 	    debugprint("Send Startup Comments");
-	    this._startupcomment = setInterval("NicoLiveHelper._sendStartupComment();",5000);
+	    this._startupcomment = setInterval( function(){
+						    NicoLiveHelper._sendStartupComment();
+						}, 5000);
 	}
     },
     _sendStartupComment:function(){
@@ -2229,6 +2292,7 @@ var NicoLiveHelper = {
 	}
     },
 
+    // 接続を開始する.
     start: function(request_id){
 	this.request_id = request_id;
 	debugprint("starting nicolive " + request_id);
@@ -2267,8 +2331,8 @@ var NicoLiveHelper = {
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist_txt",$('played-list-textbox').value);
     },
 
+    // リクエストカウントのリセット.
     resetRequestCount:function(){
-	// リクエストカウントのリセット.
 	this.request_per_ppl = new Object();
 	this.play_per_ppl = new Object();
     },

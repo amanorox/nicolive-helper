@@ -360,8 +360,7 @@ var NicoLiveDatabase = {
 	this._updatehandle = setInterval(
 	    function(){
 		NicoLiveDatabase.delayedUpdate(movies);
-	    },
-	    10*1000 );
+	    }, 10*1000 );
     },
 
     delayedUpdate:function(movies){
