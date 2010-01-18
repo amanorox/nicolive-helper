@@ -6,7 +6,6 @@ const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const HTML_NS= "http://www.w3.org/1999/xhtml";
 const MYLIST_URL = "http://www.nicovideo.jp/mylistgroup_edit";
 const COMMENT_LOG = 500;
-const VersionNumber = "NicoLive Helper 0.9.8";
 
 function $(tag){
     return document.getElementById(tag);
@@ -14,6 +13,14 @@ function $(tag){
 
 function $$(tag){
     return document.getElementsByTagName(tag);
+}
+
+function GetAddonVersion()
+{
+    var em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
+    var addon = em.getItemForID("nicolivehelper@miku39.jp");
+    var version = addon.version;
+    return version;
 }
 
 // 特定の DOM ノードもしくは Document オブジェクト (aNode) に対して

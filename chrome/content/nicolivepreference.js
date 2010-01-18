@@ -7,13 +7,30 @@ var NicoLivePreference = {
 	let branch = this.getBranch();
 	this.nocomment_for_directplay = branch.getBoolPref("nocomment-for-directplay");
 
+	this.listenercommand = new Object();
+	try{
+	    this.listenercommand.enable = branch.getBoolPref("listenercommand.enable");
+	    this.listenercommand.s      = branch.getUnicharPref("listenercommand.s");
+	    this.listenercommand.del    = branch.getUnicharPref("listenercommand.del");
+	    this.listenercommand.custom = branch.getUnicharPref("listenercommand.custom");
+	} catch (x) {
+	    this.listenercommand.enable = false;
+	    this.listenercommand.s      = "";
+	    this.listenercommand.del    = "";
+	    this.listenercommand.custom = "";
+	}
+
+	// 動画情報.
 	for(let i=0;i<4;i++){
 	    this.videoinfo[i] = new Object();
 	    this.videoinfo[i].comment = branch.getUnicharPref("videoinfo"+(i+1));
 	    this.videoinfo[i].command = branch.getUnicharPref("videoinfo"+(i+1)+"-command");
 	}
+	this.revert_videoinfo = branch.getIntPref("revert-videoinfo");
+
 	this.msg = new Object();
 
+	// リクエストの自動応答.
 	this.msg.deleted   = branch.getUnicharPref("msg-deleted");
 	this.msg.notaccept = branch.getUnicharPref("msg-notaccept");
 	this.msg.newmovie  = branch.getUnicharPref("msg-newmovie");
@@ -48,6 +65,7 @@ var NicoLivePreference = {
 
 	this.startup_comment = branch.getUnicharPref("startup-comment");
 
+	// リクエスト制限設定.
 	let restrict = {};
 	restrict.numberofrequests = this.nreq_per_ppl;
 	restrict.dorestrict = branch.getBoolPref("request.restrict");
@@ -99,49 +117,6 @@ var NicoLivePreference = {
 	}
 
 	$('toolbar-allowrequest').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
-
-	/*
-	$('pref-jingle').checked = this.isjingle;
-	$('pref-jingle-movie').value = this.jinglemovie;
-	$('pref-limit30min').checked = this.limit30min;
-	$('pref-carelosstime').checked = this.carelosstime;
-	$('pref-nextplay-interval').value = this.nextplay_interval;
-	$('pref-movieplay-time').value = this.max_movieplay_time;
-	$('pref-autoreply').checked = this.isautoreply;
-	$('pref-limitnewmovie').checked = this.limitnewmovie;
-	$('pref-accept-nreq').value = this.nreq_per_ppl;
-	$('pref-mikuonly').checked = this.mikuonly;
-	 */
-    },
-
-    // 適用ボタンを押したとき、prefs.jsの保存とHelperへの設定値の適用.
-    applyBasicPrefs:function(){
-	this.isjingle = $('pref-jingle').checked;
-	this.jinglemovie = $('pref-jingle-movie').value;
-	this.limit30min = $('pref-limit30min').checked;
-	this.carelosstime = $('pref-carelosstime').checked;
-	this.nextplay_interval = parseInt( $('pref-nextplay-interval').value );
-	this.max_movieplay_time = parseInt( $('pref-movieplay-time').value );
-	this.isautoreply = $('pref-autoreply').checked;
-	this.limitnewmovie = $('pref-limitnewmovie').checked;
-	this.nreq_per_ppl = $('pref-accept-nreq').value;
-	this.mikuonly = $('pref-mikuonly').checked;
-
-	let branch = this.getBranch();
-	branch.setBoolPref("jingle",this.isjingle);
-	branch.setCharPref("jingle-movie",this.jinglemovie);
-	branch.setBoolPref("limit30min",this.limit30min);
-	branch.setBoolPref("carelosstime",this.carelosstime);
-	branch.setIntPref("nextplay-interval",this.nextplay_interval);
-	branch.setIntPref("max-movieplay-time",this.max_movieplay_time);
-	branch.setBoolPref("autoreply",this.isautoreply);
-	branch.setBoolPref("limitnewmovie",this.limitnewmovie);
-	branch.setIntPref("accept-nreq",this.nreq_per_ppl);
-
-	branch.setBoolPref("mikuonly",this.mikuonly);
-
-	$('noticewin').removeAllNotifications(false);
-	$('noticewin').appendNotification('設定を反映しました',null,null,$('noticewin').PRIORITY_INFO_HIGH,null);
     },
 
     readUserDefinedValueURI:function(){

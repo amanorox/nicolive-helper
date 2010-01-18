@@ -96,6 +96,9 @@ var NicoLiveComment = {
 	if(this.autocomplete.length>10){
 	    this.autocomplete.pop();
 	}
+	//tmp.value="sm7113282";
+	//tmp.comment="恋愛タイガー";
+	//this.autocomplete.unshift(tmp);
 	textbox.setAttribute("autocompletesearchparam",JSON.stringify(this.autocomplete));
 
 	if(NicoLiveHelper.iscaster){

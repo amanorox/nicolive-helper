@@ -129,6 +129,7 @@ var NLHPreference = {
 	$('pref-videoinfo3').value = "";
 	$('pref-videoinfo4').value = "";
 	$('pref-typeofvideoinfo').value = 0;
+	$('pref-revert-videoinfo').value = 0;
 	$('pref-userdefined-uri').value = "";
 
 	$('pref-videoinfo1-command').value = "";	

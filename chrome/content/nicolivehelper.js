@@ -253,18 +253,19 @@ var NicoLiveHelper = {
 	    // /play smile:sm00000 main "title"
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
+		let vid = dat[2];
 		if(!this.iscaster){
 		    // リスナーの場合は動画情報を持っていないので取ってくる.
 		    this.musicstarttime = GetCurrentTime();
-		    this.setCurrentVideoInfo(dat[2],false);
+		    this.setCurrentVideoInfo(vid,false);
 		    this.inplay = true;
 		}else{
-		    if( this.musicinfo.video_id!=dat[2] ){
+		    if( this.musicinfo.video_id!=vid ){
 			// 直接運営コマンドを入力したときとかで、
 			// 現在再生しているはずの曲と異なる場合.
 			// 動画情報の主コメは動画情報を取ってきてから.
 			this.musicstarttime = GetCurrentTime();
-			this.setCurrentVideoInfo(dat[2],true);
+			this.setCurrentVideoInfo(vid,true);
 			this.inplay = true;
 		    }else{
 			// 自動再生の準備.
@@ -320,7 +321,7 @@ var NicoLiveHelper = {
 	    switch(chat.text){
 	    case "/ver":
 	    case "/version":
-		this.postCasterComment(VersionNumber,"");
+		this.postCasterComment("NicoLive Helper "+GetAddonVersion(),"");
 		break;
 	    default:
 		this.processListenersCommand(chat);
@@ -331,12 +332,15 @@ var NicoLiveHelper = {
     },
 
     processListenersCommand:function(chat){
+	if( !NicoLivePreference.listenercommand.enable ) return;
+
 	let command = chat.text.match(/\/(\w+)\s*(.*)/);
-	let tmp,n;
 	if(command){
+	    let tmp,n,str;
 	    switch(command[1]){
 	    case 's':
-		this.postCasterComment("リクエスト:{requestnum}件 ストック:{stocknum}<br>現在:{=NicoLiveHelper.allowrequest?\"リクエスト受付中\":\"リクエスト受付停止中\"}","");
+		str = this.replaceMacros(NicoLivePreference.listenercommand.s,chat);
+		if(str) this.postCasterComment(str,"");
 		break;
 
 	    case 'dice':
@@ -369,9 +373,12 @@ var NicoLiveHelper = {
 		    target = tmp[0];
 		}
 		let cancelnum = this.cancelRequest(chat.user_id, target);
-		if(cancelnum){
-		    this.postCasterComment(">>"+chat.no+" "+cancelnum+"件のリクエストを削除しました","");
-		}
+		chat.cancelnum = cancelnum;
+		str = this.replaceMacros(NicoLivePreference.listenercommand.del,chat);
+		if(str) this.postCasterComment(str,"");
+		// リクエスト削除した分、減らさないとネ.
+		this.request_per_ppl[chat.user_id] -= cancelnum;
+		if(this.request_per_ppl[chat.user_id]<0) this.request_per_ppl[chat.user_id] = 0;
 		break;
 	    }
 	}
@@ -412,6 +419,7 @@ var NicoLiveHelper = {
 	chat.user_id   = chat.user_id && chat.user_id.nodeValue || "0";
 	chat.no        = chat.no && parseInt(chat.no.nodeValue) || 0;
 	chat.anonymity = chat.anonymity && parseInt(chat.anonymity.nodeValue) || 0;
+	chat.comment_no = chat.no;
 
 	this.last_res = chat.no;
 	return chat;
@@ -535,7 +543,7 @@ var NicoLiveHelper = {
 			       if(expression = p.match(/^=(.*)/)){
 				   try{
 				       tmp = eval(expression[1]);
-				       if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
+				       //if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
 				       if(tmp==undefined || tmp==null) tmp = "";
 				   } catch (x) {
 				       tmp = "";

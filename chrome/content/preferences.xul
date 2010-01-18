@@ -3,14 +3,8 @@
 <?xml-stylesheet href="chrome://mozapps/content/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://nicolivehelper/content/preferences.css" type="text/css"?>
-
-<prefwindow id="nicolivehelper-advanced-settings"
-	    title="NicoLive Helper Settings"
-	    windowtype="prefwindow"
-	    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	    xmlns:html="http://www.w3.org/1999/xhtml"
-	    >
-
+<prefwindow id="nicolivehelper-advanced-settings" title="NicoLive Helper Settings" windowtype="prefwindow"
+	    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
   <prefpane id="nicolivehelper-prefpane-basic" label="基本設定" image="chrome://nicolivehelper/content/data/basicsetting.png">
     <preferences>
       <preference id="pref-jingle" name="extensions.nicolivehelper.jingle" type="bool"/>
@@ -33,10 +27,9 @@
 	<textbox preference="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください" flex="1"/>
 	<button label="再生" oncommand="opener.NicoLiveHelper.playJingle();"/>
       </hbox>
-      <checkbox preference="pref-limit30min" label="自動再生時、30分枠に収まるように再生する動画を選択する"/>
-      <checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する" style="margin-left: 2em"/>
-
-      <checkbox preference="pref-prepare" label="動画の先読み(/prepare)を行う" tooltiptext="次の動画の先読みを行います(ランダム再生を除く)"/>
+      <hbox><checkbox preference="pref-limit30min" label="自動再生時、30分枠に収まるように再生する動画を選択する" tooltiptext="放送開始後30分以内に収まるように動画を選択します。30分を越える放送の場合は自動再生できなくなります"/></hbox>
+      <hbox><checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する" tooltiptext="ロスタイム75秒として、再生する動画を選択します" style="margin-left: 2em"/></hbox>
+      <hbox><checkbox preference="pref-prepare" label="動画の先読み(/prepare)を行う" tooltiptext="次の動画の先読みを行います(ランダム再生を除く)"/></hbox>
       <grid>
 	<columns>
 	  <column/>
@@ -60,14 +53,14 @@
 
     <groupbox>
       <caption label="リクエスト"/>
-      <checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/>
-      <checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)制限を行う"/>
+      <hbox><checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/></hbox>
+      <hbox><checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)制限を行う" tooltiptext="投稿して7日以内の動画のリクエストを受け付けなくなります"/></hbox>
       <hbox align="center">
 	<label value="1枠1人あたりのリクエスト受付数(0-99件)"/>
 	<textbox preference="pref-accept-nreq" type="number" min="0" max="99" size="3"/>
 	<button label="今までの受付数をリセット" oncommand="opener.NicoLiveHelper.resetRequestCount();"/>
       </hbox>
-      <checkbox preference="pref-mikuonly" label="初音ミクのライブモード(開発主用)" tooltiptext="初音ミクのライブに特化した開発主用のモードです"/>
+      <hbox><checkbox preference="pref-mikuonly" label="初音ミクのライブモード(開発主用)" tooltiptext="初音ミクのライブに特化した開発主用のモードです"/></hbox>
     </groupbox>
   </prefpane>
 
@@ -82,6 +75,7 @@
       <preference id="pref-videoinfo3-command" name="extensions.nicolivehelper.videoinfo3-command" type="unichar"/>
       <preference id="pref-videoinfo4-command" name="extensions.nicolivehelper.videoinfo4-command" type="unichar"/>
       <preference id="pref-typeofvideoinfo" name="extensions.nicolivehelper.comment-type-of-videoinfo" type="int"/>
+      <preference id="pref-revert-videoinfo" name="extensions.nicolivehelper.revert-videoinfo" type="int"/>
       <preference id="pref-userdefined-uri" name="extensions.nicolivehelper.userdefined-data-uri" type="string"/>
       <preference id="pref-nocomment-for-directplay" name="extensions.nicolivehelper.nocomment-for-directplay" type="bool"/>
     </preferences>
@@ -93,7 +87,29 @@
       </tabs>
       <tabpanels flex="1">
 	<tabpanel orient="vertical">
-
+	  <hbox>
+	    <menulist preference="pref-typeofvideoinfo">
+	      <menupopup>
+		<menuitem label="通常の運営コメント" value="0"/>
+		<menuitem label="/permで運営コメント" value="1"/>
+		<menuitem label="hiddenで運営コメント" value="2"/>
+		<menuitem label="/perm + hiddenで運営コメント" value="3"/>
+	      </menupopup>
+	    </menulist>
+	    <hbox align="center">
+	      <menulist preference="pref-revert-videoinfo">
+		<menupopup>
+		  <menuitem label="なし" value="0"></menuitem>
+		  <menuitem label="1" value="1"></menuitem>
+		  <menuitem label="2" value="2"></menuitem>
+		  <menuitem label="3" value="3"></menuitem>
+		  <menuitem label="4" value="4"></menuitem>
+		</menupopup>
+	      </menulist>
+	      <label value="行目の動画情報を自動で復帰する" tooltiptext="動画情報以外の何かをコメントした場合、自動で動画情報を復帰します"/>
+	    </hbox>
+	  </hbox>
+	  <groupbox>
 	  <grid>
 	    <columns>
 	      <column/>
@@ -132,17 +148,8 @@
 	      </row>
 	    </rows>
 	  </grid>
-	  <vbox>
-	    <listbox id="caster-comment-type" rows="4" onselect="$('pref-typeofvideoinfo').value = parseInt(this.value);">
-	      <listitem label="通常の運営コメント" value="0"/>
-	      <listitem label="/permで運営コメント" value="1"/>
-	      <listitem label="hiddenで運営コメント" value="2"/>
-	      <listitem label="/perm + hiddenで運営コメント" value="3"/>
-	    </listbox>
-	  </vbox>
-	  <checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/>
-	  <html:hr size="1"/>
-
+	  </groupbox>
+	  <hbox><checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/></hbox>
 	  <hbox align="center">
 	    <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
 	    <textbox preference="pref-userdefined-uri" id="userdefined-uri" flex="1"/>
@@ -399,8 +406,30 @@
 
   <prefpane id="nicolivehelper-prefpane-listenercommand" label="視聴者コマンド" image="chrome://nicolivehelper/content/data/listenercommand.png">
     <preferences>
+      <preference id="pref-enable-listenercommand" name="extensions.nicolivehelper.listenercommand.enable" type="bool"/>
+      <preference id="pref-cmd-s" name="extensions.nicolivehelper.listenercommand.s" type="unichar"/>
+      <preference id="pref-cmd-del" name="extensions.nicolivehelper.listenercommand.del" type="unichar"/>
+      <preference id="pref-cmd-custom" name="extensions.nicolivehelper.listenercommand.custom" type="unichar"/>
     </preferences>
-    <vbox>
+    <vbox flex="1">
+      <hbox><checkbox preference="pref-enable-listenercommand" label="視聴者コマンドを有効にする"/></hbox>
+      <grid>
+	<columns>
+	  <column/>
+	  <column flex="1"/>
+	</columns>
+	<rows>
+	  <row>
+	    <label control="cmd-s" value="リクエストの確認(/s)"/><textbox id="cmd-s" preference="pref-cmd-s" emptytext="応答コメントを入力してください" flex="1"/>
+	  </row>
+	  <row>
+	    <label control="cmd-del" value="リクエストの削除(/del)"/><textbox id="cmd-del" preference="pref-cmd-del" emptytext="応答コメントを入力してください" flex="1"/>
+	  </row>
+	</rows>
+      </grid>
+      <label value="カスタムコマンド:"/>
+      <textbox disabled="true" multiline="true" emptytext="好きな視聴者コマンドを作成してください" flex="1"/>
+      <hbox><button label="デフォルトに戻す"/></hbox>
     </vbox>
   </prefpane>
 
@@ -433,14 +462,15 @@
 	  <tabpanel orient="vertical">
 	    <!-- comment -->
 	    <vbox flex="1">
-	      <checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントログ保存先は必ず指定してください"/>
+	      <hbox><checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="ニコ生の仕様上、視聴者コメントでのみ有効"/></hbox>
+	      <hbox><checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントログ保存先は必ず指定してください"/></hbox>
 	      <hbox align="center">
 		<label control="commentlog" value="コメントログ保存先:"/>
 		<filefield id="commentlog" flex="1"/>
 		<button label="参照..." oncommand="NLHPreference.refDirectory();"/>
 	      </hbox>
-	      <html:hr style="margin:1em;"/>
-	      <checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="ニコ生の仕様上、視聴者コメントでのみ有効"/>
+	      <label value="コメント入力補完プリセット:"/>
+	      <textbox multiline="true" flex="1"/>
 	    </vbox>
 	  </tabpanel>
 
@@ -449,9 +479,9 @@
 	    <vbox flex="1">
 	      <label value="放送終了3分前の警告表示方法:"/>
 	      <vbox style="margin-left: 1em;">
-		<checkbox preference="pref-notice-area" label="通知領域" flex="0"/>
-		<checkbox preference="pref-notice-dialog" label="ダイアログ"/>
-		<checkbox preference="pref-notice-comment" label="運営コメント"/>
+		<hbox><checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します" flex="0"/></hbox>
+		<hbox><checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します"/></hbox>
+		<hbox><checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コエントを使用して警告します"/></hbox>
 	      </vbox>
 
 	      <separator/>
@@ -478,8 +508,8 @@
 		    </row>
 		  </rows>
 		</grid>
-		<checkbox preference="pref-autoscroll" label="Helperを開いたとき、自動で生放送プレイヤーの位置までスクロールする"/>
-		<checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ有効"/>
+		<hbox><checkbox preference="pref-autoscroll" label="Helperを開いたとき、自動で生放送プレイヤーの位置までスクロールする"/></hbox>
+		<hbox><checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ有効"/></hbox>
 	      </vbox>
 	    </vbox>
 	  </tabpanel>
