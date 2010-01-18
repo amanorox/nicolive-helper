@@ -64,7 +64,7 @@
     </groupbox>
   </prefpane>
 
-  <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="$('caster-comment-type').value = $('pref-typeofvideoinfo').value; NLHPreference.loadPNameWhitelist();">
+  <prefpane id="nicolivehelper-perfpane-movieinfo" label="動画情報" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.loadPNameWhitelist();">
     <preferences>
       <preference id="pref-videoinfo1" name="extensions.nicolivehelper.videoinfo1" type="unichar"/>
       <preference id="pref-videoinfo2" name="extensions.nicolivehelper.videoinfo2" type="unichar"/>

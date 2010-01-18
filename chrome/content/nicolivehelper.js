@@ -684,7 +684,8 @@ var NicoLiveHelper = {
 	}
 	this._counter++;
 	this.commentstate = COMMENT_STATE_MOVIEINFO_BEGIN;
-	this.postCasterComment(sendstr,cmd);
+	let ismovieinfo = true;
+	this.postCasterComment(sendstr,cmd,ismovieinfo);
     },
 
     // 動画情報を送信開始する.
@@ -697,6 +698,7 @@ var NicoLiveHelper = {
 
     // 動画情報を復元する.
     revertMusicInfo:function(){
+	if( this.commentstate!=COMMENT_STATE_MOVIEINFO_DONE ) return;
 	let n = NicoLivePreference.revert_videoinfo;
 	if(n<=0) return;
 	let sendstr = NicoLivePreference.videoinfo[n-1].comment;
@@ -718,7 +720,8 @@ var NicoLiveHelper = {
 	default:
 	    break;
 	}
-	this.postCasterComment(sendstr,cmd);
+	let ismovieinfo = true;
+	this.postCasterComment(sendstr,cmd,ismovieinfo);
     },
 
     // 指定リク番号の曲を再生する(idxは1〜).
@@ -1096,7 +1099,11 @@ var NicoLiveHelper = {
     },
 
     // 主コメを投げる.
-    postCasterComment: function(comment,mail,retry){
+    // comment : 運営コメント
+    // mail : 運営コマンド
+    // ismovieinfo : 動画情報のときにtrue
+    // retry : 送信エラーになったときのリトライ時にtrue
+    postCasterComment: function(comment,mail,ismovieinfo,retry){
 	if(!this.iscaster) return;
 	if(this.isOffline()) return;
 	if(comment.length<=0) return;
@@ -1116,7 +1123,7 @@ var NicoLiveHelper = {
 		    }
 		    if( !retry ){ // 1回再送.
 			debugprint('failed: '+comment);
-			NicoLiveHelper.postCasterComment(comment,mail,true);
+			NicoLiveHelper.postCasterComment(comment,mail,ismovieinfo,true);
 		    }
 		    if(video_id && retry){
 			let str = video_id + "の再生に失敗しました";
@@ -1138,12 +1145,15 @@ var NicoLiveHelper = {
 		}else{
 		    switch( NicoLiveHelper.commentstate ){
 		    case COMMENT_STATE_MOVIEINFO_DONE:
-			clearInterval( NicoLiveHelper._commentrevertid );
-			NicoLiveHelper._commentrevertid = setInterval(
+			if( ismovieinfo ) break;
+			if( !ismovieinfo && comment.indexOf('/')==0 ) break;
+
+			clearInterval( NicoLiveHelper._revertcommentid );
+			NicoLiveHelper._revertcommentid = setInterval(
 			    function(){
 				NicoLiveHelper.revertMusicInfo();
-				clearInterval( NicoLiveHelper._commentrevertid );
-			    }, 10*1000 );
+				clearInterval( NicoLiveHelper._revertcommentid );
+			    }, 15*1000 );
 			break;
 		    default:
 			break;
