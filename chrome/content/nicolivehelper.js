@@ -2270,7 +2270,7 @@ var NicoLiveHelper = {
 	// sm0 sm1/co154 sm3/co154 sm2/co13879
 	let jingles = jingle.split(/\s+/);
 	let candidates = new Array();
-	let all;
+	let all = new Array();
 	for(let i=0,s;s=jingles[i];i++){
 	    let tmp;
 	    tmp = s.split(/\//);
@@ -2279,17 +2279,18 @@ var NicoLiveHelper = {
 		    candidates.push(tmp[0]);
 		}
 	    }else if(tmp.length==1){
-		all = tmp[0];
+		all.push(tmp[0]);
 	    }
 	}
 	if(candidates.length<=0){
-	    jingle = all;
+	    let n = GetRandomInt(0,all.length-1);
+	    jingle = all[n];
 	}else{
 	    let n = GetRandomInt(0,candidates.length-1);
 	    jingle = candidates[n];
 	}
-	debugprint('jingle:'+jingle);
 	if(!jingle) return;
+	debugprint('jingle:'+jingle);
 
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){
