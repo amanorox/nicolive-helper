@@ -24,12 +24,12 @@ var NicoLiveComment = {
 	    tr.className = this.colormap[comment.user_id];
 	}
 
-	if( NicoLivePreference.ngwordfiltering && this.isNGWord(comment.text) ){
-	    tr.className = "table_played";
-	}
-
 	if(comment.premium==3){
 	    tr.className = "table_casterselection";
+	}else{
+	    if( NicoLivePreference.ngwordfiltering && this.isNGWord(comment.text) ){
+		tr.className = "table_played";
+	    }	    
 	}
 
 	let td;
