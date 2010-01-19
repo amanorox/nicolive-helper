@@ -22,20 +22,7 @@ var NicoLiveOverlay = {
     },
 
     open:function(url,title,iscaster){
-	let prefs = new PrefsWrapper1("extensions.nicolivehelper.");
-	let pos;
-	try {
-	    pos = JSON.parse( prefs.getCharPref("window-pos") );
-	} catch (x) {
-	    pos = { x:0, y:0, w:0, h:0 };
-	}
-	let feature="chrome,resizable=yes";
-	if( !(pos.x==0 && pos.y==0 && pos.w==0 && pos.h==0) ){
-	    feature += ",width="+pos.w+",height="+pos.h;
-	    feature += ",top="+pos.y+",left="+pos.x;
-	}else{
-	    feature += ",centerscreen,width=720,height=512";
-	}
+	let feature="chrome,resizable=yes,width=720,height=512";
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
 	Application.storage.set("nico_live_caster",iscaster);
