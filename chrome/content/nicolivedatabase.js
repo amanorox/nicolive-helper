@@ -260,6 +260,8 @@ var NicoLiveDatabase = {
 
     // 検索本体.
     search:function(){
+	clearInterval(this._updatehandle);
+
 	let hbox = $('search-condition').getElementsByTagName('hbox');
 	let sql = "select *,1000*mylist_counter/view_counter as mylist_rate from nicovideo where ";
 	let cnt;
@@ -334,7 +336,7 @@ var NicoLiveDatabase = {
 	    handleCompletion:function(reason){
 		debugprint('search complete');
 		$('db-label').value = NicoLiveDatabase._searchresult.length + '件ありました';
-		NicoLiveDatabase.updateDatabase( NicoLiveDatabase._searchresult );
+		//NicoLiveDatabase.updateDatabase( NicoLiveDatabase._searchresult );
 	    },
 	    handleError:function(error){
 		debugprint('search error/'+error.result+'/'+error.message);
@@ -357,6 +359,7 @@ var NicoLiveDatabase = {
     // movies : 現在の動画情報の配列.
     updateDatabase:function(movies){
 	clearInterval(this._updatehandle);
+	if(!movies) return;
 	this._updatehandle = setInterval(
 	    function(){
 		NicoLiveDatabase.delayedUpdate(movies);

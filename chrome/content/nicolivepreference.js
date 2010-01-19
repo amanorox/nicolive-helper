@@ -87,6 +87,8 @@ var NicoLivePreference = {
 	restrict.view_from   = branch.getIntPref("request.view-from");
 	restrict.view_to     = branch.getIntPref("request.view-to");
 	this.restrict = restrict;
+
+	NicoLiveComment.loadPresetAutocomplete();
     },
 
     readBasicPrefs:function(){

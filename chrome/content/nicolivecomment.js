@@ -96,10 +96,9 @@ var NicoLiveComment = {
 	if(this.autocomplete.length>10){
 	    this.autocomplete.pop();
 	}
-	//tmp.value="sm7113282";
-	//tmp.comment="恋愛タイガー";
-	//this.autocomplete.unshift(tmp);
-	textbox.setAttribute("autocompletesearchparam",JSON.stringify(this.autocomplete));
+
+	let concat_autocomplete = this.preset_autocomplete.concat( this.autocomplete );
+	textbox.setAttribute("autocompletesearchparam",JSON.stringify(concat_autocomplete));
 
 	if(NicoLiveHelper.iscaster){
 	    NicoLiveHelper.postCasterComment(str,$('textbox-mail').value);
@@ -252,6 +251,30 @@ var NicoLiveComment = {
 	}
     },
 
+    loadPresetAutocomplete:function(){
+	let prefs = NicoLivePreference.getBranch();
+	let str;
+	try{
+	    str = prefs.getUnicharPref("preset-autocomplete");	
+	} catch (x) {
+	    str = "";
+	}
+	let list = str.split(/\n|\r|\r\n/);
+	this.preset_autocomplete = new Array();
+	while(list.length){
+	    let tmp = {};
+	    let line = list.shift();
+	    let data = line.split(",");
+	    if(line.length){
+		tmp.value = data[0];
+		tmp.comment = data[1];
+		this.preset_autocomplete.push(tmp);
+	    }
+	}
+	let concat_autocomplete = this.preset_autocomplete.concat( this.autocomplete );
+	$('textbox-comment').setAttribute("autocompletesearchparam",JSON.stringify(concat_autocomplete));
+    },
+
     init:function(){
 	this.regexstrings = new Array();
 	this.caseinsensitivestrings = new Array();
@@ -261,7 +284,7 @@ var NicoLiveComment = {
 	this.commentlog   = new Array();
 	this.namemap = NicoLiveDatabase.loadGPStorage("nico_live_kotehan",{});
 	this.autocomplete = NicoLiveDatabase.loadGPStorage("nico_live_autocomplete",[]);
-	$('textbox-comment').setAttribute("autocompletesearchparam",JSON.stringify(this.autocomplete));
+	this.loadPresetAutocomplete();
     },
     destroy:function(){
 	this.closeFile();

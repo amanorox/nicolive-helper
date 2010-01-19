@@ -449,6 +449,7 @@
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
 
+      <preference id="pref-preset-autocomplete" name="extensions.nicolivehelper.preset-autocomplete" type="unichar"/>
     </preferences>
     <vbox>
 
@@ -470,7 +471,7 @@
 		<button label="参照..." oncommand="NLHPreference.refDirectory();"/>
 	      </hbox>
 	      <label value="コメント入力補完プリセット:"/>
-	      <textbox disabled="true" emptytext="未実装" multiline="true" flex="1"/>
+	      <textbox preference="pref-preset-autocomplete" emptytext="1行に1つずつ、文字列(カンマ)コメント と入力します。例:/play sm7113282,初音ミクのライブOP1" tooltiptext="1行に1つずつ、文字列(カンマ)コメント と入力します。例:/play sm7113282,初音ミクのライブOP1" multiline="true" flex="1"/>
 	    </vbox>
 	  </tabpanel>
 
