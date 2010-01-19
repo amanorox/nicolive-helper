@@ -157,7 +157,7 @@
 	  <hbox>
 	    <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
 	  </hbox>
-	  
+
 	</tabpanel>
 	<tabpanel orient="vertical">
 	  <textbox id="pname-whitelist" multiline="true" flex="1" emptytext="1行につき1人のP名、D名を入力してください" tooltiptext="1行につき1人のP名,D名を入力してください"/>
@@ -429,7 +429,7 @@
       </grid>
       <label value="カスタムコマンド:"/>
       <textbox disabled="true" multiline="true" emptytext="好きな視聴者コマンドを作成してください(未実装)" flex="1"/>
-      <hbox><button label="デフォルトに戻す"/></hbox>
+      <hbox><button label="デフォルトに戻す" oncommand="NLHPreference.resetListenerCommand();"/></hbox>
     </vbox>
   </prefpane>
 

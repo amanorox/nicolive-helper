@@ -163,6 +163,12 @@ var NLHPreference = {
 	$('pref-msg-limitnumberofrequests').value = "リクエストは1人{=info.restrict.numberofrequests.toString()}件までです";
     },
 
+    // 視聴者コマンドの応答をリセットする.
+    resetListenerCommand:function(){
+	$('pref-cmd-s').value = "リクエスト:{requestnum}件({requesttime}) ストック:{stocknum}件({stocktime})<br>現在:{=NicoLiveHelper.allowrequest?\"リクエスト受付中\":\"リクエスト受付停止中\"}";
+	$('pref-cmd-del').value = ">>{=info.comment_no} {=info.cancelnum}件のリクエストを削除しました";
+    },
+
     // コメントログの保存先を選択.
     refDirectory:function(){
 	const nsIFilePicker = Components.interfaces.nsIFilePicker;
