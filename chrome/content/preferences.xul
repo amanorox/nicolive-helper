@@ -120,28 +120,28 @@
 		<hbox align="center"><label control="videoinfo1" value="1行目"/></hbox>
 		<hbox>
 		  <textbox preference="pref-videoinfo1-command" size="5" emptytext="コマンド"/>
-		  <textbox preference="pref-videoinfo1" id="videoinfo1" flex="1" emptytext="動画情報1行目"/>
+		  <textbox preference="pref-videoinfo1" id="videoinfo1" onkeypress="NLHPreference.previewVideoInfo(this.value);" flex="1" emptytext="動画情報1行目"/>
 		</hbox>
 	      </row>
 	      <row>
 		<hbox align="center"><label control="videoinfo2" value="2行目"/></hbox>
 		<hbox>
 		  <textbox preference="pref-videoinfo2-command" size="5" emptytext="コマンド"/>
-		  <textbox preference="pref-videoinfo2" id="videoinfo2" flex="1" emptytext="動画情報2行目"/>
+		  <textbox preference="pref-videoinfo2" id="videoinfo2" onkeypress="NLHPreference.previewVideoInfo(this.value);" flex="1" emptytext="動画情報2行目"/>
 		</hbox>
 	      </row>
 	      <row>
 		<hbox align="center"><label control="videoinfo3" value="3行目"/></hbox>
 		<hbox>
 		  <textbox preference="pref-videoinfo3-command" size="5" emptytext="コマンド"/>
-		  <textbox preference="pref-videoinfo3" id="videoinfo3" flex="1" emptytext="動画情報3行目"/>
+		  <textbox preference="pref-videoinfo3" id="videoinfo3" onkeypress="NLHPreference.previewVideoInfo(this.value);" flex="1" emptytext="動画情報3行目"/>
 		</hbox>
 	      </row>
 	      <row>
 		<hbox align="center"><label control="videoinfo4" value="4行目"/></hbox>
 		<hbox>
 		  <textbox preference="pref-videoinfo4-command" size="5" emptytext="コマンド"/>
-		  <textbox preference="pref-videoinfo4" id="videoinfo4" flex="1" emptytext="動画情報4行目"/>
+		  <textbox preference="pref-videoinfo4" id="videoinfo4" onkeypress="NLHPreference.previewVideoInfo(this.value);" flex="1" emptytext="動画情報4行目"/>
 		</hbox>
 	      </row>
 	      <row>
@@ -157,6 +157,9 @@
 	  <hbox>
 	    <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
 	  </hbox>
+
+	  <html:div id="preview-videoinfo" style="font-family:Arial; background-color: black; color:white;">
+	  </html:div>
 
 	</tabpanel>
 	<tabpanel orient="vertical">
