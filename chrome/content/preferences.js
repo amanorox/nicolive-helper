@@ -23,7 +23,7 @@ var NLHPreference = {
 	};
 	str = window.opener.NicoLiveHelper.replaceMacros(str,info);
 	Application.console.log(str);
-	$('preview-videoinfo').innerHTML = "<html:b>"+str+"</html:b>";
+	$('preview-videoinfo').innerHTML = str;
     },
 
     initDB:function(){

@@ -158,7 +158,7 @@
 	    <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
 	  </hbox>
 
-	  <html:div id="preview-videoinfo" style="font-family:Arial; background-color: black; color:white;">
+	  <html:div id="preview-videoinfo" style="font-family:Arial; font-weight: bold; font-size:11pt; background-color: black; color:white;">
 	  </html:div>
 
 	</tabpanel>
