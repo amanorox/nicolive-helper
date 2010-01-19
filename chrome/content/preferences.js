@@ -1,9 +1,6 @@
 var NLHPreference = {
 
     previewVideoInfo:function(str){
-	str = str.replace(/<\/(.*?)>/g,"</html:$1>");
-	str = str.replace(/<([^/].*?)>/g,"<html:$1>");
-	str = str.replace(/html:br/g,"html:br/");
 	let info = {
 	    cno: 99,
 	    tags: ["ミクオリジナル曲","初音ミク","くちばしP","私の時間","VOCALOID殿堂入り","6/17発売「Vocalostar」収録曲","かわいいミクうた","弾幕ソング","職人とみんなの暖かいコメで作る動画"],
@@ -22,6 +19,9 @@ var NLHPreference = {
 	    pname: "くちばしP"
 	};
 	str = window.opener.NicoLiveHelper.replaceMacros(str,info);
+	str = str.replace(/<\/(.*?)>/g,"</html:$1>");
+	str = str.replace(/<([^/].*?)>/g,"<html:$1>");
+	str = str.replace(/html:br/g,"html:br/");
 	Application.console.log(str);
 	$('preview-videoinfo').innerHTML = str;
     },
