@@ -89,6 +89,8 @@ var NicoLivePreference = {
 	this.restrict = restrict;
 
 	NicoLiveComment.loadPresetAutocomplete();
+
+	this.ngwordfiltering = branch.getBoolPref("ngwordfiltering");
     },
 
     readBasicPrefs:function(){

@@ -360,6 +360,7 @@ var NicoLiveDatabase = {
     updateDatabase:function(movies){
 	clearInterval(this._updatehandle);
 	if(!movies) return;
+	this.delayedUpdate(movies);
 	this._updatehandle = setInterval(
 	    function(){
 		NicoLiveDatabase.delayedUpdate(movies);

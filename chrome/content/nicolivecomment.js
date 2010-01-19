@@ -23,7 +23,8 @@ var NicoLiveComment = {
 	}else{
 	    tr.className = this.colormap[comment.user_id];
 	}
-	if( this.isNGWord(comment.text) ){
+
+	if( NicoLivePreference.ngwordfiltering && this.isNGWord(comment.text) ){
 	    tr.className = "table_played";
 	}
 

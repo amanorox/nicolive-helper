@@ -69,3 +69,4 @@ pref("extensions.nicolivehelper.listenercommand.s","リクエスト:{requestnum}
 pref("extensions.nicolivehelper.listenercommand.del",">>{=info.comment_no} {=info.cancelnum}件のリクエストを削除しました");
 pref("extensions.nicolivehelper.listenercommand.custom","");
 pref("extensions.nicolivehelper.preset-autocomplete","");
+pref("extensions.nicolivehelper.ngwordfiltering",false);

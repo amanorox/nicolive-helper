@@ -449,6 +449,7 @@
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
 
+      <preference id="pref-ngwordfiltering" name="extensions.nicolivehelper.ngwordfiltering" type="bool"/>
       <preference id="pref-preset-autocomplete" name="extensions.nicolivehelper.preset-autocomplete" type="unichar"/>
     </preferences>
     <vbox>
@@ -463,6 +464,7 @@
 	  <tabpanel orient="vertical">
 	    <!-- comment -->
 	    <vbox flex="1">
+	      <hbox><checkbox preference="pref-ngwordfiltering" label="NGワード処理を行う" tooltiptext="NGワードを含むコメントのグレーアウト処理を行います"/></hbox>
 	      <hbox><checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="ニコ生の仕様上、視聴者コメントでのみ有効"/></hbox>
 	      <hbox><checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントログ保存先は必ず指定してください"/></hbox>
 	      <hbox align="center">
