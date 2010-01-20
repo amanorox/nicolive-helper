@@ -706,8 +706,8 @@ var NicoLiveHelper = {
 	clearInterval(this._sendmusicid);
 	clearInterval(this._revertcommentid); // 古い動画情報復帰は消しておこう.
 	this._counter = 0;
-	NicoLiveHelper._sendMusicInfo();
 	this._sendmusicid = setInterval( function(){ NicoLiveHelper._sendMusicInfo(); }, 6000);
+	NicoLiveHelper._sendMusicInfo();
     },
 
     // 動画情報を復元する.
