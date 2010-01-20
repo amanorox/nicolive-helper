@@ -281,6 +281,7 @@ var NicoLiveHelper = {
 			this.inplay = true;
 			this.musicstarttime = GetCurrentTime();
 			this.musicendtime   = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
+			this.sendMusicInfo();
 		    }
 		}
 		return;
@@ -760,7 +761,6 @@ var NicoLiveHelper = {
 	    str += " sub";
 	}
 	this.postCasterComment(str,""); // 再生.
-	this.sendMusicInfo(); // 曲情報の送信開始.
 
 	this.addPlayList(this.musicinfo);
 	NicoLiveRequest.update(this.requestqueue);
@@ -929,7 +929,7 @@ var NicoLiveHelper = {
     /*
      * 次に再生する動画をmusiclistから探し、1,2,3,...のインデックスを返す.
      */
-    chooseNextMusicToPlay:function(musiclist){
+    chooseNextMusicToPlay:function(musiclist,isstock){
 	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
 	if(tmp<0) tmp = 0;
 	let remain = 30*60 - tmp; // second.
@@ -951,7 +951,7 @@ var NicoLiveHelper = {
 		    continue;
 		}
 	    }
-	    if( !this.isPlayedMusic(item.video_id) ){
+	    if( !isstock || (isstock && !this.isPlayedMusic(item.video_id)) ){
 		notplayed.push(item);
 	    }
 	}
@@ -975,7 +975,7 @@ var NicoLiveHelper = {
 
     // ストック内の再生されていない動画のうちどの動画を再生するか選択して再生する.
     chooseMusicFromStockAndPlay:function(){
-	let n = this.chooseNextMusicToPlay( this.stock );
+	let n = this.chooseNextMusicToPlay( this.stock, true );
 	if( n ){
 	    this.playStock( n, true);
 	    return true;
@@ -985,7 +985,7 @@ var NicoLiveHelper = {
 
     // リクエストから再生できる動画をピックアップして再生.
     chooseMusicFromRequestAndPlay:function(){
-	let n = this.chooseNextMusicToPlay( this.requestqueue );
+	let n = this.chooseNextMusicToPlay( this.requestqueue,false );
 	if( n ){
 	    this.playMusic( n );
 	    return true;
