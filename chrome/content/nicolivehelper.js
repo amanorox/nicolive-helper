@@ -1374,6 +1374,12 @@ var NicoLiveHelper = {
 	if(str){
 	    this.postCasterComment(str,command);
 	}
+	
+	let e = evaluateXPath(document,"//*[@id='toolbar-allowrequest']//*[@allowrequest='"+flg+"']");
+	if(e.length){
+	    $('toolbar-allowrequest').label = e[0].label;
+	}
+	debugprint(flg?"リクエスト許可":"リクエスト不可");
     },
 
     // リクエストリストに追加する.
