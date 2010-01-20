@@ -6,12 +6,9 @@
 
 table{
     border-collapse: collapse;
+    cursor: default;
 }
 
-/* コメントの枠線 */
-#comment_table tr{
-    border-bottom: 1px solid #cccccc;
-}
 
 /* リクエスト、ストックの枠線 */
 table.requestview tr {
@@ -54,6 +51,15 @@ table#database-table tr:hover{
     background-color: #888888;
     color: white;
 }
+
+/* コメントの枠線 */
+#comment_table tr{
+    border-bottom: 1px solid #cccccc;
+}
+#comment_table tr:hover{
+    background-color: #eeeeee;
+}
+
 
 tr.color1{
     background-color: #f2eeff;
