@@ -1307,41 +1307,48 @@ var NicoLiveHelper = {
     // 再生方式を指定.
     setPlayStyle:function(style){
 	this.playstyle = style;
-
 	this.setConsumptionRatePlay(false);
 
 	switch(style){
 	case 0:// 手動.
 	    this.setAutoplay(0);
 	    this.setRandomplay(false);
-	    debugprint("手動再生にしました");
+	    debugprint("手動順次");
 	    break;
 	case 1:// 自動順次
 	    this.setAutoplay(1);
 	    this.setRandomplay(false);
-	    debugprint("自動順次にしました");
+	    debugprint("自動順次");
 	    break;
 	case 2:// 自動ランダム
 	    this.setAutoplay(1);
 	    this.setRandomplay(true);
-	    debugprint("自動ランダムにしました");
+	    debugprint("自動ランダム");
 	    break;
 	case 3:// 手動ランダム.
 	    this.setAutoplay(0);
 	    this.setRandomplay(true);
+	    debugprint("手動ランダム");
 	    break;
 	case 4:// 手動消化率.
 	    this.setAutoplay(0);
 	    this.setConsumptionRatePlay(true);
+	    debugprint("手動消化率順");
 	    break;
 	case 5:// 自動消化率.
 	    this.setAutoplay(1);
 	    this.setConsumptionRatePlay(true);
+	    debugprint("自動消化率順");
 	    break;
 	default:
 	    break;
 	}
 	NicoLivePreference.writePlayStyle();
+	
+	let e = evaluateXPath(document,"//*[@id='toolbar-playstyle']//*[@playstyle='"+this.playstyle+"']");
+	if(e.length){
+	    $('toolbar-playstyle').label = e[0].label;
+	}
     },
 
     // 自動再生の設定をする.

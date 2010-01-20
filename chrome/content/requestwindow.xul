@@ -76,13 +76,14 @@
   <toolbar id="global-menu">
     <toolbarbutton label="手動再生" type="menu" id="toolbar-playstyle">
       <menupopup id="toolbar-popup-playstyle">
-	<menuitem label="手動再生" oncommand="NicoLiveHelper.setPlayStyle(0); setLabel('toolbar-playstyle',this.label);" />
-	<menuitem label="自動(順次)" oncommand="NicoLiveHelper.setPlayStyle(1); setLabel('toolbar-playstyle',this.label);" />
-	<menuitem label="自動(ランダム)" oncommand="NicoLiveHelper.setPlayStyle(2); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem label="手動再生"       playstyle="0" oncommand="NicoLiveHelper.setPlayStyle(0);"/>
+	<menuitem label="自動(順次)"     playstyle="1" oncommand="NicoLiveHelper.setPlayStyle(1);"/>
 	<menuseparator/>
-	<menuitem label="手動(ランダム)" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(3); setLabel('toolbar-playstyle',this.label);" />
-	<menuitem label="手動(消化数順)" tooltiptext="次曲をリクエスト消化数順に選択します" oncommand="NicoLiveHelper.setPlayStyle(4); setLabel('toolbar-playstyle',this.label);" />
-	<menuitem label="自動(消化数順)" tooltiptext="次曲をリクエスト消化数順に選択します" oncommand="NicoLiveHelper.setPlayStyle(5); setLabel('toolbar-playstyle',this.label);" />
+	<menuitem label="手動(ランダム)" playstyle="3" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(3);"/>
+	<menuitem label="自動(ランダム)" playstyle="2" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(2);"/>
+	<menuseparator/>
+	<menuitem label="手動(消化数順)" playstyle="4" tooltiptext="次曲をリクエスト消化数順に選択します" oncommand="NicoLiveHelper.setPlayStyle(4);"/>
+	<menuitem label="自動(消化数順)" playstyle="5" tooltiptext="次曲をリクエスト消化数順に選択します" oncommand="NicoLiveHelper.setPlayStyle(5);"/>
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="リクエスト許可" type="menu" id="toolbar-allowrequest">
