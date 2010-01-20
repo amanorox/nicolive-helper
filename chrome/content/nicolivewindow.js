@@ -35,7 +35,9 @@ var NicoLiveWindow = {
     },
 
     defaultSize:function(){
-	this.resize(720,512);
+	let dw = window.outerWidth-window.innerWidth;
+	let dh = window.outerHeight-window.innerHeight;
+	this.resize(720+dw,512+dh);
     },
     restore:function(){
 	let def = {

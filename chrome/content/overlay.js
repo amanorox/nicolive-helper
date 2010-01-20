@@ -22,7 +22,7 @@ var NicoLiveOverlay = {
     },
 
     open:function(url,title,iscaster){
-	let feature="chrome,resizable=yes,width=720,height=512";
+	let feature="chrome,resizable=yes";
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
 	Application.storage.set("nico_live_caster",iscaster);
