@@ -497,7 +497,7 @@ var NicoLiveDatabase = {
 	    st.execute();
 	    st.finalize();
 	    debugprint(video_id+'をDBから削除');
-	    debugnotice(video_id+"をDBから削除しました");
+	    ShowNotice(video_id+"をDBから削除しました");
 	} catch (x) {
 	}
     },
@@ -610,7 +610,7 @@ var NicoLiveDatabase = {
 	}
 
 	if( this.getFavorite(video_id)<0 ){
-	    debugnotice(video_id+"は動画DBにない動画のため、レートは保存されません");
+	    ShowNotice(video_id+"は動画DBにない動画のため、レートは保存されません");
 	}
 
 	let st;

@@ -169,10 +169,18 @@ function debugalert(txt){
     alert(txt);
 }
 
-function debugnotice(txt){
+
+
+var noticeid;
+function ShowNotice(txt){
     $('noticewin').removeAllNotifications(false);
     $('noticewin').appendNotification(txt,null,null,
 				      $('noticewin').PRIORITY_WARNING_LOW,null);
+    clearInterval(noticeid);
+    noticeid = setInterval( function(){
+				$('noticewin').removeAllNotifications(false);
+				clearInterval(noticeid);
+			    }, 15*1000 );
 }
 
 function SetWindowTopMost(w,b){

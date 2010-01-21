@@ -18,7 +18,7 @@ var NicoLiveMylist = {
 		case 'ok':
 		    break;
 		case 'fail':
-		    debugnotice('マイリスト:'+result.error.description);
+		    ShowNotice('マイリスト:'+result.error.description);
 		    break;
 		default:
 		    break;
@@ -43,7 +43,7 @@ var NicoLiveMylist = {
 		    var token = tmp[2];
 		    NicoLiveMylist.addDeflist2(video_id, item_id, token);
 		} catch (x) {
-		    debugnotice('マイリスト登録に失敗しました');
+		    ShowNotice('マイリスト登録に失敗しました');
 		}
 	    }
 	};
@@ -70,7 +70,7 @@ var NicoLiveMylist = {
 		case 'ok':
 		    break;
 		case 'fail':
-		    debugnotice('マイリスト:'+result.error.description);
+		    ShowNotice('マイリスト:'+result.error.description);
 		    break;
 		default:
 		    break;
@@ -101,7 +101,7 @@ var NicoLiveMylist = {
 			debugprint('item_id='+item_id[1]);
 			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1]);
 		    } catch (x) {
-			debugnotice('マイリスト登録に失敗しました');
+			ShowNotice('マイリスト登録に失敗しました');
 		    }
 		}
 	    };
@@ -109,7 +109,7 @@ var NicoLiveMylist = {
 	    req.send('');
 	    debugprint('add to mylist:'+video_id+'->'+mylist_name);
 	} catch (x) {
-	    debugnotice('マイリスト登録に失敗しました');
+	    ShowNotice('マイリスト登録に失敗しました');
 	}
     },
 
@@ -220,7 +220,7 @@ var NicoLiveMylist = {
 		NicoLiveMylist.mylists = JSON.parse(req.responseText);
 
 		if( NicoLiveMylist.mylists.status=='fail'){
-		    debugnotice('マイリスト:'+NicoLiveMylist.mylists.error.description);
+		    ShowNotice('マイリスト:'+NicoLiveMylist.mylists.error.description);
 		    return;
 		}
 

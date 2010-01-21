@@ -34,14 +34,14 @@ var NicoLiveHelper = {
     last_res: 0,       // リスナーコメするのに必要なコメ番.
     postkey:"",        // リスナーコメするのに必要なキー.
 
-    serverconnecttime: 0, // 接続したときのサーバの時刻(epoc).
-    connecttime: 0,       // 接続したときのローカルPC時刻(epoc).
+    serverconnecttime: 0, // 接続したときのサーバの時刻(UNIX time).
+    connecttime: 0,       // 接続したときのローカルPC時刻(UNIX time).
     secofweek: 604800,    // 1週間の秒数(60*60*24*7).
 
-    starttime: 0,          // 放送の始まった時刻(sec) by getplayerstatus.
-    endtime: 0,            // 放送の終わる時刻(sec) by getpublishstatus.
-    musicstarttime: 0,     // 曲の再生開始時刻(sec) /playを受け取った時刻.
-    musicendtime: 0,       // 曲の終了予定時刻(sec) 上記+再生時間.
+    starttime: 0,          // 放送の始まった時刻(UNIX time) by getplayerstatus.
+    endtime: 0,            // 放送の終わる時刻(UNIX time) by getpublishstatus.
+    musicstarttime: 0,     // 曲の再生開始時刻(UNIX time) /playを受け取った時刻.
+    musicendtime: 0,       // 曲の終了予定時刻(UNIX time) 上記+再生時間.
 
     iscaster: false,       // 主フラグ.
     inplay: false,         // 再生中フラグ.
@@ -262,9 +262,9 @@ var NicoLiveHelper = {
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		let vid = dat[2];
+		this.musicstarttime = GetCurrentTime();
 		if(!this.iscaster){
 		    // リスナーの場合は動画情報を持っていないので取ってくる.
-		    this.musicstarttime = GetCurrentTime();
 		    this.setCurrentVideoInfo(vid,false);
 		    this.inplay = true;
 		}else{
@@ -272,14 +272,12 @@ var NicoLiveHelper = {
 			// 直接運営コマンドを入力したときとかで、
 			// 現在再生しているはずの曲と異なる場合.
 			// 動画情報の主コメは動画情報を取ってきてから.
-			this.musicstarttime = GetCurrentTime();
 			this.setCurrentVideoInfo(vid,true);
 			this.inplay = true;
 		    }else{
 			// 自動再生の準備.
 			this.setupPlayNextMusic(this.musicinfo.length_ms);
 			this.inplay = true;
-			this.musicstarttime = GetCurrentTime();
 			this.musicendtime   = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
 			this.sendMusicInfo();
 		    }
@@ -403,7 +401,7 @@ var NicoLiveHelper = {
 	let tmp = new Array();
 	let cnt=0;
 	// 単純なループの中で単純にspliceで取るわけにはいかないので
-	// 削除しないもののリスト作って取り替えることに
+	// 削除しない動画リスト作って取り替えることに
 	for(let i=0,item;item=this.requestqueue[i];i++){
 	    if(item.user_id==user_id){
 		if( !vid || item.video_id==vid ){
@@ -930,9 +928,15 @@ var NicoLiveHelper = {
      * 次に再生する動画をmusiclistから探し、1,2,3,...のインデックスを返す.
      */
     chooseNextMusicToPlay:function(musiclist,isstock){
-	let tmp = GetCurrentTime()-this.starttime;  // 経過時間.
-	if(tmp<0) tmp = 0;
-	let remain = 30*60 - tmp; // second.
+	let now = GetCurrentTime();
+	let remain; // sec.
+	if( this.endtime ){
+	    remain = this.endtime-now;
+	}else{
+	    let tmp = now-this.starttime;  // 経過時間.
+	    if(tmp<0) tmp = 0;
+	    remain = 30*60 - tmp;
+	}
 	let limit30min = NicoLivePreference.limit30min;
 	let carelosstime = NicoLivePreference.carelosstime;
 	let notplayed = new Array();
@@ -1204,7 +1208,7 @@ var NicoLiveHelper = {
 	if(!comment) return;
 	if(comment.length<=0) return;
 	if(this.previouschat==comment){
-	    debugnotice("同じコメの連投はできません");
+	    ShowNotice("同じコメの連投はできません");
 	    return;
 	}
 	this._getpostkeycounter = 0;
@@ -1471,7 +1475,7 @@ var NicoLiveHelper = {
 	idx--;
 	let music = this.stock[idx];
 	if(this.isRequestedMusic(music.video_id)){
-	    debugnotice(music.video_id+'はリクエスト済みです');
+	    ShowNotice(music.video_id+'はリクエスト済みです');
 	    return;
 	}
 	this.addRequestQueue(music);
@@ -1835,7 +1839,7 @@ var NicoLiveHelper = {
 		this.getpostkey();
 		break;
 	    case 1: // リスナーコメ投稿規制.
-		debugnotice('コメント投稿規制中');
+		ShowNotice('コメント投稿規制中');
 		break;
 	    default:
 		break;
@@ -1856,6 +1860,7 @@ var NicoLiveHelper = {
     },
 
     // コメントサーバに接続.
+    // getplayerstatusでコメントサーバを調べたあとに呼ばれる.
     connectCommentServer: function(server,port,thread){
 	//<thread thread="1005799549" res_from="-50" version="20061206"/>
 	var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"].getService(Components.interfaces.nsISocketTransportService);
@@ -1919,14 +1924,17 @@ var NicoLiveHelper = {
 					   NicoLiveHelper.heartbeat();
 				       }, 1*60*1000);
 	this.sendStartupComment();
-
 	if( NicoLivePreference.isjingle ) this.playJingle();
+
+	if( this.iscaster ){
+	    this.getpublishstatus();// obtain end_time.
+	}
 
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
 	    NicoLiveComment.openFile(this.request_id);
 	}
-	NicoLiveComment.getNGWords();
+	NicoLiveComment.getNGWords();// obtain NG words list.
 
 	debugprint('Server clock:'+GetDateString(this.serverconnecttime*1000));
 	debugprint('PC clock:'+GetDateString(this.connecttime*1000));
@@ -1976,9 +1984,7 @@ var NicoLiveHelper = {
     showNotice3minleft:function(){
 	let str = "放送時間残り3分になりました";
 	if( NicoLivePreference.notice.area ){
-	    $('noticewin').removeAllNotifications(false);
-	    $('noticewin').appendNotification(str,null,null,
-					      $('noticewin').PRIORITY_WARNING_LOW,null);
+	    ShowNotice(str);
 	}
 	if( NicoLivePreference.notice.comment ){
 	    this.postCasterComment(str,"");
@@ -1994,23 +2000,30 @@ var NicoLiveHelper = {
 	let playprogress = $('statusbar-music-progressmeter');
 	let musictime = $('statusbar-music-name');
 	let progress,progressbar;
-	let str;
 	let liveprogress = $('statusbar-live-progress');
-	let p = GetCurrentTime() - this.starttime;
-	let n = Math.floor(p / (30*60));
+	let now = GetCurrentTime();
+	let p = now - this.starttime;  // Progress
+	let n = Math.floor(p/(30*60)); // 30分単位に0,1,2,...
 	if(p<0) p = 0;
 	liveprogress.label = GetTimeString(p);
 
-	if( n>=0 && p > 27*60 + 30*60*n ){
-	    // 27分+30*n(n=0,1,2,...)越えたら
-	    if(!this.isnotified[n]){
-		this.showNotice3minleft();
-		this.isnotified[n] = true;
+	if( (this.endtime && this.endtime-now < 3*60) ||
+	    (!this.endtime && n>=0 && p > 27*60 + 30*60*n) ){
+		// 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
+		// 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
+		if(!this.isnotified[n]){
+		    this.showNotice3minleft();
+		    this.isnotified[n] = true;
+		}
 	    }
+	if( this.endtime && this.endtime<now ){
+	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
+	    this.getpublishstatus();
 	}
 
 	if(!this.musicinfo.length_ms){ currentmusic.setAttribute("tooltiptext",""); return; }
 
+	let str;
 	str = "投稿日/"+GetDateString(this.musicinfo.first_retrieve*1000)
 	    + " 再生数/"+this.musicinfo.view_counter
 	    + " コメント/"+this.musicinfo.comment_num
@@ -2068,15 +2081,15 @@ var NicoLiveHelper = {
 		return;
 	    }
 	    try {
-		NicoLiveHelper.user_id  = xml.getElementsByTagName('user_id')[0].textContent;
+		NicoLiveHelper.user_id    = xml.getElementsByTagName('user_id')[0].textContent;
 		NicoLiveHelper.is_premium = xml.getElementsByTagName('is_premium')[0].textContent;
-		NicoLiveHelper.addr = xml.getElementsByTagName('addr')[0].textContent;
-		NicoLiveHelper.port = xml.getElementsByTagName('port')[0].textContent;
-		NicoLiveHelper.thread = xml.getElementsByTagName('thread')[0].textContent;
-		NicoLiveHelper.iscaster = xml.getElementsByTagName('room_seetno')[0].textContent;
-		NicoLiveHelper.starttime = parseInt(xml.getElementsByTagName('start_time')[0].textContent);
-		NicoLiveHelper.opentime = parseInt(xml.getElementsByTagName('open_time')[0].textContent);
-		NicoLiveHelper.community = xml.getElementsByTagName('default_community')[0].textContent;
+		NicoLiveHelper.addr       = xml.getElementsByTagName('addr')[0].textContent;
+		NicoLiveHelper.port       = xml.getElementsByTagName('port')[0].textContent;
+		NicoLiveHelper.thread     = xml.getElementsByTagName('thread')[0].textContent;
+		NicoLiveHelper.iscaster   = xml.getElementsByTagName('room_seetno')[0].textContent;
+		NicoLiveHelper.starttime  = parseInt(xml.getElementsByTagName('start_time')[0].textContent);
+		NicoLiveHelper.opentime   = parseInt(xml.getElementsByTagName('open_time')[0].textContent);
+		NicoLiveHelper.community  = xml.getElementsByTagName('default_community')[0].textContent;
 		// 座席番号2525....が主らしい.
 		if( NicoLiveHelper.iscaster.match(/^2525/) ){
 		    let i,item;
@@ -2256,6 +2269,7 @@ var NicoLiveHelper = {
 		NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
 		NicoLiveHelper.endtime = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
 		debugprint('token='+NicoLiveHelper.token);
+		debugprint('endtime='+NicoLiveHelper.endtime);
 		if( doconfigurestream ){
 		    NicoLiveHelper.configureStream( NicoLiveHelper.token );
 		}
@@ -2407,6 +2421,7 @@ var NicoLiveHelper = {
 	}
     },
 
+    // オフラインかどうか.
     isOffline:function(){
 	return this.request_id=="lv0";
     },
