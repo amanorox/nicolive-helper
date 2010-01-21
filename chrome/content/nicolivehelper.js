@@ -2083,17 +2083,6 @@ var NicoLiveHelper = {
 		    // load requests
 		    NicoLiveHelper.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
-		    // rebuild request/ppl
-		    if( NicoLiveHelper.isconsumptionrateplay ){
-			// リク消費順再生のとき、持ち越しリクを元に再構築.
-			for(i=0;item=NicoLiveHelper.requestqueue[i];i++){
-			    if(!item.user_id) item.user_id = "1";
-			    if(!NicoLiveHelper.request_per_ppl[item.user_id]){
-				NicoLiveHelper.request_per_ppl[item.user_id]=0;
-			    }
-			    NicoLiveHelper.request_per_ppl[item.user_id]++;
-			}
-		    }
 		    // load playlist
 		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
 		    for(i=0;i<NicoLiveHelper.playlist.length;i++){
