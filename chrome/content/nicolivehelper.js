@@ -1616,6 +1616,7 @@ var NicoLiveHelper = {
 		}
 		break;
 	    case "size_high":
+		info.filesize = parseInt(elem.textContent);
 		info.highbitrate = elem.textContent;
 		info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
 		break;
