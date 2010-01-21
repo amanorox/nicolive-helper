@@ -742,7 +742,6 @@ var NicoLiveHelper = {
 	if(this.requestqueue.length<=0){
 	    // リクなし.
 	    clearInterval(this._playnext);
-	    this.inplay = false;
 	    return;
 	}
 
@@ -1008,7 +1007,6 @@ var NicoLiveHelper = {
 	}
 	// リクもストックもない.
 	clearInterval(this._playnext);
-	this.inplay = false;
 	this.flg_pause = false;
     },
 
@@ -1020,7 +1018,6 @@ var NicoLiveHelper = {
 	if(this.flg_pause){
 	    // 一時停止が押されているので自動で次曲に行かない.
 	    clearInterval(this._playnext);
-	    this.inplay = false;
 	    this.flg_pause = false;
 	    return;
 	}
@@ -1030,7 +1027,6 @@ var NicoLiveHelper = {
 	}else{
 	    debugprint("Non-Auto Play Next Music");
 	    clearInterval(this._playnext);
-	    this.inplay = false;
 	}
     },
     // 自動再生を一時止める.
@@ -1152,7 +1148,6 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);
 			    debugprint(video_id+'をエラーリクエストタブに追加');
 			}
-			NicoLiveHelper.inplay = false;
 			NicoLiveHelper.musicinfo = {};
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
@@ -1356,8 +1351,7 @@ var NicoLiveHelper = {
     // 自動再生の設定をする.
     setAutoplay:function(flg){
 	this.isautoplay = flg==1?true:false;
-	// 自動再生オンにしたときに何も再生していなければ.
-	if(!this.inplay){
+	if(this.isautoplay && !this.inplay){ // 自動再生オンにしたときに何も再生していなければ.
 	    this.playNext();
 	}
 	debugprint(this.isautoplay?"Autoplay":"Non-autoplay");
@@ -1734,13 +1728,6 @@ var NicoLiveHelper = {
 		    case 0:
 			ans.movieinfo.error = false;
 			NicoLiveHelper.addRequestQueue(ans.movieinfo);
-			if(NicoLiveHelper.iscaster &&
-			   NicoLiveHelper.isautoplay &&
-			   !NicoLiveHelper.inplay &&
-			   NicoLiveHelper.requestqueue.length==1){
-			    // 自動再生かつ、何も再生していないかつ、キューに1つしかないときは即再生.
-			    //NicoLiveHelper.playNext();
-			}
 			break;
 		    default:
 			ans.movieinfo.error = true;
@@ -2030,7 +2017,7 @@ var NicoLiveHelper = {
 
 	progress = GetCurrentTime()-this.musicstarttime;
 	progressbar = Math.floor(progress / (this.musicinfo.length_ms/1000) * 100);
-	if(this.inplay){
+	if(this.inplay){ // 再生中のプログレスバーのツールチップ設定.
 	    playprogress.value = progressbar;
 	    let remain = this.musicinfo.length_ms/1000 - progress;
 	    if(remain<0){
@@ -2163,6 +2150,14 @@ var NicoLiveHelper = {
 	clearInterval(this._prepare);
 	let interval = parseInt(NicoLivePreference.nextplay_interval*1000);
 	let maxplay  = parseInt(NicoLivePreference.max_movieplay_time*60*1000);
+
+	clearInterval(this._playend);
+	this._playend = setInterval(
+	    function(){
+		NicoLiveHelper.inplay = false;
+		clearInterval(NicoLiveHelper._playend);
+	    }, du+interval );
+
 	if( this.isautoplay && maxplay>0 && du > maxplay ){
 	    // 自動再生のときだけ最大再生時間に合わせる.
 	    du = maxplay;
@@ -2284,7 +2279,7 @@ var NicoLiveHelper = {
     sendStartupComment:function(){
 	if( !this.iscaster ) return;
 	if( GetCurrentTime()-this.starttime > 180 ) return;
-	if( this.inplay ) return;
+	if( this.inplay ) return; // 何か再生中はスタートアップコメントを行わない.
 
 	this.startup_comments = NicoLivePreference.startup_comment.split(/\n|\r|\r\n/);
 	if(this.startup_comments.length){
@@ -2339,7 +2334,7 @@ var NicoLiveHelper = {
 	debugprint('jingle:'+jingle);
 
 	if( GetCurrentTime()-this.starttime < 180 ){
-	    if( !this.inplay ){
+	    if( !this.inplay ){ // 何も動画が再生されてなければジングル再生.
 		this.inplay = true;
 		let timerid = setInterval( function(){
 					       NicoLiveHelper.postCasterComment("/play "+jingle);
