@@ -263,22 +263,20 @@ var NicoLiveHelper = {
 	    if(dat){
 		let vid = dat[2];
 		this.musicstarttime = GetCurrentTime();
+		this.inplay = true;
 		if(!this.iscaster){
 		    // リスナーの場合は動画情報を持っていないので取ってくる.
 		    this.setCurrentVideoInfo(vid,false);
-		    this.inplay = true;
 		}else{
 		    if( this.musicinfo.video_id!=vid ){
 			// 直接運営コマンドを入力したときとかで、
 			// 現在再生しているはずの曲と異なる場合.
 			// 動画情報の主コメは動画情報を取ってきてから.
 			this.setCurrentVideoInfo(vid,true);
-			this.inplay = true;
 		    }else{
 			// 自動再生の準備.
+			this.musicendtime = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
 			this.setupPlayNextMusic(this.musicinfo.length_ms);
-			this.inplay = true;
-			this.musicendtime   = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
 			this.sendMusicInfo();
 		    }
 		}
@@ -743,7 +741,7 @@ var NicoLiveHelper = {
 	if(!this.iscaster) return;
 	if(this.requestqueue.length<=0){
 	    // リクなし.
-	    clearInterval(this._musicend);
+	    clearInterval(this._playnext);
 	    this.inplay = false;
 	    return;
 	}
@@ -751,7 +749,7 @@ var NicoLiveHelper = {
 	let music = this.removeRequest(idx); // obtain music information from request-queue and remove it
 	if(!music) return;
 
-	clearInterval(this._musicend);
+	clearInterval(this._playnext);
 	this.musicinfo = music;
 	let str = "/play " + this.musicinfo.video_id;
 	if($('do-subdisplay').checked){
@@ -1009,7 +1007,7 @@ var NicoLiveHelper = {
 	    if( this.chooseMusicFromStockAndPlay() ) return;
 	}
 	// リクもストックもない.
-	clearInterval(this._musicend);
+	clearInterval(this._playnext);
 	this.inplay = false;
 	this.flg_pause = false;
     },
@@ -1021,7 +1019,7 @@ var NicoLiveHelper = {
 
 	if(this.flg_pause){
 	    // 一時停止が押されているので自動で次曲に行かない.
-	    clearInterval(this._musicend);
+	    clearInterval(this._playnext);
 	    this.inplay = false;
 	    this.flg_pause = false;
 	    return;
@@ -1031,13 +1029,13 @@ var NicoLiveHelper = {
 	    this.playNext();
 	}else{
 	    debugprint("Non-Auto Play Next Music");
-	    clearInterval(this._musicend);
+	    clearInterval(this._playnext);
 	    this.inplay = false;
 	}
     },
     // 自動再生を一時止める.
     pausePlay:function(){
-	//clearInterval(this._musicend);
+	//clearInterval(this._playnext);
 	this.flg_pause = true;
     },
 
@@ -1048,7 +1046,7 @@ var NicoLiveHelper = {
 	    str += " sub";
 	}
 	this.postCasterComment(str,"");
-	clearInterval(this._musicend);
+	clearInterval(this._playnext);
     },
 
     dosoundonly:function(){
@@ -1950,7 +1948,7 @@ var NicoLiveHelper = {
 	try{
 	    clearInterval(this._updateprogressid);
 	    clearInterval(this._keepconnection);
-	    clearInterval(this._musicend);
+	    clearInterval(this._playnext);
 	    clearInterval(this._sendmusicid);
 	    clearInterval(this._prepare);
 	    clearInterval(this._heartbeat);
@@ -2161,7 +2159,7 @@ var NicoLiveHelper = {
     // 次曲再生のタイマをしかける.
     setupPlayNextMusic:function(du){
 	// du(duration)にはミリ秒を渡す.
-	clearInterval(this._musicend);
+	clearInterval(this._playnext);
 	clearInterval(this._prepare);
 	let interval = parseInt(NicoLivePreference.nextplay_interval*1000);
 	let maxplay  = parseInt(NicoLivePreference.max_movieplay_time*60*1000);
@@ -2169,7 +2167,7 @@ var NicoLiveHelper = {
 	    // 自動再生のときだけ最大再生時間に合わせる.
 	    du = maxplay;
 	}
-	this._musicend = setInterval(
+	this._playnext = setInterval(
 	    function(){
 		NicoLiveHelper.checkPlayNext();
 	    }, du+interval);
