@@ -1926,9 +1926,7 @@ var NicoLiveHelper = {
 	this.sendStartupComment();
 	if( NicoLivePreference.isjingle ) this.playJingle();
 
-	if( this.iscaster ){
-	    this.getpublishstatus();// obtain end_time.
-	}
+	this.getpublishstatus();// obtain end_time.
 
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
@@ -2258,8 +2256,10 @@ var NicoLiveHelper = {
     },
     // getpublishstatusを行い、end_timeとtokenを得る.
     getpublishstatus:function(doconfigurestream){
-	// getpublishstatus
+	if( !this.iscaster ) return;
 	if( !this.request_id || this.request_id=="lv0" ) return;
+	if( this._dogetpublishstatus ) return;
+
 	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + this.request_id;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
@@ -2273,10 +2273,12 @@ var NicoLiveHelper = {
 		if( doconfigurestream ){
 		    NicoLiveHelper.configureStream( NicoLiveHelper.token );
 		}
+		NicoLiveHelper._dogetpublishstatus = false;
 	    }
 	};
 	req.open('GET', url );
 	req.send("");
+	this._dogetpublishstatus = true;
     },
 
     // スタートアップコメントを送信開始する.
