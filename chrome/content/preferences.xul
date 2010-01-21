@@ -430,8 +430,10 @@
 	  </row>
 	</rows>
       </grid>
+<!--
       <label value="カスタムコマンド:"/>
       <textbox disabled="true" multiline="true" emptytext="好きな視聴者コマンドを作成してください(未実装)" flex="1"/>
+-->
       <hbox><button label="デフォルトに戻す" oncommand="NLHPreference.resetListenerCommand();"/></hbox>
     </vbox>
   </prefpane>

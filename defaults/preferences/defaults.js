@@ -67,6 +67,5 @@ pref("extensions.nicolivehelper.startup-comment","");
 pref("extensions.nicolivehelper.listenercommand.enable",false);
 pref("extensions.nicolivehelper.listenercommand.s","リクエスト:{requestnum}件({requesttime}) ストック:{stocknum}件({stocktime})<br>現在:{=NicoLiveHelper.allowrequest?\"リクエスト受付中\":\"リクエスト受付停止中\"}");
 pref("extensions.nicolivehelper.listenercommand.del",">>{=info.comment_no} {=info.cancelnum}件のリクエストを削除しました");
-pref("extensions.nicolivehelper.listenercommand.custom","");
 pref("extensions.nicolivehelper.preset-autocomplete","");
 pref("extensions.nicolivehelper.ngwordfiltering",false);
