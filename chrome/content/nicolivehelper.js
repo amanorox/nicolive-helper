@@ -1885,7 +1885,7 @@ var NicoLiveHelper = {
 	    }
 	};
 
-	let str = "<thread thread=\""+thread+"\" res_from=\"-50\" version=\"20061206\"/>\0";
+	let str = "<thread thread=\""+thread+"\" res_from=\"-100\" version=\"20061206\"/>\0";
 	this.coStream.writeString(str);
 	this.pump.asyncRead(dataListener,null);
 
@@ -1982,7 +1982,7 @@ var NicoLiveHelper = {
 	if(p<0) p = 0;
 	liveprogress.label = GetTimeString(p);
 
-	if( (this.endtime && this.endtime-now < 3*60) ||
+	if( (this.endtime && this.endtime-now>0 && this.endtime-now < 3*60) ||
 	    (!this.endtime && n>=0 && p > 27*60 + 30*60*n) ){
 		// 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
 		// 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
