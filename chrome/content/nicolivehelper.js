@@ -736,7 +736,6 @@ var NicoLiveHelper = {
 
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
-	this.flg_pause = false;
 	if(this.isOffline()) return;
 	if(!this.iscaster) return;
 	if(this.requestqueue.length<=0){
@@ -1007,7 +1006,6 @@ var NicoLiveHelper = {
 	}
 	// リクもストックもない.
 	clearInterval(this._playnext);
-	this.flg_pause = false;
     },
 
     // 現在の動画が再生終了したときに、次曲再生についてチェックする.
@@ -1015,10 +1013,9 @@ var NicoLiveHelper = {
     checkPlayNext:function(){
 	this.commentstate = COMMENT_STATE_NONE;
 
-	if(this.flg_pause){
+	if( $('do-pauseplay').checked ){
 	    // 一時停止が押されているので自動で次曲に行かない.
 	    clearInterval(this._playnext);
-	    this.flg_pause = false;
 	    return;
 	}
 	if(this.isautoplay){
@@ -1028,11 +1025,6 @@ var NicoLiveHelper = {
 	    debugprint("Non-Auto Play Next Music");
 	    clearInterval(this._playnext);
 	}
-    },
-    // 自動再生を一時止める.
-    pausePlay:function(){
-	//clearInterval(this._playnext);
-	this.flg_pause = true;
     },
 
     // 再生を止める.
@@ -2261,7 +2253,9 @@ var NicoLiveHelper = {
 	    if( req.readyState==4 && req.status==200 ){
 		let publishstatus = req.responseXML;
 		NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
-		NicoLiveHelper.endtime = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
+		let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
+		// 取得した終了時刻がより未来を指していたら更新.
+		if( NicoLiveHelper.endtime < tmp ) NicoLiveHelper.endtime = tmp;
 		debugprint('token='+NicoLiveHelper.token);
 		debugprint('endtime='+NicoLiveHelper.endtime);
 		if( doconfigurestream ){

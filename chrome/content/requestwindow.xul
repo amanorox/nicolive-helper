@@ -8,7 +8,7 @@
 	persist="screenX screenY width height sizemode"
 	width="720"
 	height="512"
-	title="NicoLive Helper 0.9.9">
+	title="NicoLive Helper 0.9.10">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -94,7 +94,7 @@
     </toolbarbutton>
     <toolbarbutton label="次曲" tooltiptext="次の動画を再生します" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();">
     </toolbarbutton>
-    <toolbarbutton label="一時停止" tooltiptext="自動再生を停止します" image="chrome://nicolivehelper/content/data/pause.png" oncommand="NicoLiveHelper.pausePlay();">
+    <toolbarbutton persist="checked" type="checkbox" autoCheck="true" id="do-pauseplay" label="一時停止" tooltiptext="一時停止のチェックボタンが押されている間、自動で次曲を再生しません" image="chrome://nicolivehelper/content/data/pause.png">
     </toolbarbutton>
     <toolbarbutton label="停止" tooltiptext="/stop" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();">
     </toolbarbutton>
@@ -102,7 +102,7 @@
     </toolbarbutton>
     <toolbarbutton tooltiptext="/swap" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');">
     </toolbarbutton>
-    <toolbarbutton persist="checked" label="サブ画面" id="do-subdisplay" autoCheck="true" type="checkbox"/>
+    <toolbarbutton persist="checked" label="サブ画面" id="do-subdisplay" autoCheck="true" type="checkbox" tooltiptext="サブ画面のチェックボタンが押されている間、再生、停止、サウンドオンリーをサブ画面に対して行います"/>
     <toolbarbutton label="コマンド" type="menu">
       <menupopup>
 	<menuitem label="連続コメント" oncommand="OpenContinuousCommentWindow();"/>
