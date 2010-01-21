@@ -2216,7 +2216,10 @@ var NicoLiveHelper = {
     },
 
 
+    // 配信開始ステータスに変える.
     configureStream:function(token){
+	// exclude=0ってパラメタだから
+	// 視聴者を排除(exclude)するパラメタをOFF(0)にするって意味だろうな.
 	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=exclude&value=0&token="+token;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
@@ -2237,6 +2240,13 @@ var NicoLiveHelper = {
     startBroadcasting:function(){
 	// getpublishstatus + configurestream
 	if( !this.request_id || this.request_id=="lv0" ) return;
+	let doconfigurestream = true;
+	this.getpublishstatus(doconfigurestream);
+    },
+    // getpublishstatusを行い、end_timeとtokenを得る.
+    getpublishstatus:function(doconfigurestream){
+	// getpublishstatus
+	if( !this.request_id || this.request_id=="lv0" ) return;
 	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + this.request_id;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
@@ -2244,9 +2254,11 @@ var NicoLiveHelper = {
 	    if( req.readyState==4 && req.status==200 ){
 		let publishstatus = req.responseXML;
 		NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
-		NicoLiveHelper.endtime = publishstatus.getElementsByTagName('end_time')[0].textContent;
+		NicoLiveHelper.endtime = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
 		debugprint('token='+NicoLiveHelper.token);
-		NicoLiveHelper.configureStream( NicoLiveHelper.token );
+		if( doconfigurestream ){
+		    NicoLiveHelper.configureStream( NicoLiveHelper.token );
+		}
 	    }
 	};
 	req.open('GET', url );
