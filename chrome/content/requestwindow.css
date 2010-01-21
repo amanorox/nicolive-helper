@@ -6,9 +6,10 @@
 
 table{
     border-collapse: collapse;
+}
+table.requestview{
     cursor: default;
 }
-
 
 /* リクエスト、ストックの枠線 */
 table.requestview tr {
