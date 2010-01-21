@@ -2016,6 +2016,7 @@ var NicoLiveHelper = {
 	    }
 	if( this.endtime && this.endtime<now ){
 	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
+	    this.endtime += 10*60;  // ここに再突入しないように、仮で10分終了時刻を延ばしておく.
 	    this.getpublishstatus();
 	}
 
