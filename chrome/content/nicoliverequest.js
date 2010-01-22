@@ -499,7 +499,7 @@ var NicoLiveRequest = {
 	td = tr.insertCell(tr.cells.length);
 
 	let vbox = CreateElement('vbox');
-	//vbox.setAttribute('context','popup-copyrequest');
+	vbox.setAttribute('context','popup-error-request');
 
 	this.addVideoInformation(vbox,item);
 

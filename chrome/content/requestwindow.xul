@@ -406,6 +406,16 @@
 
     <!-- request tab -->
     <menupopup id="popup-copyrequest">
+      <menu label="Train">
+	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	  <menuitem label="Class 1" value="Class 1"></menuitem>
+	  <menuitem label="Class 2" value="Class 2"></menuitem>
+	  <menuitem label="Class 3" value="Class 3"></menuitem>
+	</menupopup>
+      </menu>
+      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+      <menuseparator/>
+
       <menuitem label="コメ番順にソート" oncommand="NicoLiveHelper.sortRequestByCommentNo();"/>
       <menu label="昇順">
 	<menupopup>
@@ -449,6 +459,18 @@
       <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
 
+    <!-- for error tab -->
+    <menupopup id="popup-error-request">
+      <menu label="Train">
+	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	  <menuitem label="Class 1" value="Class 1"></menuitem>
+	  <menuitem label="Class 2" value="Class 2"></menuitem>
+	  <menuitem label="Class 3" value="Class 3"></menuitem>
+	</menupopup>
+      </menu>
+      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+    </menupopup>
+
     <!-- for database -->
     <menupopup id="popup-db-result">
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
@@ -474,14 +496,14 @@
     <menupopup id="popup-sort-stock">
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="ミクオリジナル" value="MikuOriginal"></menuitem>
-	  <menuitem label="アイドルマスター" value="IM@S"></menuitem>
-	  <menuitem label="MMD" value="MMD"></menuitem>
+	  <menuitem label="Class 1" value="Class 1"></menuitem>
+	  <menuitem label="Class 2" value="Class 2"></menuitem>
+	  <menuitem label="Class 3" value="Class 3"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
-
       <menuseparator/>
+
       <menu label="昇順">
 	<menupopup>
 	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortStock(0,1)"/>
@@ -527,6 +549,16 @@
 
     <!-- for playlist -->
     <menupopup id="popup-playlist">
+      <menu label="Train">
+	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	  <menuitem label="Class 1" value="Class 1"></menuitem>
+	  <menuitem label="Class 2" value="Class 2"></menuitem>
+	  <menuitem label="Class 3" value="Class 3"></menuitem>
+	</menupopup>
+      </menu>
+      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+      <menuseparator/>
+
       <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
       <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-playlist-additionalinfo"/>

@@ -274,10 +274,10 @@ var NicoLiveHelper = {
 			// 動画情報の主コメは動画情報を取ってきてから.
 			this.setCurrentVideoInfo(vid,true);
 		    }else{
-			// 自動再生の準備.
 			this.musicendtime = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
 			this.setupPlayNextMusic(this.musicinfo.length_ms);
 			this.sendMusicInfo();
+			this.addPlayList(this.musicinfo);
 		    }
 		}
 		return;
@@ -458,11 +458,7 @@ var NicoLiveHelper = {
 			}
 			NicoLiveHelper.inplay = true;
 		    }
-		    if(!NicoLiveHelper.iscaster){
-			// リスナーのプレイリストはNicoLiveHelper.addPlayList()を使ってはいけない.
-			$('played-list-textbox').value += music.video_id+" "+music.title+"\n";
-			NicoLiveHistory.addPlayList(music);
-		    }
+		    NicoLiveHelper.addPlayList(music);
 		}
 	    }
 	};
@@ -756,7 +752,6 @@ var NicoLiveHelper = {
 	}
 	this.postCasterComment(str,""); // 再生.
 
-	this.addPlayList(this.musicinfo);
 	NicoLiveRequest.update(this.requestqueue);
 
 	// 再生数をカウントアップ.
@@ -790,12 +785,11 @@ var NicoLiveHelper = {
 	for(i=0; item=this.stock[i]; i++){
 	    if( item.video_id==byid ) return item;
 	}
-	for(i=0; item=this.error_req[i]; i++){
-	    if( item.video_id==byid ) return item;
-	}
 	for(i=0; item=this.playlist[i]; i++){
 	    if( item.video_id==byid ) return item;
 	}
+	if(this.error_req["_"+byid]) return this.error_req["_"+byid];
+	debugprint(byid+" is not found");
 	return null;
     },
 
