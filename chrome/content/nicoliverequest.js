@@ -522,11 +522,20 @@ var NicoLiveRequest = {
 
     setTotalPlayTime:function(t){
 	let elem = $("total-playtime");
-	elem.value = "再生時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
+	elem.value = "総時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
     },
     setTotalStockTime:function(t){
 	let elem = $("stock-playtime");
 	elem.value = "残時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.stock.length+"件";
+    },
+
+    // 再生時間表示を更新する.
+    updateTotalPlayTime:function(){
+	let req = NicoLiveHelper.getTotalMusicTime();
+	let stock = NicoLiveHelper.getTotalStockTime();
+	this.setTotalPlayTime(req);
+	this.setTotalStockTime(stock);
+	NicoLiveHelper.updateRemainRequestsAndStocks();
     },
 
     // 動画ID(複数OK)でリクエストに追加.

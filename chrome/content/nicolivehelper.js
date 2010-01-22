@@ -796,7 +796,7 @@ var NicoLiveHelper = {
     // ステータスバーのリク数、ストック数の表示を更新
     updateRemainRequestsAndStocks:function(){
 	$('statusbar-remain').label = "R/"+this.requestqueue.length +" "+"S/"+this.countRemainStock();
-	let t = this.getTotalMusicTime();
+	let t = this.getTotalMusicTime(true);
 	let str = "再生時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
 	$('statusbar-remain').setAttribute("tooltiptext",str);
     },
@@ -1492,13 +1492,18 @@ var NicoLiveHelper = {
 	NicoLiveRequest.updateErrorRequest(this.error_req);
     },
 
-
-    getTotalPlayTime:function(list,excludeplayed){
+    getTotalPlayTime:function(list,excludeplayed,checkmaxplay){
 	let t=0;
 	let maxplay = parseInt(NicoLivePreference.max_movieplay_time*60*1000);
+	let s;
 	for(let i=0,item;item=list[i];i++){
 	    if( excludeplayed && item.isplayed ) continue;
-	    t += item.length_ms;
+	    if( maxplay>0 && checkmaxplay ){
+		s = maxplay>item.length_ms?item.length_ms:maxplay;
+	    }else{
+		s = item.length_ms;
+	    }
+	    t += s;
 	}
 	t /= 1000;
 	let min,sec;
@@ -1507,8 +1512,8 @@ var NicoLiveHelper = {
 	return {"min":min, "sec":sec};
     },
     // リクエスト曲の総再生時間を返す.
-    getTotalMusicTime:function(){
-	return this.getTotalPlayTime( this.requestqueue );
+    getTotalMusicTime:function(flg){
+	return this.getTotalPlayTime( this.requestqueue, false,flg );
     },
     getTotalStockTime:function(){
 	return this.getTotalPlayTime( this.stock, true );

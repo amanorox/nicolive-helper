@@ -105,6 +105,9 @@ var NicoLivePreference = {
 	this.carelosstime = branch.getBoolPref("carelosstime");
 	this.nextplay_interval = branch.getIntPref("nextplay-interval");
 	this.max_movieplay_time = branch.getIntPref("max-movieplay-time");
+	if( 'undefined'!=typeof NicoLiveHelper.requestqueue ){
+	    NicoLiveHelper.updateRemainRequestsAndStocks();
+	}
 
 	this.isautoreply = branch.getBoolPref("autoreply");
 	this.limitnewmovie = branch.getBoolPref("limitnewmovie");
