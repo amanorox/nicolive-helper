@@ -25,6 +25,8 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehistory.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewindow.js" />
 
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveclassifier.js" />
+
   <script>
   <![CDATA[
   function setLabel(textID,val){
@@ -474,6 +476,15 @@
 
     <!-- for stock -->
     <menupopup id="popup-sort-stock">
+      <menu label="Train">
+	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	  <menuitem label="Positive" value="positive"></menuitem>
+	  <menuitem label="Negative" value="negative"></menuitem>
+	</menupopup>
+      </menu>
+      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+
+      <menuseparator/>
       <menu label="昇順">
 	<menupopup>
 	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortStock(0,1)"/>

@@ -862,6 +862,27 @@ var NicoLiveRequest = {
 	NicoLiveHelper.postCasterComment('/prepare '+vid,""); // 動画IDを取れる.
     },
 
+    // 学習を行う.
+    doTrain:function(e){
+	let vbox = FindParentElement(document.popupNode,'vbox');
+	let vid = vbox.getAttribute('nicovideo_id');
+	debugprint('train:'+e.target+"/"+e.target.value+"/"+vid);
+	let item = NicoLiveHelper.findVideoInfo(vid);
+	if(item==null) return;
+
+	NicoLiveClassifier.train(item.tags,e.target.value);
+    },
+
+    // 分類を行う.
+    doClassify:function(e){
+	let vbox = FindParentElement(document.popupNode,'vbox');
+	let vid = vbox.getAttribute('nicovideo_id');
+	let item = NicoLiveHelper.findVideoInfo(vid);
+	if(item==null) return;
+
+	debugprint('classify:'+NicoLiveClassifier.classify(item.tags));
+    },
+
     init:function(){
 	debugprint("NicoLiveRequest.init");
 	this.visibleDetail = true;

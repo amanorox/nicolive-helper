@@ -780,6 +780,25 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
 	this.saveAll();
     },
+
+    // 動画IDを元にメモリ内の動画情報を検索、返す.
+    findVideoInfo:function(byid){
+	let i,item;
+	for(i=0; item=this.requestqueue[i]; i++){
+	    if( item.video_id==byid ) return item;
+	}
+	for(i=0; item=this.stock[i]; i++){
+	    if( item.video_id==byid ) return item;
+	}
+	for(i=0; item=this.error_req[i]; i++){
+	    if( item.video_id==byid ) return item;
+	}
+	for(i=0; item=this.playlist[i]; i++){
+	    if( item.video_id==byid ) return item;
+	}
+	return null;
+    },
+
     // ステータスバーのリク数、ストック数の表示を更新
     updateRemainRequestsAndStocks:function(){
 	$('statusbar-remain').label = "R/"+this.requestqueue.length +" "+"S/"+this.countRemainStock();
