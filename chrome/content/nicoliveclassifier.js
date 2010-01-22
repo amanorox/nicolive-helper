@@ -1,5 +1,5 @@
 /**
- * ベイズ推論による動画分類.
+ * Simple Bayesian Classifier
  */
 
 var NicoLiveClassifier = {
@@ -54,10 +54,8 @@ var NicoLiveClassifier = {
     // 語の尤度.
     calcLikelihoodOfTerm:function(){
 	let n = this.numberOfObjects( this.data.allterms );
-	debugprint('total words:'+n);
 
 	for (word in this.data.allterms) {
-	    debugprint(' word:'+word);
 	    for( label in this.data.bucket ){
 		let bucket = this.data.bucket[label];
 		let tmp = 1;
@@ -123,6 +121,7 @@ var NicoLiveClassifier = {
 	return maxlabel;
     },
 
+    // 学習内容をクリアする.
     create:function(){
 	debugprint("create new learning dictionary.");
 	this.data = new Object();

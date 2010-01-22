@@ -880,7 +880,7 @@ var NicoLiveRequest = {
 	let item = NicoLiveHelper.findVideoInfo(vid);
 	if(item==null) return;
 
-	debugprint('classify:'+NicoLiveClassifier.classify(item.tags));
+	debugalert('classify:'+NicoLiveClassifier.classify(item.tags));
     },
 
     init:function(){

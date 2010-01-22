@@ -24,15 +24,10 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivebrowser.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehistory.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewindow.js" />
-
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveclassifier.js" />
 
   <script>
   <![CDATA[
-  function setLabel(textID,val){
-    document.getElementById(textID).label=val;
-  }
-
   function OpenSettingsDialog(){
       var f='chrome,toolbar,modal=no,resizable=yes,centerscreen';
       if(NicoLivePreference.topmost){
@@ -127,6 +122,7 @@
 	<menuseparator/>
 	<menuitem label="配信開始(Experimental)" tooltiptext="配信開始します" oncommand="NicoLiveHelper.startBroadcasting();"/>
 	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
+	<menuitem label="分類エンジンの学習情報を初期化" oncommand="NicoLiveClassifier.create();"/>
 	<menuseparator/>
 	<menuitem label="ウィンドウサイズを初期状態に戻す" oncommand="NicoLiveWindow.defaultSize();"/>
 	<menuitem label="テスト" disabled="true" oncommand="NicoLiveHelper.test();"/>
@@ -478,8 +474,9 @@
     <menupopup id="popup-sort-stock">
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="Positive" value="positive"></menuitem>
-	  <menuitem label="Negative" value="negative"></menuitem>
+	  <menuitem label="ミクオリジナル" value="MikuOriginal"></menuitem>
+	  <menuitem label="アイドルマスター" value="IM@S"></menuitem>
+	  <menuitem label="MMD" value="MMD"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
