@@ -819,7 +819,7 @@ var NicoLiveHelper = {
     updateRemainRequestsAndStocks:function(){
 	$('statusbar-remain').label = "R/"+this.requestqueue.length +" "+"S/"+this.countRemainStock();
 	let t = this.getTotalMusicTime(true);
-	let str = "再生時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
+	let str = "リクエスト再生時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
 	$('statusbar-remain').setAttribute("tooltiptext",str);
     },
 
