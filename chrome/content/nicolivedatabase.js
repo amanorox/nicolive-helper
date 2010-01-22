@@ -114,6 +114,7 @@ var NicoLiveDatabase = {
     },
 
 
+    // DBにinsert to する.
     addDatabase:function(music){
 	// xmlToMovieInfoが作る構造でmusicを渡す.
 	let st;
@@ -139,6 +140,7 @@ var NicoLiveDatabase = {
 		    NicoLiveDatabase.addcounter++;
 		    $('db-label').value = "追加:"+NicoLiveDatabase.addcounter +"件/"
 			+ "更新:"+NicoLiveDatabase.updatecounter + "件";
+		    NicoLiveDatabase.ratecache["_"+music.video_id] = 0;
 		}
 	    },
 	    handleError:function(error){
@@ -625,7 +627,7 @@ var NicoLiveDatabase = {
 	this.ratecache["_"+video_id] = rate;
     },
     getFavorite:function(video_id){
-	if( this.ratecache["_"+video_id] ) return this.ratecache["_"+video_id];
+	if( "undefined"!=typeof this.ratecache["_"+video_id] ) return this.ratecache["_"+video_id];
 
 	let st = this.dbconnect.createStatement('SELECT favorite FROM nicovideo WHERE video_id = ?1');
 	let rate = -1;
