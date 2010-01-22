@@ -638,11 +638,16 @@ var NicoLiveRequest = {
     },
 
 
+    // ストックの再生済み状態をOFFにする.
     offPlayedStatus:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 	debugprint('off played flag:'+video_id);
 	NicoLiveHelper.offPlayedStatus(video_id);
+
+	this.updateStockViewForPlayedVideo(NicoLiveHelper.stock);	
+	this.setTotalStockTime(NicoLiveHelper.getTotalStockTime());
+	NicoLiveHelper.updateRemainRequestsAndStocks();
     },
 
     saveStockToFile:function(){
@@ -793,9 +798,10 @@ var NicoLiveRequest = {
     // ストックを再描画.
     // F5を押したときに使用.
     redrawStock:function(){
-	debugprint( (new Date()).getTime() );
+	debugprint('start:'+ (new Date()).getTime() );
 	this.updateStockView(NicoLiveHelper.stock);
-	debugprint( (new Date()).getTime() );
+	NicoLiveHelper.updateRemainRequestsAndStocks();
+	debugprint('end:'+ (new Date()).getTime() );
 	debugprint('redraw stock is done.');
     },
 

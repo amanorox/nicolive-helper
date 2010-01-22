@@ -152,7 +152,7 @@
 
   <hbox flex="1" style="margin-top: 5px;">
 
-    <tabbox flex="1">
+    <tabbox flex="1" persist="selectedIndex" id="mainwindow-tab">
       <tabs>
 	<tab label="リクエスト"/>
 	<tab label="ストック"/>

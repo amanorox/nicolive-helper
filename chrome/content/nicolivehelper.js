@@ -1479,26 +1479,13 @@ var NicoLiveHelper = {
 	NicoLiveRequest.updateErrorRequest(this.error_req);
     },
 
-    // リクエスト曲の総再生時間を返す.
-    getTotalMusicTime:function(){
+
+    getTotalPlayTime:function(list,excludeplayed){
 	let t=0;
-	let i;
-	let item;
-	for(i=0;item=this.requestqueue[i];i++){ t += item.length_ms; }
-	t /= 1000;
-	let min,sec;
-	min = parseInt(t/60);
-	sec = t%60;
-	return {"min":min, "sec":sec};
-    },
-    getTotalStockTime:function(){
-	let t=0;
-	let i;
-	let item;
-	for(i=0;item=this.stock[i];i++){
-	    if(!item.isplayed){
-		t += item.length_ms;
-	    }
+	let maxplay = parseInt(NicoLivePreference.max_movieplay_time*60*1000);
+	for(let i=0,item;item=list[i];i++){
+	    if( excludeplayed && item.isplayed ) continue;
+	    t += item.length_ms;
 	}
 	t /= 1000;
 	let min,sec;
@@ -1506,9 +1493,16 @@ var NicoLiveHelper = {
 	sec = t%60;
 	return {"min":min, "sec":sec};
     },
+    // リクエスト曲の総再生時間を返す.
+    getTotalMusicTime:function(){
+	return this.getTotalPlayTime( this.requestqueue );
+    },
+    getTotalStockTime:function(){
+	return this.getTotalPlayTime( this.stock, true );
+    },
     // 残り未再生ストック数を数える.
     countRemainStock:function(){
-	let i,item,t=0;;
+	let i,item,t=0;
 	for(i=0;item=this.stock[i];i++){
 	    if(!item.isplayed){
 		t++;
@@ -1763,8 +1757,6 @@ var NicoLiveHelper = {
 		item.isplayed = false;		
 	    }
 	}
-	//NicoLiveRequest.updateStockView(this.stock);
-	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
     },
 
     // リクエスト済みチェック.
