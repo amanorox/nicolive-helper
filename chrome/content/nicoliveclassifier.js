@@ -110,11 +110,10 @@ var NicoLiveClassifier = {
 	    evi += this.getPrior(l) * this.data.likelihood[l];
 	}
 	// Calculate posterior
-	let result = new Object();
+	let result = new Array();
 	for( l in this.data.bucket ){
 	    let post = this.getPrior(l) * this.data.likelihood[l] / evi;
-	    result[l] = post;
-	    debugprint(l+"[posterior]="+post);
+	    result.push( {"bucket":l, "post":post} );
 	}
 	return result;
     },
@@ -130,16 +129,21 @@ var NicoLiveClassifier = {
 
     classify:function(terms){
 	let result = this.getPosterior(terms);
-	let max = 0;
-	let maxlabel;
-	for( l in result ){
-	    if( max < result[l] ){
-		// posterior probabilityが最も高いやつを分類先とする.
-		max = result[l];
-		maxlabel = l;
-	    }
+
+	if( result.length <= 1 ){
+	    return undefined;
 	}
-	return maxlabel;
+
+	result.sort( function(a,b){
+			 return b.post - a.post;
+		     });
+	debugprint(result[0].bucket + "="+result[0].post);
+	debugprint(result[1].bucket + "="+result[1].post);
+
+	if( (result[0].post - result[1].post)<0.2 ){
+	    return undefined;
+	}
+	return result[0].bucket;
     },
 
     // 学習内容をクリアする.
