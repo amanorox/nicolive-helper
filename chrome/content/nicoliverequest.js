@@ -903,7 +903,11 @@ var NicoLiveRequest = {
 	let item = NicoLiveHelper.findVideoInfo(vid);
 	if(item==null) return;
 
-	NicoLiveClassifier.train(item.tags,e.target.value);
+	let str = new Array();
+	for(let i=0,tag; tag=item.tags[i];i++){
+	    str.push(ZenToHan(tag.toLowerCase()));
+	}
+	NicoLiveClassifier.train(str,e.target.value);
     },
 
     // 分類を行う.
@@ -913,7 +917,11 @@ var NicoLiveRequest = {
 	let item = NicoLiveHelper.findVideoInfo(vid);
 	if(item==null) return;
 
-	debugalert('classify:'+NicoLiveClassifier.classify(item.tags));
+	let str = new Array();
+	for(let i=0,tag; tag=item.tags[i];i++){
+	    str.push(ZenToHan(tag.toLowerCase()));
+	}
+	debugalert('classify:'+NicoLiveClassifier.classify(str));
     },
 
     init:function(){
