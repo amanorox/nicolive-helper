@@ -34,11 +34,15 @@ THE SOFTWARE.
  * ・最後に再生した動画の再生時間が経過したとき
  */
 
+// コメント送信状態.
 const COMMENT_STATE_NONE = 0;
 const COMMENT_STATE_MOVIEINFO_BEGIN = 1;
 const COMMENT_STATE_MOVIEINFO_DONE = 2;
-const COMMENT_STATE_SEND = 3;
 
+const COMMENT_VIEW_NORMAL = 0;
+const COMMENT_VIEW_HIDDEN_PERM = 1;
+
+// コメント表示状態.
 
 var NicoLiveHelper = {
     request_id: "",    // 生放送ID(lvXXXXXXX).
@@ -296,7 +300,9 @@ var NicoLiveHelper = {
 			this.musicendtime = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
 			this.setupPlayNextMusic(this.musicinfo.length_ms);
 			this.sendMusicInfo();
-			this.addPlayList(this.musicinfo);
+			// /playコマンドが飲まれたときに記録が残らないので.
+			// playMusic()で記録するようにに戻す.
+			//this.addPlayList(this.musicinfo);
 		    }
 		}
 		return;
@@ -437,17 +443,18 @@ var NicoLiveHelper = {
 	let chat = {};
 	chat.text = xmlchat.textContent;
 
-	let attrs = xmlchat.attributes;
-	chat.date      = attrs.getNamedItem('date');
-	chat.premium   = attrs.getNamedItem('premium');
-	chat.user_id   = attrs.getNamedItem('user_id');
-	chat.no        = attrs.getNamedItem('no');
-	chat.anonymity = attrs.getNamedItem('anonymity');
-	chat.date      = chat.date && parseInt(chat.date.nodeValue) || 0;
-	chat.premium   = chat.premium && parseInt(chat.premium.nodeValue) || 0;
-	chat.user_id   = chat.user_id && chat.user_id.nodeValue || "0";
-	chat.no        = chat.no && parseInt(chat.no.nodeValue) || 0;
-	chat.anonymity = chat.anonymity && parseInt(chat.anonymity.nodeValue) || 0;
+	chat.date      = xmlchat.getAttribute('date');
+	chat.premium   = xmlchat.getAttribute('premium');
+	chat.user_id   = xmlchat.getAttribute('user_id');
+	chat.no        = xmlchat.getAttribute('no');
+	chat.anonymity = xmlchat.getAttribute('anonymity');
+	chat.mail      = xmlchat.getAttribute('mail');
+
+	chat.date      = chat.date && parseInt(chat.date) || 0;
+	chat.premium   = chat.premium && parseInt(chat.premium) || 0;
+	chat.user_id   = chat.user_id || "0";
+	chat.anonymity = chat.anonymity && parseInt(chat.anonymity) || 0;
+	chat.no        = chat.no && parseInt(chat.no) || 0;
 	chat.comment_no = chat.no;
 
 	this.last_res = chat.no;
@@ -722,6 +729,7 @@ var NicoLiveHelper = {
 
     // 動画情報を復元する.
     revertMusicInfo:function(){
+	// 動画情報送信が終わっていないときは復元不要だし.
 	if( this.commentstate!=COMMENT_STATE_MOVIEINFO_DONE ) return;
 	let n = NicoLivePreference.revert_videoinfo;
 	if(n<=0) return;
@@ -769,11 +777,16 @@ var NicoLiveHelper = {
 	    str += " sub";
 	}
 	this.postCasterComment(str,""); // 再生.
+
 	// /playコマンドに限らず、運営コメを投げてstatus=okになっても
 	// コメが飲み込まれてサーバからやってこないことがある.
 	// その対策のために、一旦ここで次曲再生のタイマをしかけておく.
 	// /playの場合、正しくサーバからやってくれば改めてタイマを再セットする.
 	this.setupPlayNextMusic(this.musicinfo.length_ms);
+
+	// /playコマンドが飲み込まれたときに
+	// 再生履歴から再生できるように記録.
+	this.addPlayList(this.musicinfo);
 
 	NicoLiveRequest.update(this.requestqueue);
 
@@ -1216,7 +1229,9 @@ var NicoLiveHelper = {
 	let url = "http://watch.live.nicovideo.jp/api/broadcast/" + this.request_id;
 	req.open('POST', url );
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	let data = "body=" + encodeURIComponent( comment ) + "&is184=true";
+
+	// 主コメは184=falseにしても効果がないので常時trueに.
+	let data = "body="+encodeURIComponent(comment)+"&is184=true";
 	// コマンドは mail=green%20shita と付ける.
 	data += "&mail="+encodeURIComponent(mail);
 	req.send(data);
