@@ -474,7 +474,6 @@ var NicoLiveHelper = {
 		    if(setinterval){
 			// 手動で/playコマンドを入力したときにここに来る.
 			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
-			NicoLiveHelper.addPlayList(music);
 			if( !NicoLivePreference.nocomment_for_directplay ){
 			    NicoLiveHelper.sendMusicInfo();
 			}

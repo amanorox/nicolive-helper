@@ -57,6 +57,9 @@ var NicoLiveRequest = {
 	    img.className = 'stock-thumbnail';
 	    img.setAttribute("width",this.visibleDetail?130:65 +"px");
 	    img.setAttribute("height",this.visibleDetail?100:50 + "px");
+	}else{
+	    img.setAttribute("width","130px");
+	    img.setAttribute("height","100px");
 	}
 	a.appendChild(img);
 
