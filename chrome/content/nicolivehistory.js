@@ -42,6 +42,16 @@ var NicoLiveHistory = {
 	button.className = 'commandbtn';
 	button.addEventListener("command",function(){ NicoLiveHelper.addRequestQueue(item); },false);
 	hbox.appendChild(button);
+
+	button = CreateElement('button');
+	button.setAttribute('label','再生');
+	button.className = 'commandbtn';
+	button.addEventListener('command',
+				function(){
+				    NicoLiveHelper.requestqueue.unshift(item);
+				    NicoLiveHelper.playMusic(1);
+				},false);
+	hbox.appendChild(button);
 	vbox.appendChild(hbox);
 	td.appendChild(vbox);
     },
