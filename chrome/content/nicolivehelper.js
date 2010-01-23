@@ -1045,8 +1045,6 @@ var NicoLiveHelper = {
     // 現在の動画が再生終了したときに、次曲再生についてチェックする.
     // 動画を再生すると、必ずここに来る.
     checkPlayNext:function(){
-	this.commentstate = COMMENT_STATE_NONE;
-
 	if( $('do-pauseplay').checked ){
 	    // 一時停止が押されているので自動で次曲に行かない.
 	    clearInterval(this._playnext);
@@ -1054,6 +1052,7 @@ var NicoLiveHelper = {
 	}
 	if(this.isautoplay){
 	    debugprint("Auto Play Next Music");
+	    this.commentstate = COMMENT_STATE_NONE;
 	    this.playNext();
 	}else{
 	    debugprint("Non-Auto Play Next Music");
@@ -2178,8 +2177,9 @@ var NicoLiveHelper = {
 	this._playend = setInterval(
 	    function(){
 		NicoLiveHelper.inplay = false;
+		NicoLiveHelper.commentstate = COMMENT_STATE_NONE;
 		clearInterval(NicoLiveHelper._playend);
-	    }, du+interval );
+	    }, du );
 
 	if( this.isautoplay && maxplay>0 && du > maxplay ){
 	    // 自動再生のときだけ最大再生時間に合わせる.
