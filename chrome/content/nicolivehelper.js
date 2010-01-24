@@ -729,11 +729,14 @@ var NicoLiveHelper = {
 
     // 動画情報を送信開始する.
     sendMusicInfo:function(){
-	clearInterval(this._sendmusicid);
-	clearInterval(this._revertcommentid); // 古い動画情報復帰は消しておこう.
-	this._counter = 0;
-	this._sendmusicid = setInterval( function(){ NicoLiveHelper._sendMusicInfo(); }, 6000);
-	NicoLiveHelper._sendMusicInfo();
+	let func = function(){
+	    clearInterval(NicoLiveHelper._sendmusicid);
+	    clearInterval(NicoLiveHelper._revertcommentid); // 古い動画情報復帰は消しておこう.
+	    NicoLiveHelper._counter = 0;
+	    NicoLiveHelper._sendmusicid = setInterval( function(){ NicoLiveHelper._sendMusicInfo(); }, 6000);
+	    NicoLiveHelper._sendMusicInfo();
+	};
+	this.clearCasterCommentAndRun(func);
     },
 
     // 動画情報を復元する.
@@ -1246,6 +1249,37 @@ var NicoLiveHelper = {
 	// コマンドは mail=green%20shita と付ける.
 	data += "&mail="+encodeURIComponent(mail);
 	req.send(data);
+    },
+
+    // 必要に応じて/clsを送信したあとに、指定の関数を実行する.
+    clearCasterCommentAndRun:function(func){
+	if( 'function'!=typeof func ) return;
+	if( this.commentview==COMMENT_VIEW_HIDDEN_PERM ){
+	    // hidden/permのときは先に/clsを送らないといけない.
+	    if('function'!=typeof this.postclsfunc){
+		// postclsfuncが空いているので、登録したのち/cls
+		this.postclsfunc = func;
+		this.postCasterComment("/cls","");
+	    }else{
+		let timer = setInterval(
+		    function(){
+			if( 'function'!=typeof NicoLiveHelper.postclsfunc ){
+			    // postclsfuncが空いた.
+			    if( NicoLiveHelper.commentview!=COMMENT_VIEW_HIDDEN_PERM ){
+				// hidden/permじゃないので、/clsは不要.
+				func();
+			    }else{
+				// 登録したのち/cls
+				NicoLiveHelper.postclsfunc = func;
+				NicoLiveHelper.postCasterComment("/cls","");
+			    }
+			    clearInterval(timer);
+			}
+		    }, 1000);
+	    }
+	}else{
+	    func();
+	}
     },
 
     // リスナーコメを送信する.
@@ -2210,6 +2244,8 @@ var NicoLiveHelper = {
 		NicoLiveHelper.inplay = false;
 		NicoLiveHelper.commentstate = COMMENT_STATE_NONE;
 		clearInterval(NicoLiveHelper._playend);
+		// 曲が終わるときに動画情報復帰も停止.
+		clearInterval(NicoLiveHelper._revertcommentid);
 	    }, du );
 
 	if( this.isautoplay && maxplay>0 && du > maxplay ){

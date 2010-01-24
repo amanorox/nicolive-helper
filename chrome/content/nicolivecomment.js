@@ -144,12 +144,12 @@ var NicoLiveComment = {
 	let mail = $('textbox-mail').value;
 
 	if(NicoLiveHelper.iscaster){
-	    if( $('overwrite-hidden-perm').checked && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
+	    if( $('overwrite-hidden-perm').checked ){
 		// 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
-		NicoLiveHelper.postclsfunc = function(){
+		let func = function(){
 		    NicoLiveHelper.postCasterComment(str,mail,COMMENT_MSG_TYPE_NORMAL);
 		};
-		NicoLiveHelper.postCasterComment("/cls","",COMMENT_MSG_TYPE_NORMAL);
+		NicoLiveHelper.clearCasterCommentAndRun(func);
 	    }else{
 		NicoLiveHelper.postCasterComment(str,mail,COMMENT_MSG_TYPE_NORMAL);
 	    }
