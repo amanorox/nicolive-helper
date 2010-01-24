@@ -1234,6 +1234,7 @@ var NicoLiveHelper = {
 	    this.anchor.counter = 0;
 	    debugprint("アンカー受付:コメ番"+start_cno+"から"+end_cno+"まで"+num+"個");
 	}
+	if(comment.length<=0) return; // マクロ展開したあとにコメが空になったら.
 
 	let url = "http://watch.live.nicovideo.jp/api/broadcast/" + this.request_id;
 	req.open('POST', url );
@@ -1421,7 +1422,7 @@ var NicoLiveHelper = {
 	if(str){
 	    this.postCasterComment(str,command);
 	}
-	
+
 	let e = evaluateXPath(document,"//*[@id='toolbar-allowrequest']//*[@allowrequest='"+flg+"']");
 	if(e.length){
 	    $('toolbar-allowrequest').label = e[0].label;
