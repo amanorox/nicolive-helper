@@ -307,7 +307,7 @@ var NicoLiveHelper = {
 		return;
 	    }
 
-	    if( chat.text.indexOf("/cls")==0 ){
+	    if( chat.text.indexOf("/cls")==0 || chat.text.indexOf("/clear")==0 ){
 		this.commentview = COMMENT_VIEW_NORMAL;
 		debugprint("switch to VIEW_NORMAL");
 		if( 'function'==typeof this.postclsfunc ){
