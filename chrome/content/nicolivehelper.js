@@ -1428,7 +1428,7 @@ var NicoLiveHelper = {
 	}
 	debugprint(flg?"リクエスト許可":"リクエスト不可");
 
-	this.revertMusicInfo();
+	//this.revertMusicInfo();
     },
 
     // リクエストリストに追加する.
