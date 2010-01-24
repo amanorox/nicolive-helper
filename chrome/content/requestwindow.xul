@@ -273,7 +273,7 @@
 		     onkeypress="NicoLiveComment.postComment(this,event);"
 		     ontextreverted="this.select();"
 		     />
-	    <checkbox persist="checked" id="overwrite-hidden-perm" label="上コメに表示" tooltiptext="直前にhidden+/permでコメントした場合、/clsで運営コメントを消去してからコメントします"/>
+	    <checkbox persist="checked" id="overwrite-hidden-perm" label="運営コメ欄に表示" tooltiptext="直前にhidden+/permでコメントした場合、/clsで運営コメントを消去してからコメントします"/>
 	    <!-- <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/> -->
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto;">
@@ -399,6 +399,9 @@
     <!-- for comment -->
     <menupopup id="popup-comment">
       <menuitem label="コテハン設定" oncommand="NicoLiveComment.addName();"/>
+      <menuitem label="リフレクション登録" tooltiptext="視聴者のコメントを運営コメントを使用して再コメントを行います。/ngaddはその場にいる視聴者にしか効果がないため、使用しません。" oncommand="NicoLiveComment.addCommentReflector();"/>
+      <menuseparator/>
+      <menuitem label="リフレクション全解除" oncommand="NicoLiveComment.releaseReflector();"/>
       <!-- <menuitem label="色変更(未作成)"/> -->
     </menupopup>
     <menupopup id="popup-copycomment">

@@ -24,7 +24,6 @@ THE SOFTWARE.
  * コメントウィンドウ
  */
 var NicoLiveComment = {
-
     addRow:function(comment){
 	let table = $('comment_table');
 	if(!table){ return; }
@@ -83,6 +82,25 @@ var NicoLiveComment = {
 	td = tr.insertCell(tr.cells.length);
 	let datestr = GetDateString(comment.date*1000);
 	td.textContent = datestr;
+
+	if(comment.premium!=3){
+	    this.reflection(comment);
+	}
+    },
+
+    // コメントリフレクションを行う.
+    reflection:function(comment){
+	if( !NicoLiveHelper.iscaster ) return;
+	let name;
+	if(this.reflector[comment.user_id]){
+	    name = this.reflector[comment.user_id].name;
+	}else{
+	    return;
+	}
+	let str;
+	str = name+"さん> "+comment.text;
+	debugprint(str);
+	NicoLiveHelper.postCasterComment(str,"");
     },
 
     copyComment:function(){
@@ -140,6 +158,19 @@ var NicoLiveComment = {
 	}
 	$('textbox-comment').value = "";
 	return true;
+    },
+
+    addCommentReflector:function(){
+	let userid = document.popupNode.firstChild.textContent;
+	let name = InputPrompt("「"+userid+"」の名前を指定してください","コメントリフレクション登録","★");
+	if(name && name.length){
+	    this.reflector[userid] = {"name":name};
+	    ShowNotice("「"+userid+"」を名前「"+name+"」でコメントリフレクションを行います");
+	}
+    },
+    releaseReflector:function(user_id){
+	this.reflector = new Object();
+	ShowNotice('コメントリフレクションを全解除しました');
     },
 
     addName:function(){
@@ -309,6 +340,10 @@ var NicoLiveComment = {
     },
 
     init:function(){
+	// コメントリフレクターの登録用.
+	this.reflector = new Object();
+
+	// NGコメント.
 	this.regexstrings = new Array();
 	this.caseinsensitivestrings = new Array();
 	this.casesensitivestrings = new Array();
