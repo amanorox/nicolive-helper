@@ -816,6 +816,7 @@ var NicoLiveHelper = {
 	}
 	//NicoLiveRequest.updateStockView(this.stock);
 	NicoLiveRequest.updateStockViewForPlayedVideo(this.stock);
+	NicoLiveRequest.setTotalStockTime(NicoLiveHelper.getTotalStockTime());
 
 	this.updateRemainRequestsAndStocks();
 	this.saveAll();
