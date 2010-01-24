@@ -123,10 +123,20 @@ var NicoLiveComment = {
 	let concat_autocomplete = this.preset_autocomplete.concat( this.autocomplete );
 	textbox.setAttribute("autocompletesearchparam",JSON.stringify(concat_autocomplete));
 
+	let mail = $('textbox-mail').value;
+
 	if(NicoLiveHelper.iscaster){
-	    NicoLiveHelper.postCasterComment(str,$('textbox-mail').value);
+	    if( $('overwrite-hidden-perm').checked && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
+		// 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
+		NicoLiveHelper.postclsfunc = function(){
+		    NicoLiveHelper.postCasterComment(str,mail,COMMENT_MSG_TYPE_NORMAL);
+		};
+		NicoLiveHelper.postCasterComment("/cls","",COMMENT_MSG_TYPE_NORMAL);
+	    }else{
+		NicoLiveHelper.postCasterComment(str,mail,COMMENT_MSG_TYPE_NORMAL);
+	    }
 	}else{
-	    NicoLiveHelper.postListenerComment(str,$('textbox-mail').value);
+	    NicoLiveHelper.postListenerComment(str,mail);
 	}
 	$('textbox-comment').value = "";
 	return true;

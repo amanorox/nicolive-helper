@@ -273,7 +273,8 @@
 		     onkeypress="NicoLiveComment.postComment(this,event);"
 		     ontextreverted="this.select();"
 		     />
-	    <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/>
+	    <checkbox persist="checked" id="overwrite-hidden-perm" label="上コメに表示" tooltiptext="直前にhidden+/permでコメントした場合、/clsで運営コメントを消去してからコメントします"/>
+	    <!-- <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/> -->
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto;">
 	    <stack>

@@ -1,11 +1,25 @@
 /**
  * いろいろと便利関数などを.
  */
-
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const HTML_NS= "http://www.w3.org/1999/xhtml";
 const MYLIST_URL = "http://www.nicovideo.jp/mylistgroup_edit";
 const COMMENT_LOG = 500;
+
+// コメント送信状態.
+const COMMENT_STATE_NONE = 0;
+const COMMENT_STATE_MOVIEINFO_BEGIN = 1;
+const COMMENT_STATE_MOVIEINFO_DONE = 2;
+
+// コメント表示状態.
+const COMMENT_VIEW_NORMAL = 0;      // 上コメに表示できる.
+const COMMENT_VIEW_HIDDEN_PERM = 1; // 上コメに表示できない(表示するには/clsが必要).
+
+// 送信する主コメの種別.
+const COMMENT_MSG_TYPE_AUTOREPLY = 0; // 0というか実際はundefined,nullになる.
+const COMMENT_MSG_TYPE_MOVIEINFO = 1; // 動画情報の主コメのとき.
+const COMMENT_MSG_TYPE_NORMAL    = 2; // 普通の主コメをするとき.
+
 
 function $(tag){
     return document.getElementById(tag);

@@ -34,16 +34,6 @@ THE SOFTWARE.
  * ・最後に再生した動画の再生時間が経過したとき
  */
 
-// コメント送信状態.
-const COMMENT_STATE_NONE = 0;
-const COMMENT_STATE_MOVIEINFO_BEGIN = 1;
-const COMMENT_STATE_MOVIEINFO_DONE = 2;
-
-const COMMENT_VIEW_NORMAL = 0;
-const COMMENT_VIEW_HIDDEN_PERM = 1;
-
-// コメント表示状態.
-
 var NicoLiveHelper = {
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
@@ -73,9 +63,10 @@ var NicoLiveHelper = {
     israndomplay: false,   // ランダム再生フラグ.
     isconsumptionrateplay: false, // リク消費率順再生フラグ.
     anchor: {},            // アンカー処理用.
-    userdefinedvalue: {},
+    userdefinedvalue: {},  // {json}用.
 
     commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用.
+    commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
 
     // リクを受け付けるかどうかチェック.
     checkAcceptRequest: function(xml, comment_no){
@@ -310,6 +301,23 @@ var NicoLiveHelper = {
 
 	    if(!this.iscaster) break;
 
+	    if( chat.text.indexOf("/perm")==0 && chat.mail.indexOf("hidden")!=-1 ){
+		this.commentview =COMMENT_VIEW_HIDDEN_PERM;
+		debugprint("switch to VIEW_HIDDEN_PERM");
+		return;
+	    }
+
+	    if( chat.text.indexOf("/cls")==0 ){
+		this.commentview = COMMENT_VIEW_NORMAL;
+		debugprint("switch to VIEW_NORMAL");
+		if( 'function'==typeof this.postclsfunc ){
+		    this.postclsfunc();
+		    this.postclsfunc = null;
+		}
+		return;
+	    }
+
+	    // アンケート開始.
 	    dat = chat.text.match(/^\/vote\s+start\s+(.*)/);
 	    if(dat){
 		let str = dat[1];
@@ -323,6 +331,7 @@ var NicoLiveHelper = {
 		return;
 	    }
 
+	    // アンケート結果表示.
 	    dat = chat.text.match(/^\/vote\s+showresult\s+(.*)/);
 	    if(dat){
 		let str = dat[1];
@@ -707,7 +716,7 @@ var NicoLiveHelper = {
 	}
 	this._counter++;
 	this.commentstate = COMMENT_STATE_MOVIEINFO_BEGIN;
-	let ismovieinfo = true;
+	let ismovieinfo = COMMENT_MSG_TYPE_MOVIEINFO;
 	this.postCasterComment(sendstr,cmd,ismovieinfo);
 
 	sendstr = NicoLivePreference.videoinfo[this._counter].comment;
@@ -752,7 +761,7 @@ var NicoLiveHelper = {
 	default:
 	    break;
 	}
-	let ismovieinfo = true;
+	let ismovieinfo = COMMENT_MSG_TYPE_MOVIEINFO;
 	this.postCasterComment(sendstr,cmd,ismovieinfo);
     },
 
@@ -1152,9 +1161,9 @@ var NicoLiveHelper = {
     // 主コメを投げる.
     // comment : 運営コメント
     // mail : 運営コマンド
-    // ismovieinfo : 動画情報のときにtrue
+    // type : コメント種別(undefined or null:自動応答, 1:動画情報, 2:普通の主コメ
     // retry : 送信エラーになったときのリトライ時にtrue
-    postCasterComment: function(comment,mail,ismovieinfo,retry){
+    postCasterComment: function(comment,mail,type,retry){
 	if(!this.iscaster) return;
 	if(this.isOffline()) return;
 	if(comment.length<=0) return;
@@ -1174,7 +1183,7 @@ var NicoLiveHelper = {
 		    }
 		    if( !retry ){ // 1回再送.
 			debugprint('failed: '+comment);
-			NicoLiveHelper.postCasterComment(comment,mail,ismovieinfo,true);
+			NicoLiveHelper.postCasterComment(comment,mail,type,true);
 		    }
 		    if(video_id && retry){
 			let str = video_id + "の再生に失敗しました";
@@ -1195,8 +1204,8 @@ var NicoLiveHelper = {
 		}else{
 		    switch( NicoLiveHelper.commentstate ){
 		    case COMMENT_STATE_MOVIEINFO_DONE:
-			if( ismovieinfo ) break;
-			if( !ismovieinfo && comment.indexOf('/')==0 ) break;
+			if( type==COMMENT_MSG_TYPE_MOVIEINFO ) break;
+			if( type!=COMMENT_MSG_TYPE_MOVIEINFO && comment.indexOf('/')==0 ) break;
 
 			clearInterval( NicoLiveHelper._revertcommentid );
 			NicoLiveHelper._revertcommentid = setInterval(
@@ -1418,6 +1427,8 @@ var NicoLiveHelper = {
 	    $('toolbar-allowrequest').label = e[0].label;
 	}
 	debugprint(flg?"リクエスト許可":"リクエスト不可");
+
+	this.revertMusicInfo();
     },
 
     // リクエストリストに追加する.
@@ -2041,7 +2052,7 @@ var NicoLiveHelper = {
 	    }
 	if( this.endtime && this.endtime<now ){
 	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
-	    this.endtime += 10*60;  // ここに再突入しないように、仮で10分終了時刻を延ばしておく.
+	    this.endtime = 0;
 	    this.getpublishstatus();
 	}
 
