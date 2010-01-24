@@ -1923,11 +1923,12 @@ var NicoLiveHelper = {
 			r = NicoLiveHelper.ciStream.readString(1,lineData);
 		    } catch (x) { return; }
 		    if( !r ){ break; }
-		    this.line += lineData.value;
 		    if( lineData.value=="\0" ){
 			NicoLiveHelper.processLine(this.line);
 			this.line = "";
+			continue;
 		    }
+		    this.line += lineData.value;
 		}
 	    }
 	};
