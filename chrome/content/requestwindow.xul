@@ -401,7 +401,7 @@
       <menuitem label="コテハン設定" oncommand="NicoLiveComment.addName();"/>
       <menuitem label="リフレクション登録" tooltiptext="視聴者のコメントを運営コメントを使用して再コメントを行います。/ngaddはその場にいる視聴者にしか効果がないため、使用しません。" oncommand="NicoLiveComment.addCommentReflector();"/>
       <menuseparator/>
-      <menuitem label="リフレクション全解除" oncommand="NicoLiveComment.releaseReflector();"/>
+      <menuitem id="id-release-reflection" label="リフレクション全解除" oncommand="NicoLiveComment.releaseReflector();"/>
       <!-- <menuitem label="色変更(未作成)"/> -->
     </menupopup>
     <menupopup id="popup-copycomment">

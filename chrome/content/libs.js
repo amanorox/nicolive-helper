@@ -63,6 +63,10 @@ function CreateHTMLElement(part){
     return elem;
 }
 
+function RemoveElement(elem){
+    elem.parentNode.removeChild(elem);
+}
+
 function CreateMenuItem(label,value){
     var elem;
     elem = document.createElementNS(XUL_NS,'menuitem');

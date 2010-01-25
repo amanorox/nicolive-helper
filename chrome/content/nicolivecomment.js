@@ -164,13 +164,35 @@ var NicoLiveComment = {
 	let userid = document.popupNode.firstChild.textContent;
 	let name = InputPrompt("「"+userid+"」の名前を指定してください","コメントリフレクション登録","★");
 	if(name && name.length){
-	    this.reflector[userid] = {"name":name};
+	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
+	    if(user.length){
+		ShowNotice("すでにコメントリフレクション登録済みです");
+		return;
+	    }
+
+	    this.reflector[userid] = {"name":name };
+	    let menuitem = CreateMenuItem(name+"さんを解除",userid);
+	    menuitem.setAttribute("comment-reflector",userid);
+	    menuitem.setAttribute("tooltiptext","ID="+userid);
+	    menuitem.addEventListener(
+		'command',
+		function(){
+		    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
+		    delete NicoLiveComment.reflector[userid];
+		    RemoveElement(user[0]);
+		    ShowNotice(name+"("+userid+")さんのコメントリフレクションを解除しました");
+		},false);
+	    $('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
 	    ShowNotice("「"+userid+"」を名前「"+name+"」でコメントリフレクションを行います");
 	}
     },
     releaseReflector:function(user_id){
 	this.reflector = new Object();
 	ShowNotice('コメントリフレクションを全解除しました');
+	let users = evaluateXPath(document,"//*[@comment-reflector]");
+	for(let i=0,user;user=users[i];i++){
+	    RemoveElement(user);
+	}
     },
 
     addName:function(){
