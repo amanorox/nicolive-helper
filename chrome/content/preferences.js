@@ -71,6 +71,8 @@ var NLHPreference = {
 
     // リク制限設定をDBからロードして入力欄にセットする.
     loadRestrictionPreset:function(name){
+	$('id-edit-presetname').value = name;
+
 	let st = this.dbconnect.createStatement('SELECT value FROM requestcond where presetname=?1');
 	st.bindUTF8StringParameter(0,name);
 	let value = "";
@@ -109,6 +111,10 @@ var NLHPreference = {
 	item.tag_exclude   = $('pref-restrict-tag-exclude').value;
 	this.savePresetRequestCond(name,item);
 
+	let existmenu;
+	existmenu = evaluateXPath(document,"//*[@id='id-menu-preset']/*[@label='"+name+"']");
+	if( existmenu.length ) return;
+
 	let elem = CreateMenuItem(name,"");
 	elem.addEventListener("command",
 			      function(e){
@@ -126,6 +132,12 @@ var NLHPreference = {
 	st.bindUTF8StringParameter(0,name);
 	st.execute();
 	st.finalize();
+
+	let existmenu;
+	existmenu = evaluateXPath(document,"//*[@id='id-menu-preset']/*[@label='"+name+"']");
+	if( existmenu.length ){
+	    RemoveElement(existmenu[0]);
+	}
     },
 
     // リクエスト制限タブをリセットする.
