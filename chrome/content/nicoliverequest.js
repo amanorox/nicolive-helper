@@ -693,7 +693,7 @@ var NicoLiveRequest = {
 	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 	fp.init(window, "ストックの保存", nsIFilePicker.modeSave);
-	fp.appendFilters(nsIFilePicker.filterText | nsIFilePicker.filterAll);
+	fp.appendFilters(nsIFilePicker.filterText);
 	let rv = fp.show();
 	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
 	    let file = fp.file;
