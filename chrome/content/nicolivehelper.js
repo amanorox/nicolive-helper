@@ -301,22 +301,6 @@ var NicoLiveHelper = {
 
 	    if(!this.iscaster) break;
 
-	    if( chat.text.indexOf("/perm")==0 && chat.mail.indexOf("hidden")!=-1 ){
-		this.commentview =COMMENT_VIEW_HIDDEN_PERM;
-		debugprint("switch to VIEW_HIDDEN_PERM");
-		return;
-	    }
-
-	    if( chat.text.indexOf("/cls")==0 || chat.text.indexOf("/clear")==0 ){
-		this.commentview = COMMENT_VIEW_NORMAL;
-		debugprint("switch to VIEW_NORMAL");
-		if( 'function'==typeof this.postclsfunc ){
-		    this.postclsfunc();
-		    this.postclsfunc = null;
-		}
-		return;
-	    }
-
 	    // アンケート開始.
 	    dat = chat.text.match(/^\/vote\s+start\s+(.*)/);
 	    if(dat){
@@ -341,6 +325,35 @@ var NicoLiveHelper = {
 		    str += this.officialvote[i] + "(" + (result[i-1]/10).toFixed(1) + "%) ";
 		}
 		this.postCasterComment(str,"");
+		return;
+	    }
+
+	    if( chat.text.indexOf("/perm")==0 && chat.mail.indexOf("hidden")!=-1 ){
+		this.commentview = COMMENT_VIEW_HIDDEN_PERM;
+		debugprint("switch to VIEW_HIDDEN_PERM");
+		clearInterval(NicoLiveHelper._commentstatetimer);
+		return;
+	    }
+	    if( chat.mail.indexOf("hidden") ){
+		// hiddenだけの場合は、15秒間だけHIDDEN_PERM.
+		this.commentview = COMMENT_VIEW_HIDDEN_PERM;
+		debugprint("switch to VIEW_HIDDEN_PERM");
+		clearInterval(NicoLiveHelper._commentstatetimer);
+		NicoLiveHelper._commentstatetimer = setInterval(
+		    function(){
+			NicoLiveHelper.commentview = COMMENT_VIEW_NORMAL;
+			debugprint("switch to VIEW_NORMAL");
+			clearInterval(NicoLiveHelper._commentstatetimer);
+		    }, 15*1000 );
+	    }
+
+	    if( chat.text.indexOf("/cls")==0 || chat.text.indexOf("/clear")==0 ){
+		this.commentview = COMMENT_VIEW_NORMAL;
+		debugprint("switch to VIEW_NORMAL");
+		if( 'function'==typeof this.postclsfunc ){
+		    this.postclsfunc();
+		    this.postclsfunc = null;
+		}
 		return;
 	    }
 	    break;
