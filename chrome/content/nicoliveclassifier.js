@@ -129,21 +129,28 @@ var NicoLiveClassifier = {
 
     classify:function(terms){
 	let result = this.getPosterior(terms);
+	let cls;
 
 	if( result.length <= 1 ){
-	    return undefined;
-	}
+	    cls = undefined;
+	}else{
+	    result.sort( function(a,b){
+			     return b.post - a.post;
+			 });
+	    debugprint(result[0].bucket + "="+result[0].post);
+	    debugprint(result[1].bucket + "="+result[1].post);
 
-	result.sort( function(a,b){
-			 return b.post - a.post;
-		     });
-	debugprint(result[0].bucket + "="+result[0].post);
-	debugprint(result[1].bucket + "="+result[1].post);
-
-	if( (result[0].post - result[1].post)<0.2 ){
-	    return undefined;
+	    if( (result[0].post - result[1].post)<0.2 ){
+		cls = undefined;
+	    }else{
+		cls = result[0].bucket;
+	    }
 	}
-	return result[0].bucket;
+	for(let i=0;i<result.length;i++){
+	    result[result[i].bucket] = result[i].post;
+	}
+	this.latestresult = {"class":cls, "posterior": result };
+	return this.latestresult;
     },
 
     // 学習内容をクリアする.

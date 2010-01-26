@@ -348,6 +348,8 @@ var NicoLiveHelper = {
 	    }
 
 	    if( chat.text.indexOf("/cls")==0 || chat.text.indexOf("/clear")==0 ){
+		clearInterval(this._sendclsid);
+
 		this.commentview = COMMENT_VIEW_NORMAL;
 		debugprint("switch to VIEW_NORMAL");
 		if( 'function'==typeof this.postclsfunc ){
@@ -1266,6 +1268,9 @@ var NicoLiveHelper = {
 
     // 必要に応じて/clsを送信したあとに、指定の関数を実行する.
     clearCasterCommentAndRun:function(func){
+	// /clsが飲み込まれて送られてこなかったらどうしよう.
+	// というときのために、/clsを送る必要があるときは
+	// /clsか/clearを受けとるまで6秒間隔で/clsを送信.
 	if( 'function'!=typeof func ) return;
 	if( this.commentview==COMMENT_VIEW_HIDDEN_PERM ){
 	    // hidden/permのときは先に/clsを送らないといけない.
@@ -1273,6 +1278,11 @@ var NicoLiveHelper = {
 		// postclsfuncが空いているので、登録したのち/cls
 		this.postclsfunc = func;
 		this.postCasterComment("/cls","");
+		clearInterval(this._sendclsid);
+		this._sendclsid = setInterval(
+		    function(){
+			NicoLiveHelper.postCasterComment("/cls","");
+		    }, 6000 );
 	    }else{
 		let timer = setInterval(
 		    function(){
@@ -1285,6 +1295,11 @@ var NicoLiveHelper = {
 				// 登録したのち/cls
 				NicoLiveHelper.postclsfunc = func;
 				NicoLiveHelper.postCasterComment("/cls","");
+				clearInterval(NicoLiveHelper._sendclsid);
+				NicoLiveHelper._sendclsid = setInterval(
+				    function(){
+					NicoLiveHelper.postCasterComment("/cls","");
+				    }, 6000 );
 			    }
 			    clearInterval(timer);
 			}

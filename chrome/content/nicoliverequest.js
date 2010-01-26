@@ -921,7 +921,7 @@ var NicoLiveRequest = {
 	for(let i=0,tag; tag=item.tags[i];i++){
 	    str.push(ZenToHan(tag.toLowerCase()));
 	}
-	debugalert('classify:'+NicoLiveClassifier.classify(str));
+	debugalert('classify:'+NicoLiveClassifier.classify(str).class);
     },
 
     init:function(){
