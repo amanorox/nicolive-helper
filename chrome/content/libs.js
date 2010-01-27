@@ -244,6 +244,15 @@ function GetFormattedDateString(format,ms){
     return d.toLocaleFormat(format);
 }
 
+
+// string bundleから文字列を読みこむ.
+function LoadString(name){
+    return $('string-bundle').getString(name);
+}
+function LoadFormattedString(name,array){
+    return $('string-bundle').getFormattedString(name,array);
+}
+
 // min:sec の文字列を返す.
 function GetTimeString(sec){
     var str;

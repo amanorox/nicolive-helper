@@ -98,7 +98,7 @@ var NicoLiveComment = {
 	    return;
 	}
 	let str;
-	str = name+"さん> "+comment.text;
+	str = LoadFormattedString('STR_NAME_POSTFIX',[name])+"> "+comment.text;
 	debugprint(str);
 	NicoLiveHelper.postCasterComment(str,"");
     },
@@ -162,16 +162,17 @@ var NicoLiveComment = {
 
     addCommentReflector:function(){
 	let userid = document.popupNode.firstChild.textContent;
-	let name = InputPrompt("「"+userid+"」の名前を指定してください","コメントリフレクション登録","★");
+	let name = InputPrompt(LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
+			       LoadString("STR_CAPTION_REGISTER_REFLECTION"),"★");
 	if(name && name.length){
 	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
 	    if(user.length){
-		ShowNotice("すでにコメントリフレクション登録済みです");
+		ShowNotice(LoadString("STR_ERR_ALREADY_REFLECTION"));
 		return;
 	    }
 
 	    this.reflector[userid] = {"name":name };
-	    let menuitem = CreateMenuItem(name+"さんを解除",userid);
+	    let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
 	    menuitem.setAttribute("comment-reflector",userid);
 	    menuitem.setAttribute("tooltiptext","ID="+userid);
 	    menuitem.addEventListener(
@@ -180,15 +181,15 @@ var NicoLiveComment = {
 		    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
 		    delete NicoLiveComment.reflector[userid];
 		    RemoveElement(user[0]);
-		    ShowNotice(name+"("+userid+")さんのコメントリフレクションを解除しました");
+		    ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
 		},false);
 	    $('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
-	    ShowNotice("「"+userid+"」を名前「"+name+"」でコメントリフレクションを行います");
+	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
 	}
     },
     releaseReflector:function(user_id){
 	this.reflector = new Object();
-	ShowNotice('コメントリフレクションを全解除しました');
+	ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );
 	let users = evaluateXPath(document,"//*[@comment-reflector]");
 	for(let i=0,user;user=users[i];i++){
 	    RemoveElement(user);
@@ -197,7 +198,8 @@ var NicoLiveComment = {
 
     addName:function(){
 	let userid = document.popupNode.firstChild.textContent;
-	let name = InputPrompt("「"+userid+"」のコテハンを指定してください","コテハン入力",this.namemap[userid]?this.namemap[userid].name:userid);
+	let name = InputPrompt( LoadFormattedString('STR_TEXT_SET_KOTEHAN',[userid]),
+				LoadString('STR_CAPTION_SET_KOTEHAN'), this.namemap[userid]?this.namemap[userid].name:userid);
 	if(name && name.length){
 	    let now = GetCurrentTime();
 	    let id;

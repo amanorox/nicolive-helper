@@ -39,7 +39,7 @@ var NicoLiveMylist = {
 		case 'ok':
 		    break;
 		case 'fail':
-		    ShowNotice('マイリスト:'+result.error.description);
+		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
 		    break;
 		default:
 		    break;
@@ -64,7 +64,7 @@ var NicoLiveMylist = {
 		    var token = tmp[2];
 		    NicoLiveMylist.addDeflist2(video_id, item_id, token);
 		} catch (x) {
-		    ShowNotice('マイリスト登録に失敗しました');
+		    ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
 		}
 	    }
 	};
@@ -91,7 +91,7 @@ var NicoLiveMylist = {
 		case 'ok':
 		    break;
 		case 'fail':
-		    ShowNotice('マイリスト:'+result.error.description);
+		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
 		    break;
 		default:
 		    break;
@@ -122,7 +122,7 @@ var NicoLiveMylist = {
 			debugprint('item_id='+item_id[1]);
 			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1]);
 		    } catch (x) {
-			ShowNotice('マイリスト登録に失敗しました');
+			ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
 		    }
 		}
 	    };
@@ -130,7 +130,7 @@ var NicoLiveMylist = {
 	    req.send('');
 	    debugprint('add to mylist:'+video_id+'->'+mylist_name);
 	} catch (x) {
-	    ShowNotice('マイリスト登録に失敗しました');
+	    ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
 	}
     },
 
@@ -211,12 +211,12 @@ var NicoLiveMylist = {
     // マイリストに追加メニューを作成する.
     createAddMylistMenu:function(mylists){
 	let popupmenu = CreateElement('menu');
-	popupmenu.setAttribute('label','マイリストに追加');
+	popupmenu.setAttribute('label',LoadString('STR_ADD_MYLIST')); // 'マイリストに追加'
 
 	let popup = CreateElement('menupopup');
 	popupmenu.appendChild(popup);
 
-	let elem = CreateMenuItem('とりあえずマイリスト','default');
+	let elem = CreateMenuItem(LoadString('STR_DEF_MYLIST'),'default'); // 'とりあえずマイリスト'
 	popup.appendChild(elem);
 
 	for(let i=0,item;item=mylists[i];i++){
@@ -241,7 +241,7 @@ var NicoLiveMylist = {
 		NicoLiveMylist.mylists = JSON.parse(req.responseText);
 
 		if( NicoLiveMylist.mylists.status=='fail'){
-		    ShowNotice('マイリスト:'+NicoLiveMylist.mylists.error.description);
+		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+NicoLiveMylist.mylists.error.description);
 		    return;
 		}
 

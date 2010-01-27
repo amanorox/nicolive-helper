@@ -692,7 +692,7 @@ var NicoLiveRequest = {
 
 	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	fp.init(window, "ストックの保存", nsIFilePicker.modeSave);
+	fp.init(window, LoadString("STR_SAVE_STOCK"), nsIFilePicker.modeSave);
 	fp.appendFilters(nsIFilePicker.filterText);
 	let rv = fp.show();
 	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
@@ -850,7 +850,7 @@ var NicoLiveRequest = {
 	    tr = $('request-table').getElementsByTagName('html:tr');
 	}else return;
 
-	let searchword = InputPrompt('検索文字列を入力してください','検索','');
+	let searchword = InputPrompt(LoadString('STR_FIND_STRING'),LoadString('STR_FIND'),'');
 	if(searchword==null) return;
 
 	this.searchword = searchword;

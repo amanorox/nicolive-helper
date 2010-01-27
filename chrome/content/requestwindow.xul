@@ -580,4 +580,8 @@
 
   </popupset>
   
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="string-bundle" src="chrome://nicolivehelper/locale/nicolivehelper.properties"/>
+  </stringbundleset>
+
 </window>
