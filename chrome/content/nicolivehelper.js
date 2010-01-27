@@ -1226,6 +1226,13 @@ var NicoLiveHelper = {
 			if( type==COMMENT_MSG_TYPE_MOVIEINFO ) break;
 			if( type!=COMMENT_MSG_TYPE_MOVIEINFO && comment.indexOf('/')==0 ) break;
 
+			if( mail.indexOf("hidden")==-1 &&
+			    NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
+				// hiddenコメじゃなければ上コメは上書きされないので
+				// 復帰必要なし
+				break;
+			    }
+
 			clearInterval( NicoLiveHelper._revertcommentid );
 			NicoLiveHelper._revertcommentid = setInterval(
 			    function(){
