@@ -334,7 +334,7 @@ var NicoLiveHelper = {
 		clearInterval(NicoLiveHelper._commentstatetimer);
 		return;
 	    }
-	    if( chat.mail.indexOf("hidden") ){
+	    if( chat.mail.indexOf("hidden")!=-1 ){
 		// hiddenだけの場合は、15秒間だけHIDDEN_PERM.
 		this.commentview = COMMENT_VIEW_HIDDEN_PERM;
 		debugprint("switch to VIEW_HIDDEN_PERM");
@@ -1984,6 +1984,7 @@ var NicoLiveHelper = {
 	    },
 	    onStopRequest: function(request, context, status){
 		try{
+		    debugprint("onStopRequest");
 		    NicoLiveHelper.close();
 		} catch (x) {
 		}
