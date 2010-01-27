@@ -1,0 +1,137 @@
+<!ENTITY playstyle.manual_sequential "手動(順次)">
+<!ENTITY playstyle.manual_random "手動(ランダム)">
+<!ENTITY playstyle.manual_consumption "手動(消化数順)">
+<!ENTITY playstyle.auto_sequential "自動(順次)">
+<!ENTITY playstyle.auto_random "自動(ランダム)">
+<!ENTITY playstyle.auto_consumption "自動(消化数順)">
+<!ENTITY playstyle.tooltip_random "次曲をランダムに選択します">
+<!ENTITY playstyle.tooltip_consumption "次曲をリクエスト消化数順に選択します">
+
+<!ENTITY allow_request "リクエスト許可">
+<!ENTITY disallow_request "リクエスト不可">
+
+<!ENTITY play.next "次曲">
+<!ENTITY play.tooltip_next "次の動画を再生します">
+<!ENTITY play.pause "一時停止">
+<!ENTITY play.tooltip_pause "一時停止のチェックボタンが押されている間、自動で次曲を再生しません">
+<!ENTITY play.stop "停止">
+<!ENTITY play.tooltip_stop "/stop">
+<!ENTITY play.tooltip_soundonly "/soundonly">
+<!ENTITY play.tooltip_swap "/swap">
+<!ENTITY play.subdisplay "サブ画面">
+<!ENTITY play.tooltip_subdisplay "サブ画面のチェックボタンが押されている間、再生、停止、サウンドオンリーをサブ画面に対して行います">
+
+<!ENTITY toolbar.command "コマンド">
+<!ENTITY toolbar.continuouscomment "連続コメント">
+<!ENTITY toolbar.votestart "アンケート(Lv25+)">
+<!ENTITY toolbar.tooltip_votestart "アンケートを行います(Lv25〜)">
+<!ENTITY toolbar.voteshowresult "アンケート結果を表示する">
+<!ENTITY toolbar.tooltip_voteshowresult "/vote showresult">
+<!ENTITY toolbar.votestop "アンケート結果を消す">
+<!ENTITY toolbar.tooltip_votestop "/vote stop">
+<!ENTITY toolbar.soundonly "サウンドオンリーを止める(メイン)">
+<!ENTITY toolbar.tooltip_soundonly "/soundonly off">
+<!ENTITY toolbar.soundonlysub "サウンドオンリーを止める(サブ)">
+<!ENTITY toolbar.tooltip_soundonlysub "/soundonly off sub">
+<!ENTITY toolbar.playcamera "カメラ映像に切り替え">
+<!ENTITY toolbar.tooltip_playcamera "/play">
+<!ENTITY toolbar.clearcomment "運営コメントを消す">
+<!ENTITY toolbar.tooltip_clearcomment "/cls">
+<!ENTITY toolbar.downloadjson "JSONファイルダウンロード">
+<!ENTITY toolbar.beginbroadcasting "配信開始(Experimental)">
+<!ENTITY toolbar.tooltip_beginbroadcasting "配信開始します">
+<!ENTITY toolbar.forcecastermode "強制生主モード(Experimental)">
+<!ENTITY toolbar.tooltip_forcecastermode "Helperが生主として動作しない場合、最終手段として使用してください">
+<!ENTITY toolbar.forget_learning "分類エンジンの学習情報を初期化">
+<!ENTITY toolbar.resize_window_default "ウィンドウサイズを初期状態に戻す">
+<!ENTITY toolbar.open_preference "設定">
+
+<!ENTITY tab.request "リクエスト">
+<!ENTITY tab.stock "ストック">
+<!ENTITY tab.error "リク・再生エラー">
+<!ENTITY tab.playlist "再生履歴">
+<!ENTITY tab.comment "コメント">
+<!ENTITY tab.database "動画DB">
+<!ENTITY tab.debug "デバッグ">
+
+<!ENTITY button.shuffle "シャッフル">
+<!ENTITY button.clearall "全消去">
+<!ENTITY button.load_mylist "マイリスト読み込み">
+
+<!ENTITY request.emptytext_add_from_mylist "動画IDを入力するとリクエストに追加されます">
+<!ENTITY stock.emptytext_add_from_mylist "動画IDまたはマイリストのURLを入力するとストックに追加されます">
+
+<!ENTITY playlist.emptytext_textlog "プレイリストスレッドにコピペする用">
+<!ENTITY playlist.tooltip_clearall "再生済みの動画を再度リクエストを受け付けることができるようになります。テキスト復旧は行えません。">
+<!ENTITY playlist.recover_text "テキスト復旧">
+<!ENTITY playlist.tooltip_recover_text "再生履歴を元にテキストを復旧します(番組名は復元できません)">
+<!ENTITY playlist.bytext "テキスト表示">
+<!ENTITY playlist.bydetail "詳細表示">
+
+<!ENTITY comment.command_caster "--- 放送者 ---">
+<!ENTITY comment.command_listener "--- 一般 ---">
+<!ENTITY comment.command_premium "--- プレミアム ---">
+<!ENTITY comment.emptytext_input "コメントを入力してください">
+<!ENTITY comment.write_upperarea "運営コメ欄に表示">
+<!ENTITY comment.tooltip_write_upperarea "直前にhidden+/permを使用したコメントがある場合、/clsで運営コメント欄を消去してからコメントします">
+
+<!ENTITY db.add_from_mylist_to_db "マイリストから登録">
+<!ENTITY db.emptytext_input "動画IDまたはマイリストのURLを入力するとDBに登録されます">
+<!ENTITY db.result_10 "10件">
+<!ENTITY db.result_20 "20件">
+<!ENTITY db.result_50 "50件">
+<!ENTITY db.result_100 "100件">
+<!ENTITY db.result_200 "200件">
+<!ENTITY db.result_500 "500件">
+<!ENTITY db.result_1000 "1000件">
+<!ENTITY db.do_search "検索実行">
+<!ENTITY db.add_stock "ストックに追加">
+<!ENTITY db.update "Update">
+<!ENTITY db.tooltip_update "検索結果のうち、1週間以上更新のなかった動画情報を更新します。表示は即時に反映されません(再検索が必要)">
+
+<!ENTITY browser.open "開く">
+<!ENTITY browser.close "閉じる">
+
+<!ENTITY live.watcher "来場者数 0">
+
+<!ENTITY statusbar.add_db "動画DBに追加">
+
+<!ENTITY menu.copy_video_id "動画IDをコピー">
+<!ENTITY menu.set_pname "P名設定">
+<!ENTITY menu.set_additional "追加情報設定">
+<!ENTITY menu.prepare_video "先読み">
+<!ENTITY menu.tooltip_prepare "/prepareを送信する">
+<!ENTITY menu.copy_allrequest "全リクエストをコピー">
+<!ENTITY menu.turnoff_playedflag "再生済みを解除">
+<!ENTITY menu.stock_savefile "ストックをファイルに保存">
+
+<!ENTITY menu.stock_showdetail "詳細の表示/非表示">
+
+<!ENTITY menu.db_addstock "ストック追加">
+<!ENTITY menu.db_sendrequest "リクエスト送信">
+<!ENTITY menu.db_delete "DBから削除">
+
+<!ENTITY comment.menu_setname "コテハン設定">
+<!ENTITY comment.menu_reflection "リフレクション登録">
+<!ENTITY comment.tooltip_reflection "視聴者のコメントを運営コメントで再コメントを行います。/ngaddはその場にいる視聴者にしか効果がないため、使用しません。">
+<!ENTITY comment.menu_release_reflection_all "リフレクション全解除">
+<!ENTITY comment.menu_copy_comment "コメントをコピー">
+
+<!ENTITY sort.comment_no "コメ番順にソート">
+<!ENTITY sort.descend_order "降順">
+<!ENTITY sort.ascend_order "昇順">
+<!ENTITY sort.view_counter "再生数">
+<!ENTITY sort.comment_num "コメント数">
+<!ENTITY sort.mylist_counter "マイリスト数">
+<!ENTITY sort.posteddate "投稿日">
+<!ENTITY sort.playtime "再生時間">
+<!ENTITY sort.mylist_rate "マイリスト率">
+<!ENTITY sort.title "タイトル">
+
+<!ENTITY rate.name "レート">
+<!ENTITY rate.none "なし">
+<!ENTITY rate.1 "★">
+<!ENTITY rate.2 "★★">
+<!ENTITY rate.3 "★★★">
+<!ENTITY rate.4 "★★★★">
+<!ENTITY rate.5 "★★★★★">

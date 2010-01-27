@@ -1,3 +1,5 @@
 content	nicolivehelper	chrome/content/
 
+locale nicolivehelper ja-JP chrome/locale/ja-JP/
+
 overlay chrome://browser/content/browser.xul chrome://nicolivehelper/content/menu.xul

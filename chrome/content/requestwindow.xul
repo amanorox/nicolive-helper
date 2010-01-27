@@ -2,6 +2,8 @@
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
 <?xml-stylesheet href="chrome://nicolivehelper/content/requestwindow.css" type="text/css"?>
 
+<!DOCTYPE window SYSTEM "chrome://nicolivehelper/locale/nicolivehelper.dtd">
+
 <window id="requestwindow"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
@@ -71,65 +73,65 @@
   </keyset>
 
   <toolbar id="global-menu">
-    <toolbarbutton label="手動再生" type="menu" id="toolbar-playstyle">
+    <toolbarbutton label="&playstyle.manual_sequential;" type="menu" id="toolbar-playstyle">
       <menupopup id="toolbar-popup-playstyle">
-	<menuitem label="手動(順次)"       playstyle="0" oncommand="NicoLiveHelper.setPlayStyle(0);"/>
-	<menuitem label="自動(順次)"     playstyle="1" oncommand="NicoLiveHelper.setPlayStyle(1);"/>
+	<menuitem label="&playstyle.manual_sequential;" playstyle="0" oncommand="NicoLiveHelper.setPlayStyle(0);"/>
+	<menuitem label="&playstyle.auto_sequential;" playstyle="1" oncommand="NicoLiveHelper.setPlayStyle(1);"/>
 	<menuseparator/>
-	<menuitem label="手動(ランダム)" playstyle="3" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(3);"/>
-	<menuitem label="自動(ランダム)" playstyle="2" tooltiptext="次曲をランダムに選択します" oncommand="NicoLiveHelper.setPlayStyle(2);"/>
+	<menuitem label="&playstyle.manual_random;" playstyle="3" tooltiptext="&playstyle.tooltip_random;" oncommand="NicoLiveHelper.setPlayStyle(3);"/>
+	<menuitem label="&playstyle.auto_random;" playstyle="2" tooltiptext="&playstyle.tooltip_random;" oncommand="NicoLiveHelper.setPlayStyle(2);"/>
 	<menuseparator/>
-	<menuitem label="手動(消化数順)" playstyle="4" tooltiptext="次曲をリクエスト消化数順に選択します" oncommand="NicoLiveHelper.setPlayStyle(4);"/>
-	<menuitem label="自動(消化数順)" playstyle="5" tooltiptext="次曲をリクエスト消化数順に選択します" oncommand="NicoLiveHelper.setPlayStyle(5);"/>
+	<menuitem label="&playstyle.manual_consumption;" playstyle="4" tooltiptext="&playstyle.tooltip_consumption;" oncommand="NicoLiveHelper.setPlayStyle(4);"/>
+	<menuitem label="&playstyle.auto_consumption;" playstyle="5" tooltiptext="&playstyle.tooltip_consumption;" oncommand="NicoLiveHelper.setPlayStyle(5);"/>
       </menupopup>
     </toolbarbutton>
-    <toolbarbutton label="リクエスト許可" type="menu" id="toolbar-allowrequest">
+    <toolbarbutton label="&allow_request;" type="menu" id="toolbar-allowrequest">
       <menupopup>
-	<menuitem label="リクエスト許可" allowrequest="true" oncommand="NicoLiveHelper.setAllowRequest(true);"/>
-	<menuitem label="リクエスト不可" allowrequest="false" oncommand="NicoLiveHelper.setAllowRequest(false);"/>
+	<menuitem label="&allow_request;" allowrequest="true" oncommand="NicoLiveHelper.setAllowRequest(true);"/>
+	<menuitem label="&disallow_request;" allowrequest="false" oncommand="NicoLiveHelper.setAllowRequest(false);"/>
       </menupopup>
     </toolbarbutton>
-    <toolbarbutton label="次曲" tooltiptext="次の動画を再生します" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();">
+    <toolbarbutton label="&play.next;" tooltiptext="&play.tooltip_next;" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();">
     </toolbarbutton>
-    <toolbarbutton persist="checked" type="checkbox" autoCheck="true" id="do-pauseplay" label="一時停止" tooltiptext="一時停止のチェックボタンが押されている間、自動で次曲を再生しません" image="chrome://nicolivehelper/content/data/pause.png">
+    <toolbarbutton persist="checked" type="checkbox" autoCheck="true" id="do-pauseplay" label="&play.pause;" tooltiptext="&play.tooltip_pause;" image="chrome://nicolivehelper/content/data/pause.png">
     </toolbarbutton>
-    <toolbarbutton label="停止" tooltiptext="/stop" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();">
+    <toolbarbutton label="&play.stop;" tooltiptext="&play.tooltip_stop;" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();">
     </toolbarbutton>
-    <toolbarbutton tooltiptext="/soundonly" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly();">
+    <toolbarbutton tooltiptext="&play.tooltip_soundonly;" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly();">
     </toolbarbutton>
-    <toolbarbutton tooltiptext="/swap" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');">
+    <toolbarbutton tooltiptext="&play.tooltip_swap;" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');">
     </toolbarbutton>
-    <toolbarbutton persist="checked" label="サブ画面" id="do-subdisplay" autoCheck="true" type="checkbox" tooltiptext="サブ画面のチェックボタンが押されている間、再生、停止、サウンドオンリーをサブ画面に対して行います"/>
-    <toolbarbutton label="コマンド" type="menu">
+    <toolbarbutton persist="checked" label="&play.subdisplay;" id="do-subdisplay" autoCheck="true" type="checkbox" tooltiptext="&play.tooltip_subdisplay;"/>
+    <toolbarbutton label="&toolbar.command;" type="menu">
       <menupopup>
-	<menuitem label="連続コメント" oncommand="OpenContinuousCommentWindow();"/>
+	<menuitem label="&toolbar.continuouscomment;" oncommand="OpenContinuousCommentWindow();"/>
 	<menuseparator/>
 
-	<menuitem label="アンケート(Lv25+)" tooltiptext="アンケートを行います(Lv25〜)" oncommand="OpenVoteDialog();"/>
-	<menuitem label="アンケート結果を表示する" tooltiptext="/vote showresult" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
-	<menuitem label="アンケート結果を消す" tooltiptext="/vote stop" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
+	<menuitem label="&toolbar.votestart;" tooltiptext="&toolbar.tooltip_votestart;" oncommand="OpenVoteDialog();"/>
+	<menuitem label="&toolbar.voteshowresult;" tooltiptext="&toolbar.tooltip_voteshowresult;" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
+	<menuitem label="&toolbar.votestop;" tooltiptext="&toolbar.tooltip_votestop;" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
 	<menuseparator/>
-	<menuitem label="サウンドオンリーを止める(メイン)" tooltiptext="/soundonly off" oncommand="NicoLiveHelper.postCasterComment('/soundonly off','');"/>
-	<menuitem label="サウンドオンリーを止める(サブ)" tooltiptext="/soundonly off sub" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
-	<menuitem label="カメラ映像に切り替え" tooltiptext="/play" oncommand="NicoLiveHelper.postCasterComment('/play','');"/>
-	<menuitem label="運営コメントを消す" tooltiptext="/cls" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/>
+	<menuitem label="&toolbar.soundonly;" tooltiptext="&toolbar.tooltip_soundonly;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off','');"/>
+	<menuitem label="&toolbar.soundonlysub;" tooltiptext="&toolbar.tooltip_soundonlysub;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
+	<menuitem label="&toolbar.playcamera;" tooltiptext="&toolbar.tooltip_playcamera;" oncommand="NicoLiveHelper.postCasterComment('/play','');"/>
+	<menuitem label="&toolbar.clearcomment;" tooltiptext="&toolbar.tooltip_clearcomment;" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/>
 	<!--
 	<menuseparator/>
 	<menuitem label="放送を終了する" tooltiptext="/disconnect" oncommand="NicoLiveHelper.postCasterComment('/disconnect','');"/>
 	-->
 	<menuseparator/>
-	<menuitem label="JSONファイルダウンロード" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
+	<menuitem label="&toolbar.downloadjson;" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
 	<menuseparator/>
-	<menuitem label="配信開始(Experimental)" tooltiptext="配信開始します" oncommand="NicoLiveHelper.startBroadcasting();"/>
-	<menuitem label="強制生主モード(Experimental)" tooltiptext="最終手段として使用してください" oncommand="NicoLiveHelper.iscaster=true;"/>
-	<menuitem label="分類エンジンの学習情報を初期化" oncommand="NicoLiveClassifier.create();"/>
+	<menuitem label="&toolbar.beginbroadcasting;" tooltiptext="&toolbar.tooltip_beginbroadcasting;" oncommand="NicoLiveHelper.startBroadcasting();"/>
+	<menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
+	<menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.create();"/>
 	<menuseparator/>
-	<menuitem label="ウィンドウサイズを初期状態に戻す" oncommand="NicoLiveWindow.defaultSize();"/>
-	<menuitem label="テスト" disabled="true" oncommand="NicoLiveHelper.test();"/>
+	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
+	<menuitem label="test" disabled="true" oncommand="NicoLiveHelper.test();"/>
       </menupopup>
     </toolbarbutton>
 
-    <toolbarbutton label="設定" oncommand="OpenSettingsDialog();">
+    <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();">
     </toolbarbutton>
 
 <!--
@@ -152,24 +154,23 @@
 
     <tabbox flex="1" persist="selectedIndex" id="mainwindow-tab">
       <tabs>
-	<tab label="リクエスト"/>
-	<tab label="ストック"/>
-<!--	<tab label="エラーリクエスト"/> -->
-	<tab label="リク・再生エラー"/>
-	<tab label="再生履歴"/>
-	<tab label="コメント"/>
-	<tab label="動画DB"/>
-	<tab label="Debug"/>
+	<tab label="&tab.request;"/>
+	<tab label="&tab.stock;"/>
+	<tab label="&tab.error;"/>
+	<tab label="&tab.playlist;"/>
+	<tab label="&tab.comment;"/>
+	<tab label="&tab.database;"/>
+	<tab label="&tab.debug;"/>
       </tabs>
       <tabpanels flex="1" id="tabpanels">
 	<!-- request tab -->
 	<vbox class="tabpanel" id="tab-request">
 	  <!-- command buttons -->
 	  <hbox>
-	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleRequest();"/>
-	    <textbox id="input-request" emptytext="動画IDを入力するとリクエストに追加されます" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
+	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleRequest();"/>
+	    <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
 	    <spacer flex="1"/>
-	    <button label="全消去" oncommand="NicoLiveHelper.clearRequest();"/>
+	    <button label="&button.clearall;" oncommand="NicoLiveHelper.clearRequest();"/>
 	    <label id="total-playtime"/>
 	  </hbox>
 	  <!-- request list -->
@@ -186,15 +187,15 @@
 	      ondrop="NicoLiveRequest.dropToStock(event)">
 
 	  <hbox>
-	    <button label="シャッフル" oncommand="NicoLiveHelper.shuffleStock();"/>
-	    <button type="menu" label="マイリスト読み込み">
+	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleStock();"/>
+	    <button type="menu" label="&button.load_mylist;">
 	      <menupopup id="menupopup-from-mylist">
 	      </menupopup>
 	    </button>
 
-	    <textbox id="input-stock" emptytext="動画IDまたはマイリストのURLを入力するとストックに追加されます" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
+	    <textbox id="input-stock" emptytext="&stock.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
 	    <spacer flex="1"/>
-	    <button label="全消去" oncommand="NicoLiveHelper.clearStock();"/>
+	    <button label="&button.clearall;" oncommand="NicoLiveHelper.clearStock();"/>
 	    <label id="stock-playtime"/>
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
@@ -207,7 +208,7 @@
 	<vbox flex="1" id="tab-requesterror">
 	  <hbox>
 	    <spacer flex="1"/>
-	    <button label="全消去" oncommand="NicoLiveHelper.removeErrorRequestAll();"/>
+	    <button label="&button.clearall;" oncommand="NicoLiveHelper.removeErrorRequestAll();"/>
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto">
 	    <html:table id="error-request-table" class="requestview">
@@ -218,20 +219,20 @@
 	<!-- playlist(history) tab -->
 	<vbox flex="1" class="tabpanel" id="tab-playlist">
 	  <deck id="playlist-deck" persist="selectedIndex" flex="1">
-	    <textbox id="played-list-textbox" emptytext="プレイリストスレッドにコピペする用" multiline="true" flex="1" />
+	    <textbox id="played-list-textbox" emptytext="&playlist.emptytext_textlog;" multiline="true" flex="1" />
 	    <vbox flex="1" style="overflow:auto">
 	      <html:table id="playlist-table" class="requestview">
 	      </html:table>
 	    </vbox>
 	  </deck>
 	  <hbox>
-	    <button label="完全消去" tooltiptext="再生済みの動画を再度リクエストを受け付けることができるようになります。テキスト復旧は行えません。" oncommand="NicoLiveHelper.clearPlayList();"/>
-	    <button label="テキスト復旧" tooltiptext="再生履歴を元にテキストを復旧します(番組名は復元できません)" oncommand="NicoLiveHistory.restorePlaylistText();"/>
+	    <button label="&button.clearall;" tooltiptext="&playlist.tooltip_clearall;" oncommand="NicoLiveHelper.clearPlayList();"/>
+	    <button label="&playlist.recover_text;" tooltiptext="&playlist.tooltip_recover_text;" oncommand="NicoLiveHistory.restorePlaylistText();"/>
 	    <spacer flex="1"/>
 	    <menulist id="id-playlist-style" persist="value" oncommand="$('playlist-deck').selectedIndex=this.value;">
 	      <menupopup>
-		<menuitem label="テキスト表示" value="0"/>
-		<menuitem label="詳細表示" value="1"/>
+		<menuitem label="&playlist.bytext;" value="0"/>
+		<menuitem label="&playlist.bydetail;" value="1"/>
 	      </menupopup>
 	    </menulist>
 	  </hbox>
@@ -243,17 +244,16 @@
 	    <menulist id="textbox-mail" label="" editable="true" value="">
 	      <menupopup>
 		<menuitem label="" value=""/>
-		<menuitem label="--- 放送者 ---" value=""/>
+		<menuitem label="&comment.command_caster;" value=""/>
 		<menuitem label="se1" value="se1"/>
 		<menuitem label="se2" value="se2"/>
 		<menuitem label="hidden" value="hidden"/>
-		<menuitem label="--- リスナー ---" value=""/>
+		<menuitem label="&comment.command_listener;" value=""/>
 		<menuitem label="cyan big" value="cyan big"/>
 		<menuitem label="shita" value="shita"/>
 		<menuitem label="green shita small" value="green shita small"/>
 		<menuitem label="orange" value="orange"/>
-		<!-- 以下プレミアム -->
-		<menuitem label="--- プレミアム ---" value=""/>
+		<menuitem label="&comment.command_premium;" value=""/>
 		<menuitem label="marineblue" value="marineblue"/>
 		<menuitem label="passionorange" value="passionorange"/>
 		<menuitem label="elementalgreen ue" value="elementalgreen ue"/>
@@ -269,11 +269,11 @@
 		     autocompletesearch="simple-autocomplete"
 		     enablehistory="true"
 		     showcommentcolumn="true" 
-		     emptytext="コメントを入力してください"
+		     emptytext="&comment.emptytext_input;"
 		     onkeypress="NicoLiveComment.postComment(this,event);"
 		     ontextreverted="this.select();"
 		     />
-	    <checkbox persist="checked" id="overwrite-hidden-perm" label="運営コメ欄に表示" tooltiptext="直前にhidden+/permでコメントした場合、/clsで運営コメントを消去してからコメントします"/>
+	    <checkbox persist="checked" id="overwrite-hidden-perm" label="&comment.write_upperarea;" tooltiptext="&comment.tooltip_write_upperarea;"/>
 	    <!-- <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/> -->
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto;">
@@ -290,11 +290,11 @@
 	      ondragover="return NicoLiveDatabase.checkDrag(event)"
 	      ondrop="NicoLiveDatabase.dropToDatabase(event)">
 	  <hbox>
-	    <button type="menu" label="マイリストから登録">
+	    <button type="menu" label="&db.add_from_mylist_to_db;">
 	      <menupopup id="menupopup-from-mylist-to-db">
 	      </menupopup>
 	    </button>
-	    <textbox id="input-db" emptytext="動画IDまたはマイリストのURLを入力するとDBに登録されます" flex="1" type="search" searchbutton="true" oncommand="NicoLiveDatabase.addVideos(this.value);"/>
+	    <textbox id="input-db" emptytext="&db.emptytext_input;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveDatabase.addVideos(this.value);"/>
 	    <spacer flex="1"/>
 	    <label id="db-label"/>
 	  </hbox>
@@ -305,37 +305,37 @@
 	  <hbox>
 	    <menulist id="db-search-max" value="100" oncommand="NicoLiveDatabase.search();">
 	      <menupopup>
-		<menuitem label="10件" value="10"/>
-		<menuitem label="20件" value="20"/>
-		<menuitem label="50件" value="50"/>
-		<menuitem label="100件" value="100"/>
-		<menuitem label="200件" value="200"/>
-		<menuitem label="500件" value="500"/>
-		<menuitem label="1000件" value="1000"/>
+		<menuitem label="&db.result_10;" value="10"/>
+		<menuitem label="&db.result_20;" value="20"/>
+		<menuitem label="&db.result_50;" value="50"/>
+		<menuitem label="&db.result_100;" value="100"/>
+		<menuitem label="&db.result_200;" value="200"/>
+		<menuitem label="&db.result_500;" value="500"/>
+		<menuitem label="&db.result_1000;" value="1000"/>
 	      </menupopup>
 	    </menulist>
 	    <menulist id="db-search-orderby" oncommand="NicoLiveDatabase.search();">
 	      <menupopup>
-		<menuitem label="タイトル" value="title"/>
-		<menuitem label="時間" value="length"/>
-		<menuitem label="再生数" value="view_counter"/>
-		<menuitem label="コメント数" value="comment_num"/>
-		<menuitem label="マイリスト数" value="mylist_counter"/>
-		<menuitem label="投稿日" value="first_retrieve"/>
-		<menuitem label="マイリスト率" value="mylist_rate"/>
-		<menuitem label="レート" value="favorite"/>
+		<menuitem label="&sort.title;" value="title"/>
+		<menuitem label="&sort.playtime;" value="length"/>
+		<menuitem label="&sort.view_counter;" value="view_counter"/>
+		<menuitem label="&sort.comment_num;" value="comment_num"/>
+		<menuitem label="&sort.mylist_counter;" value="mylist_counter"/>
+		<menuitem label="&sort.posteddate;" value="first_retrieve"/>
+		<menuitem label="&sort.mylist_rate;" value="mylist_rate"/>
+		<menuitem label="&rate.name;" value="favorite"/>
 	      </menupopup>
 	    </menulist>
 	    <menulist id="db-search-order" oncommand="NicoLiveDatabase.search();">
 	      <menupopup>
-		<menuitem label="昇順" value="asc"/>
-		<menuitem label="降順" value="desc"/>
+		<menuitem label="&sort.ascend_order;" value="asc"/>
+		<menuitem label="&sort.descend_order;" value="desc"/>
 	      </menupopup>
 	    </menulist>
-	    <button label="検索実行" oncommand="NicoLiveDatabase.search();"/>
-	    <button label="ストックに追加" oncommand="NicoLiveDatabase.addStockAll();"/>
+	    <button label="&db.do_search;" oncommand="NicoLiveDatabase.search();"/>
+	    <button label="&db.add_stock;" oncommand="NicoLiveDatabase.addStockAll();"/>
 	    <spacer flex="1"/>
-	    <button label="Update" tooltiptext="検索結果のうち、1週間以上更新のなかった動画情報を更新します。表示は即時に反映されません(再検索が必要)" oncommand="NicoLiveDatabase.updateDatabase(NicoLiveDatabase._searchresult);"/>
+	    <button label="&db.update;" tooltiptext="&db.tooltip_update;" oncommand="NicoLiveDatabase.updateDatabase(NicoLiveDatabase._searchresult);"/>
 	  </hbox>
 	  <!-- 検索結果表示 -->
 	  <vbox flex="1" style="overflow:auto">
@@ -346,7 +346,7 @@
 
 	<!-- debug tab -->
 	<vbox id="tab-debug">
-	  <textbox id="debug-textbox" emptytext="デバッグ用" multiline="true" flex="1" />
+	  <textbox id="debug-textbox" emptytext="for debugging." multiline="true" flex="1" />
 	</vbox>
 
       </tabpanels>
@@ -360,8 +360,8 @@
     <vbox flex="1">
       <browser id="live-page" src="about:blank" type="content" flex="1"/>
       <hbox>
-	<button label="開く" oncommand="NicoLiveBrowser.open();"/>
-	<button label="閉じる" oncommand="NicoLiveBrowser.close();"/>
+	<button label="&browser.open;" oncommand="NicoLiveBrowser.open();"/>
+	<button label="&browser.close;" oncommand="NicoLiveBrowser.close();"/>
       </hbox>
     </vbox>
 
@@ -375,37 +375,37 @@
     </stack>
     <spacer flex="1"/>
     <statusbarpanel id="statusbar-remain" label="R/0 S/0"/>
-    <statusbarpanel id="statusbar-n-of-listeners" label="来場者数 0"/>
+    <statusbarpanel id="statusbar-n-of-listeners" label="&live.watcher;"/>
     <statusbarpanel id="statusbar-live-progress" label="0:00"/>
   </statusbar>
 
   <popupset>
     <!-- for statusbar -->
     <menupopup id="popup-add-mylist">
-      <menu label="レート">
+      <menu label="&rate.name;">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,NicoLiveHelper.musicinfo.video_id);"
 		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,NicoLiveHelper.musicinfo.video_id);">
-	  <menuitem label="なし" value="0" type="checkbox"/>
-	  <menuitem label="★" value="10" type="checkbox"/>
-	  <menuitem label="★★" value="20" type="checkbox"/>
-	  <menuitem label="★★★" value="30" type="checkbox"/>
-	  <menuitem label="★★★★" value="40" type="checkbox"/>
-	  <menuitem label="★★★★★" value="50" type="checkbox"/>
+	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
+	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
+	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
+	  <menuitem label="&rate.3;" value="30" type="checkbox"/>
+	  <menuitem label="&rate.4;" value="40" type="checkbox"/>
+	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
-      <menuitem label="動画DBに追加" oncommand="NicoLiveDatabase.addCurrentPlayedVideo();"/>
+      <menuitem label="&statusbar.add_db;" oncommand="NicoLiveDatabase.addCurrentPlayedVideo();"/>
     </menupopup>
 
     <!-- for comment -->
     <menupopup id="popup-comment">
-      <menuitem label="コテハン設定" oncommand="NicoLiveComment.addName();"/>
-      <menuitem label="リフレクション登録" tooltiptext="視聴者のコメントを運営コメントを使用して再コメントを行います。/ngaddはその場にいる視聴者にしか効果がないため、使用しません。" oncommand="NicoLiveComment.addCommentReflector();"/>
+      <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName();"/>
+      <menuitem label="&comment.menu_reflection;" tooltiptext="&comment.tooltip_reflection;" oncommand="NicoLiveComment.addCommentReflector();"/>
       <menuseparator/>
-      <menuitem id="id-release-reflection" label="リフレクション全解除" oncommand="NicoLiveComment.releaseReflector();"/>
+      <menuitem id="id-release-reflection" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
       <!-- <menuitem label="色変更(未作成)"/> -->
     </menupopup>
     <menupopup id="popup-copycomment">
-      <menuitem label="コメントをコピー" oncommand="NicoLiveComment.copyComment();"/>
+      <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>
     </menupopup>
 
     <!-- request tab -->
@@ -420,47 +420,47 @@
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
-      <menuitem label="コメ番順にソート" oncommand="NicoLiveHelper.sortRequestByCommentNo();"/>
-      <menu label="昇順">
+      <menuitem label="&sort.comment_no;" oncommand="NicoLiveHelper.sortRequestByCommentNo();"/>
+      <menu label="&sort.ascend_order;">
 	<menupopup>
-	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortRequest(0,1)"/>
-	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortRequest(1,1)"/>
-	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortRequest(2,1)"/>
-	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortRequest(3,1)"/>
-	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortRequest(4,1)"/>
-	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortRequest(5,1)"/>
-	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortRequest(6,1)"/>
+	  <menuitem label="&sort.view_counter;" oncommand="NicoLiveHelper.sortRequest(0,1)"/>
+	  <menuitem label="&sort.comment_num;" oncommand="NicoLiveHelper.sortRequest(1,1)"/>
+	  <menuitem label="&sort.mylist_counter;" oncommand="NicoLiveHelper.sortRequest(2,1)"/>
+	  <menuitem label="&sort.playtime;" oncommand="NicoLiveHelper.sortRequest(3,1)"/>
+	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortRequest(4,1)"/>
+	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortRequest(5,1)"/>
+	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortRequest(6,1)"/>
 	</menupopup>
       </menu>
-      <menu label="降順">
+      <menu label="&sort.descend_order;">
 	<menupopup>
-	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortRequest(0,-1)"/>
-	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortRequest(1,-1)"/>
-	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortRequest(2,-1)"/>
-	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortRequest(3,-1)"/>
-	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortRequest(4,-1)"/>
-	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortRequest(5,-1)"/>
-	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortRequest(6,-1)"/>
+	  <menuitem label="&sort.view_counter;" oncommand="NicoLiveHelper.sortRequest(0,-1)"/>
+	  <menuitem label="&sort.comment_num;" oncommand="NicoLiveHelper.sortRequest(1,-1)"/>
+	  <menuitem label="&sort.mylist_counter;" oncommand="NicoLiveHelper.sortRequest(2,-1)"/>
+	  <menuitem label="&sort.playtime;" oncommand="NicoLiveHelper.sortRequest(3,-1)"/>
+	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortRequest(4,-1)"/>
+	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortRequest(5,-1)"/>
+	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortRequest(6,-1)"/>
 	</menupopup>
       </menu>
 
       <menuseparator/>
-      <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-request-additionalinfo"/>
-      <menu label="レート">
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();" id="menu-request-additionalinfo"/>
+      <menu label="&rate.name;">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
-	  <menuitem label="なし" value="0" type="checkbox"/>
-	  <menuitem label="★" value="10" type="checkbox"/>
-	  <menuitem label="★★" value="20" type="checkbox"/>
-	  <menuitem label="★★★" value="30" type="checkbox"/>
-	  <menuitem label="★★★★" value="40" type="checkbox"/>
-	  <menuitem label="★★★★★" value="50" type="checkbox"/>
+	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
+	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
+	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
+	  <menuitem label="&rate.3;" value="30" type="checkbox"/>
+	  <menuitem label="&rate.4;" value="40" type="checkbox"/>
+	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
-      <menuitem label="先読み" oncommand="NicoLiveRequest.prepare();" tooltiptext="/prepareを送信する"/>
+      <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare();" tooltiptext="&menu.tooltip_prepare;"/>
       <menuseparator/>
-      <menuitem label="全リクエストをコピー" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
+      <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
 
     <!-- for error tab -->
@@ -477,23 +477,23 @@
 
     <!-- for database -->
     <menupopup id="popup-db-result">
-      <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="ストック追加" oncommand="NicoLiveDatabase.addStockOne();"/>
-      <menuitem label="リクエスト送信" oncommand="NicoLiveDatabase.sendRequestOne();"/>
-      <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();"/>
-      <menu label="レート">
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
+      <menuitem label="&menu.db_addstock;" oncommand="NicoLiveDatabase.addStockOne();"/>
+      <menuitem label="&menu.db_sendrequest;" oncommand="NicoLiveDatabase.sendRequestOne();"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();"/>
+      <menu label="&rate.name;">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
-	  <menuitem label="なし" value="0" type="checkbox"/>
-	  <menuitem label="★" value="10" type="checkbox"/>
-	  <menuitem label="★★" value="20" type="checkbox"/>
-	  <menuitem label="★★★" value="30" type="checkbox"/>
-	  <menuitem label="★★★★" value="40" type="checkbox"/>
-	  <menuitem label="★★★★★" value="50" type="checkbox"/>
+	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
+	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
+	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
+	  <menuitem label="&rate.3;" value="30" type="checkbox"/>
+	  <menuitem label="&rate.4;" value="40" type="checkbox"/>
+	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
       <menuseparator/>
-      <menuitem label="DBから削除" oncommand="NicoLiveDatabase.deleteMovie();"/>
+      <menuitem label="&menu.db_delete;" oncommand="NicoLiveDatabase.deleteMovie();"/>
     </menupopup>
 
     <!-- for stock -->
@@ -508,47 +508,47 @@
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
-      <menu label="昇順">
+      <menu label="&sort.ascend_order;">
 	<menupopup>
-	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortStock(0,1)"/>
-	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortStock(1,1)"/>
-	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortStock(2,1)"/>
-	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortStock(3,1)"/>
-	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortStock(4,1)"/>
-	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortStock(5,1)"/>
-	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortStock(6,1)"/>
+	  <menuitem label="&sort.view_counter;" oncommand="NicoLiveHelper.sortStock(0,1)"/>
+	  <menuitem label="&sort.comment_num;" oncommand="NicoLiveHelper.sortStock(1,1)"/>
+	  <menuitem label="&sort.mylist_counter;" oncommand="NicoLiveHelper.sortStock(2,1)"/>
+	  <menuitem label="&sort.playtime;" oncommand="NicoLiveHelper.sortStock(3,1)"/>
+	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortStock(4,1)"/>
+	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,1)"/>
+	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,1)"/>
 	</menupopup>
       </menu>
-      <menu label="降順">
+      <menu label="&sort.descend_order;">
 	<menupopup>
-	  <menuitem label="再生数" oncommand="NicoLiveHelper.sortStock(0,-1)"/>
-	  <menuitem label="コメント数" oncommand="NicoLiveHelper.sortStock(1,-1)"/>
-	  <menuitem label="マイリスト数" oncommand="NicoLiveHelper.sortStock(2,-1)"/>
-	  <menuitem label="再生時間" oncommand="NicoLiveHelper.sortStock(3,-1)"/>
-	  <menuitem label="投稿日" oncommand="NicoLiveHelper.sortStock(4,-1)"/>
-	  <menuitem label="マイリスト率" oncommand="NicoLiveHelper.sortStock(5,-1)"/>
-	  <menuitem label="タイトル" oncommand="NicoLiveHelper.sortStock(6,-1)"/>
+	  <menuitem label="&sort.view_counter;" oncommand="NicoLiveHelper.sortStock(0,-1)"/>
+	  <menuitem label="&sort.comment_num;" oncommand="NicoLiveHelper.sortStock(1,-1)"/>
+	  <menuitem label="&sort.mylist_counter;" oncommand="NicoLiveHelper.sortStock(2,-1)"/>
+	  <menuitem label="&sort.playtime;" oncommand="NicoLiveHelper.sortStock(3,-1)"/>
+	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortStock(4,-1)"/>
+	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,-1)"/>
+	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,-1)"/>
 	</menupopup>
       </menu>
-      <menuitem label="詳細の表示/非表示" oncommand="NicoLiveRequest.showhideDetail();"/>
+      <menuitem label="&menu.stock_showdetail;" oncommand="NicoLiveRequest.showhideDetail();"/>
       <menuseparator/>
-      <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-stock-additionalinfo"/>
-      <menu label="レート">
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();" id="menu-stock-additionalinfo"/>
+      <menu label="&rate.name;">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
-	  <menuitem label="なし" value="0" type="checkbox"/>
-	  <menuitem label="★" value="10" type="checkbox"/>
-	  <menuitem label="★★" value="20" type="checkbox"/>
-	  <menuitem label="★★★" value="30" type="checkbox"/>
-	  <menuitem label="★★★★" value="40" type="checkbox"/>
-	  <menuitem label="★★★★★" value="50" type="checkbox"/>
+	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
+	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
+	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
+	  <menuitem label="&rate.3;" value="30" type="checkbox"/>
+	  <menuitem label="&rate.4;" value="40" type="checkbox"/>
+	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
-      <menuitem label="先読み" oncommand="NicoLiveRequest.prepare();" tooltiptext="/prepareを送信する"/>
-      <menuitem label="再生済みを解除" oncommand="NicoLiveRequest.offPlayedStatus();"/>
+      <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare();" tooltiptext="&menu.tooltip_prepare;"/>
+      <menuitem label="&menu.turnoff_playedflag;" oncommand="NicoLiveRequest.offPlayedStatus();"/>
       <menuseparator/>
-      <menuitem label="ストックをファイルに保存" oncommand="NicoLiveRequest.saveStockToFile();"/>
+      <menuitem label="&menu.stock_savefile;" oncommand="NicoLiveRequest.saveStockToFile();"/>
     </menupopup>
 
     <!-- for playlist -->
@@ -563,17 +563,17 @@
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
-      <menuitem label="動画IDをコピー" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="P名設定" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="追加情報設定" oncommand="NicoLiveDatabase.setAdditional();" id="menu-playlist-additionalinfo"/>
-      <menu label="レート">
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();" id="menu-playlist-additionalinfo"/>
+      <menu label="&rate.name;">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
-	  <menuitem label="なし" value="0" type="checkbox"/>
-	  <menuitem label="★" value="10" type="checkbox"/>
-	  <menuitem label="★★" value="20" type="checkbox"/>
-	  <menuitem label="★★★" value="30" type="checkbox"/>
-	  <menuitem label="★★★★" value="40" type="checkbox"/>
-	  <menuitem label="★★★★★" value="50" type="checkbox"/>
+	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
+	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
+	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
+	  <menuitem label="&rate.3;" value="30" type="checkbox"/>
+	  <menuitem label="&rate.4;" value="40" type="checkbox"/>
+	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
     </menupopup>
