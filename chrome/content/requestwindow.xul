@@ -399,10 +399,15 @@
     <!-- for comment -->
     <menupopup id="popup-comment">
       <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName();"/>
+      <menu label="&comment.menu_color;">
+	<menupopup>
+	  <menuitem label="&comment.menu_clearcolor;" oncommand="NicoLiveComment.clearColorSetting();"/>
+	  <colorpicker id="comment-color" onclick="NicoLiveComment.changeColor();"/>
+	</menupopup>
+      </menu>
       <menuitem label="&comment.menu_reflection;" tooltiptext="&comment.tooltip_reflection;" oncommand="NicoLiveComment.addCommentReflector();"/>
       <menuseparator/>
       <menuitem id="id-release-reflection" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
-      <!-- <menuitem label="色変更(未作成)"/> -->
     </menupopup>
     <menupopup id="popup-copycomment">
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>

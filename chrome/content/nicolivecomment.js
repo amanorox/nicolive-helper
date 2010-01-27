@@ -42,7 +42,12 @@ var NicoLiveComment = {
 	    tr.className = col;
 	    this.colormap[comment.user_id] = col;
 	}else{
-	    tr.className = this.colormap[comment.user_id];
+	    let col = this.colormap[comment.user_id];
+	    if( col.indexOf('color')==0 ){
+		tr.className = col;
+	    }else{
+		tr.style.backgroundColor = col;
+	    }
 	}
 
 	if(comment.premium==3){
@@ -194,6 +199,19 @@ var NicoLiveComment = {
 	for(let i=0,user;user=users[i];i++){
 	    RemoveElement(user);
 	}
+    },
+
+    clearColorSetting:function(){
+	let userid = document.popupNode.firstChild.textContent;
+	delete this.colormap[userid];
+	this.updateCommentViewer();
+    },
+
+    changeColor:function(){
+	let userid = document.popupNode.firstChild.textContent;
+	let color = $('comment-color').color;
+	this.colormap[userid] = color;
+	this.updateCommentViewer();
     },
 
     addName:function(){
@@ -372,14 +390,20 @@ var NicoLiveComment = {
 	this.caseinsensitivestrings = new Array();
 	this.casesensitivestrings = new Array();
 
-	this.colormap = new Object();
 	this.commentlog   = new Array();
+	this.colormap = NicoLiveDatabase.loadGPStorage("nico_live_colormap",{});
 	this.namemap = NicoLiveDatabase.loadGPStorage("nico_live_kotehan",{});
 	this.autocomplete = NicoLiveDatabase.loadGPStorage("nico_live_autocomplete",[]);
 	this.loadPresetAutocomplete();
     },
     destroy:function(){
 	this.closeFile();
+	for (a in this.colormap){
+	    if( this.colormap[a].indexOf('color')==0 ){
+		delete this.colormap[a];
+	    }
+	}
+	NicoLiveDatabase.saveGPStorage("nico_live_colormap",this.colormap);
 	NicoLiveDatabase.saveGPStorage("nico_live_autocomplete",this.autocomplete);
     }
 };
