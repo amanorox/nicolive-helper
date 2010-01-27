@@ -231,26 +231,26 @@ var NicoLiveDatabase = {
 	let elem;
 	let hbox = CreateElement('hbox');
 	elem = CreateElement('menupopup');
-	elem.appendChild(CreateMenuItem("タイトル",0));
-	elem.appendChild(CreateMenuItem("時間(秒)",1));
-	elem.appendChild(CreateMenuItem("再生数",2));
-	elem.appendChild(CreateMenuItem("コメント数",3));
-	elem.appendChild(CreateMenuItem("マイリスト数",4));
-	elem.appendChild(CreateMenuItem("タグ",5));
-	elem.appendChild(CreateMenuItem("投稿日",6));
-	elem.appendChild(CreateMenuItem("動画ID",7));
-	elem.appendChild(CreateMenuItem("詳細",8));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_TITLE"),0));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_LENGTH"),1));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_VIEWS"),2));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_COMMENTS"),3));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_MYLISTS"),4));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_TAGS"),5));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_POSTEDDATE"),6));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_VIDEOID"),7));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_DESC"),8));
 	menulist = CreateElement('menulist');
 	menulist.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
 	menulist.appendChild(elem);
 	hbox.appendChild(menulist);
 
 	elem = CreateElement('menupopup');
-	elem.appendChild(CreateMenuItem("含む",0));
-	elem.appendChild(CreateMenuItem("含まない",1));
-	elem.appendChild(CreateMenuItem("以上",2));
-	elem.appendChild(CreateMenuItem("等しい",3));
-	elem.appendChild(CreateMenuItem("以下",4));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_INCLUDE"),0));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_EXCLUDE"),1));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_GTE"),2));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_EQUAL"),3));
+	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_LTE"),4));
 	menulist = CreateElement('menulist');
 	menulist.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
 	menulist.appendChild(elem);
@@ -359,7 +359,7 @@ var NicoLiveDatabase = {
 	let callback = {
 	    handleCompletion:function(reason){
 		debugprint('search complete');
-		$('db-label').value = NicoLiveDatabase._searchresult.length + '件ありました';
+		$('db-label').value = LoadFormattedString('STR_DBRESULT',[NicoLiveDatabase._searchresult.length]);
 		//NicoLiveDatabase.updateDatabase( NicoLiveDatabase._searchresult );
 	    },
 	    handleError:function(error){
@@ -502,7 +502,7 @@ var NicoLiveDatabase = {
 	    n = st.getInt32(0);
 	}
 	st.finalize();
-	$('db-label').value = n +"件登録済み";
+	$('db-label').value = LoadFormattedString('STR_DB_REGISTERED_NUM',[n]);
     },
 
     // 現在のvbox内の動画IDをコピーする(リク、ストック、DBで共通利用可)
@@ -530,7 +530,8 @@ var NicoLiveDatabase = {
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 	let oldpname = this.getPName(video_id);
-	let pname = InputPrompt("「"+video_id+"」のP名を入力してください","P名(D名)の入力",oldpname);
+	let pname = InputPrompt( LoadFormattedString('STR_TEXT_DB_SET_PNAME',[video_id]),
+				 LoadString("STR_CAPTION_DB_SET_PNAME"), oldpname);
 	if(pname!=null){
 	    let st;
 	    try{
@@ -571,7 +572,8 @@ var NicoLiveDatabase = {
 	let video_id = elem.getAttribute('nicovideo_id');
 
 	let oldadditional = this.getAdditional(video_id);
-	let additional = InputPrompt("「"+video_id+"」の追加情報を入力してください","追加情報の入力",oldadditional);
+	let additional = InputPrompt( LoadFormattedString('STR_TEXT_DB_SET_ADDITIONAL',[video_id]),
+				      LoadString("STR_CAPTION_DB_SET_ADDITIONAL"),oldadditional);
 	if(additional!=null){
 	    let st;
 	    try{
@@ -634,7 +636,7 @@ var NicoLiveDatabase = {
 	}
 
 	if( this.getFavorite(video_id)<0 ){
-	    ShowNotice(video_id+"は動画DBにない動画のため、レートは保存されません");
+	    ShowNotice( LoadFormattedString('STR_ERR_RATE_NOT_SAVED',[video_id]) );
 	}
 
 	let st;
