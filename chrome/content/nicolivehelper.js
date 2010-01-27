@@ -1205,7 +1205,7 @@ var NicoLiveHelper = {
 			NicoLiveHelper.postCasterComment(comment,mail,type,true);
 		    }
 		    if(video_id && retry){
-			let str = video_id + "の再生に失敗しました";
+			let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
 			NicoLiveHelper.postCasterComment(str,"");
 			$('played-list-textbox').value += str + "\n";
 			// たまに生引用拒否していなくてもエラーになるので.
@@ -1584,7 +1584,7 @@ var NicoLiveHelper = {
 	idx--;
 	let music = this.stock[idx];
 	if(this.isRequestedMusic(music.video_id)){
-	    ShowNotice(music.video_id+'はリクエスト済みです');
+	    ShowNotice( LoadFormattedString('STR_FAILED_TO_ADD_REQUEST_FROM_STOCK',[music.video_id]) );
 	    return;
 	}
 	this.addRequestQueue(music);
@@ -1938,7 +1938,7 @@ var NicoLiveHelper = {
 		this.getpostkey();
 		break;
 	    case 1: // リスナーコメ投稿規制.
-		ShowNotice('コメント投稿規制中');
+		ShowNotice(LoadString('STR_FAILED_TO_COMMENT_BY_CONTROL'));
 		break;
 	    default:
 		break;
@@ -2080,7 +2080,7 @@ var NicoLiveHelper = {
     },
 
     showNotice3minleft:function(){
-	let str = "放送時間残り3分になりました";
+	let str = LoadString('STR_REMAIN_3MIN');
 	if( NicoLivePreference.notice.area ){
 	    ShowNotice(str);
 	}
@@ -2326,7 +2326,7 @@ var NicoLiveHelper = {
 		let xml = req.responseXML;
 		try{
 		    let watcher = xml.getElementsByTagName('watchCount')[0].textContent;
-		    $('statusbar-n-of-listeners').label = "来場者数 "+watcher;
+		    $('statusbar-n-of-listeners').label = LoadFormattedString('STR_WATCHER',[watcher]);
 		} catch (x) {
 
 		}
@@ -2351,7 +2351,7 @@ var NicoLiveHelper = {
 		let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
 		if( confstatus.getAttribute('status')=='ok' ){
 		}else{
-		    debugalert('配信開始に失敗しました。\n生放送ページにある公式の配信開始ボタンを押してください。');
+		    debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
 		}
 	    }
 	};
