@@ -40,9 +40,9 @@ var NicoLiveComment = {
 	    let sel = GetRandomInt(1,8);
 	    let col = 'color'+sel;
 	    tr.className = col;
-	    this.colormap[comment.user_id] = col;
+	    this.colormap[comment.user_id] = {"color":col, "date":GetCurrentTime()};
 	}else{
-	    let col = this.colormap[comment.user_id];
+	    let col = this.colormap[comment.user_id].color;
 	    if( col.indexOf('color')==0 ){
 		tr.className = col;
 	    }else{
@@ -55,7 +55,7 @@ var NicoLiveComment = {
 	}else{
 	    if( NicoLivePreference.ngwordfiltering && this.isNGWord(comment.text) ){
 		tr.className = "table_played";
-	    }	    
+	    }
 	}
 
 	let td;
@@ -210,7 +210,16 @@ var NicoLiveComment = {
     changeColor:function(){
 	let userid = document.popupNode.firstChild.textContent;
 	let color = $('comment-color').color;
-	this.colormap[userid] = color;
+	if( !color ) return;
+	let now = GetCurrentTime();
+	this.colormap[userid] = {"color":color,"date":now};
+	for(id in this.colormap){
+	    if( id>0 ) continue;
+	    // 1週間経ったものは削除.
+	    if( now-this.colormap[id].date > 7*24*60*60 ){
+		delete this.colormap[id];
+	    }
+	}
 	this.updateCommentViewer();
     },
 
@@ -399,7 +408,7 @@ var NicoLiveComment = {
     destroy:function(){
 	this.closeFile();
 	for (a in this.colormap){
-	    if( this.colormap[a].indexOf('color')==0 ){
+	    if( this.colormap[a].color.indexOf('color')==0 ){
 		delete this.colormap[a];
 	    }
 	}
