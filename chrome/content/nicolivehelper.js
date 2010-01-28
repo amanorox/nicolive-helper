@@ -2388,8 +2388,8 @@ var NicoLiveHelper = {
 		let publishstatus = req.responseXML;
 		NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
 		let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
-		// 取得した終了時刻がより未来を指していたら更新.
-		if( NicoLiveHelper.endtime < tmp ) NicoLiveHelper.endtime = tmp;
+		// 取得した終了時刻がより現在より未来指していたら更新.
+		if( GetCurrentTime() <= tmp ) NicoLiveHelper.endtime = tmp;
 		debugprint('token='+NicoLiveHelper.token);
 		debugprint('endtime='+NicoLiveHelper.endtime);
 		if( doconfigurestream ){
