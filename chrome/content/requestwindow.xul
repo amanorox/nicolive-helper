@@ -402,7 +402,7 @@
       <menu label="&comment.menu_color;">
 	<menupopup>
 	  <menuitem label="&comment.menu_clearcolor;" oncommand="NicoLiveComment.clearColorSetting();"/>
-	  <colorpicker id="comment-color" onclick="NicoLiveComment.changeColor();"/>
+	  <colorpicker id="comment-color" onselect="NicoLiveComment.changeColor();"/>
 	</menupopup>
       </menu>
       <menuitem label="&comment.menu_reflection;" tooltiptext="&comment.tooltip_reflection;" oncommand="NicoLiveComment.addCommentReflector();"/>
