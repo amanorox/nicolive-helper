@@ -116,7 +116,7 @@
 <!ENTITY comment.tooltip_reflection "視聴者のコメントを運営コメントで再コメントを行います。/ngaddはその場にいる視聴者にしか効果がないため、使用しません。">
 <!ENTITY comment.menu_release_reflection_all "リフレクション全解除">
 <!ENTITY comment.menu_copy_comment "コメントをコピー">
-<!ENTITY comment.menu_color "色設定">
+<!ENTITY comment.menu_color "背景色設定">
 <!ENTITY comment.menu_clearcolor "色設定をクリアする">
 
 <!ENTITY sort.comment_no "コメ番順にソート">
