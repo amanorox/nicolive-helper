@@ -166,7 +166,7 @@
 	<!-- request tab -->
 	<vbox class="tabpanel" id="tab-request">
 	  <!-- command buttons -->
-	  <hbox>
+	  <hbox align="center">
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleRequest();"/>
 	    <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
 	    <spacer flex="1"/>
@@ -186,7 +186,7 @@
 	      ondragover="return NicoLiveRequest.checkDrag(event)"
 	      ondrop="NicoLiveRequest.dropToStock(event)">
 
-	  <hbox>
+	  <hbox align="center">
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleStock();"/>
 	    <button type="menu" label="&button.load_mylist;">
 	      <menupopup id="menupopup-from-mylist">
@@ -289,7 +289,7 @@
 	      ondragenter="return NicoLiveDatabase.checkDrag(event)"
 	      ondragover="return NicoLiveDatabase.checkDrag(event)"
 	      ondrop="NicoLiveDatabase.dropToDatabase(event)">
-	  <hbox>
+	  <hbox align="center">
 	    <button type="menu" label="&db.add_from_mylist_to_db;">
 	      <menupopup id="menupopup-from-mylist-to-db">
 	      </menupopup>
