@@ -63,25 +63,25 @@ table#database-table tr:hover{
 
 
 tr.color1{
-    background-color: #f2eeff;
+    background-color: #f2eef8;
 }
 tr.color2{
-    background-color: #eeeeff;
+    background-color: #eef0ff;
 }
 tr.color3{
-    background-color: #eef2ff;
+    background-color: #eef8ff;
 }
 tr.color4{
     background-color: #eeffff;
 }
 tr.color5{
-    background-color: #eefff2;
+    background-color: #eefff8;
 }
 tr.color6{
     background-color: #eeffee;
 }
 tr.color7{
-    background-color: #f2ffee;
+    background-color: #f8ffee;
 }
 tr.color8{
     background-color: #ffffee;
