@@ -1991,7 +1991,7 @@ var NicoLiveHelper = {
 	    },
 	    onStopRequest: function(request, context, status){
 		try{
-		    debugprint("onStopRequest");
+		    debugalert('コメントサーバから切断されました。再接続してください。');
 		    NicoLiveHelper.close();
 		} catch (x) {
 		}
