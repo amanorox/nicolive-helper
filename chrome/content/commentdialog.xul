@@ -1,16 +1,62 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://global/content/commonDialog.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/commonDialog.css" type="text/css"?>
 
-<dialog id="commentwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" title="Comment Window(NicoLive Helper)" buttons="accept" ondialogaccept="return true;" onload="setvalue();">
+
+<!DOCTYPE dialog SYSTEM "chrome://nicolivehelper/locale/nicolivehelper.dtd">
+
+<dialog id="commentreflector"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	title="&comment.reflector.title;"
+	buttons="accept,cancel"
+	onload="init();"
+	ondialogaccept="return retval();" ondialogcancel="window.arguments[0].default=null; return true;">
 
   <script>
   <![CDATA[
-function setvalue(){
-    var fl = window.arguments[0];
-    document.getElementById('playlist-text').value = fl;
+function init(){
+    Application.console.log(window.arguments[0].info);
+    document.getElementById('info.body').appendChild(document.createTextNode(window.arguments[0].info));
+    document.getElementById('input-name').value = window.arguments[0].default;
+}
+
+function retval()
+{
+    window.arguments[0].default = document.getElementById('input-name').value;
+    window.arguments[0].disptype = document.getElementById('radio').selectedIndex;
+    return true;
 }
   ]]>
   </script>
-  <textbox id="playlist-text" multiline="true" readonly="true" flex="1"/>
+
+  <grid>
+    <columns>
+      <column/>
+      <column flex="1"/>
+    </columns>
+    <rows>
+      <row>
+	<hbox align="center">
+	  <image id="info.icon" class="spaced question-icon"/>
+	</hbox>
+	<hbox align="center">
+	  <description id="info.body" noinitialfocus="true"></description>
+	</hbox>
+      </row>
+      <row align="center">
+	<label value=""/>
+	<textbox id="input-name"/>
+      </row>
+      <row>
+	<label value=""/>
+	<radiogroup id="radio">
+	  <radio label="運営コメントに名前を表示"/>
+	  <radio label="運営コメント欄、左上にある名前欄に表示"/>
+	</radiogroup>
+      </row>
+    </rows>
+  </grid>
 
 </dialog>

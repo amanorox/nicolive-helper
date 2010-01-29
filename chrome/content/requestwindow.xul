@@ -61,7 +61,6 @@
       SetWindowTopMost(w,NicoLivePreference.topmost);
       w.focus();
   }
-
   ]]>
   </script>
 

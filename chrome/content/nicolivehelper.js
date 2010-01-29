@@ -732,7 +732,7 @@ var NicoLiveHelper = {
 	this._counter++;
 	this.commentstate = COMMENT_STATE_MOVIEINFO_BEGIN;
 	let ismovieinfo = COMMENT_MSG_TYPE_MOVIEINFO;
-	this.postCasterComment(sendstr,cmd,ismovieinfo);
+	this.postCasterComment(sendstr,cmd,"",ismovieinfo);
 
 	sendstr = NicoLivePreference.videoinfo[this._counter].comment;
 	if(!sendstr){
@@ -780,7 +780,7 @@ var NicoLiveHelper = {
 	    break;
 	}
 	let ismovieinfo = COMMENT_MSG_TYPE_MOVIEINFO;
-	this.postCasterComment(sendstr,cmd,ismovieinfo);
+	this.postCasterComment(sendstr,cmd,"",ismovieinfo);
     },
 
     // 指定リク番号の曲を再生する(idxは1〜).
@@ -1180,9 +1180,10 @@ var NicoLiveHelper = {
     // 主コメを投げる.
     // comment : 運営コメント
     // mail : 運営コマンド
+    // name : 左上名前欄に表示する名前
     // type : コメント種別(undefined or null:自動応答, 1:動画情報, 2:普通の主コメ
     // retry : 送信エラーになったときのリトライ時にtrue
-    postCasterComment: function(comment,mail,type,retry){
+    postCasterComment: function(comment,mail,name,type,retry){
 	if(!this.iscaster) return;
 	if(this.isOffline()) return;
 	if(comment.length<=0) return;
@@ -1202,7 +1203,7 @@ var NicoLiveHelper = {
 		    }
 		    if( !retry ){ // 1回再送.
 			debugprint('failed: '+comment);
-			NicoLiveHelper.postCasterComment(comment,mail,type,true);
+			NicoLiveHelper.postCasterComment(comment,mail,name,type,true);
 		    }
 		    if(video_id && retry){
 			let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
@@ -1268,6 +1269,9 @@ var NicoLiveHelper = {
 
 	// 主コメは184=falseにしても効果がないので常時trueに.
 	let data = "body="+encodeURIComponent(comment)+"&is184=true";
+	if(name){
+	    data += "&name="+encodeURIComponent(name);
+	}
 	// コマンドは mail=green%20shita と付ける.
 	data += "&mail="+encodeURIComponent(mail);
 	req.send(data);
@@ -1991,7 +1995,7 @@ var NicoLiveHelper = {
 	    },
 	    onStopRequest: function(request, context, status){
 		try{
-		    debugalert('コメントサーバから切断されました。再接続してください。');
+		    debugalert('コメントサーバから切断されました。');
 		    NicoLiveHelper.close();
 		} catch (x) {
 		}

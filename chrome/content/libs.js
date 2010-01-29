@@ -127,6 +127,19 @@ function InputPrompt(text,caption,input){
     }
 }
 
+function InputPromptWithCheck(text,caption,input,checktext){
+    var check = {value: false};
+    var input_ = {value: input};
+
+    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    var result = prompts.prompt(null, caption, text, input_, checktext, check);
+    if( result ){
+	return input_.value;
+    }else{
+	return null;
+    }
+}
+
 function FindParentElement(elem,tag){
     while(elem.parentNode &&
 	  (!elem.tagName || (elem.tagName.toUpperCase()!=tag.toUpperCase()))){

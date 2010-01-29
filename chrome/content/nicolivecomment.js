@@ -96,16 +96,24 @@ var NicoLiveComment = {
     // コメントリフレクションを行う.
     reflection:function(comment){
 	if( !NicoLiveHelper.iscaster ) return;
-	let name;
+	let name,disptype;
 	if(this.reflector[comment.user_id]){
 	    name = this.reflector[comment.user_id].name;
+	    disptype = this.reflector[comment.user_id].disptype;
 	}else{
 	    return;
 	}
 	let str;
-	str = LoadFormattedString('STR_NAME_POSTFIX',[name])+"> "+comment.text;
-	debugprint(str);
-	NicoLiveHelper.postCasterComment(str,"");
+	switch(disptype){
+	case 0:
+	    str = LoadFormattedString('STR_NAME_POSTFIX',[name])+":<br>"+comment.text;
+	    name = null;
+	    break;
+	case 1:// 運営コメ欄左上に名前.
+	    str = comment.text;
+	    break;
+	}
+	NicoLiveHelper.postCasterComment(str,"",name);
     },
 
     copyComment:function(){
@@ -152,11 +160,11 @@ var NicoLiveComment = {
 	    if( $('overwrite-hidden-perm').checked ){
 		// 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
 		let func = function(){
-		    NicoLiveHelper.postCasterComment(str,mail,COMMENT_MSG_TYPE_NORMAL);
+		    NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
 		};
 		NicoLiveHelper.clearCasterCommentAndRun(func);
 	    }else{
-		NicoLiveHelper.postCasterComment(str,mail,COMMENT_MSG_TYPE_NORMAL);
+		NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
 	    }
 	}else{
 	    NicoLiveHelper.postListenerComment(str,mail);
@@ -165,10 +173,20 @@ var NicoLiveComment = {
 	return true;
     },
 
+    // コメントリフレクション登録.
     addCommentReflector:function(){
 	let userid = document.popupNode.firstChild.textContent;
-	let name = InputPrompt(LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
-			       LoadString("STR_CAPTION_REGISTER_REFLECTION"),"★");
+	let param = {
+	    "info": LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
+	    "default": "★",
+	    "disptype": 0
+	};
+	let f = "chrome,dialog,centerscreen,modal";
+	if(NicoLivePreference.topmost){ f += ',alwaysRaised=yes'; }
+	window.openDialog("chrome://nicolivehelper/content/commentdialog.xul","reflector",f,param);
+	let name = param['default'];
+	let disptype = param['disptype'];
+
 	if(name && name.length){
 	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
 	    if(user.length){
@@ -176,7 +194,7 @@ var NicoLiveComment = {
 		return;
 	    }
 
-	    this.reflector[userid] = {"name":name };
+	    this.reflector[userid] = {"name":name, "disptype":disptype };
 	    let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
 	    menuitem.setAttribute("comment-reflector",userid);
 	    menuitem.setAttribute("tooltiptext","ID="+userid);
