@@ -8,12 +8,18 @@ table{
     border-collapse: collapse;
 }
 table.requestview{
-    cursor: default;
+/*    cursor: default; */
 }
 
 /* リクエスト、ストックの枠線 */
 table.requestview tr {
     border-bottom: 2px solid black;
+}
+
+.selection {
+    cursor: text ! important;
+    -moz-user-focus: normal;
+    -moz-user-select: text;
 }
 
 /* 詳細部分(非表示にしていいもの) */

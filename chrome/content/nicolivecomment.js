@@ -70,7 +70,7 @@ var NicoLiveComment = {
 	}else{
 	    str = comment.user_id;
 	}
-	td.innerHTML = "<hbox context=\"popup-comment\"><html:span style=\"display:none;\">"+comment.user_id+"</html:span>"+str+"</hbox>";
+	td.innerHTML = "<hbox class=\"selection\" context=\"popup-comment\"><html:span style=\"display:none;\">"+comment.user_id+"</html:span>"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
 	if(comment.premium==3){
@@ -82,7 +82,7 @@ var NicoLiveComment = {
 
 	// sm,nmにリンクを貼り付け.
 	str = str.replace(/((sm|nm)\d+)/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
-	td.innerHTML = "<hbox flex=\"1\" context=\"popup-copycomment\">"+str+"</hbox>";
+	td.innerHTML = "<hbox flex=\"1\" class=\"selection\" context=\"popup-copycomment\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
 	let datestr = GetDateString(comment.date*1000);

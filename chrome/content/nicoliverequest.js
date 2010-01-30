@@ -44,7 +44,9 @@ var NicoLiveRequest = {
 	if(isstock) vbox.className = 'stock-videoinfo';
 
 	let div = CreateHTMLElement('div');
+	div.className ="selection";
 	let a = CreateHTMLElement('a');
+	a.className = "";
 	a.onclick = function(){
 	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
 	};
@@ -67,13 +69,13 @@ var NicoLiveRequest = {
 
 	// 動画ID+タイトル.
 	div.appendChild(a); // thumbnail
-	div.appendChild(document.createTextNode(item.video_id+'/'+item.title));
+	let text = document.createTextNode(item.video_id+'/'+item.title);
+	div.appendChild(text);
 
 	// P名.
 	let pname = NicoLiveHelper.getPName(item);
 	if(pname){
-	    let text = document.createTextNode(' P名:'+pname);
-	    text.className = "requestview-pname";
+	    text = document.createTextNode(' P名:'+pname);
 	    div.appendChild(text);
 	}
 
@@ -89,7 +91,11 @@ var NicoLiveRequest = {
 	div.appendChild(hr);
 
 	let div2 = CreateHTMLElement('div');
-	if(isstock) div2.className = 'detail';
+	if(isstock){
+	    div2.className = 'detail selection';
+	}else{
+	    div2.className = "selection";
+	}
 	//div2.appendChild(document.createTextNode(item.description));
 	let str;
 	// innerHTMLが使えないのでひたすらDOM操作.
@@ -126,6 +132,7 @@ var NicoLiveRequest = {
 	vbox.appendChild(hr);
 
 	label = CreateElement('label');
+	label.className = "selection";
 	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
 	vbox.appendChild(label);
 	return vbox;
