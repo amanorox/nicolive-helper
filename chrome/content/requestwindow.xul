@@ -28,8 +28,6 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewindow.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveclassifier.js" />
 
-  <script type="application/javascript" src="chrome://nicolivehelper/content/tinysegmenter/tiny_segmenter-0.1.js"/>
-
   <script>
   <![CDATA[
   function OpenSettingsDialog(){
@@ -418,9 +416,9 @@
     <menupopup id="popup-copyrequest">
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="Class 1" value="Class 1"></menuitem>
-	  <menuitem label="Class 2" value="Class 2"></menuitem>
-	  <menuitem label="Class 3" value="Class 3"></menuitem>
+	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="その他" value="Other"></menuitem>
+	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
@@ -473,9 +471,9 @@
     <menupopup id="popup-error-request">
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="Class 1" value="Class 1"></menuitem>
-	  <menuitem label="Class 2" value="Class 2"></menuitem>
-	  <menuitem label="Class 3" value="Class 3"></menuitem>
+	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="その他" value="Other"></menuitem>
+	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
@@ -506,9 +504,9 @@
     <menupopup id="popup-sort-stock">
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="Class 1" value="Class 1"></menuitem>
-	  <menuitem label="Class 2" value="Class 2"></menuitem>
-	  <menuitem label="Class 3" value="Class 3"></menuitem>
+	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="その他" value="Other"></menuitem>
+	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
@@ -561,9 +559,9 @@
     <menupopup id="popup-playlist">
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="Class 1" value="Class 1"></menuitem>
-	  <menuitem label="Class 2" value="Class 2"></menuitem>
-	  <menuitem label="Class 3" value="Class 3"></menuitem>
+	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="その他" value="Other"></menuitem>
+	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
