@@ -121,7 +121,8 @@ var NicoLiveComment = {
 
     copyComment:function(){
 	let elem = FindParentElement(document.popupNode,'hbox');
-	CopyToClipboard(elem.textContent);
+	let str = window.getSelection().toString() || elem.textContent;
+	CopyToClipboard(str);
     },
 
     showThumbnail:function(event,video_id){
