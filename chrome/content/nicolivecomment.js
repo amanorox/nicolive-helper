@@ -70,7 +70,7 @@ var NicoLiveComment = {
 	}else{
 	    str = comment.user_id;
 	}
-	td.innerHTML = "<hbox class=\"selection\" context=\"popup-comment\"><html:span style=\"display:none;\">"+comment.user_id+"</html:span>"+str+"</hbox>";
+	td.innerHTML = "<hbox class=\"selection\" context=\"popup-comment\" user_id=\""+comment.user_id+"\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
 	if(comment.premium==3){
@@ -179,7 +179,7 @@ var NicoLiveComment = {
 
     // コメントリフレクション登録.
     addCommentReflector:function(){
-	let userid = document.popupNode.firstChild.textContent;
+	let userid = document.popupNode.getAttribute('user_id');
 	let param = {
 	    "info": LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
 	    "default": "★",
@@ -224,13 +224,13 @@ var NicoLiveComment = {
     },
 
     clearColorSetting:function(){
-	let userid = document.popupNode.firstChild.textContent;
+	let userid = document.popupNode.getAttribute('user_id');
 	delete this.colormap[userid];
 	this.updateCommentViewer();
     },
 
     changeColor:function(){
-	let userid = document.popupNode.firstChild.textContent;
+	let userid = document.popupNode.getAttribute('user_id');
 	let color = $('comment-color').color;
 	if( !color ) return;
 	let now = GetCurrentTime();
@@ -246,7 +246,7 @@ var NicoLiveComment = {
     },
 
     addName:function(){
-	let userid = document.popupNode.firstChild.textContent;
+	let userid = document.popupNode.getAttribute('user_id');
 	let name = InputPrompt( LoadFormattedString('STR_TEXT_SET_KOTEHAN',[userid]),
 				LoadString('STR_CAPTION_SET_KOTEHAN'), this.namemap[userid]?this.namemap[userid].name:userid);
 	if(name && name.length){
@@ -261,6 +261,9 @@ var NicoLiveComment = {
 		    debugprint(id+'のコテハン情報は1週間経ったため削除します');
 		}
 	    }
+	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
+	}else if(name!=null){
+	    delete this.namemap[userid];
 	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
 	}
 	this.updateCommentViewer();
