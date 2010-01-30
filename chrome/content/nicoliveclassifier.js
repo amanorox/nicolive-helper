@@ -132,7 +132,7 @@ var NicoLiveClassifier = {
 	let cls;
 
 	if( result.length <= 1 ){
-	    cls = undefined;
+	    cls = 'undefined';
 	}else{
 	    result.sort( function(a,b){
 			     return b.post - a.post;
@@ -141,7 +141,7 @@ var NicoLiveClassifier = {
 	    debugprint(result[1].bucket + "="+result[1].post);
 
 	    if( (result[0].post - result[1].post)<0.2 ){
-		cls = undefined;
+		cls = 'undefined';
 	    }else{
 		cls = result[0].bucket;
 	    }
