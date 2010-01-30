@@ -110,7 +110,10 @@ var NicoLiveComment = {
 	    name = null;
 	    break;
 	case 1:// 運営コメ欄左上に名前.
-	    str = comment.text;
+	    str = comment.text.replace(/^(\s*)\/(\w+)/,"$1\\$2");
+	    str = str.replace(/((sm|nm|ze)\d+)/,"[$1]");
+	    str = str.replace(/(\d{10})/,"[$1]");
+	    name = LoadFormattedString('STR_NAME_POSTFIX',[name]);
 	    break;
 	}
 	NicoLiveHelper.postCasterComment(str,"",name);
