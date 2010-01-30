@@ -914,6 +914,14 @@ var NicoLiveRequest = {
 	for(let i=0,tag; tag=item.tags[i];i++){
 	    str.push(ZenToHan(tag.toLowerCase()));
 	}
+
+	let seg = new TinySegmenter();
+	let ary = seg.segment(item.title);  
+	for(let i=0,term; term=ary[i];i++){
+	    if(term.length>=4){
+		str.push(term);
+	    }
+	}
 	NicoLiveClassifier.train(str,e.target.value);
     },
 
@@ -928,6 +936,15 @@ var NicoLiveRequest = {
 	for(let i=0,tag; tag=item.tags[i];i++){
 	    str.push(ZenToHan(tag.toLowerCase()));
 	}
+
+	let seg = new TinySegmenter();
+	let ary = seg.segment(item.title);  
+	for(let i=0,term; term=ary[i];i++){
+	    if(term.length>=4){
+		str.push(term);
+	    }
+	}
+
 	debugalert('classify:'+NicoLiveClassifier.classify(str).class);
     },
 

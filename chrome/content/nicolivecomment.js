@@ -82,6 +82,10 @@ var NicoLiveComment = {
 
 	// sm,nmにリンクを貼り付け.
 	str = str.replace(/((sm|nm)\d+)/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
+	if( comment.premium!=3 ){
+	    // 数字10桁にもリンク.
+	    str = str.replace(/(\d{10})/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
+	}
 	td.innerHTML = "<hbox flex=\"1\" class=\"selection\" context=\"popup-copycomment\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
