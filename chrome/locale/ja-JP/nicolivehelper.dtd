@@ -21,6 +21,10 @@
 <!ENTITY play.subdisplay "サブ画面">
 <!ENTITY play.tooltip_subdisplay "サブ画面のチェックボタンが押されている間、再生、停止、サウンドオンリーをサブ画面に対して行います">
 
+<!ENTITY toolbar.backuprestore "バックアップと復元">
+<!ENTITY toolbar.backup "バックアップ">
+<!ENTITY toolbar.restore "復元">
+<!ENTITY toolbar.deletebackup "削除">
 <!ENTITY toolbar.command "コマンド">
 <!ENTITY toolbar.continuouscomment "連続コメント">
 <!ENTITY toolbar.votestart "アンケート(Lv25+)">

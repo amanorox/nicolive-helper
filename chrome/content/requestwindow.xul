@@ -103,9 +103,22 @@
     <toolbarbutton persist="checked" label="&play.subdisplay;" id="do-subdisplay" autoCheck="true" type="checkbox" tooltiptext="&play.tooltip_subdisplay;"/>
     <toolbarbutton label="&toolbar.command;" type="menu">
       <menupopup>
+	<menu label="&toolbar.backuprestore;">
+	  <menupopup>
+	    <menuitem label="&toolbar.backup;" oncommand="NicoLiveWindow.inputBackupName();"/>
+	    <menu label="&toolbar.restore;">
+	      <menupopup id="toolbar-restore">
+	      </menupopup>
+	    </menu>
+	    <menu label="&toolbar.deletebackup;">
+	      <menupopup id="toolbar-deletebackup">
+	      </menupopup>
+	    </menu>
+	  </menupopup>
+	</menu>
+	<menuseparator/>
 	<menuitem label="&toolbar.continuouscomment;" oncommand="OpenContinuousCommentWindow();"/>
 	<menuseparator/>
-
 	<menuitem label="&toolbar.votestart;" tooltiptext="&toolbar.tooltip_votestart;" oncommand="OpenVoteDialog();"/>
 	<menuitem label="&toolbar.voteshowresult;" tooltiptext="&toolbar.tooltip_voteshowresult;" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
 	<menuitem label="&toolbar.votestop;" tooltiptext="&toolbar.tooltip_votestop;" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
@@ -114,33 +127,18 @@
 	<menuitem label="&toolbar.soundonlysub;" tooltiptext="&toolbar.tooltip_soundonlysub;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
 	<menuitem label="&toolbar.playcamera;" tooltiptext="&toolbar.tooltip_playcamera;" oncommand="NicoLiveHelper.postCasterComment('/play','');"/>
 	<menuitem label="&toolbar.clearcomment;" tooltiptext="&toolbar.tooltip_clearcomment;" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/>
-	<!--
-	<menuseparator/>
-	<menuitem label="放送を終了する" tooltiptext="/disconnect" oncommand="NicoLiveHelper.postCasterComment('/disconnect','');"/>
-	-->
 	<menuseparator/>
 	<menuitem label="&toolbar.downloadjson;" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
 	<menuseparator/>
 	<menuitem label="&toolbar.beginbroadcasting;" tooltiptext="&toolbar.tooltip_beginbroadcasting;" oncommand="NicoLiveHelper.startBroadcasting();"/>
 	<menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
-	<menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.create();"/>
+	<menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.forget();"/>
 	<menuseparator/>
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
 	<menuitem label="test" disabled="true" oncommand="NicoLiveHelper.test();"/>
       </menupopup>
     </toolbarbutton>
-
-    <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();">
-    </toolbarbutton>
-
-<!--
-    <toolbarbutton label="Experimental" type="menu">
-      <menupopup>
-	<menuitem label="強制エコノミー設定"/>
-	<menuitem label="強制エコノミー解除"/>
-      </menupopup>
-    </toolbarbutton>
--->
+    <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>
     <spacer flex="1"/>
     <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu">
       <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">

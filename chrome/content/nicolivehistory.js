@@ -56,6 +56,16 @@ var NicoLiveHistory = {
 	td.appendChild(vbox);
     },
 
+    update:function(array){
+	let table = $('playlist-table');
+	if(!table){ return; }
+
+	clearTable(table);
+	for(let i=0,item;item=array[i];i++){
+	    this.addPlayList(item);
+	}
+    },
+
     addMylist:function(mylist_id,mylist_name){
 	let notes = $('played-list-textbox');
 	let substring;

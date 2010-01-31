@@ -48,29 +48,13 @@ var NicoLiveWindow = {
 	    "w" : window.innerWidth,
 	    "h" : window.innerHeight
 	};
-	//NicoLiveDatabase.saveGPStorage("xywh",pos);
-	if(!window.fullScreen){
-	    NicoLivePreference.getBranch().setCharPref("window-pos",JSON.stringify(pos));
-	}
+	NicoLivePreference.getBranch().setCharPref("window-pos",JSON.stringify(pos));
     },
 
     defaultSize:function(){
 	let dw = window.outerWidth-window.innerWidth;
 	let dh = window.outerHeight-window.innerHeight;
 	this.resize(720+dw,512+dh);
-    },
-    restore:function(){
-	let def = {
-	    x:0,
-	    y:0,
-	    w:0,
-	    h:0
-	};
-	let pos = NicoLiveDatabase.loadGPStorage("xywh",def);
-	if( !(pos.x==0 && pos.y==0 && pos.w==0 && pos.h==0) ){
-	    this.move(pos.x,pos.y);
-	    this.resize(pos.w,pos.h);
-	}
     },
     init: function(){
 	let prefs = NicoLivePreference.getBranch();
@@ -81,9 +65,85 @@ var NicoLiveWindow = {
 	    } catch (x) {
 	    }
 	}
+
+	this.backuprestore = NicoLiveDatabase.loadGPStorage("nico_live_backup",{});
+	this.createRestoreMenu();
     },
     destroy: function(){
 	this.save();
+    },
+
+
+    createRestoreMenu:function(){
+	let menu = $('toolbar-restore');
+	let deletemenu = $('toolbar-deletebackup');
+	while(menu.firstChild){
+	    menu.removeChild(menu.firstChild);
+	}
+	while(deletemenu.firstChild){
+	    deletemenu.removeChild(deletemenu.firstChild);
+	}
+	for (name in this.backuprestore){
+	    let elem = CreateMenuItem(name,'');
+	    let restore = name;
+	    elem.addEventListener('command', function(){
+				      NicoLiveWindow.restore(restore);
+				      ShowNotice( LoadFormattedString('STR_BACKUP_RESTORE',[restore]) );
+				  },false);
+	    menu.appendChild(elem);
+
+	    elem = CreateMenuItem(name,'');
+	    elem.addEventListener('command', function(){
+				      delete NicoLiveWindow.backuprestore[restore];
+				      NicoLiveWindow.createRestoreMenu();
+				      ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[restore]) );
+				  },false);
+	    deletemenu.appendChild(elem);
+	}
+    },
+
+    inputBackupName:function(){
+	let backupname = InputPrompt( LoadString('STR_BACKUP_TEXT'), LoadString('STR_BACKUP_CAPTION'), 'backup');
+	if( backupname && backupname.length ){
+	    this.backup(backupname);
+	    this.createRestoreMenu();
+	    ShowNotice( LoadFormattedString('STR_BACKUP_RESULT',[backupname]) );
+	}
+    },
+
+    // ウィンドウの、リク、ストック、エラー、履歴の状態をバックアップする.
+    backup: function(name){
+	let data = new Object;
+	data.request   = NicoLiveHelper.requestqueue;
+	data.stock     = NicoLiveHelper.stock;
+	data.error_req = NicoLiveHelper.error_req;
+	data.playlist  = NicoLiveHelper.playlist;
+	data.playlist_txt = $('played-list-textbox').value;
+	data.time = GetCurrentTime();
+
+	this.backuprestore[name] = data;
+
+	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
+	debugprint("「"+name+"」でバックアップしました");
+    },
+
+    // ウィンドウの、リク、ストック、エラー、履歴などの状態を復元する.
+    restore: function(name){
+	let data = this.backuprestore[name];
+
+	$('played-list-textbox').value = data.playlist_txt;
+	NicoLiveHelper.requestqueue = data.request;
+	NicoLiveHelper.stock = data.stock;
+	NicoLiveHelper.error_req = data.error_req;
+	NicoLiveHelper.playlist = data.playlist;
+
+	NicoLiveRequest.update(NicoLiveHelper.requestqueue);
+	NicoLiveRequest.updateStockView(NicoLiveHelper.stock);
+	NicoLiveRequest.updateErrorRequest(NicoLiveHelper.error_req);
+	NicoLiveHistory.update(NicoLiveHelper.playlist);
+	NicoLiveHelper.updateRemainRequestsAndStocks();
+
+	debugprint("「"+name+"」を復元しました");
     }
 };
 

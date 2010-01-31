@@ -2624,7 +2624,7 @@ var NicoLiveHelper = {
 	    }
 	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}
-	NicoLiveHelper.updateRemainRequestsAndStocks();
+	this.updateRemainRequestsAndStocks();
 
 	if( !this.isOffline() && caster ){
 	    this.retrieveUserDefinedValue();
@@ -2637,7 +2637,6 @@ var NicoLiveHelper = {
 	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
 	    if(!this.isOffline()){
 		obj.SetWinLiveMessengerMsg(this.title);
-	    }else{
 	    }
 	}
     },

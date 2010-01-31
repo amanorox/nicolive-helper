@@ -170,6 +170,14 @@ var NicoLiveClassifier = {
     },
     destroy:function(){	
 	NicoLiveDatabase.saveGPStorage("nico_live_classifier",this.data);
+    },
+
+    forget:function(){
+	if(ConfirmPrompt('本当に学習情報を初期化しますか ? (再学習が必要です)','学習情報の初期化')){
+	    debugprint('forget larning data.');
+	    this.create();
+	}else{
+	}
     }
 };
 
