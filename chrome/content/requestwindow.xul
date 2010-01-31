@@ -103,7 +103,7 @@
     <toolbarbutton persist="checked" label="&play.subdisplay;" id="do-subdisplay" autoCheck="true" type="checkbox" tooltiptext="&play.tooltip_subdisplay;"/>
     <toolbarbutton label="&toolbar.command;" type="menu">
       <menupopup>
-	<menu label="&toolbar.backuprestore;">
+	<menu label="&toolbar.backuprestore;" tooltiptext="&toolbar.backuprestore.help;"><!-- バックアップと復元 -->
 	  <menupopup>
 	    <menuitem label="&toolbar.backup;" oncommand="NicoLiveWindow.inputBackupName();"/>
 	    <menu label="&toolbar.restore;">

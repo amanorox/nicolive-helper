@@ -173,7 +173,7 @@ var NicoLiveClassifier = {
     },
 
     forget:function(){
-	if(ConfirmPrompt('本当に学習情報を初期化しますか ? (再学習が必要です)','学習情報の初期化')){
+	if(ConfirmPrompt(LoadString('STR_CLASS_WARN_INITIALIZE'),LoadString('STR_CLASS_WARN_INIT_TITLE'))){
 	    debugprint('forget larning data.');
 	    this.create();
 	}else{

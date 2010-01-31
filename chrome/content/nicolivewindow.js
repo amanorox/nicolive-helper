@@ -86,18 +86,26 @@ var NicoLiveWindow = {
 	for (name in this.backuprestore){
 	    let elem = CreateMenuItem(name,'');
 	    let restore = name;
+	    // 復元用.
 	    elem.addEventListener('command', function(){
-				      NicoLiveWindow.restore(restore);
-				      ShowNotice( LoadFormattedString('STR_BACKUP_RESTORE',[restore]) );
+				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_RESTORE',[restore]),
+						       LoadString('STR_BACKUP_WARN_RESTORE_TITLE'))){
+					  NicoLiveWindow.restore(restore);
+					  ShowNotice( LoadFormattedString('STR_BACKUP_RESTORE',[restore]) );
+				      }
 				  },false);
 	    menu.appendChild(elem);
 
+	    // 削除用.
 	    elem = CreateMenuItem(name,'');
 	    elem.addEventListener('command', function(){
-				      delete NicoLiveWindow.backuprestore[restore];
-				      NicoLiveWindow.createRestoreMenu();
-				      NicoLiveDatabase.saveGPStorage("nico_live_backup",NicoLiveWindow.backuprestore);
-				      ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[restore]) );
+				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_DELETE',[restore]),
+						       LoadString('STR_BACKUP_WARN_DEL_TITLE'))){
+					  delete NicoLiveWindow.backuprestore[restore];
+					  NicoLiveWindow.createRestoreMenu();
+					  NicoLiveDatabase.saveGPStorage("nico_live_backup",NicoLiveWindow.backuprestore);
+					  ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[restore]) );
+				      }
 				  },false);
 	    deletemenu.appendChild(elem);
 	}
@@ -112,12 +120,11 @@ var NicoLiveWindow = {
 	}
     },
 
-    // ウィンドウの、リク、ストック、エラー、履歴の状態をバックアップする.
+    // ウィンドウの、リク、ストック、履歴の状態をバックアップする.
     backup: function(name){
 	let data = new Object;
 	data.request   = NicoLiveHelper.requestqueue;
 	data.stock     = NicoLiveHelper.stock;
-	data.error_req = NicoLiveHelper.error_req;
 	data.playlist  = NicoLiveHelper.playlist;
 	data.playlist_txt = $('played-list-textbox').value;
 	data.time = GetCurrentTime();
@@ -127,19 +134,17 @@ var NicoLiveWindow = {
 	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
     },
 
-    // ウィンドウの、リク、ストック、エラー、履歴などの状態を復元する.
+    // ウィンドウの、リク、ストック、履歴の状態を復元する.
     restore: function(name){
 	let data = this.backuprestore[name];
 
 	$('played-list-textbox').value = data.playlist_txt;
 	NicoLiveHelper.requestqueue = data.request;
 	NicoLiveHelper.stock = data.stock;
-	NicoLiveHelper.error_req = data.error_req;
 	NicoLiveHelper.playlist = data.playlist;
 
 	NicoLiveRequest.update(NicoLiveHelper.requestqueue);
 	NicoLiveRequest.updateStockView(NicoLiveHelper.stock);
-	NicoLiveRequest.updateErrorRequest(NicoLiveHelper.error_req);
 	NicoLiveHistory.update(NicoLiveHelper.playlist);
 	NicoLiveHelper.updateRemainRequestsAndStocks();
     }

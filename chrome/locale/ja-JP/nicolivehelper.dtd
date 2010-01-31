@@ -24,6 +24,7 @@
 <!ENTITY toolbar.backuprestore "バックアップと復元">
 <!ENTITY toolbar.backup "バックアップ">
 <!ENTITY toolbar.restore "復元">
+<!ENTITY toolbar.backuprestore.help "現在のウィンドウのデータ(リクエスト、ストック、再生履歴)のバックアップと復元を行います。">
 <!ENTITY toolbar.deletebackup "削除">
 <!ENTITY toolbar.command "コマンド">
 <!ENTITY toolbar.continuouscomment "連続コメント">
