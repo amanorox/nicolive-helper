@@ -113,33 +113,48 @@ var NicoLiveHelper = {
 	}
 
 	if(NicoLivePreference.mikuonly){
-	    // ミクオリジナル曲チェックusingタグandタイトル.
 	    let ismiku = false;
-	    let isoriginal = false;
-	    if(info.title.match(/ミク/)){ ismiku = true; }
-	    if(info.title.match(/オリジナル/)){ isoriginal = true; }
 
-	    for(let i=0,item;item=info.tags[i];i++){
-		item = ZenToHan(item);
-		if(item.match(/ミク/)){ ismiku = true; }
-		if(item.match(/オリジナル/)){ isoriginal = true; }
-
-		if(item.match(/森之宮神療所/)){ isoriginal = true; }
-		if(item.match(/UTAU→VOCALOIDカバー/)){ isoriginal = true; }
-		if(item.match(/コモンズ/)){ isoriginal = true; }
-		if(item.match(/VOCALOID→VOCALOIDカバー/)){ isoriginal = true; }
-		if(item.match(/VOCALOIDアレンジ曲/)){ isoriginal = true; }
-		if(item.match(/VOCALOID-PV/i)){ isoriginal = true; }
-
-		if(item.match(/ProjectDIVA-AC楽曲募集/)){ ismiku = true; isoriginal = true; }
-		if(item.match(/ミクオリジナル/) || item.match(/ハクオリジナル/)){
-		    ismiku = true;
-		    isoriginal = true;
+	    let str = new Array();
+	    for(let i=0,tag; tag=info.tags[i];i++){
+		str.push(ZenToHan(tag.toLowerCase()));
+	    }
+	    if( info.overseastags ){
+		// 日本タグだと編集されやすく海外タグに重要な情報が書かれている場合もあるので.
+		for(let i=0,tag; tag=info.overseastags[i];i++){
+		    str.push(ZenToHan(tag.toLowerCase()));
 		}
 	    }
-	    if(!ismiku||!isoriginal){
+	    info.classify = NicoLiveClassifier.classify(str);
+
+	    // そうでないときはタグを使用して分類.
+	    if( info.classify['class']=='Miku' ){
+		ismiku = true;
+	    }else{		
+		// タイトルに「ミク」「オリジナル」が含まれていればまずはOK.
+		if( info.title.indexOf('ミク')!=-1 &&
+		    info.title.indexOf('オリジナル')!=-1 ){
+			ismiku = true;
+		    }
+	    }
+
+	    if( 0 && !ismiku ){
 		debugprint(info.video_id+":ミクオリジナル曲ではなさそうだ");
-		return {code:-6,msg:"ミクオリジナル曲かどうかを自動判断できませんでした<br>主判断をお待ちください",movieinfo:info};
+		switch( info.classify['class'] ){
+		case 'RinLen':
+		    str = "リン・レンうたのようですが"; break;
+		case 'Luka':
+		    str = "ルカうたのようですが"; break;
+		case 'Other':
+		    str = "ミクうたではなさそうですが"; break;
+		case 'NG':
+		    str ="主NGのようですが"; break;
+		case 'undefined':
+		default:
+		    str = "ミクうたと判定できませんでしたが"; break;
+		}
+		str += "主判断をお待ちください";
+		return {code:-6,msg:str,movieinfo:info};
 	    }
 	}
 
@@ -1131,6 +1146,14 @@ var NicoLiveHelper = {
 		this._firstflag = true;
 	    }
 	}
+	if(NicoLivePreference.mikuonly){
+	    // ミクうたモードのときは再生履歴にも分類表示.
+	    let str = new Array();
+	    for(let i=0,tag; tag=item.tags[i];i++){
+		str.push(ZenToHan(tag.toLowerCase()));
+	    }
+	    item.classify = NicoLiveClassifier.classify(str);
+	}
 	this.playlist.push(item); // 再生済みリストに登録.
 	this.playlist["_"+item.video_id] = true;
 	elem.value += item.video_id+" "+item.title+"\n";
@@ -1735,6 +1758,12 @@ var NicoLiveHelper = {
 		    info.tags = new Array();
 		    for(let i=0,item;item=tag[i];i++){
 			info.tags[i] = restorehtmlspecialchars(ZenToHan(item.textContent)); // string
+		    }
+		}else{
+		    let tag = elem.getElementsByTagName('tag');
+		    if( !info.overseastags ) info.overseastags = new Array();
+		    for(let i=0,item;item=tag[i];i++){
+			info.overseastags.push( restorehtmlspecialchars(ZenToHan(item.textContent)) );
 		    }
 		}
 		break;

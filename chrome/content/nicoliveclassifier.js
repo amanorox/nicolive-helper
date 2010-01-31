@@ -137,8 +137,8 @@ var NicoLiveClassifier = {
 	    result.sort( function(a,b){
 			     return b.post - a.post;
 			 });
-	    debugprint(result[0].bucket + "="+result[0].post);
-	    debugprint(result[1].bucket + "="+result[1].post);
+	    //debugprint(result[0].bucket + "="+result[0].post);
+	    //debugprint(result[1].bucket + "="+result[1].post);
 
 	    if( (result[0].post - result[1].post)<0.2 ){
 		cls = 'undefined';

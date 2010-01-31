@@ -131,7 +131,13 @@ var NicoLiveRequest = {
 	//hr.setAttribute("size","1");
 	vbox.appendChild(hr);
 
-	label = CreateElement('label');
+	label = CreateElement('description');
+	if( item.classify ){
+	    let text = CreateHTMLElement('span');
+	    text.className = item.classify.class;
+	    text.appendChild(document.createTextNode('['+item.classify.class+']'));
+	    label.appendChild(text);
+	}
 	label.className = "selection";
 	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
 	vbox.appendChild(label);

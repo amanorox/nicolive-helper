@@ -417,6 +417,8 @@
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
+	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
 	  <menuitem label="その他" value="Other"></menuitem>
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
@@ -472,6 +474,8 @@
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
+	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
 	  <menuitem label="その他" value="Other"></menuitem>
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
@@ -505,6 +509,8 @@
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
+	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
 	  <menuitem label="その他" value="Other"></menuitem>
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
@@ -560,6 +566,8 @@
       <menu label="Train">
 	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
+	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
+	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
 	  <menuitem label="その他" value="Other"></menuitem>
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
