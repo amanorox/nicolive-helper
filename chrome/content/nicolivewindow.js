@@ -99,6 +99,10 @@ var NicoLiveWindow = {
 	    let name = item.name;
 	    let elem = CreateMenuItem(name,'');
 	    let restore = name;
+	    if( item.time ){
+		let str = GetDateString(item.time*1000);
+		elem.setAttribute('tooltiptext',str);
+	    }
 	    // 復元用.
 	    elem.addEventListener('command', function(){
 				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_RESTORE',[restore]),
