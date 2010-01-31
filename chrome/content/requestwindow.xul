@@ -167,7 +167,7 @@
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleRequest();"/>
 	    <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
 	    <spacer flex="1"/>
-	    <button label="&button.clearall;" oncommand="NicoLiveHelper.clearRequest();"/>
+	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearRequest();"/>
 	    <label id="total-playtime"/>
 	  </hbox>
 	  <!-- request list -->
@@ -192,7 +192,7 @@
 
 	    <textbox id="input-stock" emptytext="&stock.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
 	    <spacer flex="1"/>
-	    <button label="&button.clearall;" oncommand="NicoLiveHelper.clearStock();"/>
+	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
 	    <label id="stock-playtime"/>
 	  </hbox>
 	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
@@ -223,7 +223,7 @@
 	    </vbox>
 	  </deck>
 	  <hbox>
-	    <button label="&button.clearall;" tooltiptext="&playlist.tooltip_clearall;" oncommand="NicoLiveHelper.clearPlayList();"/>
+	    <button label="&button.clearall;" tooltiptext="&playlist.tooltip_clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearPlayList();"/>
 	    <button label="&playlist.recover_text;" tooltiptext="&playlist.tooltip_recover_text;" oncommand="NicoLiveHistory.restorePlaylistText();"/>
 	    <spacer flex="1"/>
 	    <menulist id="id-playlist-style" persist="value" oncommand="$('playlist-deck').selectedIndex=this.value;">

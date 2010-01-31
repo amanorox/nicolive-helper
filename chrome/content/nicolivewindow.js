@@ -74,6 +74,11 @@ var NicoLiveWindow = {
     },
 
 
+    backupCurrent:function(){
+	this.backup('system-backup');
+	this.createRestoreMenu();
+    },
+
     createRestoreMenu:function(){
 	let menu = $('toolbar-restore');
 	let deletemenu = $('toolbar-deletebackup');
@@ -83,7 +88,15 @@ var NicoLiveWindow = {
 	while(deletemenu.firstChild){
 	    deletemenu.removeChild(deletemenu.firstChild);
 	}
+	// 保存時刻順にソートするために一旦配列に.
+	let tmp = new Array();
 	for (name in this.backuprestore){
+	    this.backuprestore[name].name = name;
+	    tmp.push(this.backuprestore[name]);
+	}
+	tmp.sort( function(a,b){ return b.time-a.time; } );
+	for(let i=0,item; item=tmp[i];i++){
+	    let name = item.name;
 	    let elem = CreateMenuItem(name,'');
 	    let restore = name;
 	    // 復元用.
@@ -112,11 +125,15 @@ var NicoLiveWindow = {
     },
 
     inputBackupName:function(){
-	let backupname = InputPrompt( LoadString('STR_BACKUP_TEXT'), LoadString('STR_BACKUP_CAPTION'), 'backup');
+	let backupname = InputPrompt( LoadString('STR_BACKUP_TEXT'), LoadString('STR_BACKUP_CAPTION'), '');
 	if( backupname && backupname.length ){
-	    this.backup(backupname);
-	    this.createRestoreMenu();
-	    ShowNotice( LoadFormattedString('STR_BACKUP_RESULT',[backupname]) );
+	    if( backupname!='system-backup' ){
+		this.backup(backupname);
+		this.createRestoreMenu();
+		ShowNotice( LoadFormattedString('STR_BACKUP_RESULT',[backupname]) );
+	    }else{
+		ShowNotice( LoadFormattedString('STR_BACKUP_FAILED',[backupname]) );
+	    }
 	}
     },
 
@@ -127,10 +144,13 @@ var NicoLiveWindow = {
 	data.stock     = NicoLiveHelper.stock;
 	data.playlist  = NicoLiveHelper.playlist;
 	data.playlist_txt = $('played-list-textbox').value;
-	data.time = GetCurrentTime();
+	if(name=='system-backup'){
+	    data.time = 0;
+	}else{
+	    data.time = GetCurrentTime();
+	}
 
 	this.backuprestore[name] = data;
-
 	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
     },
 
