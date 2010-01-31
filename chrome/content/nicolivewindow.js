@@ -96,6 +96,7 @@ var NicoLiveWindow = {
 	    elem.addEventListener('command', function(){
 				      delete NicoLiveWindow.backuprestore[restore];
 				      NicoLiveWindow.createRestoreMenu();
+				      NicoLiveDatabase.saveGPStorage("nico_live_backup",NicoLiveWindow.backuprestore);
 				      ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[restore]) );
 				  },false);
 	    deletemenu.appendChild(elem);
@@ -124,7 +125,6 @@ var NicoLiveWindow = {
 	this.backuprestore[name] = data;
 
 	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
-	debugprint("「"+name+"」でバックアップしました");
     },
 
     // ウィンドウの、リク、ストック、エラー、履歴などの状態を復元する.
@@ -142,8 +142,6 @@ var NicoLiveWindow = {
 	NicoLiveRequest.updateErrorRequest(NicoLiveHelper.error_req);
 	NicoLiveHistory.update(NicoLiveHelper.playlist);
 	NicoLiveHelper.updateRemainRequestsAndStocks();
-
-	debugprint("「"+name+"」を復元しました");
     }
 };
 
