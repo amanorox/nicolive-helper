@@ -794,6 +794,8 @@ var NicoLiveHelper = {
 	default:
 	    break;
 	}
+	// revertMusicInfoが直接呼ばれた場合タイマー動作は不要になるので.
+	clearInterval( this._revertcommentid );
 	let ismovieinfo = COMMENT_MSG_TYPE_MOVIEINFO;
 	this.postCasterComment(sendstr,cmd,"",ismovieinfo);
     },
@@ -2325,6 +2327,7 @@ var NicoLiveHelper = {
 	    function(){
 		NicoLiveHelper.checkPlayNext();
 	    }, du+interval);
+	debugprint( parseInt((du+interval)/1000)+'秒後に次曲を再生します');
 
 	// 30秒未満のときはやらない.
 	if(du<30*1000) return;

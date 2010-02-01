@@ -143,10 +143,12 @@ var NicoLiveWindow = {
     // ウィンドウの、リク、ストック、履歴の状態をバックアップする.
     backup: function(name){
 	let data = new Object;
-	data.request   = NicoLiveHelper.requestqueue;
-	data.stock     = NicoLiveHelper.stock;
-	data.playlist  = NicoLiveHelper.playlist;
-	data.playlist_txt = $('played-list-textbox').value;
+	// オブジェクトのコピーにはちょっとセコイ手のような気がするが.
+	// これはこれで有効な気がする(重い処理のような気もするけど)
+	data.request   = JSON.parse(JSON.stringify(NicoLiveHelper.requestqueue));
+	data.stock     = JSON.parse(JSON.stringify(NicoLiveHelper.stock));
+	data.playlist  = JSON.parse(JSON.stringify(NicoLiveHelper.playlist));
+	data.playlist_txt = JSON.parse(JSON.stringify($('played-list-textbox').value));
 	if(name=='system-backup'){
 	    data.time = 0;
 	}else{
@@ -172,11 +174,6 @@ var NicoLiveWindow = {
 	NicoLiveHelper.updateRemainRequestsAndStocks();
     }
 };
-
-function NicoLiveWindowRestorePosition()
-{
-    NicoLiveWindow.init();
-}
 
 window.addEventListener("load", function(e){ NicoLiveWindow.init(); }, false);
 window.addEventListener("unload", function(e){ NicoLiveWindow.destroy(); }, false);
