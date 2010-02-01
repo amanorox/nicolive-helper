@@ -90,38 +90,37 @@ var NicoLiveWindow = {
 	}
 	// 保存時刻順にソートするために一旦配列に.
 	let tmp = new Array();
-	for (name in this.backuprestore){
-	    this.backuprestore[name].name = name;
-	    tmp.push(this.backuprestore[name]);
+	for (backupname in this.backuprestore){
+	    this.backuprestore[backupname].name = backupname;
+	    tmp.push(this.backuprestore[backupname]);
 	}
 	tmp.sort( function(a,b){ return b.time-a.time; } );
 	for(let i=0,item; item=tmp[i];i++){
-	    let name = item.name;
-	    let elem = CreateMenuItem(name,'');
-	    let restore = name;
+	    let backupname = item.name;
+	    let elem = CreateMenuItem(backupname,'');
 	    if( item.time ){
 		let str = GetDateString(item.time*1000);
 		elem.setAttribute('tooltiptext',str);
 	    }
 	    // 復元用.
 	    elem.addEventListener('command', function(){
-				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_RESTORE',[restore]),
+				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_RESTORE',[backupname]),
 						       LoadString('STR_BACKUP_WARN_RESTORE_TITLE'))){
-					  NicoLiveWindow.restore(restore);
-					  ShowNotice( LoadFormattedString('STR_BACKUP_RESTORE',[restore]) );
+					  NicoLiveWindow.restore(backupname);
+					  ShowNotice( LoadFormattedString('STR_BACKUP_RESTORE',[backupname]) );
 				      }
 				  },false);
 	    menu.appendChild(elem);
 
 	    // 削除用.
-	    elem = CreateMenuItem(name,'');
+	    elem = CreateMenuItem(backupname,'');
 	    elem.addEventListener('command', function(){
-				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_DELETE',[restore]),
+				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_DELETE',[backupname]),
 						       LoadString('STR_BACKUP_WARN_DEL_TITLE'))){
-					  delete NicoLiveWindow.backuprestore[restore];
+					  delete NicoLiveWindow.backuprestore[backupname];
 					  NicoLiveWindow.createRestoreMenu();
 					  NicoLiveDatabase.saveGPStorage("nico_live_backup",NicoLiveWindow.backuprestore);
-					  ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[restore]) );
+					  ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[backupname]) );
 				      }
 				  },false);
 	    deletemenu.appendChild(elem);

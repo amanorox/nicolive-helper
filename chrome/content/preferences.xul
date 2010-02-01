@@ -320,8 +320,16 @@
 	</tabpanel>
       </tabpanels>
     </tabbox>
-    <hbox>
-      <button label="全てデフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
+    <hbox align="center">
+      <!-- <button label="全てデフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/> -->
+      <button type="menu" label="プリセット読み込み">
+	<menupopup id="id-menu-comment-preset">
+	  <menuitem label="全てデフォルト" oncommand="NLHPreference.resetAutoReply();"/>
+	</menupopup>
+      </button>
+      <textbox id="id-comment-preset-name" emptytext="プリセット名を入力してください" flex="1"/>
+      <button label="登録"/>
+      <button label="削除"/>
     </hbox>
     <hbox align="center">
       <label control="continuouscomment" value="連続コメント用テキストファイル保存先:"/>
