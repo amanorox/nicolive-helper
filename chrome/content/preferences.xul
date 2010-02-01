@@ -172,7 +172,7 @@
     </tabbox>
   </prefpane>
 
-  <prefpane id="nicolivehelper-prefpane-castercomment" label="運営コメント" image="chrome://nicolivehelper/content/data/icon2.png">
+  <prefpane id="nicolivehelper-prefpane-castercomment" label="運営コメント" image="chrome://nicolivehelper/content/data/icon2.png" onpaneload="NLHPreference.createPresetCommentMenu();">
     <preferences>
       <preference id="pref-msg-deleted" name="extensions.nicolivehelper.msg-deleted" type="unichar"/>
       <preference id="pref-msg-notaccept" name="extensions.nicolivehelper.msg-notaccept" type="unichar"/>
@@ -324,12 +324,12 @@
       <!-- <button label="全てデフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/> -->
       <button type="menu" label="プリセット読み込み">
 	<menupopup id="id-menu-comment-preset">
-	  <menuitem label="全てデフォルト" oncommand="NLHPreference.resetAutoReply();"/>
+	  <menuitem label="全てデフォルトに戻す" oncommand="NLHPreference.resetAutoReply();"/>
 	</menupopup>
       </button>
       <textbox id="id-comment-preset-name" emptytext="プリセット名を入力してください" flex="1"/>
-      <button label="登録"/>
-      <button label="削除"/>
+      <button label="登録" oncommand="NLHPreference.addPresetComment(document.getElementById('id-comment-preset-name').value);"/>
+      <button label="削除" oncommand="NLHPreference.deletePresetComment(document.getElementById('id-comment-preset-name').value);"/>
     </hbox>
     <hbox align="center">
       <label control="continuouscomment" value="連続コメント用テキストファイル保存先:"/>

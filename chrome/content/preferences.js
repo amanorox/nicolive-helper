@@ -30,6 +30,90 @@ var NLHPreference = {
 	this.dbconnect = opener.NicoLiveDatabase.dbconnect;
     },
 
+    // 運営コメントプリセット.
+    createPresetCommentMenu:function(){
+	this.presetcomment = opener.NicoLiveDatabase.loadGPStorage('nico_live_commentpreset',{});
+	for (presetname in this.presetcomment){
+	    let menuitem = CreateMenuItem(presetname,'');
+	    menuitem.addEventListener("command",
+				      function(e){
+					  $('id-comment-preset-name').value = e.target.label;
+					  NLHPreference.setPresetComment(e.target.label);
+				      },false);
+	    $('id-menu-comment-preset').insertBefore(menuitem,$('id-menu-comment-preset').lastChild);
+	}
+    },
+    setPresetComment:function(presetname){
+	let data = this.presetcomment[presetname];
+	$('pref-msg-deleted').value = data["deleted"];
+	$('pref-msg-notaccept').value = data["notaccept"];
+	$('pref-msg-newmovie').value = data["newmovie"];
+	$('pref-msg-played').value = data["played"];
+	$('pref-msg-requested').value = data["requested"];
+	$('pref-msg-accept').value = data["accept"];
+	$('pref-msg-requestok').value = data["requestok"];
+	$('pref-msg-requestng').value = data["requestng"];
+	$('pref-msg-requestok-command').value = data["requestok_command"];
+	$('pref-msg-requestng-command').value = data["requestng_command"];
+	$('pref-startup-comment').value = data["startup_comment"];
+	$('pref-msg-lessmylists').value = data["lessmylists"];
+	$('pref-msg-greatermylists').value = data["greatermylists"];
+	$('pref-msg-lessviews').value = data["lessviews"];
+	$('pref-msg-greaterviews').value = data["greaterviews"];
+	$('pref-msg-longertime').value = data["longertime"];
+	$('pref-msg-outofdaterange').value = data["outofdaterange"];
+	$('pref-msg-requiredkeyword').value = data["requiredkeyword"];
+	$('pref-msg-forbiddenkeyword').value = data["forbiddenkeyword"];
+	$('pref-msg-limitnumberofrequests').value = data["limitnumberofrequests"];
+    },
+    addPresetComment:function(presetname){
+	let data = {
+	    "deleted":$('pref-msg-deleted').value,
+	    "notaccept":$('pref-msg-notaccept').value,
+	    "newmovie":$('pref-msg-newmovie').value,
+	    "played":$('pref-msg-played').value,
+	    "requested":$('pref-msg-requested').value,
+	    "accept":$('pref-msg-accept').value,
+	    "requestok":$('pref-msg-requestok').value,
+	    "requestng":$('pref-msg-requestng').value,
+	    "requestok_command":$('pref-msg-requestok-command').value,
+	    "requestng_command":$('pref-msg-requestng-command').value,
+	    "startup_comment":$('pref-startup-comment').value,
+	    "lessmylists":$('pref-msg-lessmylists').value,
+	    "greatermylists":$('pref-msg-greatermylists').value,
+	    "lessviews":$('pref-msg-lessviews').value,
+	    "greaterviews":$('pref-msg-greaterviews').value,
+	    "longertime":$('pref-msg-longertime').value,
+	    "outofdaterange":$('pref-msg-outofdaterange').value,
+	    "requiredkeyword":$('pref-msg-requiredkeyword').value,
+	    "forbiddenkeyword":$('pref-msg-forbiddenkeyword').value,
+	    "limitnumberofrequests":$('pref-msg-limitnumberofrequests').value
+	};
+	this.presetcomment[presetname] = data;
+	opener.NicoLiveDatabase.saveGPStorage('nico_live_commentpreset',this.presetcomment);
+
+	let existmenu = evaluateXPath(document,"//*[@id='id-menu-comment-preset']/*[@label='"+presetname+"']");
+	if(existmenu.length) return;
+
+	let menuitem = CreateMenuItem(presetname,'');
+	menuitem.addEventListener("command",
+				 function(e){
+				     $('id-comment-preset-name').value = e.target.label;
+				     NLHPreference.setPresetComment(e.target.label);
+				 },false);
+	$('id-menu-comment-preset').insertBefore(menuitem,$('id-menu-comment-preset').lastChild);
+    },
+    // 運営コメントプリセットから削除.
+    deletePresetComment:function(presetname){
+	delete this.presetcomment[presetname];
+	opener.NicoLiveDatabase.saveGPStorage('nico_live_commentpreset',this.presetcomment);
+	let existmenu = evaluateXPath(document,"//*[@id='id-menu-comment-preset']/*[@label='"+presetname+"']");
+	if(existmenu.length){
+	    RemoveElement(existmenu[0]);
+	}
+    },
+
+    // P名ホワイトリスト.
     savePNameWhitelist:function(){
 	opener.NicoLiveDatabase.saveGPStorage('nicolive_pnamewhitelist',$('pname-whitelist').value);
     },
@@ -246,6 +330,7 @@ var NLHPreference = {
 	}
     },
 
+    // リクエスト制限のプリセット読み込みメニューを作成など.
     updateRestrictPane:function(){
 	$('pref-date-from').value = $('pref-restrict-date-from').value;
 	$('pref-date-to').value = $('pref-restrict-date-to').value;
