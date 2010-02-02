@@ -167,7 +167,9 @@ var NicoLiveWindow = {
 	NicoLiveHelper.requestqueue = data.request;
 	NicoLiveHelper.stock = data.stock;
 	NicoLiveHelper.playlist = data.playlist;
-
+	for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
+	    NicoLiveHelper.playlist["_"+item.video_id] = true;
+	}
 	NicoLiveRequest.update(NicoLiveHelper.requestqueue);
 	NicoLiveRequest.updateStockView(NicoLiveHelper.stock);
 	NicoLiveHistory.update(NicoLiveHelper.playlist);

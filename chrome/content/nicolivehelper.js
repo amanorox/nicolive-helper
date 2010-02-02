@@ -820,13 +820,13 @@ var NicoLiveHelper = {
 	    debugprint(this.musicinfo.video_id+"をサブ画面で再生します");
 	    str += " sub";
 	}
-	this.postCasterComment(str,""); // 再生.
-
 	// /playコマンドに限らず、運営コメを投げてstatus=okになっても
 	// コメが飲み込まれてサーバからやってこないことがある.
 	// その対策のために、一旦ここで次曲再生のタイマをしかけておく.
 	// /playの場合、正しくサーバからやってくれば改めてタイマを再セットする.
 	this.setupPlayNextMusic(this.musicinfo.length_ms);
+
+	this.postCasterComment(str,""); // 再生.
 
 	// /playコマンドが飲み込まれたときに
 	// 再生履歴から再生できるように記録.
@@ -2306,10 +2306,11 @@ var NicoLiveHelper = {
 	// du(duration)にはミリ秒を渡す.
 	clearInterval(this._playnext);
 	clearInterval(this._prepare);
+	clearInterval(this._playend);
+
 	let interval = parseInt(NicoLivePreference.nextplay_interval*1000);
 	let maxplay  = parseInt(NicoLivePreference.max_movieplay_time*60*1000);
 
-	clearInterval(this._playend);
 	this._playend = setInterval(
 	    function(){
 		NicoLiveHelper.inplay = false;
