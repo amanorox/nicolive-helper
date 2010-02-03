@@ -1056,14 +1056,15 @@ var NicoLiveHelper = {
 	let carelosstime = NicoLivePreference.carelosstime;
 	let notplayed = new Array();
 	let i,item;
+	let estlosstime = this.calcLossTime();
 
 	// 再生できる動画リスト作成.
 	for(i=0;item=musiclist[i];i++){
 	    notplayed["_"+item.video_id] = i;
 
 	    if( limit30min ){
-		if(carelosstime && item.length_ms/1000 > remain+75){
-		    // ロスタイムを75sとして、枠に収まらない動画.
+		if(carelosstime && item.length_ms/1000 > remain+estlosstime){
+		    // ロスタイムは自動で推定.
 		    continue;
 		}else if(!carelosstime && item.length_ms/1000 > remain){
 		    // 30枠に収まらない動画.
@@ -2389,7 +2390,10 @@ var NicoLiveHelper = {
 
     // ロスタイムを秒で返す.
     calcLossTime:function(){
-	return 120 - (this.starttime % 60);
+	let tmp = 120 - (this.starttime % 60);
+	if( tmp>105 ) tmp = 60;
+	tmp = Math.floor(tmp/10)*10; // 10秒未満の端数は切り捨て.
+	return tmp;
     },
 
     heartbeat:function(){
