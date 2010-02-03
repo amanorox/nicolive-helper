@@ -2387,6 +2387,11 @@ var NicoLiveHelper = {
 	    }, parseInt((du+interval)/5*4) );
     },
 
+    // ロスタイムを秒で返す.
+    calcLossTime:function(){
+	return 120 - (this.starttime % 60);
+    },
+
     heartbeat:function(){
 	let url = "http://watch.live.nicovideo.jp/api/heartbeat";
 	let req = new XMLHttpRequest();
