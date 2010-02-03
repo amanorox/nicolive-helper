@@ -605,117 +605,142 @@ var NicoLiveHelper = {
     // str : 置換元も文字列
     // info : 動画情報
     replaceMacros:function(str,info){
-	return str.replace(/{(.*?)}/g,
-			   function(s,p){
-			       let tmp = s;
-			       let expression;
-			       // {=(info.mylist_counter+info.view_counter)/(info.mylist_counter+info.view_counter+info.comment_num)}
-			       if(expression = p.match(/^=(.*)/)){
-				   try{
-				       tmp = eval(expression[1]);
-				       //if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
-				       if(tmp==undefined || tmp==null) tmp = "";
-				   } catch (x) {
-				       tmp = "";
-				   }
-				   return tmp;
-			       }
-			       switch(p){
-			       case 'id':
-				   if(info.video_id==null) break;
-				   tmp = info.video_id;
-				   break;
-			       case 'title':
-				   if(info.title==null) break;
-				   tmp = info.title;
-				   break;
-			       case 'date':
-				   if(info.first_retrieve==null) break;
-				   tmp = GetDateString(info.first_retrieve*1000);
-				   break;
-			       case 'length':
-				   if(info.length==null) break;
-				   tmp = info.length;
-				   break;
-			       case 'view':
-				   if(info.view_counter==null) break;
-				   tmp = FormatCommas(info.view_counter);
-				   break;
-			       case 'comment':
-				   if(info.comment_num==null) break;
-				   tmp = FormatCommas(info.comment_num);
-				   break;
-			       case 'mylist':
-				   if(info.mylist_counter==null) break;
-				   tmp = FormatCommas(info.mylist_counter);
-				   break;
-			       case 'mylistrate':
-				   if(info.mylist_counter==null||info.view_counter==null) break;
-				   if( info.view_counter==0 ){
-				       tmp = "0.0%";
-				   }else{
-				       tmp = (100*info.mylist_counter/info.view_counter).toFixed(1) + "%";
-				   }
-				   break;
-			       case 'tags':
-				   // 1行40文字程度までかなぁ
-				   if(info.tags==null) break;
-				   tmp = info.tags.join(',');
-				   tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
-				   break;
-			       case 'pname':
-				   if(info.video_id==null || info.tags==null) break;
-				   tmp = NicoLiveHelper.getPName(info);
-				   break;
-			       case 'additional':
-				   if(info.video_id==null) break;
-				   tmp = NicoLiveDatabase.getAdditional(info.video_id);
-				   break;
-			       case 'description':
-				   // 詳細を40文字まで(世界の新着と同じ)
-				   tmp = info.description.match(/.{1,40}/);
-				   break;
-			       case 'requestnum': // リク残数.
-				   tmp = NicoLiveHelper.requestqueue.length;
-				   break;
-			       case 'requesttime': // リク残時間(mm:ss).
-				   let reqtime = NicoLiveHelper.getTotalMusicTime();
-				   tmp = GetTimeString(reqtime.min*60+reqtime.sec);
-				   break;
-			       case 'stocknum':  // ストック残数.
-				   let remainstock = 0;
-				   for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
-				       if(!item.isplayed){
-					   remainstock++;
-				       }
-				   }
-				   tmp = remainstock;
-				   break;
-			       case 'stocktime': // ストック残時間(mm:ss).
-				   let stocktime = NicoLiveHelper.getTotalStockTime();
-				   tmp = GetTimeString(stocktime.min*60+stocktime.sec);
-				   break;
-
-			       case 'json':
-				   try {
-				       let t = NicoLiveHelper.userdefinedvalue[info.video_id];
-				       if( t ){
-					   tmp = t;
-				       }else{
-					   tmp = "0";
-				       }
-				   } catch (x) {
-				       tmp = "";
-				   }
-				   break;
-
-			       case 'mylistcomment':
-				   tmp = info.mylistcomment;
-				   if(!tmp) tmp = "";
-				   break;
-			       }
-			       return tmp;
-			   });
+	let replacefunc = function(s,p){
+	    let tmp = s;
+	    let expression;
+	    if(expression = p.match(/^=(.*)/)){
+		try{
+		    tmp = eval(expression[1]);
+		    //if( typeof(tmp)=="number" ) tmp = tmp.toFixed(1);
+		    if(tmp==undefined || tmp==null) tmp = "";
+		} catch (x) {
+		    tmp = "";
+		}
+		return tmp;
+	    }
+	    switch(p){
+	    case 'id':
+		if(info.video_id==null) break;
+		tmp = info.video_id;
+		break;
+	    case 'title':
+		if(info.title==null) break;
+		tmp = info.title;
+		break;
+	    case 'date':
+		if(info.first_retrieve==null) break;
+		tmp = GetDateString(info.first_retrieve*1000);
+		break;
+	    case 'length':
+		if(info.length==null) break;
+		tmp = info.length;
+		break;
+	    case 'view':
+		if(info.view_counter==null) break;
+		tmp = FormatCommas(info.view_counter);
+		break;
+	    case 'comment':
+		if(info.comment_num==null) break;
+		tmp = FormatCommas(info.comment_num);
+		break;
+	    case 'mylist':
+		if(info.mylist_counter==null) break;
+		tmp = FormatCommas(info.mylist_counter);
+		break;
+	    case 'mylistrate':
+		if(info.mylist_counter==null||info.view_counter==null) break;
+		if( info.view_counter==0 ){
+		    tmp = "0.0%";
+		}else{
+		    tmp = (100*info.mylist_counter/info.view_counter).toFixed(1) + "%";
+		}
+		break;
+	    case 'tags':
+		// 1行40文字程度までかなぁ
+		if(info.tags==null) break;
+		tmp = info.tags.join(',');
+		tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
+		break;
+	    case 'pname':
+		if(info.video_id==null || info.tags==null) break;
+		tmp = NicoLiveHelper.getPName(info);
+		break;
+	    case 'additional':
+		if(info.video_id==null) break;
+		tmp = NicoLiveDatabase.getAdditional(info.video_id);
+		break;
+	    case 'description':
+		// 詳細を40文字まで(世界の新着と同じ)
+		tmp = info.description.match(/.{1,40}/);
+		break;
+	    case 'requestnum': // リク残数.
+		tmp = NicoLiveHelper.requestqueue.length;
+		break;
+	    case 'requesttime': // リク残時間(mm:ss).
+		let reqtime = NicoLiveHelper.getTotalMusicTime();
+		tmp = GetTimeString(reqtime.min*60+reqtime.sec);
+		break;
+	    case 'stocknum':  // ストック残数.
+		let remainstock = 0;
+		for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
+		    if(!item.isplayed){
+			remainstock++;
+		    }
+		}
+		tmp = remainstock;
+		break;
+	    case 'stocktime': // ストック残時間(mm:ss).
+		let stocktime = NicoLiveHelper.getTotalStockTime();
+		tmp = GetTimeString(stocktime.min*60+stocktime.sec);
+		break;
+		
+	    case 'json':
+		try {
+		    let t = NicoLiveHelper.userdefinedvalue[info.video_id];
+		    if( t ){
+			tmp = t;
+		    }else{
+			tmp = "0";
+		    }
+		} catch (x) {
+		    tmp = "";
+		}
+		break;
+		
+	    case 'mylistcomment':
+		tmp = info.mylistcomment;
+		if(!tmp) tmp = "";
+		break;
+	    }
+	    return tmp;
+	};
+	let r = "";
+	let token = "";
+	let nest = 0;
+	for(let i=0,ch; ch=str.charAt(i);i++){
+	    switch(nest){
+	    case 0:
+		if( ch=='{' ){
+		    nest++;
+		    token += ch;
+		    break;
+		}
+		r += ch;
+		break;
+	    default:
+		token += ch;
+		if(ch=='{') nest++;
+		if(ch=='}'){
+		    nest--;
+		    if(nest<=0){
+			r += replacefunc(token,token.substring(1,token.length-1));
+			token = "";
+		    }
+		}
+		break;
+	    }
+	}
+	return r; //str.replace(/{(.*?)}/g,replacefunc);
     },
 
     // 再生する曲の情報を主コメする.
@@ -1742,7 +1767,7 @@ var NicoLiveHelper = {
 	    case "length":
 		info.length = elem.textContent;
 		let len = info.length.match(/\d+/g);
-		info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1]))*1000;
+		info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1],10))*1000;
 		break;
 	    case "view_counter":
 		info.view_counter = parseInt(elem.textContent);

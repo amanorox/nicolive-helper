@@ -934,6 +934,12 @@ var NicoLiveRequest = {
 	for(let i=0,tag; tag=item.tags[i];i++){
 	    str.push(ZenToHan(tag.toLowerCase()));
 	}
+	if( item.overseastags ){
+	    // 日本タグだと編集されやすく海外タグに重要な情報が書かれている場合もあるので.
+	    for(let i=0,tag; tag=item.overseastags[i];i++){
+		str.push(ZenToHan(tag.toLowerCase()));
+	    }
+	}
 	debugalert('classify:'+NicoLiveClassifier.classify(str).class);
     },
 
