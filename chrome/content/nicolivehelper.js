@@ -2315,6 +2315,8 @@ var NicoLiveHelper = {
 		debugprint("port:"+NicoLiveHelper.port);
 		debugprint("thread:"+NicoLiveHelper.thread);
 		NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
+
+		$('statusbar-live-progress').setAttribute("tooltiptext",'ロスタイム:'+NicoLiveHelper.calcLossTime()+'秒');
 	    } catch (x) {
 		debugalert('Error occurred.'+x);
 	    }
