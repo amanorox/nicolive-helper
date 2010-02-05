@@ -464,12 +464,15 @@
 
       <preference id="pref-ngwordfiltering" name="extensions.nicolivehelper.ngwordfiltering" type="bool"/>
       <preference id="pref-preset-autocomplete" name="extensions.nicolivehelper.preset-autocomplete" type="unichar"/>
+
+      <preference id="pref-do-custom-script" name="extensions.nicolivehelper.custom-script" type="bool"/>
     </preferences>
     <vbox>
 
       <tabbox flex="1">
 	<tabs>
 	  <tab label="コメント"/>
+	  <tab label="スクリプト"/>
 	  <tab label="その他"/>
 	</tabs>
 
@@ -488,6 +491,28 @@
 	      <label value="コメント入力補完プリセット:"/>
 	      <textbox preference="pref-preset-autocomplete" emptytext="1行に1つずつ、文字列(カンマ)コメント と入力します。例:/play sm7113282,初音ミクのライブOP1" tooltiptext="1行に1つずつ、文字列(カンマ)コメント と入力します。例:/play sm7113282,初音ミクのライブOP1" multiline="true" flex="1"/>
 	    </vbox>
+	  </tabpanel>
+
+	  <tabpanel orient="vertical">
+	    <!-- custom script -->
+	    <hbox>
+	      <menulist id="id-custom-script-menu" value="RequestChecker">
+		<menupopup>
+		  <menuitem label="リクエストチェック" tooltiptext="リクエスト受付を決定するJavascriptです" value="RequestChecker"/>
+		</menupopup>
+	      </menulist>
+	      <checkbox label="スクリプトを実行する" preference="pref-do-custom-script"/>
+	    </hbox>
+	    <textbox id="custom-script"
+		     emptytext="任意のJavascriptステートメントを入力してください"
+		     multiline="true" flex="1" disabled="true"/>
+	    <hbox>
+	      <button label="保存"
+		      oncommand="NLHPreference.saveScript();"
+		      tooltiptext="入力した内容を保存します"/>
+	      <checkbox label="編集する" oncommand="document.getElementById('custom-script').disabled=!this.checked;"/>
+	    </hbox>
+	    <label value="※保存した後、Helperを開き直してください"/>
 	  </tabpanel>
 
 	  <tabpanel orient="vertical">

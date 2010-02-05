@@ -363,10 +363,23 @@ var NLHPreference = {
         }
     },
 
+    saveScript:function(){
+	let data = new Object();
+	data.requestchecker = $('custom-script').value;
+	opener.NicoLiveDatabase.saveGPStorage('nico_live_customscript',data);
+    },
+
+    init:function(){
+	let data = opener.NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
+	if( data.requestchecker ){
+	    $('custom-script').value = data.requestchecker;
+	}
+    },
     destroy:function(){
 	//Application.console.log('close advanced setting');
     }
 };
 
 NLHPreference.initDB();
+window.addEventListener("load", function(e){ NLHPreference.init(); }, false);
 window.addEventListener("unload", function(e){ NLHPreference.destroy(); }, false);

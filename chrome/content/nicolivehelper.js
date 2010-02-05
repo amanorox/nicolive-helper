@@ -1879,8 +1879,7 @@ var NicoLiveHelper = {
 		    }
 		}
 
-		while( NicoLiveHelper.requestprocessingqueue.length &&
-		       NicoLiveHelper.requestprocessingqueue[0].xml ){
+		while( NicoLiveHelper.requestprocessingqueue.length && NicoLiveHelper.requestprocessingqueue[0].xml ){
 		    q = NicoLiveHelper.requestprocessingqueue.shift();
 
 		    // リクのあった動画をチェック.
@@ -1908,6 +1907,14 @@ var NicoLiveHelper = {
 		    ans.movieinfo.cno = q.comment_no;
 		    ans.movieinfo.user_id = q.user_id;
 
+		    if(ans.code==0){
+			let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
+			if(checker!=null){
+			    ans.code = checker.code;
+			    ans.msg = checker.msg || ans.msg;
+			}
+		    }
+
 		    switch(ans.code){
 		    case 0:
 			ans.movieinfo.error = false;
@@ -1918,7 +1925,7 @@ var NicoLiveHelper = {
 			NicoLiveHelper.addErrorRequestList(ans.movieinfo);
 			break;
 		    }
-		    
+
 		    if(NicoLivePreference.isautoreply && ans.msg){
 			// 返答メッセージが指定してあれば主コメする.
 			let msg = ">>"+q.comment_no+" " + ans.msg;
@@ -1935,6 +1942,17 @@ var NicoLiveHelper = {
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+vid;
 	req.open('GET', url );
 	req.send("");
+    },
+
+    runRequestCheckerScript:function(info){
+	if(NicoLivePreference.do_customscript){
+	    let r = eval( NicoLivePreference.customscript.requestchecker );
+	    if('string'==typeof r){
+		if(r) return {"code":-1,"msg":r};
+		else return {"code":0,"msg":""};
+	    }
+	}
+	return null;
     },
 
     // 再生済みかどうか.
