@@ -27,8 +27,8 @@
 	<textbox preference="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください" flex="1"/>
 	<button label="再生" oncommand="opener.NicoLiveHelper.playJingle();"/>
       </hbox>
-      <hbox><checkbox preference="pref-limit30min" label="自動再生時、放送枠内に収まるように再生する動画を選択する" tooltiptext="放送枠内に収まるように動画を選択します"/></hbox>
-      <hbox><checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する" tooltiptext="ロスタイム75秒として、再生する動画を選択します" style="margin-left: 2em"/></hbox>
+      <hbox><checkbox preference="pref-limit30min" label="自動再生時、放送枠内に収まるように再生する動画を選択する" tooltiptext="放送枠内(放送終了時刻)に収まるように動画を選択します"/></hbox>
+      <hbox><checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する" tooltiptext="ロスタイムを計算し、ロスタイムに収まるように再生する動画を選択します" style="margin-left: 2em"/></hbox>
       <hbox><checkbox preference="pref-prepare" label="動画の先読み(/prepare)を行う" tooltiptext="次の動画の先読みを行います(ランダム再生を除く)"/></hbox>
       <grid>
 	<columns>
