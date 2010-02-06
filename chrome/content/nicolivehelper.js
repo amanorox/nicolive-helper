@@ -1911,7 +1911,7 @@ var NicoLiveHelper = {
 			let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
 			if(checker!=null){
 			    ans.code = checker.code;
-			    ans.msg = checker.msg || ans.msg;
+			    ans.msg = checker.msg;
 			}
 		    }
 
@@ -1948,8 +1948,7 @@ var NicoLiveHelper = {
 	if(NicoLivePreference.do_customscript){
 	    let r = eval( NicoLivePreference.customscript.requestchecker );
 	    if('string'==typeof r){
-		if(r) return {"code":-1,"msg":r};
-		else return {"code":0,"msg":""};
+		return {"code":-1,"msg":r};
 	    }
 	}
 	return null;
