@@ -114,7 +114,8 @@ var NicoLiveComment = {
 	    name = null;
 	    break;
 	case 1:// 運営コメ欄左上に名前.
-	    str = '　' + comment.text + '　';
+	    //str = '　' + comment.text + '　';
+	    str = '\u200b' + comment.text;
 	    name = LoadFormattedString('STR_NAME_POSTFIX',[name]);
 	    break;
 	}
