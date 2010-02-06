@@ -189,30 +189,35 @@ var NicoLiveComment = {
 	};
 	let f = "chrome,dialog,centerscreen,modal";
 	if(NicoLivePreference.topmost){ f += ',alwaysRaised=yes'; }
+	if( this.reflector[userid] ){
+	    param['default'] = this.reflector[userid].name;
+	}
 	window.openDialog("chrome://nicolivehelper/content/commentdialog.xul","reflector",f,param);
 	let name = param['default'];
 	let disptype = param['disptype'];
 
 	if(name && name.length){
 	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-	    if(user.length){
-		ShowNotice(LoadString("STR_ERR_ALREADY_REFLECTION"));
-		return;
-	    }
 
 	    this.reflector[userid] = {"name":name, "disptype":disptype };
-	    let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
-	    menuitem.setAttribute("comment-reflector",userid);
-	    menuitem.setAttribute("tooltiptext","ID="+userid);
-	    menuitem.addEventListener(
-		'command',
-		function(){
-		    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-		    delete NicoLiveComment.reflector[userid];
-		    RemoveElement(user[0]);
-		    ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
-		},false);
-	    $('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
+
+	    if(user.length==0){
+		// ここからリフレクション解除メニューの追加.
+		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
+		menuitem.setAttribute("comment-reflector",userid);
+		menuitem.setAttribute("tooltiptext","ID="+userid);
+		menuitem.addEventListener(
+		    'command',
+		    function(){
+			let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
+			delete NicoLiveComment.reflector[userid];
+			RemoveElement(user[0]);
+			ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
+		    },false);
+		$('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
+		// ここまで
+	    }
+
 	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
 	}
     },
