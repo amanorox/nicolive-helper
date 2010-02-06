@@ -845,6 +845,7 @@ var NicoLiveRequest = {
     // F5を押したときに使用.
     redrawStock:function(){
 	debugprint('start:'+ (new Date()).getTime() );
+	this.update(NicoLiveHelper.requestqueue);
 	this.updateStockView(NicoLiveHelper.stock);
 	NicoLiveHelper.updateRemainRequestsAndStocks();
 	debugprint('end:'+ (new Date()).getTime() );
