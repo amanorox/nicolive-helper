@@ -34,8 +34,9 @@ var NicoLiveOverlay = {
 
     openNicoLiveWindow:function(){
 	let url = window.content.location.href;
-	url = url.match(/lv\d+/);
+	url = url.match(/watch\/(lv\d+)/);
 	if(!url) url="lv0";
+	else url = url[1];
 
 	let title;
 	let iscaster = true;
