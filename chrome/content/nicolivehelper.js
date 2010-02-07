@@ -377,7 +377,7 @@ var NicoLiveHelper = {
 
 	default:
 	    // リスナーコメの処理.
-	    if( chat.text.indexOf("/")!=0 ){
+	    if( chat.text.indexOf("/del")!=0 ){
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
 		    let selfreq = chat.text.match(/自(貼|張)/);
