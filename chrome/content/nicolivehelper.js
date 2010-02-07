@@ -1946,7 +1946,13 @@ var NicoLiveHelper = {
 
     runRequestCheckerScript:function(info){
 	if(NicoLivePreference.do_customscript){
-	    let r = eval( NicoLivePreference.customscript.requestchecker );
+	    let r;
+	    try{
+		r = eval( NicoLivePreference.customscript.requestchecker );
+	    } catch (x) {
+		// eval失敗時はチェックをパスしたものとする.
+		r = null;
+	    }
 	    if('string'==typeof r){
 		return {"code":-1,"msg":r};
 	    }
