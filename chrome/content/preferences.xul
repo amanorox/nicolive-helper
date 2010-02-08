@@ -466,12 +466,15 @@
       <preference id="pref-preset-autocomplete" name="extensions.nicolivehelper.preset-autocomplete" type="unichar"/>
 
       <preference id="pref-do-custom-script" name="extensions.nicolivehelper.custom-script" type="bool"/>
+      <preference id="pref-do-classify" name="extensions.nicolivehelper.do-classify" type="bool"/>
+      <preference id="pref-classes-value" name="extensions.nicolivehelper.classes-value" type="unichar"/>
     </preferences>
     <vbox>
 
       <tabbox flex="1">
 	<tabs>
 	  <tab label="コメント"/>
+	  <tab label="動画分類"/>
 	  <tab label="スクリプト"/>
 	  <tab label="その他"/>
 	</tabs>
@@ -491,6 +494,53 @@
 	      <label value="コメント入力補完プリセット:"/>
 	      <textbox preference="pref-preset-autocomplete" emptytext="1行に1つずつ、文字列(カンマ)コメント と入力します。例:/play sm7113282,初音ミクのライブOP1" tooltiptext="1行に1つずつ、文字列(カンマ)コメント と入力します。例:/play sm7113282,初音ミクのライブOP1" multiline="true" flex="1"/>
 	    </vbox>
+	  </tabpanel>
+
+	  <tabpanel orient="vertical">
+	    <!-- movie classifier -->
+	    <hbox><checkbox label="動画分類機能を使用する" preference="pref-do-classify"/></hbox>
+	    <listbox id="list-class" flex="1" context="popup-classifier">
+	      <listcols>
+		<listcol flex="1" />
+		<listcol flex="1" />
+	      </listcols>
+	      <listhead>
+		<listheader label="分類名" />
+		<listheader label="ラベル" />
+	      </listhead>
+<!--
+	      <listitem>
+		<label value="初音ミク" />
+		<label style="background-color:#7fffbf;" value="Miku" />
+	      </listitem>
+	      <listitem>
+		<label value="鏡音リン・レン" />
+		<label style="background-color:yellow;" value="RinLen" />
+	      </listitem>
+	      <listitem>
+		<label value="巡音ルカ" />
+		<label style="background-color:#ffb2d3;" value="Luka" />
+	      </listitem>
+	      <listitem>
+		<label value="その他" />
+		<label style="background-color:#ffeeee;" value="Other" />
+	      </listitem>
+	      <listitem>
+		<label value="NG" />
+		<label style="background-color:#888888;" value="NG" />
+	      </listitem>
+-->
+	    </listbox>
+
+	    <hbox align="center" flex="1">
+	      <label value="分類名" control="class-name"/>
+	      <textbox id="class-name" flex="1" size="10"/>
+	      <label value="ラベル" control="class-label"/>
+	      <textbox id="class-label" flex="1" size="10"/>
+	      <colorpicker id="class-color" type="button"/>
+	      <button label="登録" oncommand="NLHPreference.addClass();"/>
+	    </hbox>
+
 	  </tabpanel>
 
 	  <tabpanel orient="vertical">
@@ -559,6 +609,12 @@
       </tabbox>
     </vbox>
   </prefpane>
+
+  <popupset>
+    <menupopup id="popup-classifier">
+      <menuitem label="削除" oncommand="NLHPreference.removeSelectedClass();"/>
+    </menupopup>
+  </popupset>
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/preferences.js" />

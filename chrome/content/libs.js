@@ -51,6 +51,18 @@ function evaluateXPath(aNode, aExpr) {
 	found.push(res);
     return found;
 }
+function evaluateXPath2(aNode, aExpr) {
+    var xpe = new XPathEvaluator();
+    var nsResolver = function(){ return XUL_NS; };
+    var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+    var found = [];
+    var res;
+    while (res = result.iterateNext())
+	found.push(res);
+    return found;
+}
+
+
 
 function CreateElement(part){
     var elem;

@@ -22,7 +22,7 @@ var NLHPreference = {
 	str = str.replace(/<\/(.*?)>/g,"</html:$1>");
 	str = str.replace(/<([^/].*?)>/g,"<html:$1>");
 	str = str.replace(/html:br/g,"html:br/");
-	Application.console.log(str);
+	//Application.console.log(str);
 	$('preview-videoinfo').innerHTML = str;
     },
 
@@ -303,7 +303,7 @@ var NLHPreference = {
 	    // need to work with the string paths.
 	    var path = fp.file.path;
 	    // work with returned nsILocalFile...
-	    debugprint('commentlog='+path);
+	    //debugprint('commentlog='+path);
 
 	    $('pref-commentlogDir').value = file;
 	    $('commentlog').file = file;
@@ -322,7 +322,7 @@ var NLHPreference = {
 	    // need to work with the string paths.
 	    var path = fp.file.path;
 	    // work with returned nsILocalFile...
-	    debugprint('continuous comment dir='+path);
+	    //debugprint('continuous comment dir='+path);
 
 	    $('pref-continuousCommentDir').value = file;
 	    $('continuouscomment').file = file;
@@ -363,6 +363,84 @@ var NLHPreference = {
         }
     },
 
+    // リストに表示されている項目からオブジェクトを作成してプリファレンスに登録する.
+    createClassObject:function(){
+	let items = evaluateXPath2(document,"//xul:listbox[@id='list-class']/xul:listitem");
+	this.classes = new Array();
+	for(let i=0,item;item=items[i];i++){
+	    let obj = {};
+	    obj['name'] = item.label;
+	    obj['label'] = item.firstChild.value;
+	    obj['color'] = item.firstChild.style.backgroundColor;
+	    this.classes.push(obj);
+	}
+	$('pref-classes-value').value = JSON.stringify(this.classes);
+    },
+
+    // 選択されている分類を削除.
+    removeSelectedClass:function(){
+	let n = $('list-class').selectedIndex;
+	if(n>=0){
+	    $('list-class').removeItemAt(n);
+	}
+	this.createClassObject();
+    },
+
+    // 分類を追加する.
+    addClass:function(){
+	let classname = $('class-name').value;
+	let classlabel = $('class-label').value;
+	if( !classname || !classlabel ) return;
+
+	let existclasses = evaluateXPath2(document,"//xul:listbox[@id='list-class']/xul:listitem/xul:label");
+	for(let i=0,item; item=existclasses[i]; i++){
+	    if( item.value==classlabel ){
+		AlertPrompt('すでに存在するラベルは登録できません','動画分類登録');
+		return;
+	    }
+	}
+
+	let elem = $('list-class').appendItem(classname,'');
+	let label = CreateLabel(classlabel);
+	label.style.backgroundColor = $('class-color').color;
+	elem.appendChild( label );
+	this.createClassObject();
+    },
+    // デフォルトの分類をリストに追加する.
+    setDefaultClass:function(){
+	let elem,label;
+	elem = $('list-class').appendItem('初音ミク','');
+	label = CreateLabel('Miku');
+	label.style.backgroundColor = '#7fffbf';
+	elem.appendChild(label);
+	elem = $('list-class').appendItem('鏡音リン・レン','');
+	label = CreateLabel('RinLen');
+	label.style.backgroundColor = 'yellow';
+	elem.appendChild(label);
+	elem = $('list-class').appendItem('巡音ルカ','');
+	label = CreateLabel('Luka');
+	label.style.backgroundColor = '#ffb2d3';
+	elem.appendChild(label);
+	elem = $('list-class').appendItem('その他','');
+	label = CreateLabel('Other');
+	label.style.backgroundColor = '#ffeeee';
+	elem.appendChild(label);
+	elem = $('list-class').appendItem('NG','');
+	label = CreateLabel('NG');
+	label.style.backgroundColor = '#888888';
+	elem.appendChild(label);
+    },
+    // すでに設定済みの分類をリストに追加する.
+    setExistClasses:function(){
+	for(let i=0,item; item=this.classes[i]; i++){
+	    let elem,label;
+	    elem = $('list-class').appendItem( item['name'] );
+	    label = CreateLabel(item['label']);
+	    label.style.backgroundColor = item['color'] || '';
+	    elem.appendChild(label);
+	}
+    },
+
     saveScript:function(){
 	let data = new Object();
 	data.requestchecker = $('custom-script').value;
@@ -373,6 +451,16 @@ var NLHPreference = {
 	let data = opener.NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
 	if( data.requestchecker ){
 	    $('custom-script').value = data.requestchecker;
+	}
+	try{
+	    this.classes = eval( $('pref-classes-value').value );
+	} catch (x) {
+	    this.classes = new Array();
+	}
+	if( !this.classes || this.classes.length<=0 ){
+	    this.setDefaultClass();
+	}else{
+	    this.setExistClasses();
 	}
     },
     destroy:function(){

@@ -413,7 +413,7 @@
     <!-- request tab -->
     <menupopup id="popup-copyrequest">
       <menu label="Train">
-	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
 	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
@@ -470,7 +470,7 @@
     <!-- for error tab -->
     <menupopup id="popup-error-request">
       <menu label="Train">
-	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
 	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
@@ -505,7 +505,7 @@
     <!-- for stock -->
     <menupopup id="popup-sort-stock">
       <menu label="Train">
-	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
 	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
@@ -562,7 +562,7 @@
     <!-- for playlist -->
     <menupopup id="popup-playlist">
       <menu label="Train">
-	<menupopup oncommand="NicoLiveRequest.doTrain(event);">
+	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
 	  <menuitem label="巡音ルカ" value="Luka"></menuitem>

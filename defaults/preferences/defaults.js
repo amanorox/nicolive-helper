@@ -70,3 +70,5 @@ pref("extensions.nicolivehelper.listenercommand.del",">>{=info.comment_no} {=inf
 pref("extensions.nicolivehelper.preset-autocomplete","");
 pref("extensions.nicolivehelper.ngwordfiltering",false);
 pref("extensions.nicolivehelper.custom-script",false);
+pref("extensions.nicolivehelper.do-classify",false);
+pref("extensions.nicolivehelper.classes-value","");
