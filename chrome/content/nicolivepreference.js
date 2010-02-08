@@ -128,15 +128,20 @@ var NicoLivePreference = {
 	    this.classes = new Array();
 	}
 	if( !this.classes || this.classes.length<=0 ) this.setDefaultClass();
+	for(let i=0;i<this.classes.length;i++){
+	    this.classes["_"+this.classes[i].label] = this.classes[i].color;
+	}
+
 	let menus = evaluateXPath(document,"//*[@class='training-menu']");
 	for(let i=0,menu; menu=menus[i];i++){
 	    while(menu.firstChild) RemoveElement(menu.firstChild);
-	    for(let j=0,cls; cls=this.classes[i]; i++){
+	    for(let j=0,cls; cls=this.classes[j]; j++){
 		menu.appendChild( CreateMenuItem(cls['name'],cls['label']) );
 	    }
 	}
     },
     setDefaultClass:function(){
+	debugprint('分類メニューをデフォルトにしました');
 	this.classes = new Array();
 	this.classes.push({"name":"初音ミク","label":"Miku","color":"#7fffbf"});
 	this.classes.push({"name":"鏡音リン・レン","label":"RinLen","color":"yellow"});

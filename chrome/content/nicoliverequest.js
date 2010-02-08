@@ -133,8 +133,10 @@ var NicoLiveRequest = {
 
 	label = CreateElement('description');
 	if( item.classify ){
+	    // 動画情報に分類情報があれば、タグの前にラベルを付ける.
 	    let text = CreateHTMLElement('span');
-	    text.className = item.classify.class;
+	    //text.className = item.classify.class;
+	    text.style.backgroundColor = NicoLivePreference.classes["_"+item.classify.class];
 	    text.appendChild(document.createTextNode('['+item.classify.class+']'));
 	    label.appendChild(text);
 	}
@@ -913,10 +915,11 @@ var NicoLiveRequest = {
     doTrain:function(e){
 	let vbox = FindParentElement(document.popupNode,'vbox');
 	let vid = vbox.getAttribute('nicovideo_id');
-	debugprint('train:'+e.target+"/"+e.target.value+"/"+vid);
+	debugprint('train:'+e.target.value+"/"+vid);
 	let item = NicoLiveHelper.findVideoInfo(vid);
 	if(item==null) return;
 
+	// 半角小文字で正規化して学習させる.
 	let str = new Array();
 	for(let i=0,tag; tag=item.tags[i];i++){
 	    str.push(ZenToHan(tag.toLowerCase()));
@@ -941,7 +944,7 @@ var NicoLiveRequest = {
 		str.push(ZenToHan(tag.toLowerCase()));
 	    }
 	}
-	debugalert('classify:'+NicoLiveClassifier.classify(str).class);
+	debugalert('分類:'+NicoLiveClassifier.classify(str).class);
     },
 
     init:function(){

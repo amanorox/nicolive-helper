@@ -79,6 +79,21 @@ var NicoLiveHelper = {
 	    return {code:-1,msg:"",movieinfo:{}};
 	}
 
+	if(NicoLivePreference.do_classify || NicoLivePreference.mikuonly){
+	    let str = new Array();
+	    // 半角小文字で正規化してトレーニングをしているので、分類するときもそのように.
+	    for(let i=0,tag; tag=info.tags[i];i++){
+		str.push(ZenToHan(tag.toLowerCase()));
+	    }
+	    if( info.overseastags ){
+		// 日本タグだと編集されやすく海外タグに重要な情報が書かれている場合もあるので.
+		for(let i=0,tag; tag=info.overseastags[i];i++){
+		    str.push(ZenToHan(tag.toLowerCase()));
+		}
+	    }
+	    info.classify = NicoLiveClassifier.classify(str);
+	}
+
 	// リクを受け付けていない.
 	if( !this.allowrequest ){
 	    // アンカーチェックはここでやる.
@@ -114,23 +129,9 @@ var NicoLiveHelper = {
 
 	if(NicoLivePreference.mikuonly){
 	    let ismiku = false;
-
-	    let str = new Array();
-	    for(let i=0,tag; tag=info.tags[i];i++){
-		str.push(ZenToHan(tag.toLowerCase()));
-	    }
-	    if( info.overseastags ){
-		// 日本タグだと編集されやすく海外タグに重要な情報が書かれている場合もあるので.
-		for(let i=0,tag; tag=info.overseastags[i];i++){
-		    str.push(ZenToHan(tag.toLowerCase()));
-		}
-	    }
-	    info.classify = NicoLiveClassifier.classify(str);
-
-	    // そうでないときはタグを使用して分類.
 	    if( info.classify['class']=='Miku' ){
 		ismiku = true;
-	    }else{		
+	    }else{
 		// タイトルに「ミク」「オリジナル」が含まれていればまずはOK.
 		if( info.title.indexOf('ミク')!=-1 &&
 		    info.title.indexOf('オリジナル')!=-1 ){
@@ -138,6 +139,7 @@ var NicoLiveHelper = {
 		    }
 	    }
 
+	    let str;
 	    if( 0 && !ismiku ){
 		debugprint(info.video_id+":ミクオリジナル曲ではなさそうだ");
 		switch( info.classify['class'] ){
