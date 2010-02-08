@@ -414,11 +414,6 @@
     <menupopup id="popup-copyrequest">
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="初音ミク" value="Miku"></menuitem>
-	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
-	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
-	  <menuitem label="その他" value="Other"></menuitem>
-	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
@@ -471,11 +466,6 @@
     <menupopup id="popup-error-request">
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="初音ミク" value="Miku"></menuitem>
-	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
-	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
-	  <menuitem label="その他" value="Other"></menuitem>
-	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
@@ -506,11 +496,6 @@
     <menupopup id="popup-sort-stock">
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="初音ミク" value="Miku"></menuitem>
-	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
-	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
-	  <menuitem label="その他" value="Other"></menuitem>
-	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
@@ -563,11 +548,6 @@
     <menupopup id="popup-playlist">
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
-	  <menuitem label="初音ミク" value="Miku"></menuitem>
-	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
-	  <menuitem label="巡音ルカ" value="Luka"></menuitem>
-	  <menuitem label="その他" value="Other"></menuitem>
-	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
       <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
