@@ -115,6 +115,34 @@ var NicoLivePreference = {
 
 	this.do_customscript = branch.getBoolPref("custom-script");
 	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
+
+	this.readClasses();
+    },
+    // 動画分類設定を読みこむ.
+    readClasses:function(){
+	let branch = this.getBranch();
+	this.do_classify = branch.getBoolPref("do-classify");
+	try{
+	    this.classes = eval(branch.getUnicharPref("classes-value"));
+	} catch (x) {
+	    this.classes = new Array();
+	}
+	if( !this.classes || this.classes.length<=0 ) this.setDefaultClass();
+	let menus = evaluateXPath(document,"//*[@class='training-menu']");
+	for(let i=0,menu; menu=menus[i];i++){
+	    while(menu.firstChild) RemoveElement(menu.firstChild);
+	    for(let j=0,cls; cls=this.classes[i]; i++){
+		menu.appendChild( CreateMenuItem(cls['name'],cls['label']) );
+	    }
+	}
+    },
+    setDefaultClass:function(){
+	this.classes = new Array();
+	this.classes.push({"name":"初音ミク","label":"Miku","color":"#7fffbf"});
+	this.classes.push({"name":"鏡音リン・レン","label":"RinLen","color":"yellow"});
+	this.classes.push({"name":"巡音ルカ","label":"Luka","color":"#ffb2d3"});
+	this.classes.push({"name":"その他","label":"Other","color":"#ffeeee"});
+	this.classes.push({"name":"NG","label":"NG","color":"#888888"});
     },
 
     readBasicPrefs:function(){

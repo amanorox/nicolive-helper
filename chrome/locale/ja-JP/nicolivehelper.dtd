@@ -144,3 +144,6 @@
 <!ENTITY rate.5 "★★★★★">
 
 <!ENTITY comment.reflector.title "コメントリフレクション登録">
+
+<!ENTITY classify.train "学習">
+<!ENTITY classify.check "分類チェック">

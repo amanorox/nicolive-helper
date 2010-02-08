@@ -412,7 +412,7 @@
 
     <!-- request tab -->
     <menupopup id="popup-copyrequest">
-      <menu label="Train">
+      <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
@@ -421,7 +421,7 @@
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
-      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
       <menuitem label="&sort.comment_no;" oncommand="NicoLiveHelper.sortRequestByCommentNo();"/>
@@ -469,7 +469,7 @@
 
     <!-- for error tab -->
     <menupopup id="popup-error-request">
-      <menu label="Train">
+      <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
@@ -478,7 +478,7 @@
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
-      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
     </menupopup>
 
     <!-- for database -->
@@ -504,7 +504,7 @@
 
     <!-- for stock -->
     <menupopup id="popup-sort-stock">
-      <menu label="Train">
+      <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
@@ -513,7 +513,7 @@
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
-      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
       <menu label="&sort.ascend_order;">
@@ -561,7 +561,7 @@
 
     <!-- for playlist -->
     <menupopup id="popup-playlist">
-      <menu label="Train">
+      <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
 	  <menuitem label="初音ミク" value="Miku"></menuitem>
 	  <menuitem label="鏡音リン・レン" value="RinLen"></menuitem>
@@ -570,7 +570,7 @@
 	  <menuitem label="NG" value="NG"></menuitem>
 	</menupopup>
       </menu>
-      <menuitem label="Classify" oncommand="NicoLiveRequest.doClassify(event);"/>
+      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
