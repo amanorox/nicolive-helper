@@ -399,6 +399,10 @@ var NLHPreference = {
 		return;
 	    }
 	}
+	if(classlabel.match(/[^\w]/)){
+	    AlertPrompt('ラベルには英数のみ使用できます','動画分類登録');
+	    return;
+	}
 
 	let elem = $('list-class').appendItem(classname,'');
 	let label = CreateLabel(classlabel);
