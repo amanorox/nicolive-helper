@@ -498,7 +498,7 @@
 
 	  <tabpanel orient="vertical">
 	    <!-- movie classifier -->
-	    <hbox><checkbox label="動画分類機能を使用する" preference="pref-do-classify"/></hbox>
+	    <hbox><checkbox label="動画を分類し、ラベルの貼り付けを行う" preference="pref-do-classify"/></hbox>
 	    <listbox id="list-class" flex="1" context="popup-classifier">
 	      <listcols>
 		<listcol flex="1" />

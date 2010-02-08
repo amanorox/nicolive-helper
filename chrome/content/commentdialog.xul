@@ -17,7 +17,7 @@
   <script>
   <![CDATA[
 function init(){
-    Application.console.log(window.arguments[0].info);
+    //Application.console.log(window.arguments[0].info);
     document.getElementById('info.body').appendChild(document.createTextNode(window.arguments[0].info));
     document.getElementById('input-name').value = window.arguments[0].default;
 }

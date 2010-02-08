@@ -66,25 +66,22 @@ var NicoLiveRequest = {
 	a.appendChild(img);
 
 	let label;
-
 	// 動画ID+タイトル.
 	div.appendChild(a); // thumbnail
 	let text = document.createTextNode(item.video_id+'/'+item.title);
 	div.appendChild(text);
 
-	// P名.
-	let pname = NicoLiveHelper.getPName(item);
+	let pname = NicoLiveHelper.getPName(item); // P名.
 	if(pname){
 	    text = document.createTextNode(' P名:'+pname);
 	    div.appendChild(text);
 	}
-
 	div.appendChild(CreateHTMLElement('br'));
 
 	let datestr = GetDateString(item.first_retrieve*1000);
 	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
-			   + "再生数:"+item.view_counter+" コメント:"+item.comment_num
-			   + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
+		+ "再生数:"+item.view_counter+" コメント:"+item.comment_num
+		+ " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
 	
 	let hr = CreateHTMLElement('hr');
 	if(isstock) hr.className = 'detail';
@@ -96,7 +93,6 @@ var NicoLiveRequest = {
 	}else{
 	    div2.className = "selection";
 	}
-	//div2.appendChild(document.createTextNode(item.description));
 	let str;
 	// innerHTMLが使えないのでひたすらDOM操作.
 	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
@@ -121,14 +117,11 @@ var NicoLiveRequest = {
 		div2.appendChild(document.createTextNode(s));
 	    }
 	}
-
 	div.appendChild(div2);
-
 	vbox.appendChild(div);
 
 	hr = CreateHTMLElement('hr');
 	if(isstock) hr.className = 'detail';
-	//hr.setAttribute("size","1");
 	vbox.appendChild(hr);
 
 	label = CreateElement('description');

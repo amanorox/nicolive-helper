@@ -405,7 +405,7 @@ var NicoLiveHelper = {
     processListenersCommand:function(chat){
 	if( !NicoLivePreference.listenercommand.enable ) return;
 
-	let command = chat.text.match(/\/(\w+)\s*(.*)/);
+	let command = chat.text.match(/^\/(\w+)\s*(.*)/);
 	if(command){
 	    let tmp,n,str;
 	    switch(command[1]){
@@ -1176,11 +1176,15 @@ var NicoLiveHelper = {
 		this._firstflag = true;
 	    }
 	}
-	if(NicoLivePreference.mikuonly){
-	    // ミクうたモードのときは再生履歴にも分類表示.
+	if(NicoLivePreference.do_classify){
 	    let str = new Array();
 	    for(let i=0,tag; tag=item.tags[i];i++){
 		str.push(ZenToHan(tag.toLowerCase()));
+	    }
+	    if( item.overseastags ){
+		for(let i=0,tag; tag=item.overseastags[i];i++){
+		    str.push(ZenToHan(tag.toLowerCase()));
+		}
 	    }
 	    item.classify = NicoLiveClassifier.classify(str);
 	}

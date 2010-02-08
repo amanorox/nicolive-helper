@@ -33,12 +33,10 @@ var NicoLivePreference = {
 	    this.listenercommand.enable = branch.getBoolPref("listenercommand.enable");
 	    this.listenercommand.s      = branch.getUnicharPref("listenercommand.s");
 	    this.listenercommand.del    = branch.getUnicharPref("listenercommand.del");
-	    this.listenercommand.custom = branch.getUnicharPref("listenercommand.custom");
 	} catch (x) {
 	    this.listenercommand.enable = false;
 	    this.listenercommand.s      = "";
 	    this.listenercommand.del    = "";
-	    this.listenercommand.custom = "";
 	}
 
 	// 動画情報.
