@@ -2289,16 +2289,15 @@ var NicoLiveHelper = {
 		NicoLiveHelper.community  = xml.getElementsByTagName('default_community')[0].textContent;
 		// 座席番号2525....が主らしい.
 		if( NicoLiveHelper.iscaster.match(/^2525/) ){
-		    let i,item;
 		    NicoLiveHelper.iscaster=true;
 		    // load requests
 		    NicoLiveHelper.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
 		    // load playlist
 		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-		    for(i=0;i<NicoLiveHelper.playlist.length;i++){
-			NicoLiveHelper.playlist["_"+NicoLiveHelper.playlist[i]] = true;
-			NicoLiveHistory.addPlayList( NicoLiveHelper.playlist[i] );
+		    for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
+			NicoLiveHelper.playlist["_"+item.video_id] = true;
+			NicoLiveHistory.addPlayList( item );
 		    }
 		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 		    debugprint('You are a caster');
@@ -2687,9 +2686,9 @@ var NicoLiveHelper = {
 	    this.request_id = request_id;
 	    this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-	    for(let i=0;i<NicoLiveHelper.playlist.length;i++){
-		NicoLiveHelper.playlist["_"+NicoLiveHelper.playlist[i]] = true;
-		NicoLiveHistory.addPlayList( NicoLiveHelper.playlist[i] );
+	    for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
+		NicoLiveHelper.playlist["_"+item.video_id] = true;
+		NicoLiveHistory.addPlayList( item );
 	    }
 	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 	}
