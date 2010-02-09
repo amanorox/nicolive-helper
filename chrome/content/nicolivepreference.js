@@ -115,7 +115,18 @@ var NicoLivePreference = {
 	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
 
 	this.readClasses();
+	this.readFont();
     },
+
+    readFont:function(){
+	let branch = this.getBranch();
+	try{
+	    this.font = branch.getUnicharPref("font");
+	    $('requestwindow').style.fontFamily = this.font;
+	} catch (x) {
+	}
+    },
+
     // 動画分類設定を読みこむ.
     readClasses:function(){
 	let branch = this.getBranch();

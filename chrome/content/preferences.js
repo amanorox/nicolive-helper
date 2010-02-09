@@ -451,6 +451,14 @@ var NLHPreference = {
 	opener.NicoLiveDatabase.saveGPStorage('nico_live_customscript',data);
     },
 
+    buildFontList:function(){
+	FontBuilder.buildFontList($('font.language.group').value,null,$('select-font'));
+	let elem = evaluateXPath2(document,"//xul:menulist[@id='select-font']//xul:menuitem[@value='"+$('e.n.font').value+"']");
+	if(elem.length==1){
+	    $('select-font').selectedItem = elem[0];
+	}
+    },
+
     init:function(){
 	let data = opener.NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
 	if( data.requestchecker ){
@@ -466,6 +474,7 @@ var NLHPreference = {
 	}else{
 	    this.setExistClasses();
 	}
+	this.buildFontList();
     },
     destroy:function(){
 	//Application.console.log('close advanced setting');

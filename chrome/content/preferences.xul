@@ -468,6 +468,10 @@
       <preference id="pref-do-custom-script" name="extensions.nicolivehelper.custom-script" type="bool"/>
       <preference id="pref-do-classify" name="extensions.nicolivehelper.do-classify" type="bool"/>
       <preference id="pref-classes-value" name="extensions.nicolivehelper.classes-value" type="unichar"/>
+      <preference id="e.n.font" name="extensions.nicolivehelper.font" type="unichar"/>
+
+      <!-- to obtain font group from browser settings -->
+      <preference id="font.language.group" name="font.language.group" type="wstring"/>
     </preferences>
     <vbox>
 
@@ -508,28 +512,6 @@
 		<listheader label="分類名" />
 		<listheader label="ラベル" />
 	      </listhead>
-<!--
-	      <listitem>
-		<label value="初音ミク" />
-		<label style="background-color:#7fffbf;" value="Miku" />
-	      </listitem>
-	      <listitem>
-		<label value="鏡音リン・レン" />
-		<label style="background-color:yellow;" value="RinLen" />
-	      </listitem>
-	      <listitem>
-		<label value="巡音ルカ" />
-		<label style="background-color:#ffb2d3;" value="Luka" />
-	      </listitem>
-	      <listitem>
-		<label value="その他" />
-		<label style="background-color:#ffeeee;" value="Other" />
-	      </listitem>
-	      <listitem>
-		<label value="NG" />
-		<label style="background-color:#888888;" value="NG" />
-	      </listitem>
--->
 	    </listbox>
 
 	    <hbox align="center" flex="1">
@@ -567,14 +549,21 @@
 
 	  <tabpanel orient="vertical">
 	    <!-- others -->
+	    <hbox align="center">
+	      <label value="フォント:"/>
+	      <menulist id="select-font" preference="e.n.font"/>
+	    </hbox>
+	    <separator/>
+
 	    <vbox flex="1">
 	      <label value="放送終了3分前の警告表示方法:"/>
 	      <vbox style="margin-left: 1em;">
-		<hbox><checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します" flex="0"/></hbox>
-		<hbox><checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します"/></hbox>
-		<hbox><checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コメントを使用して警告します"/></hbox>
+		<hbox>
+		  <checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します" flex="0"/>
+		  <checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します"/>
+		  <checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コメントを使用して警告します"/>
+		</hbox>
 	      </vbox>
-
 	      <separator/>
 
 	      <label value="表示方法:"/>
@@ -615,6 +604,8 @@
       <menuitem label="削除" oncommand="NLHPreference.removeSelectedClass();"/>
     </menupopup>
   </popupset>
+
+  <script type="application/x-javascript" src="chrome://mozapps/content/preferences/fontbuilder.js"/>
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/preferences.js" />
