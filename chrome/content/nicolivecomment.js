@@ -180,9 +180,8 @@ var NicoLiveComment = {
 	return true;
     },
 
-    // コメントリフレクション登録.
-    addCommentReflector:function(){
-	let userid = document.popupNode.getAttribute('user_id');
+    // リフレクション登録ダイアログを表示して設定する.
+    showCommentReflectorDialog:function(userid){
 	let param = {
 	    "info": LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
 	    "default": "★",
@@ -199,9 +198,7 @@ var NicoLiveComment = {
 
 	if(name && name.length){
 	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-
 	    this.reflector[userid] = {"name":name, "disptype":disptype };
-
 	    if(user.length==0){
 		// ここからリフレクション解除メニューの追加.
 		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
@@ -218,10 +215,25 @@ var NicoLiveComment = {
 		$('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
 		// ここまで
 	    }
-
 	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
 	}
     },
+
+    // コメントリフレクション登録.
+    addCommentReflector:function(){
+	let userid = document.popupNode.getAttribute('user_id');
+	this.showCommentReflectorDialog(userid);
+    },
+    addReflectionFromCommentNo:function(comment_no){
+	debugprint(comment_no);
+	if(comment_no<=0) return;
+	for(let i=0;i<this.commentlog.length;i++){
+	    if( this.commentlog[i].no == comment_no ){
+		this.showCommentReflectorDialog( this.commentlog[i].user_id);
+	    }
+	}
+    },
+
     releaseReflector:function(user_id){
 	this.reflector = new Object();
 	ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );

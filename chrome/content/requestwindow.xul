@@ -279,6 +279,10 @@
 	      <html:iframe id="iframe-thumbnail" width="312" height="176" src="about:blank" scrolling="no" style="display:none;border:solid 1px #CCC;float:left;position:fixed;bottom:30px;left:25px;" frameborder="0"></html:iframe>
 	    </stack>
 	  </vbox>
+	  <splitter collapse="after" state="collapsed"/>
+	  <vbox>
+	    <hbox align="center"><label value="コメ番"/><textbox id="comment_no_to_add_reflection"/><button label="リフレクション登録" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/></hbox>
+	  </vbox>
 	</vbox>
 
 	<!-- database tab -->
