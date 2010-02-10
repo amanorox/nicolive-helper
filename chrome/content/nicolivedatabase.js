@@ -83,7 +83,7 @@ var NicoLiveDatabase = {
 		}
 		return;
 	    }
-	    l = sm.match(/(sm|nm)\d+/g);
+	    l = sm.match(/(sm|nm|ze|so)\d+/g);
 	    this.numvideos = l.length;
 	    this.addcounter = 0;
 	    this.updatecounter = 0;
@@ -770,7 +770,7 @@ var NicoLiveDatabase = {
 	return true;
     },
 
-    // ファイルからストックに登録する.
+    // ファイルからデータベースに登録する.
     readFileToDatabase:function(file){
 	// file は nsIFile
 	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
@@ -782,7 +782,7 @@ var NicoLiveDatabase = {
 	let str = "";
 	do {
 	    hasmore = istream.readLine(line);
-	    if( line.value.match(/(sm|nm)\d+/) ){
+	    if( line.value.match(/(sm|nm|ze|so)\d+/) ){
 		str += line.value;
 	    }
 	} while(hasmore);

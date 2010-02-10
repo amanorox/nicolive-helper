@@ -575,7 +575,7 @@ var NicoLiveRequest = {
     // 動画ID(複数OK)でリクエストに追加.
     addRequest:function(sm){
 	if(sm.length<3) return;
-	let l = sm.match(/(sm|nm)\d+/g);
+	let l = sm.match(/(sm|nm|ze|so)\d+/g);
 	for(let i=0,id;id=l[i];i++){
 	    NicoLiveHelper.addRequest(id,0,"1");
 	}
@@ -637,7 +637,7 @@ var NicoLiveRequest = {
 		}
 		return;
 	    }
-	    l = sm.match(/(sm|nm)\d+/g);
+	    l = sm.match(/(sm|nm|ze|so)\d+/g);
 	    for(let i=0,id;id=l[i];i++){
 		NicoLiveHelper.addStock(id,0);
 	    }
@@ -731,7 +731,7 @@ var NicoLiveRequest = {
 	let first = true;
 	do {
 	    hasmore = istream.readLine(line);
-	    if( line.value.match(/(sm|nm)\d+/) ){
+	    if( line.value.match(/(sm|nm|ze|so)\d+/) ){
 		if(first){
 		    //NicoLiveHelper.clearStock();
 		    first = false;

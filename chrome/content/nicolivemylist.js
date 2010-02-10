@@ -154,7 +154,7 @@ var NicoLiveMylist = {
 		    let video_id;
 		    let description;
 		    try{
-			video_id = item.getElementsByTagName('link')[0].textContent.match(/(sm|nm)\d+/);
+			video_id = item.getElementsByTagName('link')[0].textContent.match(/(sm|nm|ze|so)\d+/);
 		    } catch (x) {
 			video_id = "";
 		    }
@@ -195,7 +195,7 @@ var NicoLiveMylist = {
 		let link = xml.getElementsByTagName('link');
 		let videos = new Array();
 		for(let i=0,item;item=link[i];i++){
-		    let video_id = item.textContent.match(/(sm|nm)\d+/);
+		    let video_id = item.textContent.match(/(sm|nm|ze|so)\d+/);
 		    if(video_id){
 			//debugprint('mylist:'+video_id[0]);
 			videos.push(video_id[0]);
