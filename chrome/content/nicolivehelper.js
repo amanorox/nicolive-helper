@@ -538,7 +538,7 @@ var NicoLiveHelper = {
 	if( pname_whitelist["_"+str] ){
 	    return true;
 	}
-	if(str.match(/(PSP|アイドルマスターSP|m[a@]shup|step|overlap|vocaloid_map|mikunopop|mikupop|space_ship)$/i)) return false;
+	if(str.match(/(PSP|アイドルマスターSP|m[a@]shup|step|overlap|vocaloid_map|mikunopop|mikupop|ship)$/i)) return false;
 	if(str.match(/(M[A@]D|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|L4D|TOD|oid|clannad|2nd|3rd|second|third)$/i)) return false;
 	let t = str.match(/.*([^jOＯ][pｐPＰ]|jP)[)）]?$/);
 	if(t){
@@ -1576,7 +1576,6 @@ var NicoLiveHelper = {
     removeRequest:function(idx){
 	idx--;
 	let removeditem = this.requestqueue.splice(idx,1);
-	debugprint("Remove request #"+idx);
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
 	this.updateRemainRequestsAndStocks();
@@ -2512,7 +2511,6 @@ var NicoLiveHelper = {
 
 	this.startup_comments = NicoLivePreference.startup_comment.split(/\n|\r|\r\n/);
 	if(this.startup_comments.length){
-	    debugprint("Send Startup Comments");
 	    this._startupcomment = setInterval( function(){
 						    NicoLiveHelper._sendStartupComment();
 						}, 5000);
@@ -2524,7 +2522,6 @@ var NicoLiveHelper = {
 	    debugprint('startupcomment:'+str);
 	    this.postCasterComment(str,"");
 	}else{
-	    debugprint('Sending Startup Comments was done.');
 	    clearInterval(this._startupcomment);
 	}
     },

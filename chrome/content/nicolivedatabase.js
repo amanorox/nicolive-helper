@@ -167,7 +167,7 @@ var NicoLiveDatabase = {
 	    },
 	    handleError:function(error){
 		// insertが失敗のときはすでに行があるのでupdateにする.
-		debugprint('insert error/'+error.result+'/'+error.message);
+		//debugprint('insert error/'+error.result+'/'+error.message);
 		NicoLiveDatabase.updateRow(music);
 		this.error = true;
 	    },
@@ -199,7 +199,7 @@ var NicoLiveDatabase = {
 		    + "更新:"+NicoLiveDatabase.updatecounter + "件";
 	    },
 	    handleError:function(error){
-		debugprint('update error'+error.result+'/'+error.message);
+		//debugprint('update error'+error.result+'/'+error.message);
 	    },
 	    handleResult:function(result){
 	    }
@@ -222,7 +222,6 @@ var NicoLiveDatabase = {
     removeSearchLine:function(e){
 	let hbox = $('search-condition').getElementsByTagName('hbox');
 	if(hbox.length<=1) return;
-	debugprint(e.target);
 	$('search-condition').removeChild(e.target.parentNode);
     },
 
@@ -363,7 +362,7 @@ var NicoLiveDatabase = {
 		//NicoLiveDatabase.updateDatabase( NicoLiveDatabase._searchresult );
 	    },
 	    handleError:function(error){
-		debugprint('search error/'+error.result+'/'+error.message);
+		//debugprint('search error/'+error.result+'/'+error.message);
 	    },
 	    handleResult:function(result){
 		let row;
@@ -710,10 +709,10 @@ var NicoLiveDatabase = {
 	debugprint('load '+name);
 	item = Application.storage.get(name,null);
 	if(item!=null){
-	    debugprint("メモリからデータをロードします");
+	    //debugprint("メモリからデータをロードします");
 	    return item;
 	}
-	debugprint("ストレージからデータをロードします");
+	//debugprint("ストレージからデータをロードします");
 	let st = this.dbconnect.createStatement('SELECT value FROM gpstorage where key=?1');
 	st.bindUTF8StringParameter(0,name);
 	let value = "";

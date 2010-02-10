@@ -168,7 +168,7 @@ function WindowEnumerator(){
     while(enumerator.hasMoreElements()) {
 	var win = enumerator.getNext();
 	// win is [Object ChromeWindow] (just like window), do something with it
-	debugprint("window:"+win.name);
+	//debugprint("window:"+win.name);
 	if(win.name.match(/^NLH_lv\d+$/)){
 	    windowlist.push(win);
 	}
@@ -181,7 +181,6 @@ function CopyToClipboard(str){
     var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].  
 	getService(Components.interfaces.nsIClipboardHelper);  
     gClipboardHelper.copyString(str);
-    debugprint('copy to clipboard:'+str);
 }
 
 function htmlspecialchars(ch){

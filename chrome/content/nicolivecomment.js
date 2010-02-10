@@ -225,7 +225,6 @@ var NicoLiveComment = {
 	this.showCommentReflectorDialog(userid);
     },
     addReflectionFromCommentNo:function(comment_no){
-	debugprint(comment_no);
 	if(comment_no<=0) return;
 	for(let i=0;i<this.commentlog.length;i++){
 	    if( this.commentlog[i].no == comment_no ){
@@ -288,6 +287,20 @@ var NicoLiveComment = {
 	}
 	this.updateCommentViewer();
     },
+
+    pressKeyOnNameList:function(e){
+	if( e && e.keyCode==46 ){
+	    // 46 は DELキー(Winで確認)
+	    let n = $('kotehan-list').selectedIndex;
+	    if(n>=0){
+		let userid = $('kotehan-list').selectedItem.firstChild.value;
+		$('kotehan-list').removeItemAt(n);
+		delete this.namemap[userid];
+		NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
+	    }
+	}
+    },
+
     updateCommentViewer:function(){
 	clearTable($('comment_table'));
 	for(let i=0,item;item=this.commentlog[i];i++){
@@ -435,6 +448,16 @@ var NicoLiveComment = {
 	$('textbox-comment').setAttribute("autocompletesearchparam",JSON.stringify(concat_autocomplete));
     },
 
+    createNameList:function(){
+	let list = $('kotehan-list');
+	for (kotehan in this.namemap){
+	    let elem = CreateElement('listitem');
+	    elem.appendChild( CreateLabel(kotehan) );
+	    elem.appendChild( CreateLabel(this.namemap[kotehan].name) );
+	    list.appendChild(elem);
+	}
+    },
+
     init:function(){
 	// コメントリフレクターの登録用.
 	this.reflector = new Object();
@@ -449,6 +472,8 @@ var NicoLiveComment = {
 	this.namemap = NicoLiveDatabase.loadGPStorage("nico_live_kotehan",{});
 	this.autocomplete = NicoLiveDatabase.loadGPStorage("nico_live_autocomplete",[]);
 	this.loadPresetAutocomplete();
+
+	this.createNameList();
     },
     destroy:function(){
 	this.closeFile();

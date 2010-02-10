@@ -309,30 +309,19 @@ var NicoLiveRequest = {
 
     // row : 0,1,2,...
     topToStock:function(row){
-	debugprint( (new Date()).getTime() );
-
 	let table = $('stock-table');
 	table.deleteRow(row);
 	let tr = table.insertRow(0);
-
 	this.createRowOfStock(tr,1,NicoLiveHelper.stock[0]);
-
 	this.resetStockIndex();
-
-	debugprint( (new Date()).getTime() );
     },
     // row : 0,1,2,...
     bottomToStock:function(row){
-	debugprint( (new Date()).getTime() );
-
 	let table = $('stock-table');
 	table.deleteRow(row);
-	
 	let n = NicoLiveHelper.stock.length-1;
 	this._addStockView(table,NicoLiveHelper.stock[n]);
-
 	this.resetStockIndex();
-	debugprint( (new Date()).getTime() );
     },
 
     // ストックテーブルの行の中身を作成する.
@@ -370,7 +359,6 @@ var NicoLiveRequest = {
 	button.addEventListener("command",
 				function(event){
 				    let n = FindParentElement(event.target,'tr');
-				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
 				    n = tr.getAttribute('stock-index');
 				    NicoLiveRequest.addRequestFromStock(n);
 				},false);
@@ -382,7 +370,6 @@ var NicoLiveRequest = {
 	button.addEventListener("command",
 				function(event){
 				    let n = FindParentElement(event.target,'tr');
-				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
 				    n = tr.getAttribute('stock-index');
 				    if(!NicoLiveHelper.isOffline()){
 					NicoLiveHelper.playStock(n,true);
@@ -409,7 +396,6 @@ var NicoLiveRequest = {
 	button.addEventListener("command",
 				function(event){
 				    let n = FindParentElement(event.target,'tr');
-				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
 				    n = tr.getAttribute('stock-index');
 				    NicoLiveHelper.removeStock(n);
 				},false);
@@ -421,7 +407,6 @@ var NicoLiveRequest = {
 	button.addEventListener("command",
 				function(event){
 				    let n = FindParentElement(event.target,'tr');
-				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
 				    n = tr.getAttribute('stock-index');
 				    NicoLiveHelper.topToStock(n);
 				},false);
@@ -433,7 +418,6 @@ var NicoLiveRequest = {
 	button.addEventListener("command",
 				function(event){
 				    let n = FindParentElement(event.target,'tr');
-				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
 				    n = tr.getAttribute('stock-index');
 				    NicoLiveHelper.floatStock(n);
 				},false);
@@ -445,7 +429,6 @@ var NicoLiveRequest = {
 	button.addEventListener("command",
 				function(event){
 				    let n = FindParentElement(event.target,'tr');
-				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
 				    n = tr.getAttribute('stock-index');
 				    NicoLiveHelper.sinkStock(n);
 				},false);
@@ -457,7 +440,6 @@ var NicoLiveRequest = {
 	button.addEventListener("command",
 				function(event){
 				    let n = FindParentElement(event.target,'tr');
-				    debugprint('stock-index:'+tr.getAttribute('stock-index') );
 				    n = tr.getAttribute('stock-index');
 				    NicoLiveHelper.bottomToStock(n);
 				},false);
@@ -854,10 +836,8 @@ var NicoLiveRequest = {
 	let tr;
 	let tabindex = $('tabpanels').selectedIndex;
 	if( tabindex==1 ){
-	    debugprint('find from stock');
 	    tr = $('stock-table').getElementsByTagName('tr');
 	}else if( tabindex==0 ){
-	    debugprint('find from request');
 	    tr = $('request-table').getElementsByTagName('html:tr');
 	}else return;
 

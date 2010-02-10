@@ -282,6 +282,16 @@
 	  <splitter collapse="after" state="collapsed"/>
 	  <vbox>
 	    <hbox align="center"><label value="コメ番"/><textbox id="comment_no_to_add_reflection"/><button label="リフレクション登録" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/></hbox>
+	    <listbox id="kotehan-list" rows="5" onkeypress="NicoLiveComment.pressKeyOnNameList(event);">
+	      <listcols>
+		<listcol flex="1" />
+		<listcol flex="1" />
+	      </listcols>
+	      <listhead>
+		<listheader label="ユーザID" />
+		<listheader label="コテハン" />
+	      </listhead>
+	    </listbox>
 	  </vbox>
 	</vbox>
 

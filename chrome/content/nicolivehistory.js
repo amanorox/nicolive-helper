@@ -70,7 +70,6 @@ var NicoLiveHistory = {
 	let notes = $('played-list-textbox');
 	let substring;
 	substring = notes.value.substr(notes.selectionStart,notes.selectionEnd-notes.selectionStart);
-	debugprint(substring);
 
 	if(substring.length>=3){
 	    if(mylist_id=='default'){
