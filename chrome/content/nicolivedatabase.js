@@ -83,7 +83,7 @@ var NicoLiveDatabase = {
 		}
 		return;
 	    }
-	    l = sm.match(/(sm|nm|ze|so)\d+/g);
+	    l = sm.match(/(sm|nm|so)\d+/g);
 	    this.numvideos = l.length;
 	    this.addcounter = 0;
 	    this.updatecounter = 0;
@@ -782,7 +782,7 @@ var NicoLiveDatabase = {
 	let str = "";
 	do {
 	    hasmore = istream.readLine(line);
-	    if( line.value.match(/(sm|nm|ze|so)\d+/) ){
+	    if( line.value.match(/(sm|nm|so)\d+/) ){
 		str += line.value;
 	    }
 	} while(hasmore);

@@ -380,7 +380,7 @@ var NicoLiveHelper = {
 	default:
 	    // リスナーコメの処理.
 	    if( chat.text.indexOf("/del")!=0 ){
-		let sm = chat.text.match(/((sm|nm|ze|so)\d+)/);
+		let sm = chat.text.match(/((sm|nm|so)\d+)/);
 		if(sm){
 		    let selfreq = chat.text.match(/自(貼|張)/);
 		    this.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
@@ -443,7 +443,7 @@ var NicoLiveHelper = {
 		    target = null;
 		    cancelnum = this.cancelRequest(chat.user_id, target);
 		}
-		tmp = command[2].match(/(sm|nm|ze|so)\d+/);
+		tmp = command[2].match(/(sm|nm|so)\d+/);
 		if(tmp){
 		    target = tmp[0];
 		    cancelnum = this.cancelRequest(chat.user_id, target);
@@ -1254,7 +1254,7 @@ var NicoLiveHelper = {
 		    // 世界の新着、生放送引用拒否動画は、主コメがエラーになる.
 		    let video_id = null;
 		    try{
-			video_id = comment.match(/^\/play\s+((sm|nm|ze|so)\d+)/)[1];
+			video_id = comment.match(/^\/play\s+((sm|nm|so)\d+)/)[1];
 		    } catch (x) {
 			video_id = "";
 		    }
