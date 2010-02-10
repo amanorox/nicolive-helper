@@ -280,7 +280,7 @@
 	    </stack>
 	  </vbox>
 	  <splitter collapse="after" state="collapsed"/>
-	  <vbox>
+	  <vbox flex="1" style="overflow:auto;">
 	    <hbox align="center"><label value="コメ番"/><textbox id="comment_no_to_add_reflection"/><button label="リフレクション登録" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/></hbox>
 	    <listbox id="kotehan-list" rows="5" onkeypress="NicoLiveComment.pressKeyOnNameList(event);">
 	      <listcols>
@@ -368,7 +368,7 @@
     <splitter id="id-splitter" persist="collapse state" collapse="after" state="collapsed"><grippy /></splitter>
 
     <!-- live pane (want 600px) -->
-    <vbox flex="1">
+    <vbox flex="1" style="overflow:auto;">
       <browser id="live-page" src="about:blank" type="content" flex="1"/>
       <hbox>
 	<button label="&browser.open;" oncommand="NicoLiveBrowser.open();"/>
