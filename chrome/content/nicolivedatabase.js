@@ -635,7 +635,10 @@ var NicoLiveDatabase = {
 	}
 
 	if( this.getFavorite(video_id)<0 ){
+	    // 動画DBにデータがないので追加した通知.
 	    ShowNotice( LoadFormattedString('STR_ERR_RATE_NOT_SAVED',[video_id]) );
+	    let music = NicoLiveHelper.findVideoInfo(video_id);
+	    this.addDatabase(music);
 	}
 
 	let st;

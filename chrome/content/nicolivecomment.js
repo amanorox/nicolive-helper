@@ -286,6 +286,7 @@ var NicoLiveComment = {
 	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
 	}
 	this.updateCommentViewer();
+	this.createNameList();
     },
 
     pressKeyOnNameList:function(e){
@@ -298,6 +299,20 @@ var NicoLiveComment = {
 		delete this.namemap[userid];
 		NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
 	    }
+	}
+    },
+
+    createNameList:function(){
+	let list = $('kotehan-list');
+	while( list.getRowCount() ){
+	    list.removeItemAt(0);
+	}
+
+	for (kotehan in this.namemap){
+	    let elem = CreateElement('listitem');
+	    elem.appendChild( CreateLabel(kotehan) );
+	    elem.appendChild( CreateLabel(this.namemap[kotehan].name) );
+	    list.appendChild(elem);
 	}
     },
 
@@ -446,16 +461,6 @@ var NicoLiveComment = {
 	}
 	let concat_autocomplete = this.preset_autocomplete.concat( this.autocomplete );
 	$('textbox-comment').setAttribute("autocompletesearchparam",JSON.stringify(concat_autocomplete));
-    },
-
-    createNameList:function(){
-	let list = $('kotehan-list');
-	for (kotehan in this.namemap){
-	    let elem = CreateElement('listitem');
-	    elem.appendChild( CreateLabel(kotehan) );
-	    elem.appendChild( CreateLabel(this.namemap[kotehan].name) );
-	    list.appendChild(elem);
-	}
     },
 
     init:function(){
