@@ -1073,7 +1073,7 @@ var NicoLiveHelper = {
 		    continue;
 		}
 	    }
-	    if( !isstock || (isstock && !this.isPlayedMusic(item.video_id)) ){
+	    if( !isstock || (isstock && !item.isplayed ) ){
 		notplayed.push(item);
 	    }
 	}
@@ -1980,7 +1980,7 @@ var NicoLiveHelper = {
 	this.playlist["_"+video_id] = false;
 	for(let i=0,item; item=this.stock[i];i++){
 	    if(item.video_id==video_id){
-		item.isplayed = false;		
+		item.isplayed = false;
 	    }
 	}
     },
