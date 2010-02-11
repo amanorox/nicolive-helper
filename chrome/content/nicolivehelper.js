@@ -62,6 +62,7 @@ var NicoLiveHelper = {
     isautoplay: false,     // 自動再生フラグ.
     israndomplay: false,   // ランダム再生フラグ.
     isconsumptionrateplay: false, // リク消費率順再生フラグ.
+    musicinfo: {},  // 再生中の動画情報.
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},  // {json}用.
 
@@ -2563,10 +2564,13 @@ var NicoLiveHelper = {
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){ // 何も動画が再生されてなければジングル再生.
 		this.inplay = true;
-		let timerid = setInterval( function(){
-					       NicoLiveHelper.postCasterComment("/play "+jingle);
-					       clearInterval(timerid);
-					   }, 5000);
+		let timerid = setInterval(
+		    function(){
+			if( !NicoLiveHelper.musicinfo.video_id ){
+			    NicoLiveHelper.postCasterComment("/play "+jingle);
+			}
+			clearInterval(timerid);
+		    }, 5000);
 	    }
 	}
     },
@@ -2665,7 +2669,6 @@ var NicoLiveHelper = {
 	this.stock        = new Array();
 	this.error_req    = new Object(); // 配列にしない
 	this.isnotified   = new Array(); // 残り3分通知を出したかどうかのフラグ.
-	this.musicinfo    = {};
 	this.resetRequestCount(); // 1人あたりのリクエスト受け付け数ワーク.
 
 	this.allowrequest = NicoLivePreference.allowrequest;
