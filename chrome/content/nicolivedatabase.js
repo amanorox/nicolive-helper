@@ -137,7 +137,7 @@ var NicoLiveDatabase = {
 
 
     // DBにinsert to する.
-    addDatabase:function(music){
+    addDatabase:function(music,dosync){
 	// xmlToMovieInfoが作る構造でmusicを渡す.
 	let st;
 
@@ -174,7 +174,12 @@ var NicoLiveDatabase = {
 	    handleResult:function(result){
 	    }
 	};
-	st.executeAsync(callback);
+	if(dosync){
+	    debugprint('DB: dosync');
+	    st.execute();
+	}else{
+	    st.executeAsync(callback);
+	}
     },
 
     updateRow:function(music,nomessage){
@@ -519,8 +524,8 @@ var NicoLiveDatabase = {
 	    st.bindUTF8StringParameter(0,video_id);
 	    st.execute();
 	    st.finalize();
-	    debugprint(video_id+'をDBから削除');
 	    ShowNotice(video_id+"をDBから削除しました");
+	    this.ratecache["_"+video_id] = -1;
 	} catch (x) {
 	}
     },
@@ -638,7 +643,7 @@ var NicoLiveDatabase = {
 	    // 動画DBにデータがないので追加した通知.
 	    ShowNotice( LoadFormattedString('STR_ERR_RATE_NOT_SAVED',[video_id]) );
 	    let music = NicoLiveHelper.findVideoInfo(video_id);
-	    this.addDatabase(music);
+	    this.addDatabase(music,true);// do synchronized operation.
 	}
 
 	let st;
