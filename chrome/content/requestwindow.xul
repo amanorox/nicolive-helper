@@ -150,14 +150,14 @@
   <hbox flex="1" style="margin-top: 5px;">
 
     <tabbox flex="1" persist="selectedIndex" id="mainwindow-tab">
-      <tabs>
-	<tab label="&tab.request;"/>
-	<tab label="&tab.stock;"/>
-	<tab label="&tab.error;"/>
-	<tab label="&tab.playlist;"/>
-	<tab label="&tab.comment;"/>
-	<tab label="&tab.database;"/>
-	<tab label="&tab.debug;"/>
+      <tabs id="maintabs">
+	<tab id="tabs-request" label="&tab.request;"/>
+	<tab id="tabs-stock" label="&tab.stock;"/>
+	<tab id="tabs-error" label="&tab.error;"/>
+	<tab id="tabs-playlist" label="&tab.playlist;"/>
+	<tab id="tabs-comment" label="&tab.comment;"/>
+	<tab id="tabs-db" label="&tab.database;"/>
+	<tab id="tabs-debug" label="&tab.debug;"/>
       </tabs>
       <tabpanels flex="1" id="tabpanels">
 	<!-- request tab -->
@@ -184,6 +184,14 @@
 	      ondrop="NicoLiveRequest.dropToStock(event)">
 
 	  <hbox align="center">
+	    <menulist id="stock-playstyle" persist="value">
+	      <menupopup>
+		<menuitem label="&stock.playstyle.none;" value="0"/>
+		<menuitem label="&stock.playstyle.sequential;" value="1"/>
+		<menuitem label="&stock.playstyle.random;" value="2"/>
+	      </menupopup>
+	    </menulist>
+
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleStock();"/>
 	    <button type="menu" label="&button.load_mylist;">
 	      <menupopup id="menupopup-from-mylist">

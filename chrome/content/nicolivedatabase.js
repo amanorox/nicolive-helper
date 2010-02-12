@@ -175,7 +175,6 @@ var NicoLiveDatabase = {
 	    }
 	};
 	if(dosync){
-	    debugprint('DB: dosync');
 	    st.execute();
 	}else{
 	    st.executeAsync(callback);

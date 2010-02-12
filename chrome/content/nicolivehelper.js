@@ -273,8 +273,8 @@ var NicoLiveHelper = {
 
 	if(chat.date<this.connecttime){ return; } // 過去ログ無視.
 
-	if((chat.premium==3||chat.user_id=="0") && chat.text=="/disconnect"){
-	    // ロスタイムのときはuser_id=="0"から/disconnectがやってくる.
+	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
+	    // ロスタイムのときは premium=2 からやってくる.
 	    this.close();
 
 	    let prefs = NicoLivePreference.getBranch();

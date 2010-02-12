@@ -65,6 +65,9 @@
 
 <!ENTITY request.emptytext_add_from_mylist "動画IDを入力するとリクエストに追加されます">
 <!ENTITY stock.emptytext_add_from_mylist "動画IDまたはマイリストのURLを入力するとストックに追加されます">
+<!ENTITY stock.playstyle.none "---">
+<!ENTITY stock.playstyle.sequential "順次再生">
+<!ENTITY stock.playstyle.random "ランダム">
 
 <!ENTITY playlist.emptytext_textlog "プレイリストスレッドにコピペする用">
 <!ENTITY playlist.tooltip_clearall "再生済みの動画を再度リクエストを受け付けることができるようになります。テキスト復旧は行えません。">
