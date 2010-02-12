@@ -263,7 +263,7 @@ var NicoLiveHelper = {
 
     // コメを処理する.
     processComment: function(xmlchat){
-	let chat=this.extractComment(xmlchat);
+	let chat=NicoLiveHelper.extractComment(xmlchat);
 
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
 	if(chat.text.indexOf("/telop")==0) return;
@@ -271,18 +271,18 @@ var NicoLiveHelper = {
 	NicoLiveComment.push(chat);
 	NicoLiveComment.addRow(chat);
 
-	if(chat.date<this.connecttime){ return; } // 過去ログ無視.
+	if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // ロスタイムのときは premium=2 からやってくる.
-	    this.close();
+	    NicoLiveHelper.close();
 
 	    let prefs = NicoLivePreference.getBranch();
-	    if( prefs.getBoolPref("autowindowclose") && this.iscaster ||
-	        prefs.getBoolPref("autowindowclose-listener") && !this.iscaster ){
+	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster ||
+	        prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
 		window.close();
 	    }else{
-		debugalert(this.request_id+' finished.');
+		debugalert(NicoLiveHelper.request_id+' finished.');
 	    }
 	}
 
@@ -294,30 +294,30 @@ var NicoLiveHelper = {
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		let vid = dat[2];
-		this.musicstarttime = GetCurrentTime();
-		this.inplay = true;
-		if(!this.iscaster){
+		NicoLiveHelper.musicstarttime = GetCurrentTime();
+		NicoLiveHelper.inplay = true;
+		if(!NicoLiveHelper.iscaster){
 		    // リスナーの場合は動画情報を持っていないので取ってくる.
-		    this.setCurrentVideoInfo(vid,false);
+		    NicoLiveHelper.setCurrentVideoInfo(vid,false);
 		}else{
-		    if( this.musicinfo.video_id!=vid ){
+		    if( NicoLiveHelper.musicinfo.video_id!=vid ){
 			// 直接運営コマンドを入力したときとかで、
 			// 現在再生しているはずの曲と異なる場合.
 			// 動画情報の主コメは動画情報を取ってきてから.
-			this.setCurrentVideoInfo(vid,true);
+			NicoLiveHelper.setCurrentVideoInfo(vid,true);
 		    }else{
-			this.musicendtime = Math.floor(this.musicstarttime + this.musicinfo.length_ms/1000)+1;
-			this.setupPlayNextMusic(this.musicinfo.length_ms);
-			this.sendMusicInfo();
+			NicoLiveHelper.musicendtime = Math.floor(NicoLiveHelper.musicstarttime + NicoLiveHelper.musicinfo.length_ms/1000)+1;
+			NicoLiveHelper.setupPlayNextMusic(NicoLiveHelper.musicinfo.length_ms);
+			NicoLiveHelper.sendMusicInfo();
 			// /playコマンドが飲まれたときに記録が残らないので.
 			// playMusic()で記録するようにに戻す.
-			//this.addPlayList(this.musicinfo);
+			//NicoLiveHelper.addPlayList(NicoLiveHelper.musicinfo);
 		    }
 		}
 		return;
 	    }
 
-	    if(!this.iscaster) break;
+	    if(!NicoLiveHelper.iscaster) break;
 
 	    // アンケート開始.
 	    dat = chat.text.match(/^\/vote\s+start\s+(.*)/);
@@ -328,8 +328,8 @@ var NicoLiveHelper = {
 		for(let i=1,s;s=qa[i];i++){
 		    qa[i] = "A"+i+"/" + s;
 		}
-		this.postCasterComment(qa.join(","),"");
-		this.officialvote = qa;
+		NicoLiveHelper.postCasterComment(qa.join(","),"");
+		NicoLiveHelper.officialvote = qa;
 		return;
 	    }
 
@@ -339,22 +339,22 @@ var NicoLiveHelper = {
 		let str = dat[1];
 		let result = str.match(/\d+/g);
 		str = "";
-		for(let i=1,a;a=this.officialvote[i];i++){
-		    str += this.officialvote[i] + "(" + (result[i-1]/10).toFixed(1) + "%) ";
+		for(let i=1,a;a=NicoLiveHelper.officialvote[i];i++){
+		    str += NicoLiveHelper.officialvote[i] + "(" + (result[i-1]/10).toFixed(1) + "%) ";
 		}
-		this.postCasterComment(str,"");
+		NicoLiveHelper.postCasterComment(str,"");
 		return;
 	    }
 
 	    if( chat.text.indexOf("/perm")==0 && chat.mail.indexOf("hidden")!=-1 ){
-		this.commentview = COMMENT_VIEW_HIDDEN_PERM;
+		NicoLiveHelper.commentview = COMMENT_VIEW_HIDDEN_PERM;
 		debugprint("switch to VIEW_HIDDEN_PERM");
 		clearInterval(NicoLiveHelper._commentstatetimer);
 		return;
 	    }
 	    if( chat.mail.indexOf("hidden")!=-1 ){
 		// hiddenだけの場合は、15秒間だけHIDDEN_PERM.
-		this.commentview = COMMENT_VIEW_HIDDEN_PERM;
+		NicoLiveHelper.commentview = COMMENT_VIEW_HIDDEN_PERM;
 		debugprint("switch to VIEW_HIDDEN_PERM");
 		clearInterval(NicoLiveHelper._commentstatetimer);
 		NicoLiveHelper._commentstatetimer = setInterval(
@@ -366,13 +366,13 @@ var NicoLiveHelper = {
 	    }
 
 	    if( chat.text.indexOf("/cls")==0 || chat.text.indexOf("/clear")==0 ){
-		clearInterval(this._sendclsid);
+		clearInterval(NicoLiveHelper._sendclsid);
 
-		this.commentview = COMMENT_VIEW_NORMAL;
+		NicoLiveHelper.commentview = COMMENT_VIEW_NORMAL;
 		debugprint("switch to VIEW_NORMAL");
-		if( 'function'==typeof this.postclsfunc ){
-		    this.postclsfunc();
-		    this.postclsfunc = null;
+		if( 'function'==typeof NicoLiveHelper.postclsfunc ){
+		    NicoLiveHelper.postclsfunc();
+		    NicoLiveHelper.postclsfunc = null;
 		}
 		return;
 	    }
@@ -384,19 +384,19 @@ var NicoLiveHelper = {
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
 		    let selfreq = chat.text.match(/自(貼|張)/);
-		    this.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
+		    NicoLiveHelper.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
 		    return;
 		}
 	    }
 
-	    if(!this.iscaster) break;
+	    if(!NicoLiveHelper.iscaster) break;
 	    switch(chat.text){
 	    case "/ver":
 	    case "/version":
-		this.postCasterComment("NicoLive Helper "+GetAddonVersion(),"");
+		NicoLiveHelper.postCasterComment("NicoLive Helper "+GetAddonVersion(),"");
 		break;
 	    default:
-		this.processListenersCommand(chat);
+		NicoLiveHelper.processListenersCommand(chat);
 		break;
 	    }
 	    break;
