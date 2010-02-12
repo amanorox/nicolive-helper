@@ -1048,6 +1048,7 @@ var NicoLiveHelper = {
     chooseNextMusicToPlay:function(musiclist,isstock){
 	let now = GetCurrentTime();
 	let remain; // sec.
+
 	if( this.endtime ){
 	    remain = this.endtime-now;
 	}else{
@@ -1081,10 +1082,15 @@ var NicoLiveHelper = {
 	if(notplayed.length<=0) return false; // 再生できるものなし.
 
 	let n = 0;
-	if(this.israndomplay){
+	let stockplaystyle = $('stock-playstyle').value;
+
+	if( (this.israndomplay && stockplaystyle==0) || (isstock && stockplaystyle==2)){
+	    // ・ランダム再生で、ストックの再生スタイルが指定なし
+	    // ・ストックから選択するとき、ストック再生スタイルが2(ランダム)
 	    n = GetRandomInt(0,notplayed.length-1);
 	}
-	if(this.isconsumptionrateplay){
+	if( this.isconsumptionrateplay && stockplaystyle==0 ){
+	    // ・リク消費数順で、ストック再生スタイルが指定なし
 	    let tmp = this.calcConsumptionRate();
 	    for(let i=0;i<tmp.length;i++){
 		// ストックの動画にはuser_idがないので、ここを処理しても必ず n = -1 になる.
@@ -2346,6 +2352,9 @@ var NicoLiveHelper = {
 		NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
 
 		$('statusbar-live-progress').setAttribute("tooltiptext",'ロスタイム:'+NicoLiveHelper.calcLossTime()+'秒');
+		if( !NicoLiveHelper.iscaster ){
+		    $('textbox-comment').setAttribute('maxlength','64');
+		}
 	    } catch (x) {
 		debugalert('Error occurred.'+x);
 	    }
