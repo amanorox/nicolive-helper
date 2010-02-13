@@ -166,7 +166,6 @@
 	  <hbox align="center">
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleRequest();"/>
 	    <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
-	    <spacer flex="1"/>
 	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearRequest();"/>
 	    <label id="total-playtime"/>
 	  </hbox>
@@ -184,7 +183,7 @@
 	      ondrop="NicoLiveRequest.dropToStock(event)">
 
 	  <hbox align="center">
-	    <menulist id="stock-playstyle" persist="value">
+	    <menulist id="stock-playstyle" persist="value" tooltiptext="ストックの再生スタイルを選択します">
 	      <menupopup>
 		<menuitem label="&stock.playstyle.none;" value="0"/>
 		<menuitem label="&stock.playstyle.sequential;" value="1"/>
@@ -199,7 +198,6 @@
 	    </button>
 
 	    <textbox id="input-stock" emptytext="&stock.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
-	    <spacer flex="1"/>
 	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
 	    <label id="stock-playtime"/>
 	  </hbox>

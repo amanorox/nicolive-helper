@@ -538,11 +538,11 @@ var NicoLiveRequest = {
 
     setTotalPlayTime:function(t){
 	let elem = $("total-playtime");
-	elem.value = "総時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
+	elem.value = ""+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.requestqueue.length+"件";
     },
     setTotalStockTime:function(t){
 	let elem = $("stock-playtime");
-	elem.value = "残時間:"+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.stock.length+"件";
+	elem.value = ""+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.stock.length+"件";
     },
 
     // 再生時間表示を更新する.

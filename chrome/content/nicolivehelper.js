@@ -1084,13 +1084,19 @@ var NicoLiveHelper = {
 	let n = 0;
 	let stockplaystyle = $('stock-playstyle').value;
 
-	if( (this.israndomplay && stockplaystyle==0) || (isstock && stockplaystyle==2)){
+	let isrand;
+	if( this.israndomplay && (!isstock || isstock && stockplaystyle==0) ||
+	    isstock && stockplaystyle==2 ){
+	    isrand = true;
+	}
+
+	if( isrand ){
 	    // ・ランダム再生で、ストックの再生スタイルが指定なし
 	    // ・ストックから選択するとき、ストック再生スタイルが2(ランダム)
 	    n = GetRandomInt(0,notplayed.length-1);
 	}
-	if( this.isconsumptionrateplay && stockplaystyle==0 ){
-	    // ・リク消費数順で、ストック再生スタイルが指定なし
+	if( this.isconsumptionrateplay && !isstock ){
+	    // ストックにはリクエスト消費数がないので無視してok
 	    let tmp = this.calcConsumptionRate();
 	    for(let i=0;i<tmp.length;i++){
 		// ストックの動画にはuser_idがないので、ここを処理しても必ず n = -1 になる.
@@ -2417,6 +2423,7 @@ var NicoLiveHelper = {
 			}
 			NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[n].video_id,"");
 		    }else if(NicoLiveHelper.stock.length){
+			if( $('stock-playstyle').value==2 ) return; // ランダムではprepareしない
 			for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
 			    if(!NicoLiveHelper.isPlayedMusic(item.video_id)){
 				NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.stock[i].video_id,"");
