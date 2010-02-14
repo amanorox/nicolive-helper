@@ -291,7 +291,7 @@ var NicoLiveHelper = {
 	    // 主コメの処理.
 	    let dat;
 	    // /play smile:sm00000 main "title"
-	    dat = chat.text.match(/^\/play(sound)*\s*smile:((sm|nm|ze)\d+)\s*(main|sub)\s*\"(.*)\"$/);
+	    dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		let vid = dat[2];
 		NicoLiveHelper.musicstarttime = GetCurrentTime();
