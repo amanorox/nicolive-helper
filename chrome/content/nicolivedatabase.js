@@ -716,10 +716,10 @@ var NicoLiveDatabase = {
 	debugprint('load '+name);
 	item = Application.storage.get(name,null);
 	if(item!=null){
-	    //debugprint("メモリからデータをロードします");
+	    debugprint("メモリからデータをロードします");
 	    return item;
 	}
-	//debugprint("ストレージからデータをロードします");
+	debugprint("ストレージからデータをロードします");
 	let st = this.dbconnect.createStatement('SELECT value FROM gpstorage where key=?1');
 	st.bindUTF8StringParameter(0,name);
 	let value = "";

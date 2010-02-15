@@ -71,8 +71,8 @@ var NicoLiveWindow = {
     },
     destroy: function(){
 	this.save();
+	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
     },
-
 
     backupCurrent:function(){
 	this.backup('system-backup');
@@ -119,7 +119,7 @@ var NicoLiveWindow = {
 						       LoadString('STR_BACKUP_WARN_DEL_TITLE'))){
 					  delete NicoLiveWindow.backuprestore[backupname];
 					  NicoLiveWindow.createRestoreMenu();
-					  NicoLiveDatabase.saveGPStorage("nico_live_backup",NicoLiveWindow.backuprestore);
+					  Application.storage.set("nico_live_backup",NicoLiveWindow.backuprestore);
 					  ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[backupname]) );
 				      }
 				  },false);
@@ -156,7 +156,7 @@ var NicoLiveWindow = {
 	}
 
 	this.backuprestore[name] = data;
-	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
+	Application.storage.set("nico_live_backup",this.backuprestore);
     },
 
     // ウィンドウの、リク、ストック、履歴の状態を復元する.

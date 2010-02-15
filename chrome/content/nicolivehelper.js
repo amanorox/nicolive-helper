@@ -1887,6 +1887,7 @@ var NicoLiveHelper = {
 	request.comment_no = cno;
 	request.user_id = userid;
 	request.xml = null;
+	request.time = GetCurrentTime();
 	this.requestprocessingqueue.push(request);
 
 	req.onreadystatechange = function(){
