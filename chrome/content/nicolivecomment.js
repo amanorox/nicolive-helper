@@ -131,9 +131,16 @@ var NicoLiveComment = {
     showThumbnail:function(event,video_id){
 	//debugprint('mouseover:'+event.layerX+','+event.layerY+' video_id:'+video_id);
 	$('iframe-thumbnail').src = "http://ext.nicovideo.jp/thumb/"+video_id;
-	// なぜか移動できない.
-	$('iframe-thumbnail').style.left = event.layerX;
-	$('iframe-thumbnail').style.top = event.layerY;
+	let x,y;
+	// 312x176
+	x = event.clientX;
+	y = event.clientY;
+	if( y+176 > window.innerHeight ){
+	    y = y - 176 - 5;
+	}
+
+	$('iframe-thumbnail').style.left = x + 5 + "px";
+	$('iframe-thumbnail').style.top = y + "px";
 	$('iframe-thumbnail').style.display = 'block';
     },
     hideThumbnail:function(){
