@@ -138,9 +138,12 @@ var NicoLiveComment = {
 	if( y+176 > window.innerHeight ){
 	    y = y - 176 - 5;
 	}
+	if( x+312 > window.innerWidth ){
+	    x = x - 312 - 5;
+	}
 
 	$('iframe-thumbnail').style.left = x + 5 + "px";
-	$('iframe-thumbnail').style.top = y + "px";
+	$('iframe-thumbnail').style.top = y + 5 + "px";
 	$('iframe-thumbnail').style.display = 'block';
     },
     hideThumbnail:function(){
