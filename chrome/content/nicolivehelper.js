@@ -1933,7 +1933,8 @@ var NicoLiveHelper = {
 		// 動画情報にはコメ番とユーザーIDを含む.
 		ans.movieinfo.cno = q.comment_no;
 		ans.movieinfo.user_id = q.user_id;
-		
+		ans.movieinfo.request_id = NicoLiveHelper.request_id;
+
 		if(ans.code==0){
 		    let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
 		    if(checker!=null){
