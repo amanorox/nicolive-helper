@@ -278,30 +278,56 @@ function GetSelectedTag(tags,selection,color){
 	    }
 	}
     }
-    let tmp = r.join(',');
-    tmp = tmp.replace(/(.{35,}?),/g,"$1,<br>　");
-
-    if(color){
+    // 正規表現でうまく色付きに置換できなかったので強引に.
+    let s = "";
+    let len = 0;
+    for(let i=0,tag; tag=r[i]; i++){
+	let l = tag.length;
 	for(let j=0,sel;sel=selection[j]; j++){
-	    let reg = new RegExp("("+sel+")","ig");
-	    tmp = tmp.replace(reg,"<font color=\""+color[j]+"\">$1</font>");
+	    let reg = new RegExp(sel,"i");
+	    if( tag.match(reg) ){
+		tag = "<font color=\""+color[j]+"\">"+tag+"</font>";
+		break;
+	    }
+	}
+	s += tag;
+	len += l;
+	if( r[i+1] ){
+	    s+=",";
+	    len++;
+	}
+	if(len>=35){
+	    s += "<br>　";
+	    len = 0;
 	}
     }
-    return tmp;
+    return s;
 }
 
 function GetColoredTag(tags,selection,color){
-    let tmp;
-    tmp = tags.join(',');
-    tmp = tmp.replace(/(.{35,}?),/g,"$1,<br>　");
-
-    if(color){
+    let s = "";
+    let len = 0;
+    for(let i=0,tag; tag=tags[i]; i++){
+	let l = tag.length;
 	for(let j=0,sel;sel=selection[j]; j++){
-	    let reg = new RegExp("("+sel+")","ig");
-	    tmp = tmp.replace(reg,"<font color=\""+color[j]+"\">$1</font>");
+	    let reg = new RegExp(sel,"i");
+	    if( tag.match(reg) ){
+		tag = "<font color=\""+color[j]+"\">"+tag+"</font>";
+		break;
+	    }
+	}
+	s += tag;
+	len += l;
+	if( tags[i+1] ){
+	    s+=",";
+	    len++;
+	}
+	if(len>=35){
+	    s += "<br>　";
+	    len = 0;
 	}
     }
-    return tmp;
+    return s;
 }
 
 // string bundleから文字列を読みこむ.
