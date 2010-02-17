@@ -276,6 +276,7 @@ function GetSelectedTag(tags,selection,color){
 	    let reg = new RegExp(sel,"i");
 	    if(tag.match(reg)){
 		r.push(tag);
+		break;
 	    }
 	}
     }
@@ -287,7 +288,9 @@ function GetSelectedTag(tags,selection,color){
 	for(let j=0,sel;sel=selection[j]; j++){
 	    let reg = new RegExp(sel,"i");
 	    if( tag.match(reg) ){
-		tag = "<font color=\""+color[j]+"\">"+tag+"</font>";
+		if(color[j]){
+		    tag = "<font color=\""+color[j]+"\">"+tag+"</font>";
+		}
 		break;
 	    }
 	}
@@ -313,7 +316,9 @@ function GetColoredTag(tags,selection,color){
 	for(let j=0,sel;sel=selection[j]; j++){
 	    let reg = new RegExp(sel,"i");
 	    if( tag.match(reg) ){
-		tag = "<font color=\""+color[j]+"\">"+tag+"</font>";
+		if(color[j]){
+		    tag = "<font color=\""+color[j]+"\">"+tag+"</font>";
+		}
 		break;
 	    }
 	}
