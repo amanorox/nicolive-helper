@@ -271,7 +271,16 @@ function GetFormattedDateString(format,ms){
 function GetSelectedTag(tags,selection,color){
     let r = new Array();
     for(let i=0,tag; tag=tags[i]; i++){
-	// 作りかけ.
+	for(let j=0,sel;sel=selection[j]; j++){
+	    let reg = new RegExp(sel,"i");
+	    if(tag.match(reg)){
+		if(color && color[j]){
+		    r.push("<font color=\""+color[j]+"\">"+tag+"</font>");
+		}else{
+		    r.push(tag);
+		}
+	    }
+	}
     }
     return r.join(',');
 }
