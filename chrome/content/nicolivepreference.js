@@ -190,6 +190,7 @@ var NicoLivePreference = {
 	}
 
 	$('toolbar-allowrequest').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
+	NicoLiveHelper.allowrequest = this.allowrequest;
     },
 
     readUserDefinedValueURI:function(){
