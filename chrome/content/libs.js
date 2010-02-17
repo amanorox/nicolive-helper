@@ -274,15 +274,32 @@ function GetSelectedTag(tags,selection,color){
 	for(let j=0,sel;sel=selection[j]; j++){
 	    let reg = new RegExp(sel,"i");
 	    if(tag.match(reg)){
-		if(color && color[j]){
-		    r.push("<font color=\""+color[j]+"\">"+tag+"</font>");
-		}else{
-		    r.push(tag);
-		}
+		r.push(tag);
 	    }
 	}
     }
-    return r.join(',');
+    let tmp = r.join(',');
+    tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
+
+    if(color){
+	for(let j=0,sel;sel=selection[j]; j++){
+	    let reg = new RegExp("("+sel+")","ig");
+	    tmp = tmp.replace(reg,"<font color=\""+color[j]+"\">$1</font>");
+	}
+    }
+    return tmp;
+}
+
+function GetColoredTag(tags,selection,color){
+    let tmp;
+    tmp = tags.join(',');
+    tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
+
+    for(let j=0,sel;sel=selection[j]; j++){
+	let reg = new RegExp("("+sel+")","ig");
+	tmp = tmp.replace(reg,"<font color=\""+color[j]+"\">$1</font>");
+    }
+    return tmp;
 }
 
 // string bundleから文字列を読みこむ.
