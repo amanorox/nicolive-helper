@@ -279,7 +279,7 @@ function GetSelectedTag(tags,selection,color){
 	}
     }
     let tmp = r.join(',');
-    tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
+    tmp = tmp.replace(/(.{35,}?),/g,"$1,<br>　");
 
     if(color){
 	for(let j=0,sel;sel=selection[j]; j++){
@@ -293,7 +293,7 @@ function GetSelectedTag(tags,selection,color){
 function GetColoredTag(tags,selection,color){
     let tmp;
     tmp = tags.join(',');
-    tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
+    tmp = tmp.replace(/(.{35,}?),/g,"$1,<br>　");
 
     if(color){
 	for(let j=0,sel;sel=selection[j]; j++){
