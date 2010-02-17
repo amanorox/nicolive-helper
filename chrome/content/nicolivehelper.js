@@ -230,7 +230,8 @@ var NicoLiveHelper = {
 	    let tagstr = videoinfo.tags.join(' ');
 	    let flg = false;
 	    for(let i=0,tag;tag=restrict.tag_include[i];i++){
-		if( tagstr.indexOf(tag) != -1 ){
+		let reg = new RegExp(tag,"i");
+		if( tagstr.match(reg) ){
 		    // 含まれている
 		    flg = true;
 		}
@@ -247,7 +248,8 @@ var NicoLiveHelper = {
 	    let flg = true;
 	    let tag;
 	    for(let i=0;tag=restrict.tag_exclude[i];i++){
-		if( tagstr.indexOf(tag) != -1 ){
+		let reg = new RegExp(tag,"i");
+		if( tagstr.match(reg) ){
 		    // 含まれている
 		    flg = false;
 		    break;
@@ -2138,7 +2140,7 @@ var NicoLiveHelper = {
 	this._updateprogressid = setInterval( function(){
 						  NicoLiveHelper.updateProgressBar();
 					      }, 1000);
-	this.heartbeat();
+	//this.heartbeat();
 	this._heartbeat = setInterval( function(){
 					   NicoLiveHelper.heartbeat();
 				       }, 1*60*1000);

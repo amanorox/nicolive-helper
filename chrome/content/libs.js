@@ -268,6 +268,13 @@ function GetFormattedDateString(format,ms){
     return d.toLocaleFormat(format);
 }
 
+function GetSelectedTag(tags,selection,color){
+    let r = new Array();
+    for(let i=0,tag; tag=tags[i]; i++){
+	// 作りかけ.
+    }
+    return r.join(',');
+}
 
 // string bundleから文字列を読みこむ.
 function LoadString(name){

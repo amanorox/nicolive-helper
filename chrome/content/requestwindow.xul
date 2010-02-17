@@ -10,7 +10,7 @@
 	persist="screenX screenY width height sizemode"
 	width="720"
 	height="512"
-	title="NicoLive Helper 1.0b1">
+	title="NicoLive Helper 1.0b2">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
