@@ -1872,6 +1872,68 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    // リクエスト処理キューを先頭から処理する.
+    processRequest:function(){
+	let q;
+	while( NicoLiveHelper.requestprocessingqueue.length && NicoLiveHelper.requestprocessingqueue[0].xml ){
+	    q = NicoLiveHelper.requestprocessingqueue.shift();
+
+	    // リクのあった動画をチェック.
+	    let ans = NicoLiveHelper.checkAcceptRequest( q.xml, q.comment_no );
+	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではない.
+	    ans.movieinfo.selfrequest = q.user_id=="0"?true:false;        // 自貼りのユーザーIDは0.
+	    
+	    // リクエスト制限数をチェック.
+	    let nlim = NicoLivePreference.nreq_per_ppl;
+	    if(!NicoLiveHelper.request_per_ppl[q.user_id]){
+		NicoLiveHelper.request_per_ppl[q.user_id] = 0;
+	    }
+	    if( ans.code==0 && q.user_id!="0"){
+		// 自貼りはカウントしなくてOK.
+		NicoLiveHelper.request_per_ppl[q.user_id]++;
+	    }
+	    let n = NicoLiveHelper.request_per_ppl[q.user_id];
+	    if(ans.code==0 && n>nlim && nlim>0){
+		NicoLiveHelper.request_per_ppl[q.user_id]--;
+		ans.msg = NicoLivePreference.msg.limitnumberofrequests;
+		ans.code = -1;
+	    }
+	    
+	    // 動画情報にはコメ番とユーザーIDを含む.
+	    ans.movieinfo.cno = q.comment_no;
+	    ans.movieinfo.user_id = q.user_id;
+	    ans.movieinfo.request_id = NicoLiveHelper.request_id;
+	    
+	    if(ans.code==0){
+		let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
+		if(checker!=null){
+		    ans.code = checker.code;
+		    ans.msg = checker.msg;
+		}
+	    }
+	    switch(ans.code){
+	    case 0:
+		ans.movieinfo.error = false;
+		NicoLiveHelper.addRequestQueue(ans.movieinfo);
+		break;
+	    default:
+		ans.movieinfo.error = true;
+		NicoLiveHelper.addErrorRequestList(ans.movieinfo);
+		break;
+	    }
+	    if(NicoLivePreference.isautoreply && ans.msg){
+		// 返答メッセージが指定してあれば主コメする.
+		let msg = ">>"+q.comment_no+" " + ans.msg;
+		let info = ans.movieinfo;
+		info.restrict = NicoLivePreference.restrict;
+		msg = NicoLiveHelper.replaceMacros(msg, info);
+		if( q.comment_no!=0 ) NicoLiveHelper.postCasterComment(msg,"");
+		debugprint(msg);
+	    }
+	    NicoLiveHelper.updateRemainRequestsAndStocks();
+	}// end of while	
+    },
+
     // 動画情報を取得してリクエストに追加する.
     addRequest: function(vid,cno,userid){
 	/*
@@ -1892,8 +1954,25 @@ var NicoLiveHelper = {
 	request.time = GetCurrentTime();
 	this.requestprocessingqueue.push(request);
 
+	let timeoutcheck;
+	timeoutcheck = setInterval(
+	    function(){
+		let i,q;
+		clearInterval(timeoutcheck);
+		for(i=0;q=NicoLiveHelper.requestprocessingqueue[i];i++){
+		    if( q.video_id==vid && q.comment_no==cno ){
+			// タイムアウトのときはリクエスト処理キューから削除してあげる.
+			NicoLiveHelper.requestprocessingqueue.splice(i,1);
+			ShowNotice(q.video_id+"の動画情報取得にタイムアウト(30秒)したため、リクエストから削除します");
+			break;
+		    }
+		}
+		NicoLiveHelper.processRequest();
+	    }, 30*1000);
+
 	req.onreadystatechange = function(){
 	    if( req.readyState!=4 ) return;
+	    clearInterval(timeoutcheck);
 	    let i,q;
 	    for(i=0;q=NicoLiveHelper.requestprocessingqueue[i];i++){
 		if( q.video_id==vid && q.comment_no==cno ){
@@ -1907,66 +1986,7 @@ var NicoLiveHelper = {
 		    break;
 		}
 	    }
-
-	    while( NicoLiveHelper.requestprocessingqueue.length && NicoLiveHelper.requestprocessingqueue[0].xml ){
-		q = NicoLiveHelper.requestprocessingqueue.shift();
-
-		// リクのあった動画をチェック.
-		let ans = NicoLiveHelper.checkAcceptRequest( q.xml, q.comment_no );
-		ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではない.
-		ans.movieinfo.selfrequest = q.user_id=="0"?true:false;        // 自貼りのユーザーIDは0.
-		
-		// リクエスト制限数をチェック.
-		let nlim = NicoLivePreference.nreq_per_ppl;
-		if(!NicoLiveHelper.request_per_ppl[q.user_id]){
-		    NicoLiveHelper.request_per_ppl[q.user_id] = 0;
-		}
-		if( ans.code==0 && q.user_id!="0"){
-		    // 自貼りはカウントしなくてOK.
-		    NicoLiveHelper.request_per_ppl[q.user_id]++;
-		}
-		let n = NicoLiveHelper.request_per_ppl[q.user_id];
-		if(ans.code==0 && n>nlim && nlim>0){
-		    NicoLiveHelper.request_per_ppl[q.user_id]--;
-		    ans.msg = NicoLivePreference.msg.limitnumberofrequests;
-		    ans.code = -1;
-		}
-		
-		// 動画情報にはコメ番とユーザーIDを含む.
-		ans.movieinfo.cno = q.comment_no;
-		ans.movieinfo.user_id = q.user_id;
-		ans.movieinfo.request_id = NicoLiveHelper.request_id;
-
-		if(ans.code==0){
-		    let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
-		    if(checker!=null){
-			ans.code = checker.code;
-			ans.msg = checker.msg;
-		    }
-		}
-
-		switch(ans.code){
-		case 0:
-		    ans.movieinfo.error = false;
-		    NicoLiveHelper.addRequestQueue(ans.movieinfo);
-		    break;
-		default:
-		    ans.movieinfo.error = true;
-		    NicoLiveHelper.addErrorRequestList(ans.movieinfo);
-		    break;
-		}
-		
-		if(NicoLivePreference.isautoreply && ans.msg){
-		    // 返答メッセージが指定してあれば主コメする.
-		    let msg = ">>"+q.comment_no+" " + ans.msg;
-		    let info = ans.movieinfo;
-		    info.restrict = NicoLivePreference.restrict;
-		    msg = NicoLiveHelper.replaceMacros(msg, info);
-		    if( q.comment_no!=0 ) NicoLiveHelper.postCasterComment(msg,"");
-		    debugprint(msg);
-		}
-		NicoLiveHelper.updateRemainRequestsAndStocks();
-	    }// end of while
+	    NicoLiveHelper.processRequest();
 	};
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+vid;
 	req.open('GET', url );
