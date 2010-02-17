@@ -270,7 +270,8 @@ function GetFormattedDateString(format,ms){
 
 function GetSelectedTag(tags,selection,color){
     let r = new Array();
-    for(let i=0,tag; tag=tags[i]; i++){
+    let i,tag;
+    for(i=0; tag=tags[i]; i++){
 	for(let j=0,sel;sel=selection[j]; j++){
 	    let reg = new RegExp(sel,"i");
 	    if(tag.match(reg)){
@@ -281,7 +282,7 @@ function GetSelectedTag(tags,selection,color){
     // 正規表現でうまく色付きに置換できなかったので強引に.
     let s = "";
     let len = 0;
-    for(let i=0,tag; tag=r[i]; i++){
+    for(i=0; tag=r[i]; i++){
 	let l = tag.length;
 	for(let j=0,sel;sel=selection[j]; j++){
 	    let reg = new RegExp(sel,"i");
