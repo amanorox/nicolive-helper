@@ -295,9 +295,11 @@ function GetColoredTag(tags,selection,color){
     tmp = tags.join(',');
     tmp = tmp.replace(/(.{35,}?),/g,"$1<br>　");
 
-    for(let j=0,sel;sel=selection[j]; j++){
-	let reg = new RegExp("("+sel+")","ig");
-	tmp = tmp.replace(reg,"<font color=\""+color[j]+"\">$1</font>");
+    if(color){
+	for(let j=0,sel;sel=selection[j]; j++){
+	    let reg = new RegExp("("+sel+")","ig");
+	    tmp = tmp.replace(reg,"<font color=\""+color[j]+"\">$1</font>");
+	}
     }
     return tmp;
 }
