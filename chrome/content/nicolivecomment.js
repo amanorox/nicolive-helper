@@ -80,6 +80,14 @@ var NicoLiveComment = {
 	}
 	str = htmlspecialchars(str);
 
+	let tmp = str.split(/(sm\d+|nm\d+|\d{10}|&\w+;)/);
+	for(let i=0;i<tmp.length;i++){
+	    if( !tmp[i].match(/(sm\d+|nm\d+|\d{10}|&\w+;)/) ){
+		tmp[i] = tmp[i].replace(/(.{35,}?)/g,"$1<html:wbr/>");
+	    }
+	}
+	str = tmp.join("");
+
 	// sm,nmにリンクを貼り付け.
 	str = str.replace(/((sm|nm)\d+)/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
 	if( comment.premium!=3 ){
