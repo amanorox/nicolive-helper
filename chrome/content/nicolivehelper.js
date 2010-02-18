@@ -340,10 +340,18 @@ var NicoLiveHelper = {
 	    if(dat){
 		let str = dat[1];
 		let result = str.match(/\d+/g);
+		let graph = "";
+		let color = ["#ff0000","#00ff00","#0000ff","#ffffff"];
 		str = "";
 		for(let i=1,a;a=NicoLiveHelper.officialvote[i];i++){
 		    str += NicoLiveHelper.officialvote[i] + "(" + (result[i-1]/10).toFixed(1) + "%) ";
+		    graph += "<font color=\""+color[i-1]+"\">";
+		    for(let j=0;j<result[i-1]/10;j++){
+			graph += "|";
+		    }
+		    graph += "</font>";
 		}
+		NicoLiveHelper.postCasterComment(NicoLiveHelper.officialvote[0]+"<br>"+graph,"hidden");
 		NicoLiveHelper.postCasterComment(str,"");
 		return;
 	    }
@@ -1963,12 +1971,12 @@ var NicoLiveHelper = {
 		    if( q.video_id==vid && q.comment_no==cno ){
 			// タイムアウトのときはリクエスト処理キューから削除してあげる.
 			NicoLiveHelper.requestprocessingqueue.splice(i,1);
-			ShowNotice(q.video_id+"の動画情報取得にタイムアウト(30秒)したため、リクエストから削除します");
+			ShowNotice(q.video_id+"の動画情報取得にタイムアウト(60秒)したため、リクエストから削除します");
 			break;
 		    }
 		}
 		NicoLiveHelper.processRequest();
-	    }, 30*1000);
+	    }, 60*1000);
 
 	req.onreadystatechange = function(){
 	    if( req.readyState!=4 ) return;
