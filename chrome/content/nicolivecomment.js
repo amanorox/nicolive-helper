@@ -312,6 +312,7 @@ var NicoLiveComment = {
 		$('kotehan-list').removeItemAt(n);
 		delete this.namemap[userid];
 		NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
+		this.updateCommentViewer();
 	    }
 	}
     },
