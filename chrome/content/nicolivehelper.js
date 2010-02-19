@@ -1546,8 +1546,8 @@ var NicoLiveHelper = {
 	default:
 	    break;
 	}
-	NicoLivePreference.writePlayStyle();
-	
+	//NicoLivePreference.writePlayStyle();
+
 	let e = evaluateXPath(document,"//*[@id='toolbar-playstyle']//*[@playstyle='"+this.playstyle+"']");
 	if(e.length){
 	    $('toolbar-playstyle').label = e[0].label;

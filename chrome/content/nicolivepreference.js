@@ -184,10 +184,7 @@ var NicoLivePreference = {
 	this.doprepare = branch.getBoolPref("prepare");
 
 	try{
-	    let e = evaluateXPath(document,"//*[@id='toolbar-playstyle']//*[@playstyle='"+this.playstyle+"']");
-	    if(e.length){
-		$('toolbar-playstyle').label = e[0].label;
-	    }
+	    NicoLiveHelper.setPlayStyle(this.playstyle);
 	} catch (x) {
 	    NicoLiveHelper.setPlayStyle(0);
 	    $('toolbar-playstyle').label = $('toolbar-popup-playstyle').getElementsByTagName('menuitem')[0].label;
