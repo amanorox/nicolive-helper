@@ -1971,25 +1971,8 @@ var NicoLiveHelper = {
 	request.time = GetCurrentTime();
 	this.requestprocessingqueue.push(request);
 
-	let timeoutcheck;
-	timeoutcheck = setInterval(
-	    function(){
-		let i,q;
-		clearInterval(timeoutcheck);
-		for(i=0;q=NicoLiveHelper.requestprocessingqueue[i];i++){
-		    if( q.video_id==vid && q.comment_no==cno ){
-			// タイムアウトのときはリクエスト処理キューから削除してあげる.
-			NicoLiveHelper.requestprocessingqueue.splice(i,1);
-			ShowNotice(q.video_id+"の動画情報取得にタイムアウト(60秒)したため、リクエストから削除します");
-			break;
-		    }
-		}
-		NicoLiveHelper.processRequest();
-	    }, 60*1000);
-
 	req.onreadystatechange = function(){
 	    if( req.readyState!=4 ) return;
-	    clearInterval(timeoutcheck);
 	    let i,q;
 	    for(i=0;q=NicoLiveHelper.requestprocessingqueue[i];i++){
 		if( q.video_id==vid && q.comment_no==cno ){
@@ -1997,8 +1980,9 @@ var NicoLiveHelper = {
 			q.xml = req.responseXML;
 		    }else{
 			// HTTPエラーのときはリクエスト処理キューから削除してあげる.
+			// 実験したところ、タイムアウトもこっちでokみたい.
 			NicoLiveHelper.requestprocessingqueue.splice(i,1);
-			ShowNotice(q.video_id+"の動画情報取得に失敗したため、リクエストから削除します");
+			ShowNotice(q.video_id+"の動画情報取得に失敗したため、リクエストから削除します(code="+req.status+")");
 		    }
 		    break;
 		}
