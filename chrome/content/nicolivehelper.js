@@ -356,6 +356,12 @@ var NicoLiveHelper = {
 		return;
 	    }
 
+	    if( chat.text.indexOf("/vote stop")==0 ){
+		// /vote stopをすると運営コメントが消されるので、動画情報を復元.
+		NicoLiveHelper.revertMusicInfo();
+		return;
+	    }
+
 	    if( chat.text.indexOf("/perm")==0 && chat.mail.indexOf("hidden")!=-1 ){
 		NicoLiveHelper.commentview = COMMENT_VIEW_HIDDEN_PERM;
 		debugprint("switch to VIEW_HIDDEN_PERM");
