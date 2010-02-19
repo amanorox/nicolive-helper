@@ -153,7 +153,7 @@ var NicoLivePreference = {
 	debugprint('分類メニューをデフォルトにしました');
 	this.classes = new Array();
 	this.classes.push({"name":"初音ミク","label":"Miku","color":"#7fffbf"});
-	this.classes.push({"name":"鏡音リン・レン","label":"RinLen","color":"yellow"});
+	this.classes.push({"name":"鏡音リン・レン","label":"RinLen","color":"#ffff00"});
 	this.classes.push({"name":"巡音ルカ","label":"Luka","color":"#ffb2d3"});
 	this.classes.push({"name":"その他","label":"Other","color":"#ffeeee"});
 	this.classes.push({"name":"NG","label":"NG","color":"#888888"});
@@ -176,6 +176,7 @@ var NicoLivePreference = {
 	}
 
 	this.isautoreply = branch.getBoolPref("autoreply");
+	this.show_autoreply = branch.getBoolPref("pref-show-autoreply"); // リクエストの応答を運営コメ欄に表示する.
 	this.limitnewmovie = branch.getBoolPref("limitnewmovie");
 	this.nreq_per_ppl = branch.getIntPref("accept-nreq");
 
@@ -183,7 +184,10 @@ var NicoLivePreference = {
 	this.doprepare = branch.getBoolPref("prepare");
 
 	try{
-	    $('toolbar-playstyle').label = $('toolbar-popup-playstyle').getElementsByTagName('menuitem')[this.playstyle].label;
+	    let e = evaluateXPath(document,"//*[@id='toolbar-playstyle']//*[@playstyle='"+this.playstyle+"']");
+	    if(e.length){
+		$('toolbar-playstyle').label = e[0].label;
+	    }
 	} catch (x) {
 	    NicoLiveHelper.setPlayStyle(0);
 	    $('toolbar-playstyle').label = $('toolbar-popup-playstyle').getElementsByTagName('menuitem')[0].label;

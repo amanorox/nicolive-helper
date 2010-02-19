@@ -1935,7 +1935,16 @@ var NicoLiveHelper = {
 		let info = ans.movieinfo;
 		info.restrict = NicoLivePreference.restrict;
 		msg = NicoLiveHelper.replaceMacros(msg, info);
-		if( q.comment_no!=0 ) NicoLiveHelper.postCasterComment(msg,"");
+		if( q.comment_no!=0 ){
+		    if( NicoLivePreference.show_autoreply ){
+			let func = function(){
+			    NicoLiveHelper.postCasterComment(msg,"");
+			};
+			NicoLiveHelper.clearCasterCommentAndRun(func);
+		    }else{
+			NicoLiveHelper.postCasterComment(msg,"");
+		    }
+		}
 		debugprint(msg);
 	    }
 	    NicoLiveHelper.updateRemainRequestsAndStocks();
@@ -2446,27 +2455,26 @@ var NicoLiveHelper = {
 	    function(){
 		clearInterval(NicoLiveHelper._prepare);
 		if( !NicoLivePreference.doprepare ) return; // /prepareしない.
-		if( !NicoLiveHelper.israndomplay ){
-		    // ランダム再生以外のときは次の再生曲が予測できるので準備する.
-		    // ただし30枠収める指定は加味しない.
-		    if(NicoLiveHelper.requestqueue.length){
-			let n = 0;
-			if( NicoLiveHelper.isconsumptionrateplay ){
-			    let rate = NicoLiveHelper.calcConsumptionRate();
-			    for(let i=0;i<rate.length;i++){
-				n = NicoLiveHelper.findRequestByUserId(NicoLiveHelper.requestqueue, rate[i].user_id);
-				if(n>=0) break;
-			    }
-			    if(n<0) n=0;
+
+		if(NicoLiveHelper.requestqueue.length){
+		    if( NicoLiveHelper.israndomplay ) return; // ランダム再生は予測できないのでやらない.
+		    let n = 0;
+		    if( NicoLiveHelper.isconsumptionrateplay ){
+			let rate = NicoLiveHelper.calcConsumptionRate();
+			for(let i=0;i<rate.length;i++){
+			    n = NicoLiveHelper.findRequestByUserId(NicoLiveHelper.requestqueue, rate[i].user_id);
+			    if(n>=0) break;
 			}
-			NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[n].video_id,"");
-		    }else if(NicoLiveHelper.stock.length){
-			if( $('stock-playstyle').value==2 ) return; // ランダムではprepareしない
-			for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
-			    if(!NicoLiveHelper.isPlayedMusic(item.video_id)){
-				NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.stock[i].video_id,"");
-				break;
-			    }
+			if(n<0) n=0;
+		    }
+		    NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[n].video_id,"");
+		}else if(NicoLiveHelper.stock.length){
+		    if( NicoLiveHelper.israndomplay && $('stock-playstyle').value==0 ) return;
+		    if( $('stock-playstyle').value==2 ) return; // ランダムではprepareしない
+		    for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
+			if(!NicoLiveHelper.isPlayedMusic(item.video_id)){
+			    NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.stock[i].video_id,"");
+			    break;
 			}
 		    }
 		}
