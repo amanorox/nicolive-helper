@@ -64,6 +64,8 @@ var NicoLiveRequest = {
 	    img.setAttribute("width","130px");
 	    img.setAttribute("height","100px");
 	}
+	a.setAttribute("onmouseover","NicoLiveComment.showThumbnail(event,'"+item.video_id+"');");
+	a.setAttribute("onmouseout","NicoLiveComment.hideThumbnail();");
 	a.appendChild(img);
 
 	let label;
@@ -113,6 +115,8 @@ var NicoLiveRequest = {
 		a.onclick = function(){
 		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
 		};
+		a.setAttribute("onmouseover","NicoLiveComment.showThumbnail(event,'"+vid+"');");
+		a.setAttribute("onmouseout","NicoLiveComment.hideThumbnail();");
 		a.appendChild(document.createTextNode(s));
 		div2.appendChild(a);
 	    }else{

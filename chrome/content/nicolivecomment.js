@@ -148,10 +148,10 @@ var NicoLiveComment = {
 	x = event.clientX;
 	y = event.clientY;
 	if( y+176 > window.innerHeight ){
-	    y = y - 176 - 5;
+	    y = y - 176 - 10;
 	}
 	if( x+312 > window.innerWidth ){
-	    x = x - 312 - 5;
+	    x = x - 312 - 10;
 	}
 
 	$('iframe-thumbnail').style.left = x + 5 + "px";

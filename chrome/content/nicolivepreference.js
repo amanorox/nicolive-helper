@@ -176,7 +176,7 @@ var NicoLivePreference = {
 	}
 
 	this.isautoreply = branch.getBoolPref("autoreply");
-	this.show_autoreply = branch.getBoolPref("pref-show-autoreply"); // リクエストの応答を運営コメ欄に表示する.
+	this.show_autoreply = branch.getBoolPref("show-autoreply"); // リクエストの応答を運営コメ欄に表示する.
 	this.limitnewmovie = branch.getBoolPref("limitnewmovie");
 	this.nreq_per_ppl = branch.getIntPref("accept-nreq");
 
