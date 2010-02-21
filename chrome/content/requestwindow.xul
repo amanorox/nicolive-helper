@@ -284,8 +284,25 @@
 	  </vbox>
 	  <splitter collapse="after" state="collapsed"/>
 	  <vbox flex="1" style="overflow:auto;">
-	    <hbox align="center"><label value="コメ番"/><textbox id="comment_no_to_add_reflection"/><button label="リフレクション登録" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/></hbox>
-	    <hbox align="center"><label value="ユーザID"/><textbox id="delete-ng-user"/><button label="NGユーザ解除" oncommand="NicoLiveComment.delNGUser($('delete-ng-user').value);"/></hbox>
+	    <grid>
+	      <columns>
+		<column/>
+		<column/>
+		<column/>
+	      </columns>
+	      <rows>
+		<row>
+		  <hbox align="center"><label value="コメ番"/></hbox>
+		  <textbox id="comment_no_to_add_reflection"/>
+		  <button label="リフレクション登録" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/>
+		</row>
+		<row>
+		  <hbox align="center"><label value="ユーザID"/></hbox>
+		  <hbox><textbox id="delete-ng-user"/></hbox>
+		  <button label="NGユーザ解除" oncommand="NicoLiveComment.delNGUser($('delete-ng-user').value);"/>
+		</row>
+	      </rows>
+	    </grid>
 	    <listbox id="kotehan-list" rows="5" onkeypress="NicoLiveComment.pressKeyOnNameList(event);">
 	      <listcols>
 		<listcol flex="1" />

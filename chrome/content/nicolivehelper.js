@@ -527,6 +527,7 @@ var NicoLiveHelper = {
 	if( !req ) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
+		debugprint(video_id+'のサムネイルを取得しました');
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
 		if( music ){
 		    NicoLiveHelper.musicinfo = music;
@@ -546,6 +547,7 @@ var NicoLiveHelper = {
 	    }
 	};
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+video_id;
+	debugprint(video_id+'のサムネイルを取得中...');
 	req.open('GET', url );
 	req.send("");
     },
