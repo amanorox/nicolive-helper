@@ -202,6 +202,31 @@ var NicoLiveComment = {
 	return true;
     },
 
+    addNGUser:function(userid){
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+
+	    }
+	};
+	let url = "http://watch.live.nicovideo.jp/api/configurengword?video="+NicoLiveHelper.request_id+"&mode=add&source="+userid+"&type=ID&use_case_unify=false";
+	req.open('GET', url );
+	req.send(null);
+    },
+    delNGUser:function(userid){
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+
+	    }
+	};
+	let url = "http://watch.live.nicovideo.jp/api/configurengword?video="+NicoLiveHelper.request_id+"&mode=delete&source="+userid+"&type=ID";
+	req.open('GET', url );
+	req.send(null);
+    },
+
     // リフレクション登録ダイアログを表示して設定する.
     showCommentReflectorDialog:function(userid){
 	let param = {
@@ -229,6 +254,7 @@ var NicoLiveComment = {
 		menuitem.addEventListener(
 		    'command',
 		    function(){
+			NicoLiveComment.delNGUser(userid);
 			let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
 			delete NicoLiveComment.reflector[userid];
 			RemoveElement(user[0]);
@@ -238,6 +264,7 @@ var NicoLiveComment = {
 		// ここまで
 	    }
 	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
+	    this.addNGUser(userid);
 	}
     },
 
@@ -256,6 +283,9 @@ var NicoLiveComment = {
     },
 
     releaseReflector:function(user_id){
+	for (u in this.reflector){
+	    this.delNGUser(u);
+	}
 	this.reflector = new Object();
 	ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );
 	let users = evaluateXPath(document,"//*[@comment-reflector]");

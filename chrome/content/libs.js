@@ -297,10 +297,10 @@ function GetSelectedTag(tags,selection,color){
 	s += tag;
 	len += l;
 	if( r[i+1] ){
-	    s+=",";
+	    s+="　";
 	    len++;
 	}
-	if(len>=35){
+	if(len>=35 && r[i+1]){
 	    s += "<br>　";
 	    len = 0;
 	}
@@ -325,10 +325,10 @@ function GetColoredTag(tags,selection,color){
 	s += tag;
 	len += l;
 	if( tags[i+1] ){
-	    s+=",";
+	    s+="　";
 	    len++;
 	}
-	if(len>=35){
+	if(len>=35 && tags[i+1]){
 	    s += "<br>　";
 	    len = 0;
 	}

@@ -10,7 +10,7 @@
 	persist="screenX screenY width height sizemode"
 	width="720"
 	height="512"
-	title="NicoLive Helper 1.0b2">
+	title="NicoLive Helper 1.0b3">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -285,6 +285,7 @@
 	  <splitter collapse="after" state="collapsed"/>
 	  <vbox flex="1" style="overflow:auto;">
 	    <hbox align="center"><label value="コメ番"/><textbox id="comment_no_to_add_reflection"/><button label="リフレクション登録" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/></hbox>
+	    <hbox align="center"><label value="ユーザID"/><textbox id="delete-ng-user"/><button label="NGユーザ解除" oncommand="NicoLiveComment.delNGUser($('delete-ng-user').value);"/></hbox>
 	    <listbox id="kotehan-list" rows="5" onkeypress="NicoLiveComment.pressKeyOnNameList(event);">
 	      <listcols>
 		<listcol flex="1" />

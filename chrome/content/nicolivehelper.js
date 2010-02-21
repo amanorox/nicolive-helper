@@ -678,7 +678,7 @@ var NicoLiveHelper = {
 		// 1行40文字程度までかなぁ
 		if(info.tags==null) break;
 		tmp = info.tags.join(',');
-		tmp = tmp.replace(/(.{35,}?),/g,"$1,<br>　");
+		tmp = tmp.replace(/(.{35,}?),/g,"$1　<br>　");
 		break;
 	    case 'pname':
 		if(info.video_id==null || info.tags==null) break;
