@@ -108,8 +108,13 @@ var NicoLiveHelper = {
 
 	if(NicoLivePreference.limitnewmovie){
 	    // 7日内に投稿された動画.
-	    if( GetCurrentTime()-info.first_retrieve < this.secofweek )
+	    let sevendaysago = GetCurrentTime()-this.secofweek;
+	    let d = new Date(sevendaysago*1000);
+	    d = new Date( d.toLocaleFormat("%Y/%m/%d 0:00:00") );
+	    d = d.getTime()/1000;
+	    if( info.first_retrieve >= d ){
 		return {code:-3,msg:NicoLivePreference.msg.newmovie,movieinfo:info};
+	    }
 	}
 
 	// 再生済み.
