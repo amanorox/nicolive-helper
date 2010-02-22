@@ -203,6 +203,8 @@ var NicoLiveComment = {
     },
 
     addNGUser:function(userid){
+	if( !NicoLiveHelper.iscaster ) return;
+
 	let req = new XMLHttpRequest();
 	if(!req) return;
 	req.onreadystatechange = function(){
@@ -215,6 +217,8 @@ var NicoLiveComment = {
 	req.send(null);
     },
     delNGUser:function(userid){
+	if( !NicoLiveHelper.iscaster ) return;
+
 	let req = new XMLHttpRequest();
 	if(!req) return;
 	req.onreadystatechange = function(){
@@ -287,10 +291,13 @@ var NicoLiveComment = {
 	    this.delNGUser(u);
 	}
 	this.reflector = new Object();
-	ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );
-	let users = evaluateXPath(document,"//*[@comment-reflector]");
-	for(let i=0,user;user=users[i];i++){
-	    RemoveElement(user);
+	try{
+	    ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );
+	    let users = evaluateXPath(document,"//*[@comment-reflector]");
+	    for(let i=0,user;user=users[i];i++){
+		RemoveElement(user);
+	    }
+	} catch (x) {
 	}
     },
 
@@ -542,6 +549,8 @@ var NicoLiveComment = {
 	}
 	NicoLiveDatabase.saveGPStorage("nico_live_colormap",this.colormap);
 	NicoLiveDatabase.saveGPStorage("nico_live_autocomplete",this.autocomplete);
+
+	this.releaseReflector(); // 一応呼んでおく.
     }
 };
 
