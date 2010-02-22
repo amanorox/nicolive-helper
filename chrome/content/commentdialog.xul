@@ -25,7 +25,8 @@ function init(){
 function retval()
 {
     window.arguments[0].default = document.getElementById('input-name').value;
-    window.arguments[0].disptype = document.getElementById('radio').selectedIndex;
+    window.arguments[0].disptype = document.getElementById('name-select-radio').selectedIndex;
+    window.arguments[0].addnguser = document.getElementById('add-nglist').checked;
     return true;
 }
   ]]>
@@ -51,11 +52,16 @@ function retval()
       </row>
       <row>
 	<label value=""/>
-	<radiogroup id="radio">
-	  <radio label="運営コメントに名前を表示"/>
-	  <radio label="運営コメント欄、左上にある名前欄に表示"/>
+	<radiogroup id="name-select-radio" persist="selectedIndex">
+	  <radio label="運営コメントに名前を表示" tooltiptext="運営コメントに名前を含めます"/>
+	  <radio label="運営コメント欄、左上にある名前欄に表示" tooltiptext="運営コメント表示欄、左上隅にある名前表示欄を利用します"/>
 	</radiogroup>
       </row>
+      <row>
+	<label value=""/>
+	<checkbox persist="checked" id="add-nglist" label="NGユーザ登録を行う"/>
+      </row>
     </rows>
+
   </grid>
 </dialog>

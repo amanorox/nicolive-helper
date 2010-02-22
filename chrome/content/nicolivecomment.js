@@ -266,9 +266,14 @@ var NicoLiveComment = {
 		    },false);
 		$('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
 		// ここまで
+	    }else{
+		user[0].setAttribute('label',LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]));
 	    }
 	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
-	    this.addNGUser(userid);
+	    if( param.addnguser ){
+		debugprint(userid+'をNGユーザに追加します');
+		this.addNGUser(userid);
+	    }
 	}
     },
 
