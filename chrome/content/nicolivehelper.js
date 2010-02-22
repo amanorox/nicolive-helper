@@ -1964,6 +1964,20 @@ var NicoLiveHelper = {
 	}// end of while	
     },
 
+    // リクエストの処理状況を表示する.
+    showRequestProgress:function(){
+	if( this.requestprocessingqueue.length==0 ){
+	    $('request-progress').style.display = 'none';
+	}else{
+	    let processlist = "";
+	    for(let i=0,item; (item=this.requestprocessingqueue[i]) && i<10; i++){
+		processlist += item.video_id + " ";
+	    }
+	    $('request-progress-label').value = processlist;
+	    $('request-progress').style.display = '';
+	}
+    },
+
     // 動画情報を取得してリクエストに追加する.
     addRequest: function(vid,cno,userid){
 	/*
@@ -1984,6 +1998,8 @@ var NicoLiveHelper = {
 	request.time = GetCurrentTime();
 	this.requestprocessingqueue.push(request);
 
+	this.showRequestProgress();
+
 	req.onreadystatechange = function(){
 	    if( req.readyState!=4 ) return;
 	    let i,q;
@@ -2001,6 +2017,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	    NicoLiveHelper.processRequest();
+	    NicoLiveHelper.showRequestProgress();
 	};
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+vid;
 	req.open('GET', url );
