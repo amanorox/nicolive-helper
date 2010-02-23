@@ -66,7 +66,7 @@ var NicoLiveHelper = {
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},  // {json}用.
 
-    commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用.
+    commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用(なし、動画情報送信中、動画情報送信終了).
     commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
 
     // リクを受け付けるかどうかチェック.
@@ -301,7 +301,6 @@ var NicoLiveHelper = {
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		let vid = dat[2];
-		//clearInterval(NicoLiveHelper._revertcommentid);
 
 		NicoLiveHelper.current_video_id = vid;
 		NicoLiveHelper.musicstarttime = GetCurrentTime();
@@ -319,7 +318,10 @@ var NicoLiveHelper = {
 			NicoLiveHelper.musicendtime = Math.floor(NicoLiveHelper.musicstarttime + NicoLiveHelper.musicinfo.length_ms/1000)+1;
 			NicoLiveHelper.setupPlayNextMusic(NicoLiveHelper.musicinfo.length_ms);
 			// 直前に再生した動画と同じ動画IDをコメントしたときに動画情報を送らないように.
-			if(NicoLivePreference.nocomment_for_directplay && NicoLiveHelper._comment_video_id==vid) return;
+			if(NicoLivePreference.nocomment_for_directplay && NicoLiveHelper._comment_video_id==vid){
+			    NicoLiveHelper.commentstate = COMMENT_STATE_NONE;
+			    return;
+			}
 			NicoLiveHelper.sendMusicInfo();
 		    }
 		}
@@ -548,6 +550,7 @@ var NicoLiveHelper = {
 
 		    if(setinterval){
 			// 手動で/playコマンドを入力したときにここに来る.
+			NicoLiveHelper.commentstate = COMMENT_STATE_NONE;
 			NicoLiveHelper.setupPlayNextMusic(music.length_ms);
 			if( !NicoLivePreference.nocomment_for_directplay ){
 			    NicoLiveHelper.sendMusicInfo();
@@ -691,8 +694,8 @@ var NicoLiveHelper = {
 	    case 'tags':
 		// 1行40文字程度までかなぁ
 		if(info.tags==null) break;
-		tmp = info.tags.join(',');
-		tmp = tmp.replace(/(.{35,}?),/g,"$1　<br>　");
+		tmp = info.tags.join('　');
+		tmp = tmp.replace(/(.{35,}?)　/g,"$1<br>");
 		break;
 	    case 'pname':
 		if(info.video_id==null || info.tags==null) break;
