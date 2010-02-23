@@ -330,6 +330,16 @@ var NicoLiveHelper = {
 
 	    if(!NicoLiveHelper.iscaster) break;
 
+	    if( chat.text.indexOf("/stop")==0 ){
+		// 再生停止されたら自動再生も止める.
+		clearInterval(NicoLiveHelper._playnext);
+		clearInterval(NicoLiveHelper._prepare);
+		clearInterval(NicoLiveHelper._playend);
+		clearInterval(NicoLiveHelper._revertcommentid);
+		NicoLiveHelper.inplay = false;
+		return;
+	    }
+
 	    // アンケート開始.
 	    dat = chat.text.match(/^\/vote\s+start\s+(.*)/);
 	    if(dat){
