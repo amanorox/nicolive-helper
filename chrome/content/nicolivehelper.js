@@ -301,6 +301,7 @@ var NicoLiveHelper = {
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		let vid = dat[2];
+		NicoLiveHelper.current_video_id = vid;
 		NicoLiveHelper.musicstarttime = GetCurrentTime();
 		NicoLiveHelper.inplay = true;
 		if(!NicoLiveHelper.iscaster){
@@ -535,6 +536,11 @@ var NicoLiveHelper = {
 		debugprint(video_id+'のサムネイルを取得しました');
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
 		if( music ){
+		    if( NicoLiveHelper.current_video_id!=video_id ){
+			debugprint(video_id+'は/playで指定された動画と異なるため無視します');
+			return;
+		    }
+
 		    NicoLiveHelper.musicinfo = music;
 		    let du = Math.floor(NicoLiveHelper.musicinfo.length_ms/1000)+1;
 		    NicoLiveHelper.musicendtime   = NicoLiveHelper.musicstarttime+du;
@@ -2405,6 +2411,7 @@ var NicoLiveHelper = {
 			let tmp = currentplay.textContent.match(/(sm|nm|ze)\d+/);
 			if(tmp){
 			    NicoLiveHelper.musicstarttime  = st;
+			    NicoLiveHelper.current_video_id = tmp[0];
 			    NicoLiveHelper.setCurrentVideoInfo(tmp[0],false);
 			    NicoLiveHelper.inplay = true;
 			}
