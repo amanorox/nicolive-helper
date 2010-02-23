@@ -187,11 +187,16 @@ var NicoLiveComment = {
 
 	if(NicoLiveHelper.iscaster){
 	    if( $('overwrite-hidden-perm').checked ){
-		// 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
-		let func = function(){
+		if( str.indexOf('/')==0 ){
+		    // コマンドだった場合/clsを送らない.
 		    NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
-		};
-		NicoLiveHelper.clearCasterCommentAndRun(func);
+		}else{
+		    // 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
+		    let func = function(){
+			NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
+		    };
+		    NicoLiveHelper.clearCasterCommentAndRun(func);
+		}
 	    }else{
 		NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
 	    }
