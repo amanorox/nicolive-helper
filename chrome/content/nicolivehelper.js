@@ -301,6 +301,8 @@ var NicoLiveHelper = {
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
 		let vid = dat[2];
+		//clearInterval(NicoLiveHelper._revertcommentid);
+
 		NicoLiveHelper.current_video_id = vid;
 		NicoLiveHelper.musicstarttime = GetCurrentTime();
 		NicoLiveHelper.inplay = true;
@@ -316,10 +318,9 @@ var NicoLiveHelper = {
 		    }else{
 			NicoLiveHelper.musicendtime = Math.floor(NicoLiveHelper.musicstarttime + NicoLiveHelper.musicinfo.length_ms/1000)+1;
 			NicoLiveHelper.setupPlayNextMusic(NicoLiveHelper.musicinfo.length_ms);
+			// 直前に再生した動画と同じ動画IDをコメントしたときに動画情報を送らないように.
+			if(NicoLivePreference.nocomment_for_directplay && NicoLiveHelper._comment_video_id==vid) return;
 			NicoLiveHelper.sendMusicInfo();
-			// /playコマンドが飲まれたときに記録が残らないので.
-			// playMusic()で記録するようにに戻す.
-			//NicoLiveHelper.addPlayList(NicoLiveHelper.musicinfo);
 		    }
 		}
 		return;
@@ -859,6 +860,7 @@ var NicoLiveHelper = {
 
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
+	this._comment_video_id = "";
 	if(this.isOffline()) return;
 	if(!this.iscaster) return;
 	if(this.requestqueue.length<=0){
