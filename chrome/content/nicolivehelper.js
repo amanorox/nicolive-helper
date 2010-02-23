@@ -2302,6 +2302,9 @@ var NicoLiveHelper = {
 	    + "タグ/"+this.musicinfo.tags.join(',');
 	currentmusic.setAttribute("tooltiptext",str);
 
+	let w = window.innerWidth - $('statusbar-remain').clientWidth - $('statusbar-n-of-listeners').clientWidth - $('statusbar-live-progress').clientWidth;
+	musictime.style.maxWidth = w + "px";
+
 	progress = GetCurrentTime()-this.musicstarttime;
 	progressbar = Math.floor(progress / (this.musicinfo.length_ms/1000) * 100);
 	if(this.inplay){ // 再生中のプログレスバーのツールチップ設定.

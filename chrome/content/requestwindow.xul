@@ -135,7 +135,7 @@
 	<menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.forget();"/>
 	<menuseparator/>
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
-	<menuitem label="test" disabled="true" oncommand="NicoLiveHelper.test();"/>
+<!--	<menuitem label="test" disabled="true" oncommand="NicoLiveHelper.test();"/> -->
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>
@@ -406,10 +406,10 @@
   </hbox>
   
   <!-- statusbar -->
-  <statusbar>
+  <statusbar id="statusbar">
     <stack id="statusbar-currentmusic" context="popup-add-mylist" onclick="NicoLiveHelper.toggleDisplayProgressTime(event);">
-      <progressmeter id="statusbar-music-progressmeter" mode="determined" value="0" />
-      <statusbarpanel id="statusbar-music-name" label="" />
+      <progressmeter id="statusbar-music-progressmeter" mode="determined" value="0" flex="1" />
+      <statusbarpanel id="statusbar-music-name" label="" flex="1" crop="start"/>
     </stack>
     <spacer flex="1"/>
     <statusbarpanel id="statusbar-remain" label="R/0 S/0"/>
