@@ -310,8 +310,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.setCurrentVideoInfo(vid,false);
 		}else{
 		    if( NicoLiveHelper.musicinfo.video_id!=vid ){
-			// 直接運営コマンドを入力したときとかで、
-			// 現在再生しているはずの曲と異なる場合.
+			// 直接運営コマンドを入力したときとかで、現在再生しているはずの曲と異なる場合.
 			// 動画情報の主コメは動画情報を取ってきてから.
 			NicoLiveHelper.setCurrentVideoInfo(vid,true);
 		    }else{
@@ -323,6 +322,7 @@ var NicoLiveHelper = {
 			    return;
 			}
 			NicoLiveHelper.sendMusicInfo();
+			NicoLiveHelper.addPlayListText(NicoLiveHelper.musicinfo);
 		    }
 		}
 		return;
@@ -538,7 +538,7 @@ var NicoLiveHelper = {
 	return chat;
     },
 
-    // 現在再生しているvideo_idの情報をmusicinfoにセット(プログレスバーのため)
+    // 指定のvideo_idの情報をmusicinfoにセット(プログレスバーのため)
     // this.musicstarttimeはあらかじめセットしておくこと.
     setCurrentVideoInfo:function(video_id,setinterval){
 	// setinterval=trueのときは次曲再生のタイマーをしかける.
@@ -892,25 +892,21 @@ var NicoLiveHelper = {
 	    debugprint(this.musicinfo.video_id+"をサブ画面で再生します");
 	    str += " sub";
 	}
-	// /playコマンドに限らず、運営コメを投げてstatus=okになっても
-	// コメが飲み込まれてサーバからやってこないことがある.
+	// 再生コマンドに限らず、運営コメを投げてstatus=okになってもコメが飲み込まれてサーバからやってこないことがある.
 	// その対策のために、一旦ここで次曲再生のタイマをしかけておく.
-	// /playの場合、正しくサーバからやってくれば改めてタイマを再セットする.
+	// /playの場合、正しくサーバからやってくれば改めてタイマはセットされる.
 	this.setupPlayNextMusic(this.musicinfo.length_ms);
 
 	this.postCasterComment(str,""); // 再生.
 
-	// /playコマンドが飲み込まれたときに
-	// 再生履歴から再生できるように記録.
-	this.addPlayList(this.musicinfo);
+	// /playコマンドが飲み込まれたときに再生履歴から再生できるように記録.
+	this.addPlayList(this.musicinfo,true); // without textlog.
 
 	NicoLiveRequest.update(this.requestqueue);
 
 	// 再生数をカウントアップ.
 	if(!music.user_id) music.user_id = "1";
-	if(!this.play_per_ppl[music.user_id]){
-	    this.play_per_ppl[music.user_id] = 0;
-	}
+	if(!this.play_per_ppl[music.user_id]){ this.play_per_ppl[music.user_id] = 0; }
 	this.play_per_ppl[music.user_id]++;
 
 	// 再生されたストック曲はグレーにする.
@@ -1223,13 +1219,27 @@ var NicoLiveHelper = {
 	this.postCasterComment(str,"");
     },
 
-    addPlayList:function(item){
-	// プレイリストに追加する.
+    addPlayListText:function(item){
 	let elem = $('played-list-textbox');
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    // 放送開始して最初の再生らしきときには番組名と番組IDを付加.
 	    if( !this._firstflag ){
 		elem.value += "\n"+this.title+" "+this.request_id+"\n";
+		this._firstflag = true;
+	    }
+	}
+	elem.value += item.video_id+" "+item.title+"\n";
+    },
+
+    addPlayList:function(item,notext){
+	// プレイリストに追加する.
+	let elem = $('played-list-textbox');
+	if( GetCurrentTime()-this.starttime < 180 ){
+	    // 放送開始して最初の再生らしきときには番組名と番組IDを付加.
+	    if( !this._firstflag ){
+		if( !notext ){
+		    elem.value += "\n"+this.title+" "+this.request_id+"\n";
+		}
 		this._firstflag = true;
 	    }
 	}
@@ -1247,8 +1257,9 @@ var NicoLiveHelper = {
 	}
 	this.playlist.push(item); // 再生済みリストに登録.
 	this.playlist["_"+item.video_id] = true;
-	elem.value += item.video_id+" "+item.title+"\n";
-
+	if( !notext ){
+	    elem.value += item.video_id+" "+item.title+"\n";
+	}
 	NicoLiveHistory.addPlayList(item);
 	this.savePlaylist();
     },
@@ -2788,7 +2799,7 @@ var NicoLiveHelper = {
 	    this.request_id = request_id;
 	    this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-	    for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
+	    for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){ // rebuild playlog.
 		NicoLiveHelper.playlist["_"+item.video_id] = true;
 		NicoLiveHistory.addPlayList( item );
 	    }
