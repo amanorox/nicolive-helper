@@ -186,7 +186,7 @@ var NicoLiveComment = {
 	let mail = $('textbox-mail').value;
 
 	if(NicoLiveHelper.iscaster){
-	    if( str.match(/^(sm|nm)\d+$/) ){
+	    if( str.match(/^((sm|nm)\d+|\d{10})$/) ){
 		debugprint(str+'を手動再生しようとしています');
 		NicoLiveHelper._comment_video_id = str;
 		NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);

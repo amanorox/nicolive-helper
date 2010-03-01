@@ -1351,13 +1351,13 @@ var NicoLiveHelper = {
 		    case COMMENT_STATE_MOVIEINFO_DONE:
 			if( type==COMMENT_MSG_TYPE_MOVIEINFO ) break;
 			if( type!=COMMENT_MSG_TYPE_MOVIEINFO && comment.indexOf('/')==0 ) break;
+			if( NicoLiveHelper._comment_video_id==comment ) break; // 主コメ経由で動画IDを流したときには動画情報の復元は不要.
 
-			if( mail.indexOf("hidden")==-1 &&
-			    NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
-				// hiddenコメじゃなければ上コメは上書きされないので
-				// 復帰必要なし
-				break;
-			    }
+			if( mail.indexOf("hidden")==-1 && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
+			    // hiddenコメじゃなければ上コメは上書きされないので
+			    // 復帰必要なし
+			    break;
+			}
 
 			clearInterval( NicoLiveHelper._revertcommentid );
 			NicoLiveHelper._revertcommentid = setInterval(
