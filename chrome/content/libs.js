@@ -344,9 +344,11 @@ function LoadFormattedString(name,array){
 
 // min:sec の文字列を返す.
 function GetTimeString(sec){
-    var str;
-    str = parseInt(sec/60) + ":";
-    str += (sec%60)<10?"0"+parseInt(Math.abs(sec)%60):parseInt(Math.abs(sec)%60);
+    let str = "";
+    if(sec<0) str = "-";
+    sec = Math.abs(sec);
+    str += parseInt(sec/60) + ":";
+    str += (sec%60)<10?"0"+parseInt(sec%60):parseInt(sec%60);
     return str;
 }
 

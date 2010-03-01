@@ -2306,8 +2306,8 @@ var NicoLiveHelper = {
 	let now = GetCurrentTime();
 	let p = now - this.starttime;  // Progress
 	let n = Math.floor(p/(30*60)); // 30分単位に0,1,2,...
-	if(p<0) p = 0;
 	liveprogress.label = GetTimeString(p);
+	if(p<0) p = 0;
 
 	if( (this.endtime && this.endtime-now>0 && this.endtime-now < 3*60) ||
 	    (!this.endtime && n>=0 && p > 27*60 + 30*60*n) ){
