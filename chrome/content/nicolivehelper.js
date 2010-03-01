@@ -282,14 +282,13 @@ var NicoLiveHelper = {
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // ロスタイムのときは premium=2 からやってくる.
-	    NicoLiveHelper.close();
-
 	    let prefs = NicoLivePreference.getBranch();
 	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster ||
 	        prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
 		window.close();
 	    }else{
 		debugalert(NicoLiveHelper.request_id+' finished.');
+		NicoLiveHelper.close();
 	    }
 	}
 
@@ -912,9 +911,10 @@ var NicoLiveHelper = {
 	// 再生されたストック曲はグレーにする.
 	let i,item;
 	for(i=0;item=this.stock[i];i++){
-	    if(this.isPlayedMusic(item.video_id)){
+	    if(this.musicinfo.video_id == item.video_id){
 		item.isplayed = true;
 		item.error = false;
+		break;
 	    }
 	}
 	//NicoLiveRequest.updateStockView(this.stock);
