@@ -24,7 +24,7 @@ THE SOFTWARE.
  */
 
 var NicoLivePreference = {
-    readAdvancedPrefs:function(){
+    readAdvancedPrefs:function(fromobserver){
 	let branch = this.getBranch();
 	this.nocomment_for_directplay = branch.getBoolPref("nocomment-for-directplay");
 
@@ -159,11 +159,10 @@ var NicoLivePreference = {
 	this.classes.push({"name":"NG","label":"NG","color":"#888888"});
     },
 
-    readBasicPrefs:function(){
+    readBasicPrefs:function(fromobserver){
 	let branch = this.getBranch();
 
 	this.playstyle = branch.getIntPref("playstyle");
-	this.allowrequest = branch.getBoolPref("allowrequest");
 
 	this.isjingle = branch.getBoolPref("jingle");
 	this.jinglemovie = branch.getCharPref("jingle-movie");
@@ -183,15 +182,12 @@ var NicoLivePreference = {
 	this.mikuonly = branch.getBoolPref("mikuonly");
 	this.doprepare = branch.getBoolPref("prepare");
 
-	try{
+	if(!fromobserver){
 	    NicoLiveHelper.setPlayStyle(this.playstyle);
-	} catch (x) {
-	    NicoLiveHelper.setPlayStyle(0);
-	    $('toolbar-playstyle').label = $('toolbar-popup-playstyle').getElementsByTagName('menuitem')[0].label;
+	    this.allowrequest = branch.getBoolPref("allowrequest");
+	    $('toolbar-allowrequest').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
+	    NicoLiveHelper.allowrequest = this.allowrequest;
 	}
-
-	$('toolbar-allowrequest').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
-	NicoLiveHelper.allowrequest = this.allowrequest;
     },
 
     readUserDefinedValueURI:function(){
@@ -245,8 +241,8 @@ var NicoLivePreference = {
 
     observe:function(aSubject, aTopic, aData){
 	if(aTopic != "nsPref:changed") return;
-	this.readBasicPrefs();
-	this.readAdvancedPrefs();
+	this.readBasicPrefs(true);
+	this.readAdvancedPrefs(true);
 	debugprint("設定が変更されました");
     },
 
