@@ -143,9 +143,11 @@ var NicoLiveHelper = {
 		    ismiku = true; break;
 		}
 	    }
-	    for(i=0;tag=info.overseastags[i];i++){
-		if(tag.indexOf('ミクオリジナル')!=-1){
-		    ismiku = true; break;
+	    if(info.overseastags){
+		for(i=0;tag=info.overseastags[i];i++){
+		    if(tag.indexOf('ミクオリジナル')!=-1){
+			ismiku = true; break;
+		    }
 		}
 	    }
 
