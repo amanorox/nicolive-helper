@@ -2448,8 +2448,14 @@ var NicoLiveHelper = {
 		    }
 		}
 
-		let serverdate = req.getResponseHeader("Date");
-		serverdate = new Date(serverdate);
+		//let serverdate = req.getResponseHeader("Date");
+		let serverdate = evaluateXPath(xml,"/getplayerstatus/@time");
+		if(serverdate.length){
+		    serverdate = serverdate[0].textContent;
+		}else{
+		    serverdate = GetCurrentTime();
+		}
+		serverdate = new Date(serverdate*1000);
 		NicoLiveHelper.serverconnecttime = serverdate.getTime()/1000;
 
 		debugprint("addr:"+NicoLiveHelper.addr);
