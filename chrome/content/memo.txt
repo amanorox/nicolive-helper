@@ -6,6 +6,9 @@ GET http://watch.live.nicovideo.jp/api/vote?v=lv000000&id=3
 戻り値
 status=true
 
+getplayerstatus の is_owner は、念のため確認したところ、
+放送のオーナー(生主)で問題なし。
+
 
 50MB=51200KB=52428800(bytes)
 中の人のTweetによるとニコニコ高負荷時で1Mbpsらしい。

@@ -2396,12 +2396,11 @@ var NicoLiveHelper = {
 		NicoLiveHelper.addr       = xml.getElementsByTagName('addr')[0].textContent;
 		NicoLiveHelper.port       = xml.getElementsByTagName('port')[0].textContent;
 		NicoLiveHelper.thread     = xml.getElementsByTagName('thread')[0].textContent;
-		NicoLiveHelper.iscaster   = xml.getElementsByTagName('room_seetno')[0].textContent;
+		NicoLiveHelper.iscaster   = xml.getElementsByTagName('is_owner')[0].textContent;
 		NicoLiveHelper.starttime  = parseInt(xml.getElementsByTagName('start_time')[0].textContent);
 		NicoLiveHelper.opentime   = parseInt(xml.getElementsByTagName('open_time')[0].textContent);
 		NicoLiveHelper.community  = xml.getElementsByTagName('default_community')[0].textContent;
-		// 座席番号2525....が主らしい.
-		if( NicoLiveHelper.iscaster.match(/^2525/) ){
+		if( NicoLiveHelper.iscaster!="0" ){
 		    NicoLiveHelper.iscaster=true;
 		    // load requests
 		    NicoLiveHelper.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
@@ -2705,20 +2704,20 @@ var NicoLiveHelper = {
     },
     saveStock:function(){
 	Application.storage.set("nico_live_stock",this.stock);
-	debugprint("save stock");
+	//debugprint("save stock");
     },
     saveRequest:function(){
 	// 視聴者ではリクエストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	Application.storage.set("nico_live_requestlist",this.requestqueue);
-	debugprint("save request");
+	//debugprint("save request");
     },
     savePlaylist:function(){
 	// 視聴者ではプレイリストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	Application.storage.set("nico_live_playlist",this.playlist);
 	Application.storage.set("nico_live_playlist_txt",$('played-list-textbox').value);
-	debugprint("save play history");
+	//debugprint("save play history");
     },
     saveToStorage:function(){
 	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
