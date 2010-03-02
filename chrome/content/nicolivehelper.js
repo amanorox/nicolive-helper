@@ -135,33 +135,35 @@ var NicoLiveHelper = {
 
 	if(NicoLivePreference.mikuonly){
 	    let ismiku = false;
-	    if( info.classify['class']=='Miku' ){
-		ismiku = true;
-	    }else{
-		// タイトルに「ミク」「オリジナル」が含まれていればまずはOK.
-		if( info.title.indexOf('ミク')!=-1 &&
-		    info.title.indexOf('オリジナル')!=-1 ){
+
+	    // タグにミクオリジナルがあればほぼ間違いない.
+	    let i,tag;
+	    for(i=0;tag=info.tags[i];i++){
+		if(tag.indexOf('ミクオリジナル')!=-1){
+		    ismiku = true; break;
+		}
+	    }
+	    for(i=0;tag=info.overseastags[i];i++){
+		if(tag.indexOf('ミクオリジナル')!=-1){
+		    ismiku = true; break;
+		}
+	    }
+
+	    if(!ismiku){
+		if( info.classify['class']=='Miku' ){
+		    ismiku = true;
+		}else{
+		    // タイトルに「ミク」「オリジナル」が含まれていれば多分OK.
+		    if( info.title.indexOf('ミク')!=-1 && info.title.indexOf('オリジナル')!=-1 ){
 			ismiku = true;
 		    }
+		}
 	    }
 
 	    let str;
-	    if( 0 && !ismiku ){
-		debugprint(info.video_id+":ミクオリジナル曲ではなさそうだ");
-		switch( info.classify['class'] ){
-		case 'RinLen':
-		    str = "リン・レンうたのようですが"; break;
-		case 'Luka':
-		    str = "ルカうたのようですが"; break;
-		case 'Other':
-		    str = "ミクうたではなさそうですが"; break;
-		case 'NG':
-		    str ="主NGのようですが"; break;
-		case 'undefined':
-		default:
-		    str = "ミクうたと判定できませんでしたが"; break;
-		}
-		str += "主判断をお待ちください";
+	    if( !ismiku ){
+		debugprint(info.video_id+":ミクオリジナル曲ではなさそう");
+		str = "ミクうたと判断できなかったため主判断をお待ちください";
 		return {code:-6,msg:str,movieinfo:info};
 	    }
 	}
