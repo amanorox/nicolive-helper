@@ -20,6 +20,8 @@
       </menupopup>
     </menulist>
 
+    <hbox align="center"><label value="コマンド:"/><textbox flex="1" id="multiline-command" emptytext="se1,hidden,shitaなど"/></hbox>
+
     <textbox flex="1" id="multiline-comment" multiline="true" rows="10"
 	     ondragenter="event.preventDefault();"
 	     ondragover="event.preventDefault();"

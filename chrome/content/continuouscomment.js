@@ -5,7 +5,8 @@ function SendOneLine()
     var str;
     str = document.getElementById('multiline-comment').value.split(/\n|\r|\r\n/);
     if(str.length){
-	opener.NicoLiveHelper.postComment(str[0],"");
+	let cmd = document.getElementById('multiline-command').value;
+	opener.NicoLiveHelper.postComment(str[0],cmd);
 	str.splice(0,1);
 	document.getElementById('multiline-comment').value = str.join('\r\n');
     }
