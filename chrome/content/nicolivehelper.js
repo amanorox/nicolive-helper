@@ -1299,6 +1299,7 @@ var NicoLiveHelper = {
 
     // コメント(主と視聴者を識別してそれぞれのコメント).
     postComment: function(comment,mail){
+	comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
 	if(this.iscaster){
 	    this.postCasterComment(comment,mail);
 	}else{
