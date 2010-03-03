@@ -1228,7 +1228,7 @@ var NicoLiveHelper = {
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    // 放送開始して最初の再生らしきときには番組名と番組IDを付加.
 	    if( !this._firstflag ){
-		elem.value += "\n"+this.title+" "+this.request_id+"\n";
+		elem.value += "\n"+this.title+" "+this.request_id+" ("+GetFormattedDateString("%Y/%m/%d %H:%M",this.starttime*1000)+"〜)\n";
 		this._firstflag = true;
 	    }
 	}
@@ -1242,7 +1242,7 @@ var NicoLiveHelper = {
 	    // 放送開始して最初の再生らしきときには番組名と番組IDを付加.
 	    if( !this._firstflag ){
 		if( !notext ){
-		    elem.value += "\n"+this.title+" "+this.request_id+"\n";
+		    elem.value += "\n"+this.title+" "+this.request_id+" ("+GetFormattedDateString("%Y/%m/%d %H:%M",this.starttime*1000)+"〜)\n";
 		}
 		this._firstflag = true;
 	    }
