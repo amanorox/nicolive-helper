@@ -77,7 +77,7 @@
 <!ENTITY playlist.bydetail "詳細表示">
 
 <!ENTITY comment.command_caster "--- 放送者 ---">
-<!ENTITY comment.command_listener "--- 一般 ---">
+<!ENTITY comment.command_listener "--- 通常 ---">
 <!ENTITY comment.command_premium "--- プレミアム ---">
 <!ENTITY comment.emptytext_input "コメントを入力してください">
 <!ENTITY comment.write_upperarea "運営コメ欄に表示">
