@@ -4,22 +4,22 @@
 <!ENTITY playstyle.auto_sequential "自動(順次)">
 <!ENTITY playstyle.auto_random "自動(ランダム)">
 <!ENTITY playstyle.auto_consumption "自動(消化数順)">
-<!ENTITY playstyle.tooltip_random "次曲をランダムに選択します">
-<!ENTITY playstyle.tooltip_consumption "次曲をリクエスト消化数順に選択します">
+<!ENTITY playstyle.tooltip_random "次に再生する動画をランダムに選択します。">
+<!ENTITY playstyle.tooltip_consumption "次に再生する動画をリクエスト消化数の少ない順に選択します。">
 
 <!ENTITY allow_request "リクエスト許可">
 <!ENTITY disallow_request "リクエスト不可">
 
 <!ENTITY play.next "次曲">
-<!ENTITY play.tooltip_next "次の動画を再生します">
+<!ENTITY play.tooltip_next "次の動画を再生します。">
 <!ENTITY play.pause "一時停止">
-<!ENTITY play.tooltip_pause "一時停止のチェックボタンが押されている間、自動で次曲を再生しません">
+<!ENTITY play.tooltip_pause "一時停止のチェックボタンが押されている間、自動で次の動画の再生を行わなくなります。">
 <!ENTITY play.stop "停止">
-<!ENTITY play.tooltip_stop "/stop">
-<!ENTITY play.tooltip_soundonly "/soundonly">
-<!ENTITY play.tooltip_swap "/swap">
+<!ENTITY play.tooltip_stop "/stop 動画の再生を停止します。">
+<!ENTITY play.tooltip_soundonly "/soundonly 動画の再生を音声のみにします。">
+<!ENTITY play.tooltip_swap "/swap メイン画面とサブ画面を交換します。">
 <!ENTITY play.subdisplay "サブ画面">
-<!ENTITY play.tooltip_subdisplay "サブ画面のチェックボタンが押されている間、再生、停止、サウンドオンリーをサブ画面に対して行います">
+<!ENTITY play.tooltip_subdisplay "サブ画面のチェックボタンが押されている間、再生、停止、サウンドオンリーをサブ画面に対して行います。">
 
 <!ENTITY toolbar.backuprestore "バックアップと復元">
 <!ENTITY toolbar.backup "バックアップ">
@@ -29,7 +29,7 @@
 <!ENTITY toolbar.command "コマンド">
 <!ENTITY toolbar.continuouscomment "連続コメント">
 <!ENTITY toolbar.votestart "アンケート(Lv25+)">
-<!ENTITY toolbar.tooltip_votestart "アンケートを行います(Lv25〜)">
+<!ENTITY toolbar.tooltip_votestart "公式アンケートを行います(Lv25〜)">
 <!ENTITY toolbar.voteshowresult "アンケート結果を表示する">
 <!ENTITY toolbar.tooltip_voteshowresult "/vote showresult">
 <!ENTITY toolbar.votestop "アンケート結果を消す">
@@ -39,14 +39,14 @@
 <!ENTITY toolbar.soundonlysub "サウンドオンリーを止める(サブ)">
 <!ENTITY toolbar.tooltip_soundonlysub "/soundonly off sub">
 <!ENTITY toolbar.playcamera "カメラ映像に切り替え">
-<!ENTITY toolbar.tooltip_playcamera "/play">
+<!ENTITY toolbar.tooltip_playcamera "/play メイン画面をカメラ映像に切り替えます。">
 <!ENTITY toolbar.clearcomment "運営コメントを消す">
-<!ENTITY toolbar.tooltip_clearcomment "/cls">
+<!ENTITY toolbar.tooltip_clearcomment "/cls 運営コメント欄に表示されているコメントを消去します。">
 <!ENTITY toolbar.downloadjson "JSONファイルダウンロード">
-<!ENTITY toolbar.beginbroadcasting "配信開始(Experimental)">
-<!ENTITY toolbar.tooltip_beginbroadcasting "配信開始します">
+<!ENTITY toolbar.beginbroadcasting "配信開始">
+<!ENTITY toolbar.tooltip_beginbroadcasting "配信開始します。ニコ生アラート等で配信開始されたことを確認してください。">
 <!ENTITY toolbar.forcecastermode "強制生主モード(Experimental)">
-<!ENTITY toolbar.tooltip_forcecastermode "Helperが生主として動作しない場合、最終手段として使用してください">
+<!ENTITY toolbar.tooltip_forcecastermode "Helperが生主として動作しない場合、最終手段として使用してください。">
 <!ENTITY toolbar.forget_learning "分類エンジンの学習情報を初期化">
 <!ENTITY toolbar.resize_window_default "ウィンドウサイズを初期状態に戻す">
 <!ENTITY toolbar.open_preference "設定">
