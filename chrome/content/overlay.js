@@ -17,7 +17,7 @@ var NicoLiveOverlay = {
 	let elem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",'menuitem');
 	elem.setAttribute('label',title);
 	elem.setAttribute('value',url);
-	elem.addEventListener('command', function(e){ window.content.location.href = "http://live.nicovideo.jp/watch/"+e.target.value; }, false );
+	elem.addEventListener('command', function(e){ window.content.location.href = "http://live.nicovideo.jp/watch/"+url; }, false );
 	menu.insertBefore(elem,menu.firstChild);
     },
 
