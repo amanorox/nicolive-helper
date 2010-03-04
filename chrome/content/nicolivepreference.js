@@ -183,10 +183,11 @@ var NicoLivePreference = {
 	this.doprepare = branch.getBoolPref("prepare");
 
 	if(!fromobserver){
-	    NicoLiveHelper.setPlayStyle(this.playstyle);
+	    // NicoLiveHelper側でNicoLivePreferenceを読むからここでセットする必要なし.
+	    //NicoLiveHelper.setPlayStyle(this.playstyle);
+	    //NicoLiveHelper.allowrequest = this.allowrequest;
 	    this.allowrequest = branch.getBoolPref("allowrequest");
 	    $('toolbar-allowrequest').label = this.allowrequest?"リクエスト許可":"リクエスト不可";
-	    NicoLiveHelper.allowrequest = this.allowrequest;
 	}
     },
 

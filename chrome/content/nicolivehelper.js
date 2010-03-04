@@ -1176,6 +1176,7 @@ var NicoLiveHelper = {
     playNext: function(){
 	if(!this.requestqueue) return;
 	if(!this.stock) return;
+	if(this.isOffline() || !this.iscaster) return true;
 
 	if(this.requestqueue.length){
 	    if( this.chooseMusicFromRequestAndPlay() ) return;
@@ -1185,6 +1186,7 @@ var NicoLiveHelper = {
 	}
 	// リクもストックもない.
 	clearInterval(this._playnext);
+	ShowNotice(LoadString('STR_NO_PLAYABLEVIDEO'));
     },
 
     // 現在の動画が再生終了したときに、次曲再生についてチェックする.
@@ -2779,7 +2781,7 @@ var NicoLiveHelper = {
 	// リクエストのコメ番順シーケンシャル処理用.
 	this.requestprocessingqueue = new Array();
 
-	debugprint('Initialized NicoLive Helper');
+	debugprint('Initialize NicoLive Helper');
 	let request_id = Application.storage.get("nico_request_id","lv0");
 	let title      = Application.storage.get("nico_live_title","");
 	let caster = Application.storage.get("nico_live_caster",true);
