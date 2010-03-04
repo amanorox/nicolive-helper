@@ -1176,7 +1176,7 @@ var NicoLiveHelper = {
     playNext: function(){
 	if(!this.requestqueue) return;
 	if(!this.stock) return;
-	if(this.isOffline() || !this.iscaster) return true;
+	if(this.isOffline() || !this.iscaster) return;
 
 	if(this.requestqueue.length){
 	    if( this.chooseMusicFromRequestAndPlay() ) return;
