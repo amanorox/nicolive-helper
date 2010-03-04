@@ -237,6 +237,8 @@ var NLHPreference = {
 	$('pref-restrict-videolength').value = 0;
 	$('pref-restrict-tag-include').value = "";
 	$('pref-restrict-tag-exclude').value = "";
+	$('pref-date-from').value = "2007-08-31";
+	$('pref-date-to').value = "2007-08-31";
     },
 
     // 動画情報をデフォルトにする.
