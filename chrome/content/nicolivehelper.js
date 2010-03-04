@@ -894,7 +894,9 @@ var NicoLiveHelper = {
 	// 再生コマンドに限らず、運営コメを投げてstatus=okになってもコメが飲み込まれてサーバからやってこないことがある.
 	// その対策のために、一旦ここで次曲再生のタイマをしかけておく.
 	// /playの場合、正しくサーバからやってくれば改めてタイマはセットされる.
-	this.setupPlayNextMusic(this.musicinfo.length_ms);
+	let l = this.musicinfo.length_ms;
+	if( l > 60*1000) l = 60*1000;
+	this.setupPlayNextMusic(l);
 
 	this.postCasterComment(str,""); // 再生.
 
