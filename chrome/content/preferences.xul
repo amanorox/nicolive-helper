@@ -16,6 +16,7 @@
       <preference id="pref-autoreply" name="extensions.nicolivehelper.autoreply" type="bool"/>
       <preference id="pref-show-autoreply" name="extensions.nicolivehelper.show-autoreply" type="bool"/>
       <preference id="pref-limitnewmovie" name="extensions.nicolivehelper.limitnewmovie" type="bool"/>
+      <preference id="pref-accept-playedvideo" name="extensions.nicolivehelper.accept-playedvideo" type="bool"/>
       <preference id="pref-accept-nreq" name="extensions.nicolivehelper.accept-nreq" type="int"/>
       <preference id="pref-mikuonly" name="extensions.nicolivehelper.mikuonly" type="bool"/>
       <preference id="pref-prepare" name="extensions.nicolivehelper.prepare" type="bool"/>
@@ -26,10 +27,10 @@
       <hbox>
 	<checkbox preference="pref-jingle" label="接続時にジングルを再生する"/>
 	<textbox preference="pref-jingle-movie" emptytext="ジングルとなる動画IDを入力してください" flex="1"/>
-	<button label="再生" oncommand="opener.NicoLiveHelper.playJingle();" tooltiptext="生放送を開始して3分以内で、何も動画が再生されていない時に、ボタンを押して5秒後にジングル動画を再生します"/>
+	<button label="再生" oncommand="opener.NicoLiveHelper.playJingle();" tooltiptext="生放送を開始して3分以内で、何も動画が再生されていない時に、ボタンを押して5秒後にジングル動画を再生します。"/>
       </hbox>
-      <hbox><checkbox preference="pref-limit30min" label="次の動画を再生する時、放送枠内に収まるように再生する動画を選択する" tooltiptext="放送枠内(放送終了時刻)に収まるように動画を選択します"/></hbox>
-      <hbox><checkbox preference="pref-carelosstime" label="ただし、ロスタイムを考慮し、若干の枠オーバーを許容する" tooltiptext="ロスタイムを計算し、ロスタイムに収まるように再生する動画を選択します" style="margin-left: 2em"/></hbox>
+      <hbox><checkbox preference="pref-limit30min" label="次の動画を再生する時、放送枠内に収まるように再生する動画を選択する" tooltiptext="放送枠内(放送終了時刻)に収まるように動画を選択します。"/></hbox>
+      <hbox><checkbox preference="pref-carelosstime" label="ロスタイムを考慮し、若干の枠オーバーを許容する" tooltiptext="ロスタイムを計算し、ロスタイムに収まるように再生する動画を選択します。" style="margin-left: 2em"/></hbox>
       <hbox><checkbox preference="pref-prepare" label="動画の先読み(/prepare)を行う" tooltiptext="次の動画の先読みを行います(ランダム再生を除く)"/></hbox>
       <grid>
 	<columns>
@@ -39,12 +40,12 @@
 	</columns>
 	<rows>
 	  <row>
-	    <hbox align="center"><label value="次の動画を再生するまでの待ち時間(0-99)"/></hbox>
+	    <hbox align="center"><label value="次の動画を再生するまでの待ち時間(0-99)" tooltiptext="動画の再生が終わり、次の動画を再生するまでの待ち時間を指定します。"/></hbox>
 	    <textbox preference="pref-nextplay-interval" type="number" min="0" max="99" size="3"/>
 	    <hbox align="center"><label value="秒"/></hbox>
 	  </row>
 	  <row>
-	    <hbox align="center"><label value="1つの動画の最大再生時間(0-99)" tooltiptext=""/></hbox>
+	    <hbox align="center"><label value="1つの動画の最大再生時間(0-99)" tooltiptext="動画を再生する最大時間を指定します。0の場合は無制限になります。"/></hbox>
 	    <textbox preference="pref-max-movieplay-time" type="number" min="0" max="99" size="3"/>
 	    <hbox align="center"><label value="分"/></hbox>
 	  </row>
@@ -55,14 +56,15 @@
     <groupbox>
       <caption label="リクエスト"/>
       <hbox><checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/></hbox>
-      <hbox><checkbox preference="pref-show-autoreply" label="運営コメント欄に表示する" tooltiptext="必要に合わせて運営コメント欄を消去してから、運営コメントを送信します" style="margin-left:2em;"/></hbox>
-      <hbox><checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)制限を行う" tooltiptext="投稿して7日以内の動画のリクエストを受け付けなくなります"/></hbox>
+      <hbox><checkbox preference="pref-show-autoreply" label="運営コメント欄に表示する" tooltiptext="運営コメント欄に応答コメントを表示するように、必要に応じて/clsを行います。" style="margin-left:2em;"/></hbox>
+      <hbox><checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)規制を行う" tooltiptext="投稿して7日以内の動画のリクエストを受け付けなくなります。"/></hbox>
+      <hbox><checkbox preference="pref-accept-playedvideo" label="再生済み動画のリクエストを受け付ける" tooltiptext="再生履歴にある動画のリクエストを受け付けるようになります。"/></hbox>
       <hbox align="center">
-	<label value="1枠1人あたりのリクエスト受付数(0-99件)"/>
+	<label value="1枠1人あたりのリクエスト受付数(0-99件)" tooltiptext="1枠のうち、1人あたり最大いくつのリクエストを受け付けるかを指定します。0の場合は無制限です。"/>
 	<textbox preference="pref-accept-nreq" type="number" min="0" max="99" size="3"/>
 	<button label="今までの受付数をリセット" oncommand="opener.NicoLiveHelper.resetRequestCount();"/>
       </hbox>
-      <hbox><checkbox preference="pref-mikuonly" label="初音ミクのライブモード(開発主用)" tooltiptext="初音ミクのライブに特化した開発主用のモードです"/></hbox>
+      <hbox><checkbox preference="pref-mikuonly" label="初音ミクのライブモード(開発主用)" tooltiptext="初音ミクのライブ向けにテキトーにリクエスト受付ルールを設定している開発主用のモードです。"/></hbox>
     </groupbox>
   </prefpane>
 
@@ -108,7 +110,7 @@
 		  <menuitem label="4" value="4"></menuitem>
 		</menupopup>
 	      </menulist>
-	      <label value="行目の動画情報を再送信する" tooltiptext="動画情報以外の何かをコメントした場合、自動で動画情報を再送信します"/>
+	      <label value="行目の動画情報を再送信する" tooltiptext="動画情報以外の何かをコメントした場合、指定行数目の動画情報を再送信します。"/>
 	    </hbox>
 	  </hbox>
 	  <groupbox>
@@ -151,13 +153,13 @@
 	    </rows>
 	  </grid>
 	  </groupbox>
-	  <hbox><checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない"/></hbox>
+	  <hbox><checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない" tooltiptext="コメントタブの入力欄から動画IDを入力して動画を再生した場合、動画情報を送信しなくなります。"/></hbox>
 	  <hbox align="center">
 	    <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
 	    <textbox preference="pref-userdefined-uri" id="userdefined-uri" flex="1"/>
 	  </hbox>
 	  <hbox>
-	    <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();"/>
+	    <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();" tooltiptext="動画情報を初期値に戻します。"/>
 	  </hbox>
 
 	  <vbox style="height:80px;">
@@ -357,7 +359,7 @@
     </preferences>
 
     <hbox>
-      <checkbox label="リクエスト制限を行う" preference="pref-restrict-request"/>
+      <checkbox label="リクエスト制限を行う" preference="pref-restrict-request" tooltiptext="リクエストを受け付ける条件設定(リクエスト縛り)を行います。"/>
       <button type="menu" label="プリセット読み込み">
 	<menupopup id="id-menu-preset">
 	</menupopup>

@@ -71,8 +71,7 @@ var NicoLiveHelper = {
 
     // リクを受け付けるかどうかチェック.
     checkAcceptRequest: function(xml, comment_no){
-	if(xml.getElementsByTagName('error').length){
-	    // 動画がない.
+	if(xml.getElementsByTagName('error').length){ // 動画がない.
 	    return {code:-1,msg:NicoLivePreference.msg.deleted,movieinfo:{}};
 	}
 	let info = this.xmlToMovieInfo(xml);
@@ -118,12 +117,14 @@ var NicoLiveHelper = {
 	}
 
 	// 再生済み.
-	if(this.isPlayedMusic(info.video_id))
+	if(!NicoLivePreference.accept_playedvideo && this.isPlayedMusic(info.video_id)){
 	    return {code:-4,msg:NicoLivePreference.msg.played,movieinfo:info};
+	}
 
 	// リクエストキューに既にある動画.
-	if(this.isRequestedMusic(info.video_id))
+	if(this.isRequestedMusic(info.video_id)){
 	    return {code:-5,msg:NicoLivePreference.msg.requested,movieinfo:info};
+	}
 
 	// リクエスト制限のチェック.
 	if(NicoLivePreference.restrict.dorestrict){
@@ -1261,6 +1262,7 @@ var NicoLiveHelper = {
 	    }
 	    item.classify = NicoLiveClassifier.classify(str);
 	}
+	item.playedtime = GetCurrentTime();
 	this.playlist.push(item); // 再生済みリストに登録.
 	this.playlist["_"+item.video_id] = true;
 	if( !notext ){
