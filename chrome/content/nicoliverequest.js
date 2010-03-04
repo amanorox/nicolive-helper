@@ -671,7 +671,6 @@ var NicoLiveRequest = {
     offPlayedStatus:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
-	debugprint('off played flag:'+video_id);
 	NicoLiveHelper.offPlayedStatus(video_id);
 
 	this.updateStockViewForPlayedVideo(NicoLiveHelper.stock);	
@@ -803,7 +802,6 @@ var NicoLiveRequest = {
     addMylist:function(mylist_id,mylist_name){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id'); // 動画IDを取れる.
-	debugprint('add mylist from request tab:'+video_id);
 	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id);
     },
 
@@ -894,7 +892,6 @@ var NicoLiveRequest = {
     doTrain:function(e){
 	let vbox = FindParentElement(document.popupNode,'vbox');
 	let vid = vbox.getAttribute('nicovideo_id');
-	debugprint('train:'+e.target.value+"/"+vid);
 	let item = NicoLiveHelper.findVideoInfo(vid);
 	if(item==null) return;
 

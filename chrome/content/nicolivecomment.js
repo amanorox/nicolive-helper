@@ -141,7 +141,6 @@ var NicoLiveComment = {
     },
 
     showThumbnail:function(event,video_id){
-	//debugprint('mouseover:'+event.layerX+','+event.layerY+' video_id:'+video_id);
 	$('iframe-thumbnail').src = "http://ext.nicovideo.jp/thumb/"+video_id;
 	let x,y;
 	// 312x176
@@ -187,7 +186,7 @@ var NicoLiveComment = {
 
 	if(NicoLiveHelper.iscaster){
 	    if( str.match(/^((sm|nm)\d+|\d{10})$/) ){
-		debugprint(str+'を手動再生しようとしています');
+		//debugprint(str+'を手動再生しようとしています');
 		NicoLiveHelper._comment_video_id = str;
 		NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
 	    }else{

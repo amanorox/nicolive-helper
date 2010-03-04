@@ -387,19 +387,16 @@ var NicoLiveHelper = {
 
 	    if( chat.text.indexOf("/perm")==0 && chat.mail.indexOf("hidden")!=-1 ){
 		NicoLiveHelper.commentview = COMMENT_VIEW_HIDDEN_PERM;
-		debugprint("switch to VIEW_HIDDEN_PERM");
 		clearInterval(NicoLiveHelper._commentstatetimer);
 		return;
 	    }
 	    if( chat.mail.indexOf("hidden")!=-1 ){
 		// hiddenだけの場合は、15秒間だけHIDDEN_PERM.
 		NicoLiveHelper.commentview = COMMENT_VIEW_HIDDEN_PERM;
-		debugprint("switch to VIEW_HIDDEN_PERM");
 		clearInterval(NicoLiveHelper._commentstatetimer);
 		NicoLiveHelper._commentstatetimer = setInterval(
 		    function(){
 			NicoLiveHelper.commentview = COMMENT_VIEW_NORMAL;
-			debugprint("switch to VIEW_NORMAL");
 			clearInterval(NicoLiveHelper._commentstatetimer);
 		    }, 15*1000 );
 	    }
@@ -408,7 +405,6 @@ var NicoLiveHelper = {
 		clearInterval(NicoLiveHelper._sendclsid);
 
 		NicoLiveHelper.commentview = COMMENT_VIEW_NORMAL;
-		debugprint("switch to VIEW_NORMAL");
 		if( 'function'==typeof NicoLiveHelper.postclsfunc ){
 		    NicoLiveHelper.postclsfunc();
 		    NicoLiveHelper.postclsfunc = null;
@@ -550,11 +546,11 @@ var NicoLiveHelper = {
 	if( !req ) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		debugprint(video_id+'のサムネイルを取得しました');
+		//debugprint(video_id+'のサムネイルを取得しました');
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
 		if( music ){
 		    if( NicoLiveHelper.current_video_id!=video_id ){
-			debugprint(video_id+'は/playで指定された動画と異なるため無視します');
+			//debugprint(video_id+'は/playで指定された動画と異なるため無視します');
 			return;
 		    }
 
@@ -576,7 +572,7 @@ var NicoLiveHelper = {
 	    }
 	};
 	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+video_id;
-	debugprint(video_id+'のサムネイルを取得中...');
+	//debugprint(video_id+'のサムネイルを取得中...');
 	req.open('GET', url );
 	req.send("");
     },
@@ -893,8 +889,7 @@ var NicoLiveHelper = {
 	this.musicinfo = music;
 	let str = "/play " + this.musicinfo.video_id;
 	if($('do-subdisplay').checked){
-	    debugprint(this.musicinfo.video_id+"をサブ画面で再生します");
-	    str += " sub";
+	    str += " sub"; // サブ画面で再生する.
 	}
 	// 再生コマンドに限らず、運営コメを投げてstatus=okになってもコメが飲み込まれてサーバからやってこないことがある.
 	// その対策のために、一旦ここで次曲再生のタイマをしかけておく.
@@ -1199,11 +1194,9 @@ var NicoLiveHelper = {
 	    return;
 	}
 	if(this.isautoplay){
-	    debugprint("Auto Play Next Music");
 	    this.commentstate = COMMENT_STATE_NONE;
 	    this.playNext();
 	}else{
-	    debugprint("Non-Auto Play Next Music");
 	    clearInterval(this._playnext);
 	}
     },
@@ -1349,7 +1342,6 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.musicinfo.error = true;
 			    NicoLiveHelper.musicinfo.isplayed = true;
 			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);
-			    debugprint(video_id+'をエラーリクエストタブに追加');
 			}
 			NicoLiveHelper.musicinfo = {};
 			clearInterval(NicoLiveHelper._sendmusicid);
@@ -1630,14 +1622,10 @@ var NicoLiveHelper = {
 	if(str){
 	    this.postCasterComment(str,command);
 	}
-
 	let e = evaluateXPath(document,"//*[@id='toolbar-allowrequest']//*[@allowrequest='"+flg+"']");
 	if(e.length){
 	    $('toolbar-allowrequest').label = e[0].label;
 	}
-	debugprint(flg?"リクエスト許可":"リクエスト不可");
-
-	//this.revertMusicInfo();
     },
 
     // リクエストリストに追加する.
@@ -2202,7 +2190,6 @@ var NicoLiveHelper = {
 		}
 	    },
 	    onDataAvailable: function(request, context, inputStream, offset, count) {
-		//debugprint( "offset=" + offset + ",count=" + count );
 		let lineData = {};
 		let r;
 		while(1){
@@ -2715,20 +2702,17 @@ var NicoLiveHelper = {
     },
     saveStock:function(){
 	Application.storage.set("nico_live_stock",this.stock);
-	//debugprint("save stock");
     },
     saveRequest:function(){
 	// 視聴者ではリクエストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	Application.storage.set("nico_live_requestlist",this.requestqueue);
-	//debugprint("save request");
     },
     savePlaylist:function(){
 	// 視聴者ではプレイリストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	Application.storage.set("nico_live_playlist",this.playlist);
 	Application.storage.set("nico_live_playlist_txt",$('played-list-textbox').value);
-	//debugprint("save play history");
     },
     saveToStorage:function(){
 	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
