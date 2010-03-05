@@ -18,6 +18,9 @@ var NLHPreference = {
 	    lowbitrate: "314.99",
 	    pname: "くちばしP"
 	};
+	if( window.opener.NicoLiveHelper.stock[0] ){
+	    info = window.opener.NicoLiveHelper.stock[0];
+	}
 	str = window.opener.NicoLiveHelper.replaceMacros(str,info);
 	str = str.replace(/<\/(.*?)>/g,"</html:$1>");
 	str = str.replace(/<([^/].*?)>/g,"<html:$1>");
