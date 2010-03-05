@@ -21,7 +21,7 @@ THE SOFTWARE.
  */
 
 var pname_whitelist = [
-    "supercell","rlboro",
+    "supercell","rlboro","NanahoshiP",
     "aquascape", "BIRUGE", "DixieFlatline", "fourier-drive",
     "instinctive", "kame", "Lue", "MAX_VEGETABLE", "nabe_nabe",
     "neve", "ShakeSphere", "Sweet-Revenge", "saihane", "samfree",
