@@ -150,7 +150,6 @@ var NicoLivePreference = {
 	}
     },
     setDefaultClass:function(){
-	debugprint('分類メニューをデフォルトにしました');
 	this.classes = new Array();
 	this.classes.push({"name":"初音ミク","label":"Miku","color":"#7fffbf"});
 	this.classes.push({"name":"鏡音リン・レン","label":"RinLen","color":"#ffff00"});
@@ -245,7 +244,6 @@ var NicoLivePreference = {
 	if(aTopic != "nsPref:changed") return;
 	this.readBasicPrefs(true);
 	this.readAdvancedPrefs(true);
-	debugprint("設定が変更されました");
     },
 
     init:function(){
