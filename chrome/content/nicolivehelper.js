@@ -292,7 +292,7 @@ var NicoLiveHelper = {
 	        prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
 		window.close();
 	    }else{
-		debugalert(NicoLiveHelper.request_id+' finished.');
+		debugalert(NicoLiveHelper.request_id+' は終了しました');
 		NicoLiveHelper.close();
 	    }
 	}
@@ -2387,7 +2387,7 @@ var NicoLiveHelper = {
 	    let xml = req.responseXML;
 
 	    if( xml.getElementsByTagName('code').length ){
-		debugalert( xml.getElementsByTagName('code')[0].textContent );
+		debugalert("番組情報を取得できませんでした. CODE="+ xml.getElementsByTagName('code')[0].textContent );
 		return;
 	    }
 	    try {
@@ -2412,10 +2412,10 @@ var NicoLiveHelper = {
 			NicoLiveHistory.addPlayList( item );
 		    }
 		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
-		    debugprint('You are a caster');
+		    debugprint('あなたは生放送主です');
 		}else{
 		    NicoLiveHelper.iscaster = false;
-		    debugprint('You are not a caster');
+		    debugprint('あなたは視聴者です');
 		}
 
 		// 現在再生している動画を調べる.
@@ -2468,7 +2468,7 @@ var NicoLiveHelper = {
 		    $('textbox-comment').setAttribute('maxlength','64');
 		}
 	    } catch (x) {
-		debugalert('Error occurred.'+x);
+		debugalert('コメントサーバに接続中、エラーが発生しました. '+x);
 	    }
 	};
 	this.close();
@@ -2578,9 +2578,13 @@ var NicoLiveHelper = {
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
-		if( confstatus.getAttribute('status')=='ok' ){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
+		    if( confstatus.getAttribute('status')=='ok' ){
+		    }else{
+			debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
+		    }
 		}else{
 		    debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
 		}

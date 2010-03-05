@@ -208,7 +208,7 @@ function debugprint(txt){
     //Application.console.log(txt);
 }
 function debugalert(txt){
-    alert(txt);
+    AlertPrompt(txt);
 }
 
 

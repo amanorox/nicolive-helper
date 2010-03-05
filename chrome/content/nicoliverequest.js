@@ -920,7 +920,7 @@ var NicoLiveRequest = {
 		str.push(ZenToHan(tag.toLowerCase()));
 	    }
 	}
-	debugalert('分類:'+NicoLiveClassifier.classify(str)['class']);
+	AlertPrompt('分類:'+NicoLiveClassifier.classify(str)['class'],"分類チェック");
     },
 
     init:function(){
