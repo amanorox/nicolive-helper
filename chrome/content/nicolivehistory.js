@@ -108,6 +108,7 @@ var NicoLiveHistory = {
 	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-additionalinfo').nextSibling );
     },
 
+    // 詳細表示の内容でテキストを復元する.
     restorePlaylistText:function(){
 	$('played-list-textbox').value = "";
 	for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
@@ -117,6 +118,7 @@ var NicoLiveHistory = {
 
     handleEvent:function(event){
 	if(event.type=='popupshowing'){
+	    // テキスト表示のとき範囲選択されていればマイリストに追加を表示する.
 	    let hidden = true;
 	    let notes = $('played-list-textbox');
 	    let n = notes.selectionEnd-notes.selectionStart;
