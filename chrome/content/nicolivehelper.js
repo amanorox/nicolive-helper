@@ -2041,7 +2041,7 @@ var NicoLiveHelper = {
 	    if( req.readyState!=4 ) return;
 	    let i,q;
 	    for(i=0;q=NicoLiveHelper.requestprocessingqueue[i];i++){
-		if( q.video_id==vid && q.comment_no==cno ){
+		if(q.video_id==vid && q.comment_no==cno && q.xml==null){
 		    if( req.status==200 ){
 			q.xml = req.responseXML;
 		    }else{
