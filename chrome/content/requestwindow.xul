@@ -132,6 +132,7 @@
 	<menuseparator/>
 	<menuitem label="&toolbar.beginbroadcasting;" tooltiptext="&toolbar.tooltip_beginbroadcasting;" oncommand="NicoLiveHelper.startBroadcasting();"/>
 	<menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
+	<menuitem label="&toolbar.clear.req.queue;" tooltiptext="&toolbar.clear.req.queue.help;" oncommand="NicoLiveHelper.clearRequestProcessingQueue();"/>
 	<menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.forget();"/>
 	<menuseparator/>
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>

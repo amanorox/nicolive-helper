@@ -45,8 +45,10 @@
 <!ENTITY toolbar.downloadjson "JSONファイルダウンロード">
 <!ENTITY toolbar.beginbroadcasting "配信開始">
 <!ENTITY toolbar.tooltip_beginbroadcasting "配信開始します。ニコ生アラート等で配信開始されたことを確認してください。">
-<!ENTITY toolbar.forcecastermode "強制生主モード(Experimental)">
+<!ENTITY toolbar.forcecastermode "強制生主モード">
 <!ENTITY toolbar.tooltip_forcecastermode "Helperが生主として動作しない場合、最終手段として使用してください。">
+<!ENTITY toolbar.clear.req.queue "処理中のリクエストを破棄">
+<!ENTITY toolbar.clear.req.queue.help "急にリクエストを受け付けなくなった場合、処理中のリクエストを全て破棄します。">
 <!ENTITY toolbar.forget_learning "分類エンジンの学習情報を初期化">
 <!ENTITY toolbar.resize_window_default "ウィンドウサイズを初期状態に戻す">
 <!ENTITY toolbar.open_preference "設定">

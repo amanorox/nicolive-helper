@@ -1924,6 +1924,12 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    // 現在のリクエスト処理キューをクリアする.
+    clearRequestProcessingQueue:function(){
+	this.requestprocessingqueue = new Array();
+	this.showRequestProgress();
+    },
+
     // リクエスト処理キューを先頭から処理する.
     processRequest:function(){
 	let q;
