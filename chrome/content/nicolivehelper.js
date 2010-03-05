@@ -1948,7 +1948,7 @@ var NicoLiveHelper = {
     // リクエスト処理キューを先頭から処理する.
     processRequest:function(){
 	let q;
-	while( NicoLiveHelper.requestprocessingqueue.length && NicoLiveHelper.requestprocessingqueue[0].xml ){
+	while( NicoLiveHelper.requestprocessingqueue.length && NicoLiveHelper.requestprocessingqueue[0].xml!=null ){
 	    q = NicoLiveHelper.requestprocessingqueue.shift();
 
 	    // リクのあった動画をチェック.
