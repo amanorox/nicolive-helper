@@ -876,9 +876,9 @@ var NicoLiveHelper = {
     // 再生コマンドを送ってもいいか判定.
     canPlayCommand:function(){
 	let now = GetCurrentTime();
-	if( this.musicinfo.length_ms < 3000 ) return true;  // 3秒未満の動画再生中は許可.
-	if( (now - this._playmusictime) < 3 ){
-	    // playMusic()を呼び出してから3秒未満は禁止.
+	if( this.musicinfo.length_ms < 5000 ) return true;  // 5秒未満の動画再生中は許可.
+	if( (now - this._playmusictime) < 5 ){
+	    // playMusic()を呼び出してから5秒未満は禁止.
 	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
 	    return false;
 	}
@@ -887,9 +887,7 @@ var NicoLiveHelper = {
 
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
-	let now = GetCurrentTime();
 	if( !NicoLiveHelper.canPlayCommand() ) return;
-	this._playmusictime = now;
 
 	this._comment_video_id = "";
 	if(this.isOffline()) return;
@@ -943,6 +941,8 @@ var NicoLiveHelper = {
 
 	this.updateRemainRequestsAndStocks();
 	this.saveAll();
+
+	this._playmusictime = GetCurrentTime();
     },
 
     // 動画IDを元にメモリ内の動画情報を検索、返す.
@@ -1373,8 +1373,7 @@ var NicoLiveHelper = {
 			if( NicoLiveHelper._comment_video_id==comment ) break; // 主コメ経由で動画IDを流したときには動画情報の復元は不要.
 
 			if( mail.indexOf("hidden")==-1 && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
-			    // hiddenコメじゃなければ上コメは上書きされないので
-			    // 復帰必要なし
+			    // hiddenコメじゃなければ上コメは上書きされないので復帰必要なし.
 			    break;
 			}
 
