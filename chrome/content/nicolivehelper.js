@@ -62,7 +62,7 @@ var NicoLiveHelper = {
     isautoplay: false,     // 自動再生フラグ.
     israndomplay: false,   // ランダム再生フラグ.
     isconsumptionrateplay: false, // リク消費率順再生フラグ.
-    musicinfo: {},  // 再生中の動画情報.
+    musicinfo: {},         // 再生中の動画情報.
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},  // {json}用.
 
@@ -873,13 +873,22 @@ var NicoLiveHelper = {
 	this.postCasterComment(sendstr,cmd,"",ismovieinfo);
     },
 
+    // 再生コマンドを送ってもいいか判定.
+    canPlayCommand:function(){
+	let now = GetCurrentTime();
+	if( this.musicinfo.length_ms < 3000 ) return true;  // 3秒未満の動画再生中は許可.
+	if( (now - this._playmusictime) < 3 ){
+	    // playMusic()を呼び出してから3秒未満は禁止.
+	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
+	    return false;
+	}
+	return true;
+    },
+
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
 	let now = GetCurrentTime();
-	if( (now - NicoLiveHelper._playmusictime) < 3 ){
-	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
-	    return;
-	}
+	if( !NicoLiveHelper.canPlayCommand() ) return;
 	this._playmusictime = now;
 
 	this._comment_video_id = "";
@@ -967,11 +976,7 @@ var NicoLiveHelper = {
 	if(this.isOffline() || !this.iscaster) return;
 	if(idx>this.stock.length) return;
 
-	let now = GetCurrentTime();
-	if( (now - NicoLiveHelper._playmusictime) < 3 ){
-	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
-	    return;
-	}
+	if( !NicoLiveHelper.canPlayCommand() ) return;
 
 	let playmusic = this.stock[idx-1];
 	if(!playmusic) return;
@@ -2789,6 +2794,7 @@ var NicoLiveHelper = {
     init: function(){
 	// リクエストのコメ番順シーケンシャル処理用.
 	this.requestprocessingqueue = new Array();
+	this.musicinfo.length_ms = 0;
 
 	debugprint('Initialize NicoLive Helper');
 	let request_id = Application.storage.get("nico_request_id","lv0");

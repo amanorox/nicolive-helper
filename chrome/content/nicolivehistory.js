@@ -48,11 +48,7 @@ var NicoLiveHistory = {
 	button.className = 'commandbtn';
 	button.addEventListener('command',
 				function(){
-				    let now = GetCurrentTime();
-				    if( (now - NicoLiveHelper._playmusictime) < 3 ){
-					ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
-					return;
-				    }
+				    if( !NicoLiveHelper.canPlayCommand() ) return;
 				    NicoLiveHelper.requestqueue.unshift(item);
 				    NicoLiveHelper.playMusic(1);
 				},false);
