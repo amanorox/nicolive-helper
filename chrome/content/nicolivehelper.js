@@ -69,6 +69,8 @@ var NicoLiveHelper = {
     commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用(なし、動画情報送信中、動画情報送信終了).
     commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
 
+    _playmusictime: 0,  // playMusicを呼び出した時刻.
+
     // リクを受け付けるかどうかチェック.
     checkAcceptRequest: function(xml, comment_no){
 	if(xml.getElementsByTagName('error').length){ // 動画がない.
@@ -873,6 +875,13 @@ var NicoLiveHelper = {
 
     // 指定リク番号の曲を再生する(idxは1〜).
     playMusic:function(idx){
+	let now = GetCurrentTime();
+	if( (now - NicoLiveHelper._playmusictime) < 3 ){
+	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
+	    return;
+	}
+	this._playmusictime = now;
+
 	this._comment_video_id = "";
 	if(this.isOffline()) return;
 	if(!this.iscaster) return;
@@ -954,21 +963,23 @@ var NicoLiveHelper = {
 
     // ストックから再生する(idx=1,2,3,...).
     playStock:function(idx,force){
-	// 再生済みのときだけfalseを返す.
 	// force=trueは再生済みを無視して強制再生.
-	if(this.isOffline() || !this.iscaster) return true;
-	if(idx>this.stock.length) return true;
+	if(this.isOffline() || !this.iscaster) return;
+	if(idx>this.stock.length) return;
+
+	let now = GetCurrentTime();
+	if( (now - NicoLiveHelper._playmusictime) < 3 ){
+	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
+	    return;
+	}
 
 	let playmusic = this.stock[idx-1];
-	if(!playmusic) return true;
-	if(!force && this.isPlayedMusic(playmusic.video_id)){
-	    return false;
-	}
+	if(!playmusic) return;
+	if(!force && this.isPlayedMusic(playmusic.video_id)) return;
 	playmusic.isplayed = true;
 	// ストックをリクエストキューの先頭に突っこんで再生.
 	this.requestqueue.unshift(playmusic);
 	this.playMusic(1);
-	return true;
     },
     // ストックから削除する.
     removeStock:function(idx){
