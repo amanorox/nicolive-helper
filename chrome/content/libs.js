@@ -114,6 +114,17 @@ function OpenFile(path){
     }
 }
 
+// NicoLiveHelperのインストールパスを返す.
+function GetExtensionPath(){
+    let id = "nicolivehelper@miku39.jp";
+    let ext = Components.classes["@mozilla.org/extensions/manager;1"]
+        .getService(Components.interfaces.nsIExtensionManager)
+        .getInstallLocation(id)
+        .getItemLocation(id);
+    return ext;
+}
+
+
 function AlertPrompt(text,caption){
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
     var result = prompts.alert(null, caption, text);

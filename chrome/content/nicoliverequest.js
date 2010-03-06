@@ -584,7 +584,7 @@ var NicoLiveRequest = {
 
 		    let vid = NicoLiveHelper.stock[this.playlist_start-1].video_id;
 		    let t = NicoLiveHelper.stock[this.playlist_start-1].length;
-		    debugprint(vid+","+t+","+GetTimeString(flv.ext_getTotalTime()));
+		    debugprint(vid+","+GetTimeString(flv.ext_getTotalTime()));
 		}
 		switch(status){
 		case "end":

@@ -1853,7 +1853,11 @@ var NicoLiveHelper = {
 		info.first_retrieve = d.getTime() / 1000; // seconds from epoc.
 		break;
 	    case "length":
-		info.length = elem.textContent;
+		if( this._videolength["_"+info.video_id] ){
+		    info.length = this._videolength["_"+info.video_id];
+		}else{
+		    info.length = elem.textContent;
+		}
 		let len = info.length.match(/\d+/g);
 		info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1],10))*1000;
 		break;
@@ -2841,6 +2845,7 @@ var NicoLiveHelper = {
 	}
 
 	this.updatePNameWhitelist();
+	this.loadVideoLength();
 
 	// Windows Live Messengerに番組名を通知する.
 	if(IsWINNT() && !this.isOffline()){
@@ -2859,6 +2864,39 @@ var NicoLiveHelper = {
 	if(IsWINNT() && !this.isOffline()){
 	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
 	    obj.SetWinLiveMessengerMsg("");
+	}
+    },
+
+    loadVideoLength:function(){
+	this._videolength = new Object();
+
+	let req = new XMLHttpRequest();
+	if(!req) return;
+
+	let extpath = GetExtensionPath();
+	debugprint("Extension Path="+extpath.path);
+	extpath.append("videolength.csv");
+	debugprint("VideoLength CSV="+extpath.path);
+
+	try{
+	    let istream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+		.createInstance(Components.interfaces.nsIFileInputStream);
+	    istream.init(extpath, 0x01, 0444, 0);
+	    istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+	    // 行を配列に読み込む
+	    let line = {}, hasmore;
+	    let str = "";
+	    do {
+		hasmore = istream.readLine(line);
+		str = line.value;
+		let vlen = str.split(",");
+		this._videolength["_"+vlen[0]] = vlen[1];
+	    } while(hasmore);
+	    istream.close();
+	} catch (x) {
+	    debugprint("動画再生時間定義ファイル読み込みでエラーが発生しました");
+	    this._videolength = new Object();
 	}
     },
 

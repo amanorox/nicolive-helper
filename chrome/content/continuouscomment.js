@@ -27,7 +27,6 @@ function ReadTextFile(file){
 	str += line.value;
     } while(hasmore);
     istream.close();
-    //      Application.console.log(str);
     
     document.getElementById('multiline-comment').value = str;
 }
