@@ -2875,7 +2875,8 @@ var NicoLiveHelper = {
 
 	let extpath = GetExtensionPath();
 	debugprint("Extension Path="+extpath.path);
-	extpath.append("videolength.csv");
+	extpath = extpath.parent;
+	extpath.append("nlh_videolength.csv");
 	debugprint("VideoLength CSV="+extpath.path);
 
 	try{
