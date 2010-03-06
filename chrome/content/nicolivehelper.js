@@ -376,7 +376,7 @@ var NicoLiveHelper = {
 		    }
 		    graph += "</font>";
 		}
-		NicoLiveHelper.postCasterComment(NicoLiveHelper.officialvote[0]+"<br>"+graph,"hidden");
+		NicoLiveHelper.postCasterComment("/perm "+NicoLiveHelper.officialvote[0]+"<br>"+graph,"hidden");
 		NicoLiveHelper.postCasterComment(str,"");
 		return;
 	    }
