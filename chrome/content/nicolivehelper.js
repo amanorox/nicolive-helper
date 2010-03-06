@@ -1892,6 +1892,9 @@ var NicoLiveHelper = {
 		info.lowbitrate = elem.textContent;
 		info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
 		break;
+	    case "movie_type":
+		info.movie_type = elem.textContent;
+		break;
 	    default:
 		break;
 	    }

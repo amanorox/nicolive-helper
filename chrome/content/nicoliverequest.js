@@ -581,12 +581,14 @@ var NicoLiveRequest = {
 		    
 		    let flvcontainer = this.opentab.contentDocument.getElementById('flvplayer_container').wrappedJSObject;
 		    this.opentab.contentWindow.scroll(0,flvcontainer.offsetTop-32);
-		    debugprint("play");
+
+		    let vid = NicoLiveHelper.stock[this.playlist_start-1].video_id;
+		    let t = NicoLiveHelper.stock[this.playlist_start-1].length;
+		    debugprint(vid+","+t+","+GetTimeString(flv.ext_getTotalTime()));
 		}
 		switch(status){
 		case "end":
 		    if(this.playlist_start>NicoLiveHelper.stock.length){
-			debugprint("ストックの最後まで再生しました");
 			// 最初に戻る.
 			this.playlist_start = 0;
 		    }
@@ -594,14 +596,12 @@ var NicoLiveRequest = {
 		    if(!NicoLiveHelper.isautoplay) break;
 		    this.playlist_start++;
 		    if(nextmusic){
-			debugprint(nextmusic.video_id+"を再生します");
 			this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
 			this.playlist_first = true;
 		    }
 		    break;
 		}
 	    }else{
-		debugprint("動画再生タブがなくなったので停止します");
 		clearInterval(this.playlist_timer);
 	    }
 	} catch (x) {
