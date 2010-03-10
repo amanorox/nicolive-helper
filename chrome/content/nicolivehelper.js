@@ -2240,6 +2240,15 @@ var NicoLiveHelper = {
 	};
 
 	let str = "<thread thread=\""+thread+"\" res_from=\"-100\" version=\"20061206\"/>\0";
+	if( 0 && this._timeshift ){
+	    // タイムシフトで時間軸で順次コメント取ってくるのは面倒.
+	    // <thread thread="1016805032" res_from="-1000" version="20061206" when="1268170184" waybackkey="1268236432.bWafikc3gow8SXZxrBHPyNYM0bk" user_id="21693"/>
+	    str = "<thread thread=\""+thread+"\" res_from=\"-1000\" version=\"20061206\" when=\""+(this.starttime+240)+"\" waybackkey=\""+this.waybackkey+"\" user_id=\""+this.user_id+"\"/>\0";
+	    debugprint(str);
+	    this.starttime = GetCurrentTime();
+	    this.serverconnecttime = 0;
+	    this.connecttime = 0;
+	}
 	this.coStream.writeString(str);
 	this.pump.asyncRead(dataListener,null);
 
@@ -2401,6 +2410,48 @@ var NicoLiveHelper = {
 	this.flg_displayprogresstime = !this.flg_displayprogresstime;
     },
 
+    // タイムシフト用.
+    getwaybackkey:function(req_id){
+	if(this.isOffline()) return;
+
+	let url = "http://watch.live.nicovideo.jp/api/getwaybackkey?thread="+this.thread;
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let tmp = req.responseText.match(/waybackkey=(.*)/);
+		if(tmp){
+		    NicoLiveHelper.waybackkey = tmp[1];
+		    debugprint('waybackkey='+NicoLiveHelper.waybackkey);
+		    NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
+		}else{
+		    NicoLiveHelper.waybackkey = undefined;
+		    debugalert('タイムシフト放送への接続に失敗しました');
+		}
+	    }
+	};
+	req.open('GET', url );
+	req.send('');
+	return;
+    },
+
+    // タイムシフトのときに再生された動画を全部、プレイリスト(テキスト)に.
+    construct_playlist_for_timeshift:function(xml){
+	this._timeshift = true;
+	let que = evaluateXPath(xml,"//quesheet/que");
+	let elem = $('played-list-textbox');
+	elem.value += this.title+" "+this.request_id+" ("+GetFormattedDateString("%Y/%m/%d %H:%M",this.starttime*1000)+"-)\n";
+	for(let i=0,item;item=que[i];i++){
+	    let dat = item.textContent.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
+	    if(dat){
+		let vid = dat[2];
+		let title = dat[6];
+		elem.value += vid+" "+title+"\n";
+	    }
+	}
+	this.getwaybackkey(this.request_id);
+    },
+
     // getplayerstatus APIから生放送情報を取得する.
     getplayerstatus: function(req_id){
 	var req = new XMLHttpRequest();
@@ -2484,7 +2535,12 @@ var NicoLiveHelper = {
 		debugprint("addr:"+NicoLiveHelper.addr);
 		debugprint("port:"+NicoLiveHelper.port);
 		debugprint("thread:"+NicoLiveHelper.thread);
-		NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
+		
+		if( evaluateXPath(xml,"//quesheet").length ){
+		    NicoLiveHelper.construct_playlist_for_timeshift(xml);
+		}else{
+		    NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
+		}
 
 		$('statusbar-live-progress').setAttribute("tooltiptext",'ロスタイム:'+NicoLiveHelper.calcLossTime()+'秒');
 		if( !NicoLiveHelper.iscaster ){
