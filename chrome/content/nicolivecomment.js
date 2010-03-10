@@ -50,7 +50,7 @@ var NicoLiveComment = {
 	    }
 	}
 
-	if(comment.premium==3){
+	if(comment.premium >= 2){
 	    tr.className = "table_casterselection";
 	}else{
 	    if( NicoLivePreference.ngwordfiltering && this.isNGWord(comment.text) ){

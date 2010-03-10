@@ -623,7 +623,7 @@ var NicoLiveRequest = {
 		}
 		return;
 	    }
-	    l = sm.match(/(sm|nm)\d+/g);
+	    l = sm.match(/(sm|nm|so)\d+|\d{10}/g);
 	    for(let i=0,id;id=l[i];i++){
 		NicoLiveHelper.addStock(id,0);
 	    }
@@ -716,7 +716,7 @@ var NicoLiveRequest = {
 	let first = true;
 	do {
 	    hasmore = istream.readLine(line);
-	    if( line.value.match(/(sm|nm)\d+/) ){
+	    if( line.value.match(/(sm|nm)\d+|\d{10}/) ){
 		if(first){
 		    //NicoLiveHelper.clearStock();
 		    first = false;

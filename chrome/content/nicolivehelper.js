@@ -1930,6 +1930,7 @@ var NicoLiveHelper = {
 		case -4: // 再生済み.
 		case -5: // リク済み.
 		    ans.movieinfo.iscasterselection = true; // ストックは主セレ扱い.
+		    ans.movieinfo.video_id = sm;
 		    if(NicoLiveHelper.isPlayedMusic(ans.movieinfo.video_id)){
 			ans.movieinfo.isplayed = true;
 		    }
@@ -2459,7 +2460,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.setupPlayNextMusic(remain);
 			}
 			// プログレスバー用に情報をセット.
-			let tmp = currentplay.textContent.match(/(sm|nm|ze)\d+/);
+			let tmp = currentplay.textContent.match(/(sm|nm|ze)\d+|\d{10}/);
 			if(tmp){
 			    NicoLiveHelper.musicstarttime  = st;
 			    NicoLiveHelper.current_video_id = tmp[0];
