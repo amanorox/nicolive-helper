@@ -294,7 +294,7 @@ var NicoLiveHelper = {
 	        prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
 		window.close();
 	    }else{
-		debugalert(NicoLiveHelper.request_id+' は終了しました');
+		alert(NicoLiveHelper.request_id+' は終了しました');
 		NicoLiveHelper.close();
 	    }
 	}
@@ -2215,7 +2215,7 @@ var NicoLiveHelper = {
 	    },
 	    onStopRequest: function(request, context, status){
 		try{
-		    debugalert('コメントサーバから切断されました。');
+		    alert('コメントサーバから切断されました。');
 		    NicoLiveHelper.close();
 		} catch (x) {
 		}
