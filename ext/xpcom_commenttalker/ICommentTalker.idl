@@ -1,0 +1,12 @@
+#include "nsISupports.idl"
+
+//{110B2D81-148D-49f9-B805-403AC6AC82BB}
+
+[scriptable, uuid(110B2D81-148D-49f9-B805-403AC6AC82BB)]
+interface INLHCommentTalker : nsISupports
+{
+	long Add(in long nData1, in long nData2);
+	long callTalkerProgram(in wstring execPath, in wstring strData);
+	long sayBouyomichan(in wstring server, in wstring strData);
+	long sayKotoeri(in wstring strData);
+};

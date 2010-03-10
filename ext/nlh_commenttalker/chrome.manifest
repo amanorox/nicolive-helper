@@ -1,0 +1,3 @@
+content		nlh_commenttalker	chrome/content/nlh_commenttalker/ platform
+
+overlay chrome://nicolivehelper/content/requestwindow.xul chrome://nlh_commenttalker/content/nicolivetalker.xul

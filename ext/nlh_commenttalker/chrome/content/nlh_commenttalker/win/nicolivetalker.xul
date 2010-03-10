@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	 xmlns:html="http://www.w3.org/1999/xhtml">
+
+  <script type="application/javascript;version=1.7" src="chrome://nlh_commenttalker/content/nicolivetalker.js" />
+
+  <tabs id="maintabs">
+    <tab insertafter="tabs-db" label="棒読みちゃん"/>
+  </tabs>
+
+  <tabpanels id="tabpanels">
+    <vbox insertafter="tab-database">
+      <hbox align="center">
+	<checkbox id="enable-comment-talker" label="コメント読み上げを行う"/>
+	<html:a onclick="window.opener.getBrowser().selectedTab = window.opener.getBrowser().addTab('http://chi.usamimi.info/Program/Application/BouyomiChan/');">棒読みちゃん</html:a>
+      </hbox>
+      <description>コメント読み上げを行うには、棒読みちゃんをあらかじめ起動しておいてください。</description>
+
+      <hbox>
+	<button label="test" oncommand="NicoLiveTalker.test();"/>
+      </hbox>
+    </vbox>
+  </tabpanels>
+
+</overlay>

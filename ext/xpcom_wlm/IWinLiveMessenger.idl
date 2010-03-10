@@ -1,0 +1,7 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(A31AF9D7-9E47-4ca8-834A-7743F3879BEC)]
+interface IWinLiveMessenger : nsISupports
+{
+	long SetWinLiveMessengerMsg(in wstring strData);
+};

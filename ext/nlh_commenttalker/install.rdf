@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>nlh_commenttalker@miku39.jp</em:id>
+    <em:type>2</em:type>
+    <em:name>NicoLive Helper Comment Talker</em:name>
+    <em:version>0.1</em:version>
+    <em:description>Comment Talkder Addon for NicoLive Helper.</em:description>
+    <em:creator>amano</em:creator>
+    <em:homepageURL>http://miku39.jp</em:homepageURL>
+    <em:localized>
+      <Description>
+	<em:locale>ja</em:locale>
+	<em:name>ニコニコ生放送ヘルパー用コメント読み上げアドオン</em:name>
+	<em:description>ニコニコ生放送ヘルパー(NicoLive Helper)にコメント読み上げ機能を追加する、実験的なアドオンです。</em:description>
+	<em:creator>あまの</em:creator>
+      </Description>
+    </em:localized>
+    <em:targetApplication>
+      <Description>
+	<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+	<em:minVersion>3.5</em:minVersion>
+	<em:maxVersion>3.6.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:targetPlatform>WINNT_x86-msvc</em:targetPlatform>
+    <em:targetPlatform>Darwin_x86-gcc3</em:targetPlatform>
+  </Description>
+</RDF>
