@@ -99,14 +99,32 @@ int bouyomichan(const PRUnichar *execpath, const PRUnichar *text)
 }
 
 
+int is_saykotoeri_active()
+{
+    // /bin/ps aux | /usr/bin/grep "/usr/local/bin/SayKana" | grep -v grep
+    char*exe="/bin/ps aux | /usr/bin/grep -i '/usr/local/bin/SayKana' | grep -v grep";
+    FILE*file;
+    int flg=0;
+    file = popen(exe,"r");
+    while(1){
+        char buf[512];
+        if(fgets(buf,sizeof(buf),file)==NULL) break;
+        flg=1;
+    }
+    pclose(file);
+    return flg;
+}
+
+
 int saykotoeri(const PRUnichar *text)
 {
+    if( is_saykotoeri_active() ) return 0;
 	char*utf8str = unicodetoutf8(text);	
 	char buf[4096];
 	sprintf(buf,"/usr/local/bin/saykotoeri \"%s\" & ",utf8str);
 	system(buf);
 	free(utf8str);
-	return 0;
+	return 1;
 }
 
 
@@ -166,8 +184,7 @@ NS_IMETHODIMP NLHCommentTalker::SayBouyomichan(const PRUnichar *server, const PR
 /* long sayKotoeri (in wstring strData); */
 NS_IMETHODIMP NLHCommentTalker::SayKotoeri(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM)
 {
-	saykotoeri(strData);
-	*_retval = 0;
+	*_retval = saykotoeri(strData);
     return NS_OK;
 }
 
