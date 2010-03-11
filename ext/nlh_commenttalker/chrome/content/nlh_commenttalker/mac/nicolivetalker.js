@@ -29,9 +29,27 @@ var NicoLiveTalker = {
 	}
 	if( $('use-saykotoeri').selected ){
 	    text = text.replace(/[;\"'&]/g,"");
-	    obj.sayKotoeri(text);
+	    text = text.replace(/[wｗ]{2,}$/,"わらわら");
+	    text = text.replace(/[wｗ]$/,"わら");
+	    text = text.replace(/http:\/\/[\w.%\&=/-?]+/,"ゆーあーるえるしょうりゃく");
+	    this.talkqueue.push(text);
+	    //obj.sayKotoeri(text);
 	}
 	return;
+    },
+
+    talk_bysaykotoeri:function(){
+	if( this.talkqueue.length==0 ){
+	    $('talker-left').value = this.talkqueue.length + "行";
+	    return;
+	}
+
+	let obj = Components.classes["@miku39.jp/NLHCommentTalker;1"].createInstance(Components.interfaces.INLHCommentTalker);
+	let text = this.talkqueue.shift();
+	if( !obj.sayKotoeri(text) ){
+	    this.talkqueue.unshift(text);
+	}
+	$('talker-left').value = this.talkqueue.length + "行";
     },
 
     test:function(){
@@ -44,7 +62,7 @@ var NicoLiveTalker = {
 	if($('enable-comment-talker').checked){
 	    let chat = NicoLiveHelper.extractComment(xmlchat);
 	    if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
-	    if(chat.premium!=3){
+	    if(chat.premium<3){
 		this.runProcess('',chat.text);
 	    }
 	}
@@ -52,6 +70,10 @@ var NicoLiveTalker = {
 
     init:function(){
 	debugprint('CommentTalker init.');
+	this.talkqueue = new Array();
+	setInterval(function(){
+			NicoLiveTalker.talk_bysaykotoeri();
+		    }, 1000 );
 
 	this.oldprocesscomment = NicoLiveHelper.processComment;
 	NicoLiveHelper.processComment = function(xmlchat){

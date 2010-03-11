@@ -22,6 +22,11 @@
 	</radiogroup>
       </hbox>
 
+      <hbox align="center">
+	<label value="残り"/><label id="talker-left" value=""/>
+	<button label="消去" oncommand="NicoLiveTalker.talkqueue = new Array();"/>
+      </hbox>
+
       <groupbox>
 	<caption label="棒読みちゃん設定"/>
 	<hbox align="center">
