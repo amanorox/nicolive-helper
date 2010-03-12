@@ -127,13 +127,13 @@ function GetExtensionPath(){
 
 function AlertPrompt(text,caption){
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.alert(null, caption, text);
+    var result = prompts.alert(window, caption, text);
     return result;
 }
 
 function ConfirmPrompt(text,caption){
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.confirm(null, caption, text);
+    var result = prompts.confirm(window, caption, text);
     return result;
 }
 
@@ -142,7 +142,7 @@ function InputPrompt(text,caption,input){
     var input_ = {value: input};
 
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.prompt(null, caption, text, input_, null, check);
+    var result = prompts.prompt(window, caption, text, input_, null, check);
     if( result ){
 	return input_.value;
     }else{
@@ -155,7 +155,7 @@ function InputPromptWithCheck(text,caption,input,checktext){
     var input_ = {value: input};
 
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.prompt(null, caption, text, input_, checktext, check);
+    var result = prompts.prompt(window, caption, text, input_, checktext, check);
     if( result ){
 	return input_.value;
     }else{
