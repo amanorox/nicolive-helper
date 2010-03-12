@@ -587,6 +587,13 @@ var NicoLiveRequest = {
 		    debugprint(vid+","+GetTimeString(flv.ext_getTotalTime()));
 		}
 		switch(status){
+		case "playing":
+		    let playprogress = $('statusbar-music-progressmeter');
+		    let progress = parseInt(flv.ext_getPlayheadTime()/flv.ext_getTotalTime()*100,10);
+		    playprogress.value = progress;
+		    $('statusbar-music-name').label = NicoLiveHelper.stock[this.playlist_start-1].title;
+		    break;
+
 		case "end":
 		    if(this.playlist_start>NicoLiveHelper.stock.length){
 			// 最初に戻る.
