@@ -8,6 +8,7 @@ pref("extensions.nicolivehelper.autowindowopen",false);
 pref("extensions.nicolivehelper.autowindowclose",false);
 pref("extensions.nicolivehelper.autowindowopen-listener",false);
 pref("extensions.nicolivehelper.autowindowclose-listener",false);
+pref("extensions.nicolivehelper.autotabclose",false);
 pref("extensions.nicolivehelper.jingle",false);
 pref("extensions.nicolivehelper.jingle-movie","");
 pref("extensions.nicolivehelper.limit30min",false);

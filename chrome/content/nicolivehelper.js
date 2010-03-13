@@ -290,11 +290,15 @@ var NicoLiveHelper = {
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // ロスタイムのときは premium=2 からやってくる.
 	    let prefs = NicoLivePreference.getBranch();
-	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster ||
-	        prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
+	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster || prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
+		if( prefs.getBoolPref("autotabclose") ){
+		    NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id);
+		}
+		NicoLiveHelper._donotshowdisconnectalert = true;
 		window.close();
 	    }else{
 		alert(NicoLiveHelper.request_id+' は終了しました');
+		NicoLiveHelper._donotshowdisconnectalert = true;
 		NicoLiveHelper.close();
 	    }
 	}
@@ -501,6 +505,26 @@ var NicoLiveHelper = {
 	    }
 	}
     },
+
+    closeBroadcastingTab:function(request_id){
+	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	let browserEnumerator = wm.getEnumerator("navigator:browser");
+
+	let url = "http://live.nicovideo.jp/watch/"+request_id;
+	while(browserEnumerator.hasMoreElements()) {
+	    let browserInstance = browserEnumerator.getNext().gBrowser;
+	    // browser インスタンスの全てのタブを確認する.
+	    let numTabs = browserInstance.tabContainer.childNodes.length;
+	    for(let index=0; index<numTabs; index++) {
+		let currentBrowser = browserInstance.getBrowserAtIndex(index);
+		if (currentBrowser.currentURI.spec.match(url)) {
+		    window.opener.gBrowser.removeTab( browserInstance.tabContainer.childNodes[index] );
+		    return;
+		}
+	    }
+	}
+    },
+
 
     // リクエストをキャンセルする.
     cancelRequest:function(user_id,vid){
@@ -2219,7 +2243,9 @@ var NicoLiveHelper = {
 	    },
 	    onStopRequest: function(request, context, status){
 		try{
-		    alert('コメントサーバから切断されました。');
+		    if( !NicoLiveHelper._donotshowdisconnectalert ){
+			alert('コメントサーバから切断されました。');
+		    }
 		    NicoLiveHelper.close();
 		} catch (x) {
 		}
@@ -2918,6 +2944,7 @@ var NicoLiveHelper = {
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
+	this._donotshowdisconnectalert = true;
 	this.saveAll();
 	this.saveToStorage();
 	this.close();

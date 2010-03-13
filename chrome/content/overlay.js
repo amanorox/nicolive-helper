@@ -1,4 +1,3 @@
-
 var NicoLiveOverlay = {
     insertHistory:function(url,title){
 	if(url=="lv0") return;
