@@ -298,6 +298,10 @@ var NicoLiveHelper = {
 		NicoLiveHelper.close();
 	    }
 	}
+	if( chat.premium>3 ){
+	    // premium>3 はニコニコの中の人とか. 主コメが上書きされるので動画情報を復元.
+	    NicoLiveHelper.revertMusicInfo();
+	}
 
 	switch(chat.premium){
 	case 3:
