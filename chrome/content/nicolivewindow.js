@@ -56,12 +56,35 @@ var NicoLiveWindow = {
 	let dh = window.outerHeight-window.innerHeight;
 	this.resize(720+dw,512+dh);
     },
+
+    findTab:function(request_id){
+	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	let browserEnumerator = wm.getEnumerator("navigator:browser");
+	let url = "http://live.nicovideo.jp/watch/"+request_id;
+	while(browserEnumerator.hasMoreElements()) {
+	    let browserInstance = browserEnumerator.getNext().gBrowser;
+	    // browser インスタンスの全てのタブを確認する.
+	    let numTabs = browserInstance.tabContainer.childNodes.length;
+	    for(let index=0; index<numTabs; index++) {
+		let currentBrowser = browserInstance.getBrowserAtIndex(index);
+		if (currentBrowser.currentURI.spec.match(url)) {
+		    return browserInstance.tabContainer.childNodes[index];
+		}
+	    }
+	}
+	return null;
+    },
+
     init: function(){
 	let prefs = NicoLivePreference.getBranch();
 	if( prefs.getBoolPref("autoscroll") ){
 	    try{
-		let player = window.opener.content.document.getElementById('WatchPlayer');
-		window.opener.content.scroll(0,player.offsetTop-32);
+		let tab = this.findTab(NicoLiveHelper.request_id);
+		let player;
+		if(tab){
+		    player = tab.linkedBrowser.contentDocument.getElementById('WatchPlayer').wrappedJSObject;
+		    tab.linkedBrowser.contentWindow.scroll(0,player.offsetTop-32);
+		}
 	    } catch (x) {
 	    }
 	}
