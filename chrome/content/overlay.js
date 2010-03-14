@@ -18,6 +18,7 @@ var NicoLiveOverlay = {
 	elem.setAttribute('value',url);
 	elem.addEventListener('command', function(e){ window.content.location.href = "http://live.nicovideo.jp/watch/"+url; }, false );
 	menu.insertBefore(elem,menu.firstChild);
+	menu = null; elem = null; i = null; item = null;
     },
 
     open:function(url,title,iscaster){
@@ -104,6 +105,7 @@ var NicoLiveOverlay = {
 					},true);
 	}
 	this.nicolivehistory = new Array();
+	appcontent = null;
     }
 };
 

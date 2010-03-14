@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAEx3dNSmD3Hlo7kcEJ+yEEUY8/gvlyiLl9xKka10IHDzz7TnNilAT/3xdid5KLJnneMKb2rRPuMRi2NS+D01RZTyv6j8T91+e5WDT2SAuBQWFibGWZhy+0OZWEZgsV9+LXAeBzPFWgWY3uVJsll3IfzItMQDfKtSr2/g9c1Rscuo">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="1.0">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAKOP3NzdVRw+gFoP+VSB0FL+nE+7DJ6FRaoGfUR0wsHrPVDu7+9KenEfaY17PqnEapvBU5ik+C7GtktG3/qu+tWNV1GX62tRV/syXk77zN7znbFwBL6acFYh7EXZNdwb3F9cVgELvWCs/R8egS+M813xhQvOT1SDjcreXggYCQP9">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
                    em:maxVersion="3.6.*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.0b4.xpi"
-                   em:updateHash="sha1:be1dc5d193f3370628be2ad3691cc79c9e44d733"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.0.xpi"
+                   em:updateHash="sha1:d12429fbdebf0ae8a61c8d899f1fb5b1b6e5ab1a"
                    em:updateInfoURL="http://ch.nicovideo.jp/community/co105163" />
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="1.0beta4">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
 </RDF:RDF>
