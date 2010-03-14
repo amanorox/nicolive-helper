@@ -575,7 +575,7 @@
 
 	      <label value="表示方法:"/>
 	      <vbox style="margin-left: 1em;">
-		<label value="生放送の開始、終了に合わせて、自動でウィンドウを:"/>
+		<label value="生放送のページを開いた時、放送終了した時、自動でNicoLiveHelperを:"/>
 		<grid>
 		  <columns>
 		    <column/>
@@ -595,7 +595,7 @@
 		    </row>
 		  </rows>
 		</grid>
-		<hbox><checkbox preference="pref-auto-close-tab" label="生放送終了時に自動でウィンドウを閉じる時、生放送のページも自動で閉じる"/></hbox>
+		<hbox><checkbox preference="pref-auto-close-tab" label="生放送終了時に自動でNicoLiveHelperを閉じる時、生放送のページも自動で閉じる"/></hbox>
 		<hbox><checkbox preference="pref-autoscroll" label="Helperを開いたとき、自動で生放送プレイヤーの位置までスクロールする"/></hbox>
 		<hbox><checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ効果があります。ただし、ネイティブAPIによる最前面表示ではないため、限定的になります。"/></hbox>
 	      </vbox>
