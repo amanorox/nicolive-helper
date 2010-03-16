@@ -187,9 +187,9 @@ var NicoLiveWindow = {
 	let data = this.backuprestore[name];
 
 	$('played-list-textbox').value = data.playlist_txt;
-	NicoLiveHelper.requestqueue = data.request;
-	NicoLiveHelper.stock = data.stock;
-	NicoLiveHelper.playlist = data.playlist;
+	NicoLiveHelper.requestqueue = JSON.parse(JSON.stringify(data.request));
+	NicoLiveHelper.stock = JSON.parse(JSON.stringify(data.stock));
+	NicoLiveHelper.playlist = JSON.parse(JSON.stringify(data.playlist));
 	for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
 	    NicoLiveHelper.playlist["_"+item.video_id] = true;
 	}
