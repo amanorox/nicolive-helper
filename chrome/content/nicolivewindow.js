@@ -30,7 +30,7 @@ var NicoLiveWindow = {
 	    let menuitem;
 	    let title = win.document.title.replace(/\(NicoLive\sHelper\)/,'');
 	    menuitem = CreateMenuItem(title,i);
-	    menuitem.addEventListener("command",function(e){ NicoLiveWindow.winlist[e.target.value].focus(); },false);
+	    menuitem.setAttribute("oncommand","NicoLiveWindow.winlist[event.target.value].focus();");
 	    $('popup-windowlist').appendChild(menuitem);
 	}
 	return true;
@@ -102,6 +102,25 @@ var NicoLiveWindow = {
 	this.createRestoreMenu();
     },
 
+    // 復元を確認する.
+    confirmRestore:function(backupname){
+	if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_RESTORE',[backupname]),
+			 LoadString('STR_BACKUP_WARN_RESTORE_TITLE'))){
+	    NicoLiveWindow.restore(backupname);
+	    ShowNotice( LoadFormattedString('STR_BACKUP_RESTORE',[backupname]) );
+	}
+    },
+    // 削除を確認する.
+    confirmDelete:function(backupname){
+	if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_DELETE',[backupname]),
+			 LoadString('STR_BACKUP_WARN_DEL_TITLE'))){
+	    delete NicoLiveWindow.backuprestore[backupname];
+	    NicoLiveWindow.createRestoreMenu();
+	    Application.storage.set("nico_live_backup",NicoLiveWindow.backuprestore);
+	    ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[backupname]) );
+	}
+    },
+
     createRestoreMenu:function(){
 	let menu = $('toolbar-restore');
 	let deletemenu = $('toolbar-deletebackup');
@@ -126,26 +145,12 @@ var NicoLiveWindow = {
 		elem.setAttribute('tooltiptext',str);
 	    }
 	    // 復元用.
-	    elem.addEventListener('command', function(){
-				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_RESTORE',[backupname]),
-						       LoadString('STR_BACKUP_WARN_RESTORE_TITLE'))){
-					  NicoLiveWindow.restore(backupname);
-					  ShowNotice( LoadFormattedString('STR_BACKUP_RESTORE',[backupname]) );
-				      }
-				  },false);
+	    elem.setAttribute("oncommand","NicoLiveWindow.confirmRestore('"+backupname+"');");
 	    menu.appendChild(elem);
 
 	    // 削除用.
 	    elem = CreateMenuItem(backupname,'');
-	    elem.addEventListener('command', function(){
-				      if(ConfirmPrompt(LoadFormattedString('STR_BACKUP_WARN_DELETE',[backupname]),
-						       LoadString('STR_BACKUP_WARN_DEL_TITLE'))){
-					  delete NicoLiveWindow.backuprestore[backupname];
-					  NicoLiveWindow.createRestoreMenu();
-					  Application.storage.set("nico_live_backup",NicoLiveWindow.backuprestore);
-					  ShowNotice( LoadFormattedString('STR_BACKUP_DELETE',[backupname]) );
-				      }
-				  },false);
+	    elem.setAttribute("oncommand","NicoLiveWindow.confirmDelete('"+backupname+"');");
 	    deletemenu.appendChild(elem);
 	}
     },

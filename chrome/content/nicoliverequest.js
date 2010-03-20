@@ -322,6 +322,63 @@ var NicoLiveRequest = {
 	this.resetStockIndex();
     },
 
+    // ストックのリクエストボタン.
+    _stockRequest:function(event){
+	let tr = FindParentElement(event.target,'tr');
+	let n = tr.getAttribute('stock-index');
+	NicoLiveRequest.addRequestFromStock(n);
+    },
+    // ストックの再生ボタン.
+    _stockPlay:function(event){
+	let tr = FindParentElement(event.target,'tr');
+	let n = tr.getAttribute('stock-index');
+	if(!NicoLiveHelper.isOffline()){
+	    NicoLiveHelper.playStock(n,true);
+	}else{
+	    let nextmusic = NicoLiveHelper.stock[ n-1 ];
+	    try{
+		NicoLiveRequest.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
+	    } catch (x) {
+		let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+nextmusic.video_id);
+		NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
+	    }
+	    NicoLiveRequest.playlist_start = n;
+	    clearInterval(NicoLiveRequest.playlist_timer);
+	    NicoLiveRequest.playlist_first = true;
+	    NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",2000);
+	}
+    },
+    // ストックの削除ボタン.
+    _stockDelete:function(event){
+	let tr = FindParentElement(event.target,'tr');
+	let n = tr.getAttribute('stock-index');
+	NicoLiveHelper.removeStock(n);
+    },
+    // ストックの↑↑ボタン.
+    _stockTop:function(event){
+	let tr = FindParentElement(event.target,'tr');
+	let n = tr.getAttribute('stock-index');
+	NicoLiveHelper.topToStock(n);
+    },
+    // ストックの↑ボタン.
+    _stockFloat:function(event){
+	let tr = FindParentElement(event.target,'tr');
+	let n = tr.getAttribute('stock-index');
+	NicoLiveHelper.floatStock(n);
+    },
+    // ストックの↓ボタン.
+    _stockSink:function(event){
+	let tr = FindParentElement(event.target,'tr');
+	let n = tr.getAttribute('stock-index');
+	NicoLiveHelper.sinkStock(n);
+    },
+    // ストックの↓↓ボタン.
+    _stockBottom:function(event){
+	let tr = FindParentElement(event.target,'tr');
+	let n = tr.getAttribute('stock-index');
+	NicoLiveHelper.bottomToStock(n);
+    },
+
     // ストックテーブルの行の中身を作成する.
     // tr : 行
     // n : n行目(1,2,...n)
@@ -354,93 +411,43 @@ var NicoLiveRequest = {
 	let button = CreateElement('button');
 	button.setAttribute('label','リクエスト');
 	button.className = 'commandbtn';
-	button.addEventListener("command",
-				function(event){
-				    let n = FindParentElement(event.target,'tr');
-				    n = tr.getAttribute('stock-index');
-				    NicoLiveRequest.addRequestFromStock(n);
-				},false);
+	button.setAttribute("oncommand","NicoLiveRequest._stockRequest(event);");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'再生');
 	button.className = 'commandbtn';
-	button.addEventListener("command",
-				function(event){
-				    let n = FindParentElement(event.target,'tr');
-				    n = tr.getAttribute('stock-index');
-				    if(!NicoLiveHelper.isOffline()){
-					NicoLiveHelper.playStock(n,true);
-				    }else{
-					let nextmusic = NicoLiveHelper.stock[ n-1 ];
-					try{
-					    NicoLiveRequest.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
-					} catch (x) {
-					    let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+nextmusic.video_id);
-					    NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
-					}
-					NicoLiveRequest.playlist_start = n;
-					clearInterval(NicoLiveRequest.playlist_timer);
-					NicoLiveRequest.playlist_first = true;
-					NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",2000);
-				    }
-				},
-				false);
+	button.setAttribute("oncommand","NicoLiveRequest._stockPlay(event);");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'削除');
 	button.className = 'commandbtn';
-	button.addEventListener("command",
-				function(event){
-				    let n = FindParentElement(event.target,'tr');
-				    n = tr.getAttribute('stock-index');
-				    NicoLiveHelper.removeStock(n);
-				},false);
+	button.setAttribute("oncommand","NicoLiveRequest._stockDelete(event);");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑↑');
 	button.className = 'commandbtn';
-	button.addEventListener("command",
-				function(event){
-				    let n = FindParentElement(event.target,'tr');
-				    n = tr.getAttribute('stock-index');
-				    NicoLiveHelper.topToStock(n);
-				},false);
+	button.setAttribute("oncommand","NicoLiveRequest._stockTop(event);");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑');
 	button.className = 'commandbtn';
-	button.addEventListener("command",
-				function(event){
-				    let n = FindParentElement(event.target,'tr');
-				    n = tr.getAttribute('stock-index');
-				    NicoLiveHelper.floatStock(n);
-				},false);
+	button.setAttribute("oncommand","NicoLiveRequest._stockFloat(event);");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓');
 	button.className = 'commandbtn';
-	button.addEventListener("command",
-				function(event){
-				    let n = FindParentElement(event.target,'tr');
-				    n = tr.getAttribute('stock-index');
-				    NicoLiveHelper.sinkStock(n);
-				},false);
+	button.setAttribute("oncommand","NicoLiveRequest._stockSink(event);");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓↓');
 	button.className = 'commandbtn';
-	button.addEventListener("command",
-				function(event){
-				    let n = FindParentElement(event.target,'tr');
-				    n = tr.getAttribute('stock-index');
-				    NicoLiveHelper.bottomToStock(n);
-				},false);
+	button.setAttribute("oncommand","NicoLiveRequest._stockBottom(event);");
 	hbox.appendChild(button);
 
 	vbox.appendChild(hbox);

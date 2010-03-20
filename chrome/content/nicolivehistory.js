@@ -21,6 +21,12 @@ THE SOFTWARE.
  */
 
 var NicoLiveHistory = {
+    _playFromHistory:function(item){
+	if( !NicoLiveHelper.canPlayCommand() ) return;
+	NicoLiveHelper.requestqueue.unshift(item);
+	NicoLiveHelper.playMusic(1);
+    },
+
     addPlayList:function(item){
 	let table = $('playlist-table');
 	if(!table) return;
@@ -40,18 +46,14 @@ var NicoLiveHistory = {
 	let button = CreateElement('button');
 	button.setAttribute("label",'リクエストに追加');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.addRequestQueue(item); },false);
+	let str = JSON.stringify(item);
+	button.setAttribute("oncommand","NicoLiveHelper.addRequestQueue(JSON.parse('"+str+"'));");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute('label','再生');
 	button.className = 'commandbtn';
-	button.addEventListener('command',
-				function(){
-				    if( !NicoLiveHelper.canPlayCommand() ) return;
-				    NicoLiveHelper.requestqueue.unshift(item);
-				    NicoLiveHelper.playMusic(1);
-				},false);
+	button.setAttribute("oncommand","NicoLiveHistory._playFromHistory(JSON.parse('"+str+"'));");
 	hbox.appendChild(button);
 	vbox.appendChild(hbox);
 	td.appendChild(vbox);
