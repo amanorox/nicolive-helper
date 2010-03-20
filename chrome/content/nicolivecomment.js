@@ -241,6 +241,14 @@ var NicoLiveComment = {
 	req.send(null);
     },
 
+    // コメントリフレクタから削除する.
+    removeFromCommentReflector:function(userid,name){
+	NicoLiveComment.delNGUser(userid);
+	let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
+	delete NicoLiveComment.reflector[userid];
+	RemoveElement(user[0]);
+	ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
+    },
     // リフレクション登録ダイアログを表示して設定する.
     showCommentReflectorDialog:function(userid){
 	let param = {
@@ -265,15 +273,7 @@ var NicoLiveComment = {
 		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
 		menuitem.setAttribute("comment-reflector",userid);
 		menuitem.setAttribute("tooltiptext","ID="+userid);
-		menuitem.addEventListener(
-		    'command',
-		    function(){
-			NicoLiveComment.delNGUser(userid);
-			let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-			delete NicoLiveComment.reflector[userid];
-			RemoveElement(user[0]);
-			ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
-		    },false);
+		menuitem.setAttribute("oncommand","NicoLiveComment.removeFromCommentReflector('"+userid+"','"+name+"');");
 		$('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
 		// ここまで
 	    }else{
