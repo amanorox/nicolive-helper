@@ -48,9 +48,7 @@ var NicoLiveRequest = {
 	div.className ="selection";
 	let a = CreateHTMLElement('a');
 	a.className = "";
-	a.onclick = function(){
-	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+item.video_id);
-	};
+	a.setAttribute("onclick","window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+item.video_id+"');");
 
 	let img = CreateHTMLElement('img');
 	img.src = item.thumbnail_url;
@@ -104,17 +102,13 @@ var NicoLiveRequest = {
 	    if( s.indexOf('mylist/')!=-1 ){
 		let a = CreateHTMLElement('a');
 		let mylist = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/'+mylist);
-		};
+		a.setAttribute("onclick","window.opener.getBrowser().addTab('http://www.nicovideo.jp/"+mylist+"');");
 		a.appendChild(document.createTextNode(s));
 		div2.appendChild(a);
 	    }else if( s.match(/(sm|nm)\d+/) ){
 		let a = CreateHTMLElement('a');
 		let vid = s;
-		a.onclick = function(){
-		    window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+vid);
-		};
+		a.setAttribute("onclick","window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+vid+"');");
 		a.setAttribute("onmouseover","NicoLiveComment.showThumbnail(event,'"+vid+"');");
 		a.setAttribute("onmouseout","NicoLiveComment.hideThumbnail();");
 		a.appendChild(document.createTextNode(s));
@@ -815,17 +809,11 @@ var NicoLiveRequest = {
     // リク、ストックタブ用のマイリス追加メニューを作る.
     appendAddMylistMenu:function(mylists){
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.addEventListener("command",
-				   function(e){
-				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
-				   },false );
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label);");
 	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
 
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.addEventListener("command",
-				   function(e){
-				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
-				   },false );
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label);");
 	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
     },
 

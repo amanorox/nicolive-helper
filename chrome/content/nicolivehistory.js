@@ -94,17 +94,12 @@ var NicoLiveHistory = {
 
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute('id','addto-mylist-from-history');
-	popupmenu.addEventListener("command", function(e){
-				       NicoLiveHistory.addMylist(e.target.value,e.target.label);
-				   },false );
+	popupmenu.setAttribute("oncommand","NicoLiveHistory.addMylist(event.target.value,event.target.label);");
 	menu.insertBefore( popupmenu, menu.firstChild);
 
 	// 詳細表示用のコンテキストメニュー.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.addEventListener("command",
-				   function(e){
-				       NicoLiveRequest.addMylist(e.target.value,e.target.label);
-				   },false );
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label);");
 	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-additionalinfo').nextSibling );
     },
 
