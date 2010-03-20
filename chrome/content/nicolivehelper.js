@@ -2890,9 +2890,14 @@ var NicoLiveHelper = {
 	this.musicinfo.length_ms = 0;
 
 	debugprint('Initialize NicoLive Helper');
+	/*
 	let request_id = Application.storage.get("nico_request_id","lv0");
 	let title      = Application.storage.get("nico_live_title","");
 	let caster = Application.storage.get("nico_live_caster",true);
+	 */
+	let request_id = window.arguments[0];
+	let title      = window.arguments[1];
+	let caster     = window.arguments[2];
 	debugprint("Caster:"+caster);
 
 	debugprint(request_id);

@@ -16,7 +16,7 @@ var NicoLiveOverlay = {
 	let elem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",'menuitem');
 	elem.setAttribute('label',title);
 	elem.setAttribute('value',url);
-	elem.addEventListener('command', function(e){ window.content.location.href = "http://live.nicovideo.jp/watch/"+url; }, false );
+	elem.setAttribute("oncommand","window.content.location.href = 'http://live.nicovideo.jp/watch/"+url+"';");
 	menu.insertBefore(elem,menu.firstChild);
 	menu = null; elem = null; i = null; item = null;
     },
@@ -26,7 +26,13 @@ var NicoLiveOverlay = {
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
 	Application.storage.set("nico_live_caster",iscaster);
-	window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature).focus();
+	//let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature).focus();
+	//w.arguments = [ url, title, iscaster ];
+
+	let win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
+	    .openWindow(null, 'chrome://nicolivehelper/content/requestwindow.xul','NLH_'+url, feature, null);
+	win.arguments = [ url, title, iscaster ];
+	win.focus();
 
 	this.insertHistory(url,title);
 	//Application.console.log(url+' '+title);
