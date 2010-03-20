@@ -136,9 +136,9 @@
 	<menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.forget();"/>
 	<menuseparator/>
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
-<!--
+
 	<menuitem label="test" disabled="false" oncommand="NicoLiveBrowser.begincrawl();"/>
--->
+
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>

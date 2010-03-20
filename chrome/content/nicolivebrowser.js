@@ -53,25 +53,28 @@ var NicoLiveBrowser = {
 	debugprint('check page '+this._page);
 	if(videos.length<=0){
 	    debugprint('crawling done.');
-	    NicoLiveDatabase.saveGPStorage("nico_mikusongs",this._mikusongs);
+	    debugprint('retry to crawl after 1min.');
+
+	    clearInterval(this._crawlingtimer);
+	    this._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 60*1000 );
+	    if( $('live-page').getAttribute('src')!='about:blank' ){
+		this.close();
+	    }
 	    return;
 	}
 	for(let i=0,item; item=videos[i]; i++){
 	    let d = item.href.match(/.+\/(.*?)$/);
 	    let info = { "vid": d[1], "uadp": uads[i].textContent };
-	    this._mikusongs.push(info);
+	    this.ostream.writeString(d[1]+"\t"+uads[i].textContent+"\r\n");
 	}
 	this._page++;
 	this._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 15*1000 );
-	if( (this._page % 20)==0 ){
-	    NicoLiveDatabase.saveGPStorage("nico_mikusongs",this._mikusongs);
-	    NicoLiveDatabase.saveGPStorage("nico_mikusong_nextpage",this._page);
-	}
+	NicoLiveDatabase.saveGPStorage("nico_mikusong_nextpage",this._page);
     },
 
     loadSearchingPage:function(){
-	// http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page=1&sort=f&order=a
-	let url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a";
+	let url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a"; // ミクオリジナル曲
+	url = "http://www.nicovideo.jp/tag/VOCALOID?page="+this._page+"&sort=f&order=a"; // VOCALOID
 	debugprint(url);
 	clearInterval(this._crawlingtimer);
 	$('live-page').setAttribute('src',url);
@@ -237,7 +240,25 @@ var NicoLiveBrowser = {
 	cos.close();
     },
 
-    begincrawl:function(){
+    openUADPFile:function(){
+	let f = NicoLivePreference.getCommentDir();
+	if(!f) return;
+	f.append('vocaloid-uadp.txt');
+	let file,os;
+	file = OpenFile(f.path);
+	debugprint('open uadp file:'+f.path);
+
+	os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+	let flags = 0x02|0x10|0x08;// wronly|append|create
+	os.init(file,flags,0664,0);
+	let cos = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+	cos.init(os,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
+
+	this.ostream = cos;
+	//cos.writeString('--- '+NicoLiveHelper.title+' ---\r\n');
+    },
+
+    _begincrawl:function(){
 	// 2010/3/17 0:00:00
 	if(!this._mikusongs){
 	    this._mikusongs = NicoLiveDatabase.loadGPStorage("nico_mikusongs",[]);
@@ -262,16 +283,17 @@ var NicoLiveBrowser = {
 	}
     },
 
-    _begincrawl:function(){
-	if( !this._page ){
+    begincrawl:function(){
+	this._page = NicoLiveDatabase.loadGPStorage("nico_mikusong_nextpage",1);
+	if( this._page==1 ){
 	    this._page = 1;
-	    this._mikusongs = new Array();
-
-	    //	$('live-page').addEventListener('DOMContentLoaded',function(){ NicoLiveBrowser.parseSearchingPage(); },true );
+	    this.openUADPFile();
 	    $('live-page').addEventListener('load',function(){ NicoLiveBrowser.parseSearchingPage(); },true );
 	    this.loadSearchingPage();
 	    debugprint('begin crawling');
 	}else{
+	    this.openUADPFile();
+	    $('live-page').addEventListener('load',function(){ NicoLiveBrowser.parseSearchingPage(); },true );
 	    this.loadSearchingPage();
 	    debugprint('continue crawling');
 	}
