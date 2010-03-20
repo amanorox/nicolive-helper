@@ -244,7 +244,7 @@ var NicoLiveDatabase = {
 	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_VIDEOID"),7));
 	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_DESC"),8));
 	menulist = CreateElement('menulist');
-	menulist.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
+	menulist.setAttribute("oncommand","NicoLiveDatabase.search();");
 	menulist.appendChild(elem);
 	hbox.appendChild(menulist);
 
@@ -255,7 +255,7 @@ var NicoLiveDatabase = {
 	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_EQUAL"),3));
 	elem.appendChild(CreateMenuItem(LoadString("STR_DBCOND_LTE"),4));
 	menulist = CreateElement('menulist');
-	menulist.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
+	menulist.setAttribute("oncommand","NicoLiveDatabase.search();");
 	menulist.appendChild(elem);
 	hbox.appendChild(menulist);
 
@@ -263,7 +263,7 @@ var NicoLiveDatabase = {
 	elem.setAttribute('flex','1');
 	elem.setAttribute('type','search');
 	//elem.setAttribute('autocompletesearch','form-history');
-	elem.addEventListener('command',function(e){ NicoLiveDatabase.search(); }, false);
+	elem.setAttribute("oncommand","NicoLiveDatabase.search();");
 	elem.setAttribute('timeout','1000');
 	hbox.appendChild(elem);
 
@@ -272,7 +272,7 @@ var NicoLiveDatabase = {
 	elem = CreateHTMLElement('input');
 	elem.setAttribute('type','button');
 	elem.setAttribute('value','+');
-	elem.addEventListener('click',function(e){ NicoLiveDatabase.addSearchLine();}, false);
+	elem.setAttribute("onclick","NicoLiveDatabase.addSearchLine();");
 	hbox.appendChild(elem);
 
 	//elem = CreateButton('-');
@@ -280,7 +280,7 @@ var NicoLiveDatabase = {
 	elem = CreateHTMLElement('input');
 	elem.setAttribute('type','button');
 	elem.setAttribute('value','-');
-	elem.addEventListener('click',function(e){ NicoLiveDatabase.removeSearchLine(e);}, false);
+	elem.setAttribute("onclick","NicoLiveDatabase.removeSearchLine(event);");
 	hbox.appendChild(elem);
 	$('search-condition').appendChild(hbox);
     },

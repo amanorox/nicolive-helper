@@ -253,9 +253,7 @@ var NicoLiveMylist = {
 		let popupmenu;
 		// ステータスバー用.
 		popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-		popupmenu.addEventListener("command", function(e){
-					       NicoLiveMylist.addMyList(e.target.value,e.target.label);
-					   },false );
+		popupmenu.setAttribute("oncommand","NicoLiveMylist.addMyList(event.target.value,event.target.label);");
 		$('popup-add-mylist').insertBefore( popupmenu, $('popup-add-mylist').firstChild );
 
 		let elem;
@@ -265,13 +263,13 @@ var NicoLiveMylist = {
 		    // マイリスト読み込み(stock)
 		    elem = CreateMenuItem(tmp,item.id);
 		    elem.setAttribute("tooltiptext",item.name);
-		    elem.addEventListener("command",function(e){ NicoLiveMylist.addStockFromMylist(e.target.value,e.target.label); },false);
+		    elem.setAttribute("oncommand","NicoLiveMylist.addStockFromMylist(event.target.value,event.target.label);");
 		    $('menupopup-from-mylist').appendChild(elem);
 
 		    // マイリスト読み込み(db)
 		    elem = CreateMenuItem(tmp,item.id);
 		    elem.setAttribute("tooltiptext",item.name);
-		    elem.addEventListener("command",function(e){ NicoLiveMylist.addDatabase(e.target.value,e.target.label);},false);
+		    elem.setAttribute("oncommand","NicoLiveMylist.addDatabase(event.target.value,event.target.label);");
 		    $('menupopup-from-mylist-to-db').appendChild(elem);
 		}
 	    }
