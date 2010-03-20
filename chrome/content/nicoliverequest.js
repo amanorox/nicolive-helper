@@ -191,37 +191,37 @@ var NicoLiveRequest = {
 	let button = CreateElement('button');
 	button.setAttribute("label",'再生');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.playMusic(n); },false);
+	button.setAttribute("oncommand","NicoLiveHelper.playMusic("+n+");");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'削除');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.removeRequest(n); },false);
+	button.setAttribute("oncommand","NicoLiveHelper.removeRequest("+n+");");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑↑');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.topToRequest(n); },false);
+	button.setAttribute("oncommand","NicoLiveHelper.topToRequest("+n+");");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↑');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.floatRequest(n); },false);
+	button.setAttribute("oncommand","NicoLiveHelper.floatRequest("+n+");");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.sinkRequest(n); },false);
+	button.setAttribute("oncommand","NicoLiveHelper.sinkRequest("+n+");");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'↓↓');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.bottomToRequest(n); },false);
+	button.setAttribute("oncommand","NicoLiveHelper.bottomToRequest("+n+");");
 	hbox.appendChild(button);
 
 	vbox.appendChild(hbox);
@@ -521,13 +521,15 @@ var NicoLiveRequest = {
 	let button = CreateElement('button');
 	button.setAttribute("label",'リクエストに追加');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.addRequestQueue(item); },false);
+	let jsonobj = JSON.stringify(item);
+	// ちょっとセコイかな?
+	button.setAttribute("oncommand","NicoLiveHelper.addRequestQueue(JSON.parse('"+jsonobj+"'));");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute("label",'削除');
 	button.className = 'commandbtn';
-	button.addEventListener("command",function(){ NicoLiveHelper.removeErrorRequest(item.video_id); },false);
+	button.setAttribute("oncommand","NicoLiveHelper.removeErrorRequest('"+item.video_id+"');");
 	hbox.appendChild(button);
 
 	vbox.appendChild(hbox);
