@@ -1286,8 +1286,8 @@ var NicoLiveHelper = {
 	    if( !this._firstflag ){
 		if( !notext ){
 		    elem.value += "\n"+this.title+" "+this.request_id+" ("+GetFormattedDateString("%Y/%m/%d %H:%M",this.starttime*1000)+"-)\n";
+		    this._firstflag = true;
 		}
-		this._firstflag = true;
 	    }
 	}
 	if(NicoLivePreference.do_classify){
