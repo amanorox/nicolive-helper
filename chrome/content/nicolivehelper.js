@@ -295,6 +295,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id);
 		}
 		NicoLiveHelper._donotshowdisconnectalert = true;
+		NicoLiveHelper.close();
 		window.close();
 	    }else{
 		alert(NicoLiveHelper.request_id+' は終了しました');

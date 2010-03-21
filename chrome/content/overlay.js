@@ -32,6 +32,7 @@ var NicoLiveOverlay = {
 	let win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
 	    .openWindow(null, 'chrome://nicolivehelper/content/requestwindow.xul','NLH_'+url, feature, null);
 	win.arguments = [ url, title, iscaster ];
+	win.opener = window;
 	win.focus();
 
 	this.insertHistory(url,title);
