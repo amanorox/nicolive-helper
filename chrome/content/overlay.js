@@ -26,15 +26,17 @@ var NicoLiveOverlay = {
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
 	Application.storage.set("nico_live_caster",iscaster);
-	//let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature).focus();
-	//w.arguments = [ url, title, iscaster ];
+	let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
+	w.arguments = [ url, title, iscaster ];
+	w.focus();
 
+/*
 	let win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
 	    .openWindow(null, 'chrome://nicolivehelper/content/requestwindow.xul','NLH_'+url, feature, null);
 	win.arguments = [ url, title, iscaster ];
 	win.opener = window;
 	win.focus();
-
+*/
 	this.insertHistory(url,title);
 	//Application.console.log(url+' '+title);
     },
