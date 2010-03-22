@@ -338,13 +338,12 @@ var NicoLiveComment = {
 	this.updateCommentViewer();
     },
 
-    addName:function(){
-	let userid = document.popupNode.getAttribute('user_id');
-	let name = InputPrompt( LoadFormattedString('STR_TEXT_SET_KOTEHAN',[userid]),
-				LoadString('STR_CAPTION_SET_KOTEHAN'), this.namemap[userid]?this.namemap[userid].name:userid);
+    addKotehanDatabase:function(userid,name){
 	if(name && name.length){
 	    let now = GetCurrentTime();
 	    let id;
+	    name = name.replace(/</,"&lt;");
+	    name = name.replace(/>/,"&gt;");
 	    this.namemap[userid] = {"name":name, date:now};
 	    for(id in this.namemap){
 		if( id>0 ) continue;
@@ -359,6 +358,14 @@ var NicoLiveComment = {
 	    delete this.namemap[userid];
 	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
 	}
+    },
+
+    addName:function(){
+	let userid = document.popupNode.getAttribute('user_id');
+	let name = InputPrompt( LoadFormattedString('STR_TEXT_SET_KOTEHAN',[userid]),
+				LoadString('STR_CAPTION_SET_KOTEHAN'), this.namemap[userid]?this.namemap[userid].name:userid);
+
+	this.addKotehanDatabase(userid,name);
 	this.updateCommentViewer();
 	this.createNameList();
     },
