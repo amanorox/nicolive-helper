@@ -1,0 +1,3 @@
+content		nicoliveworldsnews	chrome/content/
+
+overlay chrome://nicolivehelper/content/requestwindow.xul chrome://nicoliveworldsnews/content/nicoliveworldsnews.xul

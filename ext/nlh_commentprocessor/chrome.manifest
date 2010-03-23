@@ -1,0 +1,3 @@
+content		nlh_commentprocessor	chrome/content/
+
+overlay chrome://nicolivehelper/content/requestwindow.xul chrome://nlh_commentprocessor/content/nlh_commentprocessor.xul

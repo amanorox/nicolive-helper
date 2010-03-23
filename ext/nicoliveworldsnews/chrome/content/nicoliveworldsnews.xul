@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	 xmlns:html="http://www.w3.org/1999/xhtml">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicoliveworldsnews/content/nicoliveworldsnews.js" />
+
+  <tabs id="maintabs">
+    <tab insertafter="tabs-db" label="世界の新着(風)"/>
+  </tabs>
+
+  <tabpanels id="tabpanels">
+    <vbox insertafter="tab-database">
+      <hbox>
+	<label value="再生時間"/><textbox id="nicolive-worlds-playtime" type="number" min="0" max="1440" value="30" size="3"/>秒
+      </hbox>
+      <hbox>
+	<button label="開始" oncommand="NicoLiveWorldsNews.begin();"/>
+	<button label="停止" oncommand="NicoLiveWorldsNews.stop();"/>
+      </hbox>
+    </vbox>
+  </tabpanels>
+
+</overlay>
