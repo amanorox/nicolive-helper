@@ -70,6 +70,7 @@ var NicoLiveComment = {
 	}else{
 	    str = comment.user_id;
 	}
+	str = htmlspecialchars(str);
 	td.innerHTML = "<hbox class=\"selection\" context=\"popup-comment\" user_id=\""+comment.user_id+"\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
@@ -342,8 +343,6 @@ var NicoLiveComment = {
 	if(name && name.length){
 	    let now = GetCurrentTime();
 	    let id;
-	    name = name.replace(/</,"&lt;");
-	    name = name.replace(/>/,"&gt;");
 	    this.namemap[userid] = {"name":name, date:now};
 	    for(id in this.namemap){
 		if( id>0 ) continue;
