@@ -218,6 +218,11 @@ function debugprint(txt){
 	$('debug-textbox').value += txt + "\n";
     //Application.console.log(txt);
 }
+
+function debugconsole(txt){
+    Application.console.log(txt);
+}
+
 function debugalert(txt){
     AlertPrompt(txt);
 }

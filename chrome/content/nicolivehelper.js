@@ -2509,16 +2509,6 @@ var NicoLiveHelper = {
 		NicoLiveHelper.community  = xml.getElementsByTagName('default_community')[0].textContent;
 		if( NicoLiveHelper.iscaster!="0" ){
 		    NicoLiveHelper.iscaster=true;
-		    // load requests
-		    NicoLiveHelper.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
-		    NicoLiveRequest.update(NicoLiveHelper.requestqueue);
-		    // load playlist
-		    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-		    for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
-			NicoLiveHelper.playlist["_"+item.video_id] = true;
-			NicoLiveHistory.addPlayList( item );
-		    }
-		    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
 		    debugprint('あなたは生放送主です');
 		}else{
 		    NicoLiveHelper.iscaster = false;
@@ -2840,7 +2830,6 @@ var NicoLiveHelper = {
     },
     saveToStorage:function(){
 	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
-
 	// 視聴者ではリクエスト、プレイリストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
@@ -2882,34 +2871,47 @@ var NicoLiveHelper = {
 	}
     },
 
+    loadRequestAndHistory:function(){
+	// load requests
+	this.requestqueue = JSON.parse(JSON.stringify(NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[])));
+	// load playlist
+	this.playlist = JSON.parse(JSON.stringify(NicoLiveDatabase.loadGPStorage("nico_live_playlist",[])));
+	for(let i=0,item;item=this.playlist[i];i++){
+	    this.playlist["_"+item.video_id] = true;
+	    NicoLiveHistory.addPlayList( item );
+	}
+	$('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
+    },
+
     // オフラインかどうか.
     isOffline:function(){
 	return this.request_id=="lv0";
     },
 
     init: function(){
+	debugprint('Initializing NicoLive Helper...');
+
 	// リクエストのコメ番順シーケンシャル処理用.
 	this.requestprocessingqueue = new Array();
 	this.musicinfo.length_ms = 0;
 
-	debugprint('Initialize NicoLive Helper');
-
-	let request_id, title, caster;
+	let request_id, title, iscaster;
 	try{
 	    request_id = window.arguments[0];
 	    title      = window.arguments[1];
-	    caster     = window.arguments[2];
-	    if( request_id==null || title==null || caster==null ){
+	    iscaster   = window.arguments[2];
+	    if( request_id==null || title==null || iscaster==null ){
 		request_id = "lv0";
 		title = "";
-		caster = true;
+		iscaster = true;
 	    }
 	} catch (x) {
+	    debugprint("no window.arguments.");
 	    request_id = Application.storage.get("nico_request_id","lv0");
 	    title      = Application.storage.get("nico_live_title","");
-	    caster     = Application.storage.get("nico_live_caster",true);
+	    iscaster   = Application.storage.get("nico_live_caster",true);
 	}
-	debugprint("Caster:"+caster);
+	debugprint("Caster:"+iscaster);
 
 	debugprint(request_id);
 	this.requestqueue = new Array();
@@ -2922,28 +2924,32 @@ var NicoLiveHelper = {
 	this.allowrequest = NicoLivePreference.allowrequest;
 	this.setPlayStyle(NicoLivePreference.playstyle);
 
+	// load stock
 	this.stock        = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
 
 	if(request_id && request_id!="lv0"){
 	    // online
 	    title = title.replace(/\u200b/g,"");
-	    document.title = request_id+":"+title+" (NicoLive Helper)";
+	    if( NicoLivePreference.isSingleWindowMode() ){
+		document.title = request_id+":"+title+" (Single Window/NicoLive Helper)";
+	    }else{
+		document.title = request_id+":"+title+" (NicoLive Helper)";
+	    }
 	    this.title = title;
+
+	    if( iscaster || NicoLivePreference.isSingleWindowMode() ){
+		this.loadRequestAndHistory();
+	    }
 	    this.start(request_id);
 	}else{
 	    // offline
+	    document.title += " (Single Window)";
 	    this.request_id = "lv0";
-	    this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
-	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
-	    for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){ // rebuild playlog.
-		NicoLiveHelper.playlist["_"+item.video_id] = true;
-		NicoLiveHistory.addPlayList( item );
-	    }
-	    $('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");
+	    this.loadRequestAndHistory();
 	}
 	this.updateRemainRequestsAndStocks();
 
-	if( !this.isOffline() && caster ){
+	if( !this.isOffline() && iscaster ){
 	    this.retrieveUserDefinedValue();
 	}
 
