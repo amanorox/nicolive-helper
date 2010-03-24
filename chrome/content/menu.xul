@@ -6,10 +6,9 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/overlay.js" />
 
 
-  <menupopup id="menu_ToolsPopup">
-    <menu label="NicoLive Helper" insertbefore="menu_pageInfo">
+  <menupopup id="goPopup">
+    <menu label="NicoLive Helper">
       <menupopup id="nicolive-menu-popup">
-	
       </menupopup>
     </menu>
   </menupopup>

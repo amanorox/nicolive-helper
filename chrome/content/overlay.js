@@ -1,4 +1,13 @@
 var NicoLiveOverlay = {
+    getPref:function(){
+	return new PrefsWrapper1("extensions.nicolivehelper.");
+    },
+
+    isSingleWindowMode:function(){
+	let pref = this.getPref();
+	return pref.getBoolPref("singlewindow");
+    },
+
     insertHistory:function(url,title){
 	if(url=="lv0") return;
 
@@ -26,10 +35,16 @@ var NicoLiveOverlay = {
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
 	Application.storage.set("nico_live_caster",iscaster);
-	let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
-	w.arguments = [ url, title, iscaster ];
-	w.focus();
 
+	if( this.isSingleWindowMode() ){
+	    let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_lv0",feature);
+	    w.arguments = [ url, title, iscaster ];
+	    w.focus();
+	}else{
+	    let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
+	    w.arguments = [ url, title, iscaster ];
+	    w.focus();
+	}
 /*
 	let win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
 	    .openWindow(null, 'chrome://nicolivehelper/content/requestwindow.xul','NLH_'+url, feature, null);
@@ -81,7 +96,7 @@ var NicoLiveOverlay = {
 	    iscaster = true;
 	}
 
-	let prefs = new PrefsWrapper1("extensions.nicolivehelper.");
+	let prefs = this.getPref();
 	if( prefs.getBoolPref("autowindowopen") && iscaster ||
 	    prefs.getBoolPref("autowindowopen-listener") && !iscaster ){
 	    let url = e.target.location.href;
