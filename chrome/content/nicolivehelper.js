@@ -2217,6 +2217,7 @@ var NicoLiveHelper = {
 	if(dat){
 	    this.last_res = parseInt(dat[1]);
 	    debugprint('last_res='+this.last_res);
+	    ShowNotice("コメントサーバに接続しました");
 	}
     },
 
