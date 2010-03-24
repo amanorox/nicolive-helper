@@ -2906,6 +2906,7 @@ var NicoLiveHelper = {
 	    this.request_id = request_id;
 	    this.postkey = "";
 	    this.last_res = 0;
+	    this.inplay = false;
 	    this.commentstate = COMMENT_STATE_NONE;
 	    this.commentview = COMMENT_VIEW_NORMAL;
 	    this.start(request_id);
