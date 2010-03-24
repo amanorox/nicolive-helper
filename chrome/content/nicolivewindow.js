@@ -78,19 +78,9 @@ var NicoLiveWindow = {
     setupWindowOpener:function(){
 	// window.openerがないときに、ブラウザ本体を探して設定する.
 	if( !window.opener ){
-	    debugprint("not exist window.opener");
 	    let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
-	    let browserEnumerator = wm.getEnumerator("navigator:browser");
-	    while(browserEnumerator.hasMoreElements()) {
-		let browser = browserEnumerator.getNext();
-		debugprint('gBrowser:'+browser);
-		debugprint('window:'+window);
-		debugprint("found Firefox window.");
-		window.opener = browser;
-		break;
-	    }
-	}else{
-	    debugprint("exist window.opener");
+	    let browserwin = wm.getMostRecentWindow("navigator:browser");
+	    window.opener = browserwin;
 	}
     },
 

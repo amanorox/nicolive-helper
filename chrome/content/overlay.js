@@ -1,6 +1,6 @@
 var NicoLiveOverlay = {
     debugprint:function(txt){
-	Application.console.log(txt);
+	//Application.console.log(txt);
     },
 
     getPref:function(){
