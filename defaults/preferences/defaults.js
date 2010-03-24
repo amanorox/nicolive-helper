@@ -75,3 +75,4 @@ pref("extensions.nicolivehelper.ngwordfiltering",false);
 pref("extensions.nicolivehelper.custom-script",false);
 pref("extensions.nicolivehelper.do-classify",false);
 pref("extensions.nicolivehelper.classes-value","");
+pref("extensions.nicolivehelper.singlewindow",false);

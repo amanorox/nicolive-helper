@@ -456,6 +456,7 @@
     <preferences>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>
       <preference id="pref-commentlogDir" name="extensions.nicolivehelper.commentlogDir" type="file"/>
+      <preference id="pref-singlewindowmode" name="extensions.nicolivehelper.singlewindow" type="bool"/>
       <preference id="pref-auto-open" name="extensions.nicolivehelper.autowindowopen" type="bool"/>
       <preference id="pref-auto-close" name="extensions.nicolivehelper.autowindowclose" type="bool"/>
       <preference id="pref-auto-open-listener" name="extensions.nicolivehelper.autowindowopen-listener" type="bool"/>
@@ -487,6 +488,7 @@
 	  <tab label="コメント"/>
 	  <tab label="動画分類"/>
 	  <tab label="スクリプト"/>
+	  <tab label="ウィンドウ"/>
 	  <tab label="その他"/>
 	</tabs>
 
@@ -555,6 +557,41 @@
 	  </tabpanel>
 
 	  <tabpanel orient="vertical">
+	    <!-- window -->
+	    <hbox>
+	      <checkbox preference="pref-singlewindowmode" label="シングルウィンドウモード"/>
+	    </hbox>
+	    <separator/>
+
+	    <label value="表示方法:"/>
+	    <vbox style="margin-left: 1em;">
+	      <label value="生放送のページを開いた時、放送終了した時、自動でNicoLiveHelperを:"/>
+	      <grid>
+		<columns>
+		  <column/>
+		  <column/>
+		  <column/>
+		</columns>
+		<rows>
+		  <row>
+		    <hbox align="center"><label value="放送者:"/></hbox>
+		    <checkbox preference="pref-auto-open" label="開く"/>
+		    <checkbox preference="pref-auto-close" label="閉じる"/>
+		  </row>
+		  <row>
+		    <hbox align="center"><label value="視聴者:"/></hbox>
+		    <checkbox preference="pref-auto-open-listener" label="開く"/>
+		    <checkbox preference="pref-auto-close-listener" label="閉じる"/>
+		  </row>
+		</rows>
+	      </grid>
+	      <hbox><checkbox preference="pref-auto-close-tab" label="生放送終了時に自動でNicoLiveHelperを閉じる時、生放送のページも自動で閉じる"/></hbox>
+	      <hbox><checkbox preference="pref-autoscroll" label="Helperを開いたとき、自動で生放送プレイヤーの位置までスクロールする"/></hbox>
+	      <hbox><checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ効果があります。ただし、ネイティブAPIによる最前面表示ではないため、限定的になります。"/></hbox>
+	    </vbox>
+	  </tabpanel>
+
+	  <tabpanel orient="vertical">
 	    <!-- others -->
 	    <hbox align="center">
 	      <label value="フォント:"/>
@@ -573,32 +610,6 @@
 	      </vbox>
 	      <separator/>
 
-	      <label value="表示方法:"/>
-	      <vbox style="margin-left: 1em;">
-		<label value="生放送のページを開いた時、放送終了した時、自動でNicoLiveHelperを:"/>
-		<grid>
-		  <columns>
-		    <column/>
-		    <column/>
-		  <column/>
-		  </columns>
-		  <rows>
-		    <row>
-		      <hbox align="center"><label value="放送者:"/></hbox>
-		      <checkbox preference="pref-auto-open" label="開く"/>
-		      <checkbox preference="pref-auto-close" label="閉じる"/>
-		    </row>
-		    <row>
-		      <hbox align="center"><label value="視聴者:"/></hbox>
-		      <checkbox preference="pref-auto-open-listener" label="開く"/>
-		      <checkbox preference="pref-auto-close-listener" label="閉じる"/>
-		    </row>
-		  </rows>
-		</grid>
-		<hbox><checkbox preference="pref-auto-close-tab" label="生放送終了時に自動でNicoLiveHelperを閉じる時、生放送のページも自動で閉じる"/></hbox>
-		<hbox><checkbox preference="pref-autoscroll" label="Helperを開いたとき、自動で生放送プレイヤーの位置までスクロールする"/></hbox>
-		<hbox><checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ効果があります。ただし、ネイティブAPIによる最前面表示ではないため、限定的になります。"/></hbox>
-	      </vbox>
 	    </vbox>
 	  </tabpanel>
 	</tabpanels>

@@ -22,7 +22,6 @@ THE SOFTWARE.
 /**
  * 設定
  */
-
 var NicoLivePreference = {
     readAdvancedPrefs:function(fromobserver){
 	let branch = this.getBranch();
@@ -206,6 +205,11 @@ var NicoLivePreference = {
 	let branch = this.getBranch();
 	branch.setBoolPref("allowrequest",NicoLiveHelper.allowrequest);
 	branch.setIntPref("playstyle",NicoLiveHelper.playstyle);
+    },
+
+    isSingleWindowMode:function(){
+	let branch = this.getBranch();
+	return branch.getBoolPref("singlewindow");
     },
 
     getCommentDir:function(){
