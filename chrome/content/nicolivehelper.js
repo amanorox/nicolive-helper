@@ -2896,6 +2896,7 @@ var NicoLiveHelper = {
     connectNewBroadcasting:function(request_id,title,iscaster){
 	$('debug-textbox').value = "";
 	debugprint("Connect To New Broadcasting("+request_id+").");
+	NicoLiveComment.releaseReflector();
 	NicoLiveComment.initView();
 	if(request_id && request_id!="lv0"){
 	    // online
@@ -2979,7 +2980,9 @@ var NicoLiveHelper = {
 	    this.start(request_id);
 	}else{
 	    // offline
-	    document.title += " (Single Window)";
+	    if( NicoLivePreference.isSingleWindowMode() ){
+		document.title += " (Single Window)";
+	    }
 	    this.request_id = "lv0";
 	    this.loadRequestAndHistory();
 	}
