@@ -489,6 +489,7 @@ var NicoLiveComment = {
 	f.append(request_id+'.txt');
 	let file;
 	let os;
+	this.closeFile();
 
 	file = OpenFile(f.path);
 	debugprint('open comment log:'+f.path);
