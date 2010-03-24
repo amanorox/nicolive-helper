@@ -298,7 +298,7 @@ var NicoLiveHelper = {
 		NicoLiveHelper.close();
 		window.close();
 	    }else{
-		alert(NicoLiveHelper.request_id+' は終了しました');
+		AlertPrompt(NicoLiveHelper.request_id+' は終了しました',NicoLiveHelper.request_id);
 		NicoLiveHelper._donotshowdisconnectalert = true;
 		NicoLiveHelper.close();
 	    }
@@ -2247,7 +2247,7 @@ var NicoLiveHelper = {
 	    onStopRequest: function(request, context, status){
 		try{
 		    if( !NicoLiveHelper._donotshowdisconnectalert ){
-			alert('コメントサーバから切断されました。');
+			AlertPrompt('コメントサーバから切断されました。',NicoLiveHelper.request_id);
 		    }
 		    NicoLiveHelper.close();
 		} catch (x) {
@@ -2487,6 +2487,7 @@ var NicoLiveHelper = {
 
     // getplayerstatus APIから生放送情報を取得する.
     getplayerstatus: function(req_id){
+	debugprint("GET getplayerstatus");
 	var req = new XMLHttpRequest();
 	if(!req) return;
 	req.onreadystatechange = function(){
@@ -2559,6 +2560,7 @@ var NicoLiveHelper = {
 		debugprint("port:"+NicoLiveHelper.port);
 		debugprint("thread:"+NicoLiveHelper.thread);
 		
+		NicoLiveHelper._donotshowdisconnectalert = false;
 		if( evaluateXPath(xml,"//quesheet").length ){
 		    NicoLiveHelper.construct_playlist_for_timeshift(xml);
 		}else{
@@ -2573,6 +2575,8 @@ var NicoLiveHelper = {
 		debugalert('コメントサーバに接続中、エラーが発生しました. '+x);
 	    }
 	};
+	debugprint("Close current connection.");
+	this._donotshowdisconnectalert = true;
 	this.close();
 
 	let url="http://watch.live.nicovideo.jp/api/getplayerstatus?v="+req_id;
@@ -2886,6 +2890,36 @@ var NicoLiveHelper = {
     // オフラインかどうか.
     isOffline:function(){
 	return this.request_id=="lv0";
+    },
+
+    connectNewBroadcasting:function(request_id,title,iscaster){
+	$('debug-textbox').value = "";
+	debugprint("Connect To New Broadcasting("+request_id+").");
+	NicoLiveComment.initView();
+	if(request_id && request_id!="lv0"){
+	    // online
+	    title = title.replace(/\u200b/g,"");
+	    document.title = request_id+":"+title+" (Single Window/NicoLive Helper)";
+	    // これだけ初期化しておけば大丈夫かな.
+	    this.title = title;
+	    this.request_id = request_id;
+	    this.postkey = "";
+	    this.last_res = 0;
+	    this.commentstate = COMMENT_STATE_NONE;
+	    this.commentview = COMMENT_VIEW_NORMAL;
+	    this.start(request_id);
+	}else{
+	    // offline
+	    document.title  = "NicoLive Helper (Single Window)";
+	    this.close();
+
+	    let playprogress = $('statusbar-music-progressmeter');
+	    let musictime = $('statusbar-music-name');
+	    playprogress.value = 0;
+	    musictime.label = "";
+
+	    this.request_id = "lv0";
+	}
     },
 
     init: function(){

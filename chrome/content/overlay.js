@@ -1,4 +1,8 @@
 var NicoLiveOverlay = {
+    debugprint:function(txt){
+	Application.console.log(txt);
+    },
+
     getPref:function(){
 	return new PrefsWrapper1("extensions.nicolivehelper.");
     },
@@ -30,6 +34,12 @@ var NicoLiveOverlay = {
 	menu = null; elem = null; i = null; item = null;
     },
 
+    findWindow:function(request_id){
+	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	let win = wm.getMostRecentWindow("NicoLiveHelperMainWindow");
+	return win;
+    },
+
     open:function(url,title,iscaster){
 	let feature="chrome,resizable=yes";
 	Application.storage.set("nico_request_id",url);
@@ -37,9 +47,17 @@ var NicoLiveOverlay = {
 	Application.storage.set("nico_live_caster",iscaster);
 
 	if( this.isSingleWindowMode() ){
-	    let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_lv0",feature);
-	    w.arguments = [ url, title, iscaster ];
-	    w.focus();
+	    let win = this.findWindow();
+	    if(win){
+		this.debugprint("NicoLive Helper Window Exists.");
+		win.NicoLiveHelper.connectNewBroadcasting(url,title,iscaster);
+		win.focus();
+	    }else{
+		let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_lv0",feature);
+		w.arguments = [ url, title, iscaster ];
+		w.focus();
+		this.debugprint("Open NicoLive Helper Window.");
+	    }
 	}else{
 	    let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
 	    w.arguments = [ url, title, iscaster ];

@@ -544,6 +544,12 @@ var NicoLiveComment = {
 	$('textbox-comment').setAttribute("autocompletesearchparam",JSON.stringify(concat_autocomplete));
     },
 
+    initView:function(){
+	// コメントの表示部をクリア.
+	this.commentlog = new Array();
+	clearTable($('comment_table'));
+    },
+
     init:function(){
 	// コメントリフレクターの登録用.
 	this.reflector = new Object();
