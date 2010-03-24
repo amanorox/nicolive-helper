@@ -2899,6 +2899,11 @@ var NicoLiveHelper = {
 	    request_id = window.arguments[0];
 	    title      = window.arguments[1];
 	    caster     = window.arguments[2];
+	    if( request_id==null || title==null || caster==null ){
+		request_id = "lv0";
+		title = "";
+		caster = true;
+	    }
 	} catch (x) {
 	    request_id = Application.storage.get("nico_request_id","lv0");
 	    title      = Application.storage.get("nico_live_title","");
@@ -2927,7 +2932,7 @@ var NicoLiveHelper = {
 	    this.start(request_id);
 	}else{
 	    // offline
-	    this.request_id = request_id;
+	    this.request_id = "lv0";
 	    this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
 	    NicoLiveHelper.playlist = NicoLiveDatabase.loadGPStorage("nico_live_playlist",[]);
 	    for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){ // rebuild playlog.
