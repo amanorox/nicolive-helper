@@ -75,6 +75,25 @@ var NicoLiveWindow = {
 	return null;
     },
 
+    setupWindowOpener:function(){
+	// window.openerがないときに、ブラウザ本体を探して設定する.
+	if( !window.opener ){
+	    debugprint("not exist window.opener");
+	    let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	    let browserEnumerator = wm.getEnumerator("navigator:browser");
+	    while(browserEnumerator.hasMoreElements()) {
+		let browser = browserEnumerator.getNext();
+		debugprint('gBrowser:'+browser);
+		debugprint('window:'+window);
+		debugprint("found Firefox window.");
+		window.opener = browser;
+		break;
+	    }
+	}else{
+	    debugprint("exist window.opener");
+	}
+    },
+
     init: function(){
 	let prefs = NicoLivePreference.getBranch();
 	if( prefs.getBoolPref("autoscroll") ){
@@ -91,6 +110,7 @@ var NicoLiveWindow = {
 
 	this.backuprestore = NicoLiveDatabase.loadGPStorage("nico_live_backup",{});
 	this.createRestoreMenu();
+	this.setupWindowOpener();
     },
     destroy: function(){
 	this.save();

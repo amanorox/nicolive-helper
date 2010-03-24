@@ -519,13 +519,15 @@ var NicoLiveHelper = {
 	    for(let index=0; index<numTabs; index++) {
 		let currentBrowser = browserInstance.getBrowserAtIndex(index);
 		if (currentBrowser.currentURI.spec.match(url)) {
-		    window.opener.gBrowser.removeTab( browserInstance.tabContainer.childNodes[index] );
+		    try{
+			window.opener.gBrowser.removeTab( browserInstance.tabContainer.childNodes[index] );
+		    } catch (x) {
+		    }
 		    return;
 		}
 	    }
 	}
     },
-
 
     // リクエストをキャンセルする.
     cancelRequest:function(user_id,vid){
@@ -2917,7 +2919,7 @@ var NicoLiveHelper = {
 
 	this.stock        = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
 
-	if(request_id!="lv0"){
+	if(request_id && request_id!="lv0"){
 	    // online
 	    title = title.replace(/\u200b/g,"");
 	    document.title = request_id+":"+title+" (NicoLive Helper)";
