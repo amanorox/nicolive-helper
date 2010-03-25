@@ -290,6 +290,7 @@ var NicoLiveHelper = {
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // ロスタイムのときは premium=2 からやってくる.
 	    let prefs = NicoLivePreference.getBranch();
+	    NicoLiveComment.releaseReflector();
 	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster || prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
 		if( prefs.getBoolPref("autotabclose") ){
 		    NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id);
