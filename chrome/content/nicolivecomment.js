@@ -88,6 +88,7 @@ var NicoLiveComment = {
 	    }
 	}
 	str = tmp.join("");
+	str = str.replace(/(\r\n|\r|\n)/gm,"<html:br/>");
 
 	// sm,nmにリンクを貼り付け.
 	str = str.replace(/((sm|nm)\d+)/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
