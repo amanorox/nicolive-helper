@@ -24,7 +24,7 @@ THE SOFTWARE.
  * コメントウィンドウ
  */
 var NicoLiveComment = {
-    addRow:function(comment){
+    addRow:function(comment,disablereflection){
 	let table = $('comment_table');
 	if(!table){ return; }
 
@@ -101,7 +101,7 @@ var NicoLiveComment = {
 	let datestr = GetDateString(comment.date*1000);
 	td.textContent = datestr;
 
-	if(comment.premium!=3){
+	if(comment.premium<2 && !disablereflection){
 	    this.reflection(comment);
 	}
     },
@@ -400,7 +400,7 @@ var NicoLiveComment = {
     updateCommentViewer:function(){
 	clearTable($('comment_table'));
 	for(let i=0,item;item=this.commentlog[i];i++){
-	    this.addRow(item);
+	    this.addRow(item,true);
 	}
     },
 
