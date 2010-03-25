@@ -1369,7 +1369,8 @@ var NicoLiveHelper = {
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		debugprint('castercomment:'+req.responseText);
-		if( req.responseText=="status=error" ){
+		// status=error&error=0
+		if( req.responseText.indexOf("status=error")!=-1 ){
 		    // 世界の新着、生放送引用拒否動画は、主コメがエラーになる.
 		    let video_id = null;
 		    try{
@@ -1384,7 +1385,7 @@ var NicoLiveHelper = {
 		    if(video_id && retry){
 			let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
 			NicoLiveHelper.postCasterComment(str,"");
-			$('played-list-textbox').value += str + "\n";
+			//$('played-list-textbox').value += str + "\n"; // これは要らないかな.
 			// たまに生引用拒否していなくてもエラーになるので.
 			// 再生エラータブ行き.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
@@ -1392,9 +1393,11 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.musicinfo.isplayed = true;
 			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);
 			}
-			NicoLiveHelper.musicinfo = {};
+			NicoLiveHelper.musicinfo.length_ms = 1000;
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
+		    }else if(retry){
+			ShowNotice("コメント送信に失敗しました:"+comment);
 		    }
 		}else{
 		    switch( NicoLiveHelper.commentstate ){
@@ -1446,6 +1449,7 @@ var NicoLiveHelper = {
 	if(name){
 	    data += "&name="+encodeURIComponent(name);
 	}
+	data += "&token="+NicoLiveHelper.token;
 	// コマンドは mail=green%20shita と付ける.
 	data += "&mail="+encodeURIComponent(mail);
 	req.send(data);
