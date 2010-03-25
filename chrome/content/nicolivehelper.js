@@ -2800,6 +2800,7 @@ var NicoLiveHelper = {
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){ // 何も動画が再生されてなければジングル再生.
 		this.inplay = true;
+		debugprint("play jingle.");
 		let timerid = setInterval(
 		    function(){
 			if( !NicoLiveHelper.musicinfo.video_id ){
@@ -2912,6 +2913,8 @@ var NicoLiveHelper = {
 	    this.postkey = "";
 	    this.last_res = 0;
 	    this.inplay = false;
+	    this._firstflag = false;
+	    this.musicinfo = {};
 	    this.commentstate = COMMENT_STATE_NONE;
 	    this.commentview = COMMENT_VIEW_NORMAL;
 	    this.start(request_id);
