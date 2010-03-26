@@ -229,9 +229,51 @@ var NicoLiveMylist = {
 	return popupmenu;
     },
 
+    isVideoExists:function(video_id){
+	try{
+	    for (mylist_id in this.mylistdata){
+		if(this.mylistdata[mylist_id].mylistitem["_"+video_id]){
+		    return this.mylists.mylistgroup[mylist_id];
+		}
+	    }
+	} catch (x) {
+	}
+	return null;
+    },
+
+    parseMylist:function(mylist_id,json){
+	let id = "_"+mylist_id;
+	this.mylistdata[id] = JSON.parse(json);
+
+	for(let i=0,item; item=this.mylistdata[id].mylistitem[i]; i++){
+	    this.mylistdata[id].mylistitem["_"+item.item_data.video_id] = item.item_data;
+	}
+    },
+
+    getAllMylists:function(mylists){
+	for(let i=0,item; item=mylists[i]; i++){
+	    mylists["_"+item.id] = item.name;
+	    debugprint('load mylist(id='+item.id+')');
+	    let req = new XMLHttpRequest();
+	    if( !req ) continue;
+	    req.mylist_id = item.id;
+	    req.onreadystatechange = function(){
+		if( req.readyState==4 && req.status==200 ){
+		    NicoLiveMylist.parseMylist(req.mylist_id, req.responseText);
+		}
+	    };
+	    let url = "http://www.nicovideo.jp/api/mylist/list";
+	    req.open('POST',url );
+	    req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	    let data = "group_id="+item.id;
+	    req.send(data);
+	}
+    },
+
     init:function(){
 	debugprint("NicoLiveMylist.init");
 	this.mylists = new Array();
+	this.mylistdata = new Object();
 	this.mylistcomment = new Object();
 
 	let req = new XMLHttpRequest();
@@ -272,6 +314,7 @@ var NicoLiveMylist = {
 		    elem.setAttribute("oncommand","NicoLiveMylist.addDatabase(event.target.value,event.target.label);");
 		    $('menupopup-from-mylist-to-db').appendChild(elem);
 		}
+		NicoLiveMylist.getAllMylists(mylists);
 	    }
 	};
 	let url = "http://www.nicovideo.jp/api/mylistgroup/list";

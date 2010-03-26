@@ -589,6 +589,8 @@ var NicoLiveHelper = {
 		    }
 
 		    NicoLiveHelper.musicinfo = music;
+		    NicoLiveHelper.musicinfo.mylist = NicoLiveMylist.isVideoExists(video_id);
+
 		    let du = Math.floor(NicoLiveHelper.musicinfo.length_ms/1000)+1;
 		    NicoLiveHelper.musicendtime   = NicoLiveHelper.musicstarttime+du;
 
@@ -935,6 +937,8 @@ var NicoLiveHelper = {
 
 	clearInterval(this._playnext);
 	this.musicinfo = music;
+	this.musicinfo.mylist = NicoLiveMylist.isVideoExists(this.musicinfo.video_id);
+
 	let str = "/play " + this.musicinfo.video_id;
 	if($('do-subdisplay').checked){
 	    str += " sub"; // サブ画面で再生する.
@@ -2407,6 +2411,9 @@ var NicoLiveHelper = {
 	    + " コメント/"+this.musicinfo.comment_num
 	    + " マイリスト/"+this.musicinfo.mylist_counter+"\n"
 	    + "タグ/"+this.musicinfo.tags.join(',');
+	if(this.musicinfo.mylist!=null){
+	    str = "マイリスト登録済み:"+this.musicinfo.mylist + "\n"+str;
+	}
 	currentmusic.setAttribute("tooltiptext",str);
 
 	let w = window.innerWidth - $('statusbar-remain').clientWidth - $('statusbar-n-of-listeners').clientWidth - $('statusbar-live-progress').clientWidth;
@@ -3059,7 +3066,18 @@ var NicoLiveHelper = {
     },
 
     test: function(){
-	let f = "resizable,chrome,dialog=no";
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		debugprint(req.responseText);
+	    }
+	};
+	let url = "http://www.nicovideo.jp/api/mylist/list";
+	req.open('POST',url );
+	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	let data = "group_id=17891558";
+	req.send(data);
     }
 };
 
