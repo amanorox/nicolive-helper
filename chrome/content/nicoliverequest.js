@@ -243,7 +243,7 @@ var NicoLiveRequest = {
 	// ストックの配列とテーブルの行が1対1で対応しているので.
 	let rows = $('stock-table').getElementsByTagName('tr');
 	for(let i=0,item;item=q[i];i++){
-	    if(NicoLiveHelper.isPlayedMusic(item.video_id)){
+	    if(item.isplayed){
 		rows[i].className = "table_played";
 	    }else{
 		rows[i].className = "table_casterselection";		
