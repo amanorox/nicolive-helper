@@ -232,11 +232,13 @@ var NicoLiveMylist = {
     isVideoExists:function(video_id){
 	try{
 	    for (mylist_id in this.mylistdata){
+		if(mylist_id=='time') continue;
 		if(this.mylistdata[mylist_id].mylistitem["_"+video_id]){
 		    return this.mylists.mylistgroup[mylist_id];
 		}
 	    }
 	} catch (x) {
+	    debugprint(x);
 	}
 	return null;
     },
@@ -256,8 +258,16 @@ var NicoLiveMylist = {
 	this.mylistdata = NicoLiveDatabase.loadGPStorage("nico_live_allmylist",{});
 	if( this.mylistdata.time && (now-this.mylistdata.time)<3600 ){
 	    debugprint("マイリストを取得して1時間未満のため再取得は行われません");
+	    for(let i=0,item; item=mylists[i]; i++){
+		let id = "_"+item.id;
+		mylists[id] = item.name;
+		for(let j=0,item2; item2=this.mylistdata[id].mylistitem[j]; j++){
+		    this.mylistdata[id].mylistitem["_"+item2.item_data.video_id] = item2.item_data;
+		}
+	    }
 	    return;
 	}
+	this.mylistdata = new Object();
 	this.mylistdata.time = now;
 	for(let i=0,item; item=mylists[i]; i++){
 	    mylists["_"+item.id] = item.name;
