@@ -248,9 +248,17 @@ var NicoLiveMylist = {
 	for(let i=0,item; item=this.mylistdata[id].mylistitem[i]; i++){
 	    this.mylistdata[id].mylistitem["_"+item.item_data.video_id] = item.item_data;
 	}
+	Application.storage.set("nico_live_allmylist",this.mylistdata);
     },
 
     getAllMylists:function(mylists){
+	let now = GetCurrentTime();
+	this.mylistdata = NicoLiveDatabase.loadGPStorage("nico_live_allmylist",{});
+	if( this.mylistdata.time && (now-this.mylistdata.time)<3600 ){
+	    debugprint("マイリストを取得して1時間未満のため再取得は行われません");
+	    return;
+	}
+	this.mylistdata.time = now;
 	for(let i=0,item; item=mylists[i]; i++){
 	    mylists["_"+item.id] = item.name;
 	    debugprint('load mylist(id='+item.id+')');
