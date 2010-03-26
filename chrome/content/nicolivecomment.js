@@ -251,6 +251,30 @@ var NicoLiveComment = {
 	RemoveElement(user[0]);
 	ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
     },
+
+    addCommentReflectorCore:function(userid,name,disptype,addnguser){
+	if(name && name.length){
+	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
+	    this.reflector[userid] = {"name":name, "disptype":disptype };
+	    if(user.length==0){
+		// ここからリフレクション解除メニューの追加.
+		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
+		menuitem.setAttribute("comment-reflector",userid);
+		menuitem.setAttribute("tooltiptext","ID="+userid);
+		menuitem.setAttribute("oncommand","NicoLiveComment.removeFromCommentReflector('"+userid+"','"+name+"');");
+		$('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
+		// ここまで
+	    }else{
+		user[0].setAttribute('label',LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]));
+	    }
+	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
+	    if( addnguser ){
+		debugprint(userid+'をNGユーザに追加します');
+		this.addNGUser(userid);
+	    }
+	}
+    },
+
     // リフレクション登録ダイアログを表示して設定する.
     showCommentReflectorDialog:function(userid){
 	let param = {
@@ -267,26 +291,7 @@ var NicoLiveComment = {
 	let name = param['default'];
 	let disptype = param['disptype'];
 
-	if(name && name.length){
-	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-	    this.reflector[userid] = {"name":name, "disptype":disptype };
-	    if(user.length==0){
-		// ここからリフレクション解除メニューの追加.
-		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
-		menuitem.setAttribute("comment-reflector",userid);
-		menuitem.setAttribute("tooltiptext","ID="+userid);
-		menuitem.setAttribute("oncommand","NicoLiveComment.removeFromCommentReflector('"+userid+"','"+name+"');");
-		$('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
-		// ここまで
-	    }else{
-		user[0].setAttribute('label',LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]));
-	    }
-	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
-	    if( param.addnguser ){
-		debugprint(userid+'をNGユーザに追加します');
-		this.addNGUser(userid);
-	    }
-	}
+	this.addCommentReflectorCore(userid,name,disptype, param.addnguser );
     },
 
     // コメントリフレクション登録.
