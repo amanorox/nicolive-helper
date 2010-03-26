@@ -365,6 +365,13 @@ var NicoLiveComment = {
 	}
     },
 
+    openProfile:function(){
+	let userid = document.popupNode.getAttribute('user_id');
+	if(userid>0){
+	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/user/'+userid);
+	}
+    },
+
     addName:function(){
 	let userid = document.popupNode.getAttribute('user_id');
 	let name = InputPrompt( LoadFormattedString('STR_TEXT_SET_KOTEHAN',[userid]),

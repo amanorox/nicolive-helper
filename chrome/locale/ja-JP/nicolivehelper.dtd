@@ -70,6 +70,7 @@
 <!ENTITY stock.playstyle.none "---">
 <!ENTITY stock.playstyle.sequential "順次再生">
 <!ENTITY stock.playstyle.random "ランダム">
+<!ENTITY stock.playstyle.tooltiptext "ストックの再生スタイルを選択します">
 
 <!ENTITY playlist.emptytext_textlog "プレイリストスレッドにコピペする用">
 <!ENTITY playlist.tooltip_clearall "再生済みの動画を再度リクエストを受け付けることができるようになります。テキスト復旧は行えません。">
@@ -84,6 +85,12 @@
 <!ENTITY comment.emptytext_input "コメントを入力してください">
 <!ENTITY comment.write_upperarea "運営コメ欄に表示">
 <!ENTITY comment.tooltip_write_upperarea "直前にhidden+/permを使用したコメントがある場合、/clsで運営コメント欄を消去してからコメントします">
+
+<!ENTITY comment.comment_no "コメ番">
+<!ENTITY comment.register_reflection "リフレクション登録">
+<!ENTITY comment.user_id "ユーザID">
+<!ENTITY comment.del_nguser "NGユーザ解除">
+<!ENTITY comment.kotehan "コテハン">
 
 <!ENTITY db.add_from_mylist_to_db "マイリストから登録">
 <!ENTITY db.emptytext_input "動画IDまたはマイリストのURLを入力するとDBに登録されます">
@@ -121,6 +128,7 @@
 <!ENTITY menu.db_sendrequest "リクエスト送信">
 <!ENTITY menu.db_delete "DBから削除">
 
+<!ENTITY comment.menu_openprofile "プロフィールページを開く">
 <!ENTITY comment.menu_setname "コテハン設定">
 <!ENTITY comment.menu_reflection "リフレクション登録">
 <!ENTITY comment.tooltip_reflection "視聴者のコメントを運営コメントで再コメントを行います。">

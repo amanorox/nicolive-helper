@@ -191,7 +191,7 @@
 	      ondrop="NicoLiveRequest.dropToStock(event)">
 
 	  <hbox align="center">
-	    <menulist id="stock-playstyle" persist="value" tooltiptext="ストックの再生スタイルを選択します">
+	    <menulist id="stock-playstyle" persist="value" tooltiptext="&stock.playstyle.tooltiptext;">
 	      <menupopup>
 		<menuitem label="&stock.playstyle.none;" value="0"/>
 		<menuitem label="&stock.playstyle.sequential;" value="1"/>
@@ -300,14 +300,14 @@
 	      </columns>
 	      <rows>
 		<row>
-		  <hbox align="center"><label value="コメ番"/></hbox>
+		  <hbox align="center"><label value="&comment.comment_no;"/></hbox>
 		  <textbox id="comment_no_to_add_reflection"/>
-		  <button label="リフレクション登録" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/>
+		  <button label="&comment.register_reflection;" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/>
 		</row>
 		<row>
-		  <hbox align="center"><label value="ユーザID"/></hbox>
+		  <hbox align="center"><label value="&comment.user_id;"/></hbox>
 		  <hbox><textbox id="delete-ng-user"/></hbox>
-		  <button label="NGユーザ解除" oncommand="NicoLiveComment.delNGUser($('delete-ng-user').value);"/>
+		  <button label="&comment.del_nguser;" oncommand="NicoLiveComment.delNGUser($('delete-ng-user').value);"/>
 		</row>
 	      </rows>
 	    </grid>
@@ -317,8 +317,8 @@
 		<listcol flex="1" />
 	      </listcols>
 	      <listhead>
-		<listheader label="ユーザID" />
-		<listheader label="コテハン" />
+		<listheader label="&comment.user_id;" />
+		<listheader label="&comment.kotehan;" />
 	      </listhead>
 	    </listbox>
 	  </vbox>
@@ -440,6 +440,8 @@
 
     <!-- for comment -->
     <menupopup id="popup-comment">
+      <menuitem label="&comment.menu_openprofile;" oncommand="NicoLiveComment.openProfile();"/>
+      <menuseparator/>
       <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName();"/>
       <menu label="&comment.menu_color;">
 	<menupopup>
