@@ -2615,7 +2615,6 @@ var NicoLiveHelper = {
 		debugalert('コメントサーバに接続中、エラーが発生しました. '+x);
 	    }
 	};
-	debugprint("Close current connection.");
 	this._donotshowdisconnectalert = true;
 	this.close();
 
@@ -2753,20 +2752,23 @@ var NicoLiveHelper = {
 	if( !this.request_id || this.request_id=="lv0" ) return;
 	if( this._dogetpublishstatus ) return;
 
+	debugprint('GET getpublishstatus');
 	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + this.request_id;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		let publishstatus = req.responseXML;
-		NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
-		let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
-		// 取得した終了時刻がより現在より未来指していたら更新.
-		if( GetCurrentTime() <= tmp ) NicoLiveHelper.endtime = tmp;
-		debugprint('token='+NicoLiveHelper.token);
-		debugprint('endtime='+NicoLiveHelper.endtime);
-		if( doconfigurestream ){
-		    NicoLiveHelper.configureStream( NicoLiveHelper.token );
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let publishstatus = req.responseXML;
+		    NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
+		    let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
+		    // 取得した終了時刻がより現在より未来指していたら更新.
+		    if( GetCurrentTime() <= tmp ) NicoLiveHelper.endtime = tmp;
+		    debugprint('token='+NicoLiveHelper.token);
+		    debugprint('endtime='+NicoLiveHelper.endtime);
+		    if( doconfigurestream ){
+			NicoLiveHelper.configureStream( NicoLiveHelper.token );
+		    }
 		}
 		NicoLiveHelper._dogetpublishstatus = false;
 	    }

@@ -208,8 +208,19 @@ var NicoLivePreference = {
     },
 
     isSingleWindowMode:function(){
-	let branch = this.getBranch();
-	return branch.getBoolPref("singlewindow");
+	try{
+	    return this.getBranch().getBoolPref("singlewindow");
+	} catch (x) {
+	    return false;
+	}
+    },
+
+    isLoadAllMylist:function(){
+	try{
+	    return this.getBranch().getBoolPref("load-all-mylist");
+	} catch (x) {
+	    return false;
+	}
     },
 
     getCommentDir:function(){

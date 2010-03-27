@@ -254,6 +254,7 @@ var NicoLiveMylist = {
     },
 
     getAllMylists:function(mylists){
+	if( !NicoLivePreference.isLoadAllMylist() ) return;
 	let now = GetCurrentTime();
 	this.mylistdata = NicoLiveDatabase.loadGPStorage("nico_live_allmylist",{});
 	if( this.mylistdata.time && (now-this.mylistdata.time)<3600 ){
