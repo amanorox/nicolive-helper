@@ -1713,6 +1713,15 @@ var NicoLiveHelper = {
 	    this.saveRequest();
 	}
     },
+    topToRequestById:function(video_id){
+	let i,item;
+	for(i=0;item=this.requestqueue[i];i++){
+	    if(item.video_id==video_id){
+		this.topToRequest(i+1);
+		break;
+	    }
+	}
+    },
     bottomToRequest:function(idx){
 	idx--;
 	let t;
@@ -2003,7 +2012,7 @@ var NicoLiveHelper = {
 	    let ans = NicoLiveHelper.checkAcceptRequest( q.xml, q.comment_no );
 	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではない.
 	    ans.movieinfo.selfrequest = q.user_id=="0"?true:false;        // 自貼りのユーザーIDは0.
-	    
+
 	    // リクエスト制限数をチェック.
 	    let nlim = NicoLivePreference.nreq_per_ppl;
 	    if(!NicoLiveHelper.request_per_ppl[q.user_id]){
@@ -2157,6 +2166,24 @@ var NicoLiveHelper = {
 	    if(item.video_id==video_id){
 		item.isplayed = false;
 	    }
+	}
+    },
+
+    setSelfRequestFlag:function(video_id){
+	let b = false;
+	let i,item;
+	for(i=0;item=this.requestqueue[i];i++){
+	    if(item.video_id==video_id){
+		item.selfrequest = true;
+		b = true;
+		break;
+	    }
+	}
+	if(b){
+	    let requestelems = evaluateXPath(document,"//*[@id='request-table']/html:tbody/html:tr");
+	    requestelems[i].className = "color6";
+	    //NicoLiveRequest.update(this.requestqueue);
+	    this.saveRequest();
 	}
     },
 

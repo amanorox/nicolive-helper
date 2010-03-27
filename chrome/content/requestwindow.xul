@@ -457,8 +457,15 @@
       <menuseparator/>
       <menuitem id="id-release-reflection" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
     </menupopup>
+
     <menupopup id="popup-copycomment">
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>
+    </menupopup>
+
+    <menupopup id="popup-comment-anchor">
+      <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>
+      <menuitem label="リクエストを自貼りに設定する" oncommand="NicoLiveComment.setSelfRequest(event);"/>
+      <menuitem label="リクエストを先頭に移動する" oncommand="NicoLiveComment.moveRequestToTop(event);"/>
     </menupopup>
 
     <!-- request tab -->

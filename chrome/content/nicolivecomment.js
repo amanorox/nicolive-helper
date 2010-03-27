@@ -91,7 +91,7 @@ var NicoLiveComment = {
 	str = str.replace(/(\r\n|\r|\n)/gm,"<html:br/>");
 
 	// sm,nmにリンクを貼り付け.
-	str = str.replace(/((sm|nm)\d+)/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
+	str = str.replace(/((sm|nm)\d+)/g,"<hbox class=\"selection\" context=\"popup-comment-anchor\"><html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a></hbox>");
 	if( comment.premium!=3 ){
 	    // 数字10桁にもリンク.
 	    str = str.replace(/(\d{10})/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
@@ -564,6 +564,17 @@ var NicoLiveComment = {
 	clearTable($('comment_table'));
     },
 
+    // コメント内の動画へのリンクでのポップアップメニュー処理.
+    setSelfRequest:function(e){
+	let video_id = document.popupNode.textContent;
+	NicoLiveHelper.setSelfRequestFlag(video_id);
+    },
+    moveRequestToTop:function(e){
+	let video_id = document.popupNode.textContent;
+	NicoLiveHelper.topToRequestById(video_id);
+    },
+
+    // ID欄でのポップアップメニューの表示処理.
     showPopupMenuForID:function(e){
 	let userid = document.popupNode.getAttribute('user_id');
 	let commentno = document.popupNode.getAttribute('comment_no');
