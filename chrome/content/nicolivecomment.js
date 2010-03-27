@@ -71,7 +71,7 @@ var NicoLiveComment = {
 	    str = comment.user_id;
 	}
 	str = htmlspecialchars(str);
-	td.innerHTML = "<hbox class=\"selection\" context=\"popup-comment\" user_id=\""+comment.user_id+"\" comment_no=\""+comment.no+"\">"+str+"</hbox>";
+	td.innerHTML = "<hbox class=\"selection\" tooltiptext=\""+(this.namemap[comment.user_id]?comment.user_id:"")+"\" context=\"popup-comment\" user_id=\""+comment.user_id+"\" comment_no=\""+comment.no+"\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
 	if(comment.premium==3){
