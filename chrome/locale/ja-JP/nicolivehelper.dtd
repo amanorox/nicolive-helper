@@ -130,6 +130,7 @@
 
 <!ENTITY comment.menu_openprofile "プロフィールページを開く">
 <!ENTITY comment.menu_setname "コテハン設定">
+<!ENTITY comment.menu_delname "コテハン削除">
 <!ENTITY comment.menu_reflection "リフレクション登録">
 <!ENTITY comment.tooltip_reflection "視聴者のコメントを運営コメントで再コメントを行います。">
 <!ENTITY comment.menu_release_reflection_all "リフレクション全解除">

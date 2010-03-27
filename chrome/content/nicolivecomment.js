@@ -372,8 +372,7 @@ var NicoLiveComment = {
 	}
     },
 
-    addName:function(){
-	let userid = document.popupNode.getAttribute('user_id');
+    addNameFromId:function(userid){
 	let name = InputPrompt( LoadFormattedString('STR_TEXT_SET_KOTEHAN',[userid]),
 				LoadString('STR_CAPTION_SET_KOTEHAN'), this.namemap[userid]?this.namemap[userid].name:userid);
 
@@ -381,18 +380,27 @@ var NicoLiveComment = {
 	this.updateCommentViewer();
 	this.createNameList();
     },
+    addName:function(){
+	let userid = document.popupNode.getAttribute('user_id');
+	this.addNameFromId(userid);
+    },
+
+    // 選択行のコテハン設定を削除.
+    deleteKotehanFromListbox:function(){
+	let n = $('kotehan-list').selectedIndex;
+	if(n>=0){
+	    let userid = $('kotehan-list').selectedItem.firstChild.value;
+	    $('kotehan-list').removeItemAt(n);
+	    delete this.namemap[userid];
+	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
+	    this.updateCommentViewer();
+	}
+    },
 
     pressKeyOnNameList:function(e){
 	if( e && e.keyCode==46 ){
 	    // 46 は DELキー(Winで確認)
-	    let n = $('kotehan-list').selectedIndex;
-	    if(n>=0){
-		let userid = $('kotehan-list').selectedItem.firstChild.value;
-		$('kotehan-list').removeItemAt(n);
-		delete this.namemap[userid];
-		NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
-		this.updateCommentViewer();
-	    }
+	    this.deleteKotehanFromListbox();
 	}
     },
 
