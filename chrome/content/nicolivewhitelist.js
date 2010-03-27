@@ -21,6 +21,7 @@ THE SOFTWARE.
  */
 
 var pname_whitelist = [
+    "恋竹林",
     "supercell","rlboro","NanahoshiP",
     "aquascape", "BIRUGE", "DixieFlatline", "fourier-drive",
     "instinctive", "kame", "Lue", "MAX_VEGETABLE", "nabe_nabe",
