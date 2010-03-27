@@ -71,7 +71,7 @@ var NicoLiveComment = {
 	    str = comment.user_id;
 	}
 	str = htmlspecialchars(str);
-	td.innerHTML = "<hbox class=\"selection\" context=\"popup-comment\" user_id=\""+comment.user_id+"\">"+str+"</hbox>";
+	td.innerHTML = "<hbox class=\"selection\" context=\"popup-comment\" user_id=\""+comment.user_id+"\" comment_no=\""+comment.no+"\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
 	if(comment.premium==3){
@@ -564,6 +564,17 @@ var NicoLiveComment = {
 	clearTable($('comment_table'));
     },
 
+    showPopupMenuForID:function(e){
+	let userid = document.popupNode.getAttribute('user_id');
+	let commentno = document.popupNode.getAttribute('comment_no');
+	$('popup-comment-displayuserid').value = "No."+commentno+"/" + userid;
+	if(userid>0){
+	    $('popup-comment-openprofile').hidden = false;
+	}else{
+	    $('popup-comment-openprofile').hidden = true;
+	}
+    },
+
     init:function(){
 	// コメントリフレクターの登録用.
 	this.reflector = new Object();
@@ -580,6 +591,8 @@ var NicoLiveComment = {
 	this.loadPresetAutocomplete();
 
 	this.createNameList();
+
+	$('popup-comment').addEventListener('popupshowing',function(event){ NicoLiveComment.showPopupMenuForID(event);}, false);
     },
     destroy:function(){
 	this.closeFile();

@@ -440,7 +440,11 @@
 
     <!-- for comment -->
     <menupopup id="popup-comment">
-      <menuitem label="&comment.menu_openprofile;" oncommand="NicoLiveComment.openProfile();"/>
+      <hbox>
+<!--	<menuseparator/> -->
+	<label value="" id="popup-comment-displayuserid"/>
+      </hbox>
+      <menuitem id="popup-comment-openprofile" label="&comment.menu_openprofile;" oncommand="NicoLiveComment.openProfile();"/>
       <menuseparator/>
       <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName();"/>
       <menu label="&comment.menu_color;">
