@@ -854,7 +854,11 @@ var NicoLiveHelper = {
 	let ismovieinfo = COMMENT_MSG_TYPE_MOVIEINFO;
 	this.postCasterComment(sendstr,cmd,"",ismovieinfo);
 
-	sendstr = NicoLivePreference.videoinfo[this._counter].comment;
+	try{
+	    sendstr = NicoLivePreference.videoinfo[this._counter].comment;
+	} catch (x) {
+	    sendstr = null;
+	}
 	if(!sendstr){
 	    clearInterval(this._sendmusicid);
 	    this._counter = -1;
