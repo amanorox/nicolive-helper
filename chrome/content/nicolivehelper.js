@@ -925,6 +925,7 @@ var NicoLiveHelper = {
     // 再生コマンドを送ってもいいか判定.
     canPlayCommand:function(){
 	let now = GetCurrentTime();
+	if( this.musicinfo.error ) return true; // 再生失敗したときは再生コマンドを送るのは許可.
 	if( this.musicinfo.length_ms < 5000 ) return true;  // 5秒未満の動画再生中は許可.
 	if( (now - this._playmusictime) < 5 ){
 	    // playMusic()を呼び出してから5秒未満は禁止.
@@ -1400,10 +1401,12 @@ var NicoLiveHelper = {
 		    }
 		    if( !retry ){ // 1回再送.
 			debugprint('failed: '+comment);
+			// ツール上からの5秒未満間隔での再生は禁止しているから、
+			// すぐにリトライせずに時間置いても大丈夫なはず.
 			let retrytimer = setInterval(function(){
 							 NicoLiveHelper.postCasterComment(comment,mail,name,type,true);
 							 clearInterval(retrytimer);
-						     }, 4000 );
+						     }, 2000 );
 		    }
 		    if(video_id && retry){
 			let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
@@ -1416,7 +1419,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.musicinfo.isplayed = true;
 			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);
 			}
-			NicoLiveHelper.musicinfo.length_ms = 1000;
+			//NicoLiveHelper.musicinfo.length_ms = 1000;
 			clearInterval(NicoLiveHelper._sendmusicid);
 			NicoLiveHelper.checkPlayNext();
 		    }else if(retry){
@@ -2861,7 +2864,7 @@ var NicoLiveHelper = {
 		let timerid = setInterval(
 		    function(){
 			if( !NicoLiveHelper.musicinfo.video_id ){
-			    NicoLiveHelper.postCasterComment("/play "+jingle);
+			    NicoLiveHelper.postCasterComment(jingle);
 			}
 			clearInterval(timerid);
 		    }, 5000);
