@@ -216,6 +216,7 @@ var NicoLiveComment = {
 
     addNGUser:function(userid){
 	if( !NicoLiveHelper.iscaster ) return;
+	if( !userid ) return;
 
 	let req = new XMLHttpRequest();
 	if(!req) return;
@@ -230,6 +231,7 @@ var NicoLiveComment = {
     },
     delNGUser:function(userid){
 	if( !NicoLiveHelper.iscaster ) return;
+	if( !userid ) return;
 
 	let req = new XMLHttpRequest();
 	if(!req) return;
@@ -277,6 +279,7 @@ var NicoLiveComment = {
 
     // リフレクション登録ダイアログを表示して設定する.
     showCommentReflectorDialog:function(userid){
+	if( !userid ) return;
 	let param = {
 	    "info": LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
 	    "default": "★",
@@ -373,6 +376,8 @@ var NicoLiveComment = {
     },
 
     addNameFromId:function(userid){
+	if( !userid ) return;
+
 	let name = InputPrompt( LoadFormattedString('STR_TEXT_SET_KOTEHAN',[userid]),
 				LoadString('STR_CAPTION_SET_KOTEHAN'), this.namemap[userid]?this.namemap[userid].name:userid);
 
