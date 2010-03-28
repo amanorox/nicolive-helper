@@ -275,12 +275,20 @@ var NicoLiveHelper = {
 	return null;
     },
 
-    // コメを処理する.
-    processComment: function(xmlchat){
-	let chat=NicoLiveHelper.extractComment(xmlchat);
+    // コメント処理のフック用(新)
+    processCommentHook:function(chat){
+	// chat.isNGWord に NG判定が入っている.
+    },
 
+    // コメを処理する(新).
+    processComment2: function(chat){
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
 	if(chat.text.indexOf("/telop")==0) return;
+
+	if( NicoLivePreference.ngwordfiltering && NicoLiveComment.isNGWord(chat.text) ){
+	    chat.isNGWord = true;
+	}
+	NicoLiveHelper.processCommentHook(chat);
 
 	NicoLiveComment.push(chat);
 	NicoLiveComment.addRow(chat);
@@ -449,6 +457,9 @@ var NicoLiveHelper = {
 	    break;
 	}
     },
+
+    // コメを処理する(各種追加機能の古いバージョンでのフック用).
+    processComment: function(xmlchat){},
 
     processListenersCommand:function(chat){
 	if( !NicoLivePreference.listenercommand.enable ) return;
@@ -856,7 +867,11 @@ var NicoLiveHelper = {
 	let ismovieinfo = COMMENT_MSG_TYPE_MOVIEINFO;
 	this.postCasterComment(sendstr,cmd,"",ismovieinfo);
 
-	sendstr = NicoLivePreference.videoinfo[this._counter].comment;
+	try{
+	    sendstr = NicoLivePreference.videoinfo[this._counter].comment;
+	} catch (x) {
+	    sendstr = null;
+	}
 	if(!sendstr){
 	    clearInterval(this._sendmusicid);
 	    this._counter = -1;
@@ -1385,7 +1400,7 @@ var NicoLiveHelper = {
 		    }
 		    if( !retry ){ // 1回再送.
 			debugprint('failed: '+comment);
-			NicoLiveHelper.postCasterComment(comment,mail,name,type,true);
+			setTimeout( NicoLiveHelper.postCasterComment, 4000, comment,mail,name,type,true );
 		    }
 		    if(video_id && retry){
 			let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
@@ -2219,7 +2234,9 @@ var NicoLiveHelper = {
 	    //debugprint(line);
 	    let parser = new DOMParser();
 	    let dom = parser.parseFromString(line,"text/xml");
-	    this.processComment(dom.getElementsByTagName('chat')[0]);
+	    let chat = this.extractComment(dom.getElementsByTagName('chat')[0]);
+	    this.processComment(dom.getElementsByTagName('chat')[0]); // this line is used for old-version of extra extensions.
+	    this.processComment2(chat);
 	    return;
 	}
 
@@ -2297,7 +2314,7 @@ var NicoLiveHelper = {
 		    // まとめて読むと、行単位の区切り付けるのメンドイんで.
 		    try{
 			r = NicoLiveHelper.ciStream.readString(1,lineData);
-		    } catch (x) { return; }
+		    } catch (x) { debugprint(x); return; }
 		    if( !r ){ break; }
 		    if( lineData.value=="\0" ){
 			NicoLiveHelper.processLine(this.line);

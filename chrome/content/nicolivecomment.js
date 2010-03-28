@@ -53,7 +53,7 @@ var NicoLiveComment = {
 	if(comment.premium >= 2){
 	    tr.className = "table_casterselection";
 	}else{
-	    if( NicoLivePreference.ngwordfiltering && this.isNGWord(comment.text) ){
+	    if( comment.isNGWord ){
 		tr.className = "table_played";
 	    }
 	}
