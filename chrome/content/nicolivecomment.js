@@ -441,9 +441,10 @@ var NicoLiveComment = {
 	req.send(null);
     },
     parseNGWordXML:function(xml){
-	this.regexstrings = evaluateXPath(xml,"//ngclient[@is_regex='true']/source");
-	this.caseinsensitivestrings = evaluateXPath(xml,"//ngclient[not(@is_regex='true') and @use_case_unify='true']/source");
-	this.casesensitivestrings = evaluateXPath(xml,"//ngclient[not(@is_regex='true') and not(@use_case_unify='true')]/source");
+	//this._tmpxml = xml;
+	this.regexstrings = evaluateXPath(xml,"//ngclient[type='word' and @is_regex='true']/source");
+	this.caseinsensitivestrings = evaluateXPath(xml,"//ngclient[type='word' and (not(@is_regex='true') and @use_case_unify='true')]/source");
+	this.casesensitivestrings = evaluateXPath(xml,"//ngclient[type='word' and (not(@is_regex='true') and not(@use_case_unify='true'))]/source");
 
 	let i,item;
 	for(i=0;item=this.casesensitivestrings[i];i++){
