@@ -1400,7 +1400,10 @@ var NicoLiveHelper = {
 		    }
 		    if( !retry ){ // 1回再送.
 			debugprint('failed: '+comment);
-			setTimeout( NicoLiveHelper.postCasterComment, 4000, comment,mail,name,type,true );
+			let retrytimer = setInterval(function(){
+							 NicoLiveHelper.postCasterComment(comment,mail,name,type,true);
+							 clearInterval(retrytimer);
+						     }, 4000 );
 		    }
 		    if(video_id && retry){
 			let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
