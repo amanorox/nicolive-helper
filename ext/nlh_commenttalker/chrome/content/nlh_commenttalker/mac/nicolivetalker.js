@@ -29,9 +29,6 @@ var NicoLiveTalker = {
 	}
 	if( $('use-saykotoeri').selected ){
 	    text = text.replace(/[;\"'&]/g,"");
-	    text = text.replace(/[wｗ]{2,}$/,"わらわら");
-	    text = text.replace(/[wｗ]$/,"わら");
-	    text = text.replace(/http:\/\/[\w.%\&=/-?]+/,"ゆーあーるえるしょうりゃく");
 	    this.talkqueue.push(text);
 	    //obj.sayKotoeri(text);
 	}
@@ -80,6 +77,9 @@ var NicoLiveTalker = {
 	    // NGコメを読まない.
 	    if( $('nlhaddon-dontread-ngword').checked && NicoLiveComment.isNGWord(chat.text) ) return;
 	}
+	chat.text = chat.text.replace(/[wｗ]{2,}$/,"わらわら");
+	chat.text = chat.text.replace(/[wｗ]$/,"わら");
+	chat.text = chat.text.replace(/http:\/\/[\w.%\&=/-?]+/,"ゆーあーるえるしょうりゃく");
 
 	let str;
 	let replacefunc = function(s,p){
