@@ -17,9 +17,25 @@
       </hbox>
       <description>コメント読み上げを行うには、棒読みちゃんをあらかじめ起動しておいてください。</description>
 
+      <groupbox>
+	<caption label="設定"/>
+      <hbox><checkbox persist="checked" id="nlhaddon-read-castercomment" label="運営コメントを読み上げる"/></hbox>
+      <hbox><checkbox persist="checked" id="nlhaddon-dontread-ngword" label="NGワードを含むコメントを読み上げない"/></hbox>
+      <hbox><checkbox persist="checked" id="nlhaddon-dontread-leadingslash" label="/で始まるコメントを読み上げない"/></hbox>
+<!--
+      <hbox><checkbox persist="checked" id="nlhaddon-dontread-crlfincluded" label="改行文字を含むコメントを読まない"/></hbox>
+-->
+      <hbox align="center"><textbox id="nlhaddon-restrictlength" type="number" min="0" max="999" size="3"/><label value="文字以上のコメントは読み上げない(0:制限なし)"/></hbox>
+
+      <hbox align="center">
+	<label value="読み上げフォーマット:"/><textbox flex="1" id="nlhaddon-format" value="{comment} {name}"/>
+      </hbox>
+      </groupbox>
+
       <hbox>
 	<button label="test" oncommand="NicoLiveTalker.test();"/>
       </hbox>
+
     </vbox>
   </tabpanels>
 

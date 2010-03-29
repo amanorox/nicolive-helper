@@ -8,6 +8,10 @@
     <em:description>Comment Talkder Addon for NicoLive Helper.</em:description>
     <em:creator>amano</em:creator>
     <em:homepageURL>http://miku39.jp</em:homepageURL>
+
+    <em:updateURL>http://miku39.jp/dists/software/firefox/nicolivehelper/update_commenttalker.rdf</em:updateURL>
+    <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDax+sEczfdnPUeSV9YGlpDnmRusDbGmb28q+CnxhRp8WeYUP2FREwqoqmbaAuJg+0Q5WqsD4LqFmSO0HaGAlx9ZyTj4IlihJEo41pMQRQEx8V/yqqMKiyL2NJFYNcGVyl4vFIRFhPi//KTnN81ql8q06vOGqrFzFGQYqsVvr33ZwIDAQAB</em:updateKey>
+
     <em:localized>
       <Description>
 	<em:locale>ja</em:locale>
