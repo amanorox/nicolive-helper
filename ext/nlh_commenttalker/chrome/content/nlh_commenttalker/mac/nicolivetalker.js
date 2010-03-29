@@ -59,13 +59,49 @@ var NicoLiveTalker = {
     newProcessComment:function(xmlchat){
 	NicoLiveTalker.oldprocesscomment(xmlchat);
 
-	if($('enable-comment-talker').checked){
-	    let chat = NicoLiveHelper.extractComment(xmlchat);
-	    if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
-	    if(chat.premium<3){
-		this.runProcess('',chat.text);
-	    }
+	if( !$('enable-comment-talker').checked ) return; // 読み上げしない.
+
+	let chat = NicoLiveHelper.extractComment(xmlchat);
+	if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
+
+	if(chat.premium==3){
+	    if( !$('nlhaddon-read-castercomment').checked ) return; // 運営コメ読まない.
+	    if(chat.text.indexOf('/')==0) return; // 運営コマンドは読まない.
+	    chat.text = chat.text.replace(/<.*?>/g,""); // タグ除去.
 	}
+	// 改行文字を含むコメントを読まない.
+	//if( $('nlhaddon-dontread-crlfincluded').checked && chat.text.match(/(\r|\n)/)) return;
+	// / で始まるコメを読まない.
+	if( $('nlhaddon-dontread-leadingslash').checked && chat.text.indexOf('/')==0 ) return;
+	// n 文字以上のコメは読まない.
+	if( $('nlhaddon-restrictlength').value>0 &&
+	    chat.text.length >= $('nlhaddon-restrictlength').value ) return;
+	if( chat.premium!=3 ){
+	    // NGコメを読まない.
+	    if( $('nlhaddon-dontread-ngword').checked && NicoLiveComment.isNGWord(chat.text) ) return;
+	}
+
+	let str;
+	let replacefunc = function(s,p){
+	    let tmp = s;
+	    switch(p){
+	    case 'comment':
+		tmp = chat.text;
+		break;
+	    case 'name':
+		try{
+		    tmp = NicoLiveComment.namemap[chat.user_id].name;
+		} catch (x) {
+		    tmp = null;
+		}
+		if( !tmp ) tmp = "";
+		break;
+	    }
+	    return tmp;
+	};
+	str = $('nlhaddon-format').value.replace(/{(.*?)}/g,replacefunc);
+	//this.runProcess('',chat.text);
+	this.runProcess('',str);
     },
 
     init:function(){
