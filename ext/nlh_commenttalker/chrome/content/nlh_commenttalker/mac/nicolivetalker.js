@@ -29,9 +29,6 @@ var NicoLiveTalker = {
 	}
 	if( $('use-saykotoeri').selected ){
 	    text = text.replace(/[;\"'&]/g,"");
-	    text = text.replace(/[wｗ]{2,}$/,"わらわら");
-	    text = text.replace(/[wｗ]$/,"わら");
-	    text = text.replace(/http:\/\/[\w.%\&=/-?]+/,"ゆーあーるえるしょうりゃく");
 	    this.talkqueue.push(text);
 	    //obj.sayKotoeri(text);
 	}
@@ -59,13 +56,52 @@ var NicoLiveTalker = {
     newProcessComment:function(xmlchat){
 	NicoLiveTalker.oldprocesscomment(xmlchat);
 
-	if($('enable-comment-talker').checked){
-	    let chat = NicoLiveHelper.extractComment(xmlchat);
-	    if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
-	    if(chat.premium<3){
-		this.runProcess('',chat.text);
-	    }
+	if( !$('enable-comment-talker').checked ) return; // 読み上げしない.
+
+	let chat = NicoLiveHelper.extractComment(xmlchat);
+	if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
+
+	if(chat.premium==3){
+	    if( !$('nlhaddon-read-castercomment').checked ) return; // 運営コメ読まない.
+	    if(chat.text.indexOf('/')==0) return; // 運営コマンドは読まない.
+	    chat.text = chat.text.replace(/<.*?>/g,""); // タグ除去.
 	}
+	// 改行文字を含むコメントを読まない.
+	//if( $('nlhaddon-dontread-crlfincluded').checked && chat.text.match(/(\r|\n)/)) return;
+	// / で始まるコメを読まない.
+	if( $('nlhaddon-dontread-leadingslash').checked && chat.text.indexOf('/')==0 ) return;
+	// n 文字以上のコメは読まない.
+	if( $('nlhaddon-restrictlength').value>0 &&
+	    chat.text.length >= $('nlhaddon-restrictlength').value ) return;
+	if( chat.premium!=3 ){
+	    // NGコメを読まない.
+	    if( $('nlhaddon-dontread-ngword').checked && NicoLiveComment.isNGWord(chat.text) ) return;
+	}
+	chat.text = chat.text.replace(/[wｗ]{2,}$/,"わらわら");
+	chat.text = chat.text.replace(/[wｗ]$/,"わら");
+	chat.text = chat.text.replace(/http:\/\/[\w.%\&=/-?]+/,"ゆーあーるえるしょうりゃく");
+
+	let str;
+	let replacefunc = function(s,p){
+	    let tmp = s;
+	    switch(p){
+	    case 'comment':
+		tmp = chat.text;
+		break;
+	    case 'name':
+		try{
+		    tmp = NicoLiveComment.namemap[chat.user_id].name;
+		} catch (x) {
+		    tmp = null;
+		}
+		if( !tmp ) tmp = "";
+		break;
+	    }
+	    return tmp;
+	};
+	str = $('nlhaddon-format').value.replace(/{(.*?)}/g,replacefunc);
+	//this.runProcess('',chat.text);
+	this.runProcess('',str);
     },
 
     init:function(){
@@ -85,6 +121,8 @@ var NicoLiveTalker = {
 	    $('enable-comment-talker').checked = prefs.getBoolPref("ext.comment-talker.enable");
 	    $('use-what-talker-program').selectedIndex = prefs.getIntPref("ext.comment-talker.program");
 	    $('bouyomichan-server').value = prefs.getCharPref("ext.comment-talker.bouyomichan-server");
+	    $('nlhaddon-restrictlength').value = prefs.getIntPref("ext.comment-talker.length");
+	    $('nlhaddon-format').value = prefs.getUnicharPref("ext.comment-talker.format");
 	} catch (x) {
 	}
     },
@@ -93,6 +131,8 @@ var NicoLiveTalker = {
 	prefs.setBoolPref("ext.comment-talker.enable", $('enable-comment-talker').checked);
 	prefs.setIntPref("ext.comment-talker.program", $('use-what-talker-program').selectedIndex);
 	prefs.setCharPref("ext.comment-talker.bouyomichan-server",$('bouyomichan-server').value );
+	prefs.setIntPref("ext.comment-talker.length", $('nlhaddon-restrictlength').value);
+	prefs.setUnicharPref("ext.comment-talker.format",$('nlhaddon-format').value);
     }
 };
 

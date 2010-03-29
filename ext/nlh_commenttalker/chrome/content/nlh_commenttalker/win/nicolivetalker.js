@@ -64,7 +64,11 @@ var NicoLiveTalker = {
 		tmp = chat.text;
 		break;
 	    case 'name':
-		tmp = NicoLiveComment.namemap[chat.user_id];
+		try{
+		    tmp = NicoLiveComment.namemap[chat.user_id].name;
+		} catch (x) {
+		    tmp = null;
+		}
 		if( !tmp ) tmp = "";
 		break;
 	    }
