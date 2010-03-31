@@ -7,7 +7,7 @@
     <em:version>1.1</em:version>
     <em:description>Help your NicoLive broadcasting.</em:description>
     <em:creator>amano</em:creator>
-    <em:homepageURL>http://miku39.jp/dists/software/firefox/nicolivehelper/</em:homepageURL>
+    <em:homepageURL>http://com.nicovideo.jp/community/co105163</em:homepageURL>
 
     <em:updateURL>http://miku39.jp/dists/software/firefox/nicolivehelper/update.rdf</em:updateURL>
     <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/0ThrrGd6VkDncZHF8SY0hg9KmUKTdnhtfhC2D4NkiljAt2IjwoQxrZeKEIbEssVDQKWTqt0MuaYY/S+ehJYOjts8CzogzQR3cEtdO0sWok2wkkJ7Vz5XL8F4GsmfIjvCttwzeKl+8ybNDUSM+9EV73Vve0bOiP6YXUDD0+yJGwIDAQAB</em:updateKey>
@@ -18,7 +18,7 @@
 	<em:name>ニコニコ生放送ヘルパー</em:name>
 	<em:description>ニコニコ生放送(リクエスト放送)を支援します。</em:description>
 	<em:creator>あまの</em:creator>
-	<em:homepageURL>http://miku39.jp/dists/software/firefox/nicolivehelper/</em:homepageURL>
+	<em:homepageURL>http://com.nicovideo.jp/community/co105163</em:homepageURL>
       </Description>
     </em:localized>
     <em:targetApplication>
