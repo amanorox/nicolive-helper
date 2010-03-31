@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NicoLive Helper 1.1-sid">
+	title="NicoLive Helper 1.1">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -469,9 +469,9 @@
     </menupopup>
 
     <menupopup id="popup-comment-anchor">
-      <menuitem label="コピー" oncommand="NicoLiveComment.copyComment();"/>
-      <menuitem label="リクエストを自貼りに設定する" oncommand="NicoLiveComment.setSelfRequest(event);"/>
-      <menuitem label="リクエストを先頭に移動する" oncommand="NicoLiveComment.moveRequestToTop(event);"/>
+      <menuitem label="&comment.menu_copy;" oncommand="NicoLiveComment.copyComment();"/>
+      <menuitem label="&comment.menu_setselfrequest;" oncommand="NicoLiveComment.setSelfRequest(event);"/>
+      <menuitem label="&comment.menu_moverequest_to_top;" oncommand="NicoLiveComment.moveRequestToTop(event);"/>
     </menupopup>
 
     <menupopup id="popup-comment-kotehan">

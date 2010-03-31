@@ -137,6 +137,10 @@
 <!ENTITY comment.menu_copy_comment "コメントをコピー">
 <!ENTITY comment.menu_color "背景色設定">
 <!ENTITY comment.menu_clearcolor "色設定をクリアする">
+<!ENTITY comment.menu_copy "コピー">
+<!ENTITY comment.menu_setselfrequest "リクエストを自貼りに設定する">
+<!ENTITY comment.menu_moverequest_to_top "リクエストを先頭に移動する">
+
 
 <!ENTITY sort.comment_no "コメ番順にソート">
 <!ENTITY sort.descend_order "降順">

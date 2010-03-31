@@ -8,7 +8,7 @@
                    em:maxVersion="3.6.*"
                    em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.0.7.xpi"
                    em:updateHash="sha1:0baaa8274a74f947d53bd209ea75fbe84577c4dd"
-                   em:updateInfoURL="http://ch.nicovideo.jp/community/co105163" />
+                   em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
   <RDF:Description RDF:about="rdf:#$O3pNz"
                    em:version="1.0.7">
     <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
