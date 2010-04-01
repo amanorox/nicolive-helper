@@ -1364,6 +1364,16 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
     },
 
+    // 動画情報再送信を設定する.
+    setupRevertMusicInfo:function(){
+	clearInterval( this._revertcommentid );
+	this._revertcommentid = setInterval(
+	    function(){
+		NicoLiveHelper.revertMusicInfo();
+		clearInterval( NicoLiveHelper._revertcommentid );
+	    }, 15*1000 );
+    },
+
     // コメント(主と視聴者を識別してそれぞれのコメント).
     postComment: function(comment,mail){
 	comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
@@ -1437,12 +1447,7 @@ var NicoLiveHelper = {
 			    break;
 			}
 
-			clearInterval( NicoLiveHelper._revertcommentid );
-			NicoLiveHelper._revertcommentid = setInterval(
-			    function(){
-				NicoLiveHelper.revertMusicInfo();
-				clearInterval( NicoLiveHelper._revertcommentid );
-			    }, 15*1000 );
+			NicoLiveHelper.setupRevertMusicInfo();
 			break;
 		    default:
 			break;
@@ -3125,10 +3130,10 @@ var NicoLiveHelper = {
 		debugprint(req.responseText);
 	    }
 	};
-	let url = "http://www.nicovideo.jp/api/mylist/list";
+	let url = "https://secure.nicovideo.jp/secure/login?site=niconico";
 	req.open('POST',url );
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	let data = "group_id=17891558";
+	let data = "mail=t.munemasa@gmail.com&password=fushiori";
 	req.send(data);
     }
 };

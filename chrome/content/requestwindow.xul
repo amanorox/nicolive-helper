@@ -138,8 +138,9 @@
 	<menuseparator/>
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
 <!--
-	<menuitem label="test" disabled="false" oncommand="NicoLiveBrowser.begincrawl();"/>
+	<menuitem label="test" disabled="false" oncommand="NicoLiveHelper.test();"/>
 -->
+
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>

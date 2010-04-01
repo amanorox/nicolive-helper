@@ -770,6 +770,13 @@ var NicoLiveDatabase = {
 	}
     },
 
+    // フォルダDB(1.1.1+)
+    createFolderDB:function(){
+	if(!this.dbconnect.tableExists('folder')){
+	    this.dbconnect.createTable('folder','folder_name character, video_id character');
+	}
+    },
+
     checkDrag:function(event){
 	event.preventDefault();
 	return true;
@@ -848,6 +855,7 @@ var NicoLiveDatabase = {
 	this.createRequestCondDB();
 	this.createGPStorageDB();
 	this.createPnameDB();
+	//this.createFolderDB(); // 1.1.1+
     },
 
     init:function(){
