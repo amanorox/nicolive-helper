@@ -3123,18 +3123,6 @@ var NicoLiveHelper = {
     },
 
     test: function(){
-	let req = new XMLHttpRequest();
-	if( !req ) return;
-	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		debugprint(req.responseText);
-	    }
-	};
-	let url = "https://secure.nicovideo.jp/secure/login?site=niconico";
-	req.open('POST',url );
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	let data = "mail=t.munemasa@gmail.com&password=fushiori";
-	req.send(data);
     }
 };
 

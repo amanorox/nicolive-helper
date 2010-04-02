@@ -54,6 +54,13 @@ THE SOFTWARE.
  * pname    : character
  * additional : character
  */
+/* TABLE folder (1.1.1+)
+ * id       : integer primary key
+ * type     : integer (0:folder, 1:video)
+ * parent   : integer (parent id)
+ * name     : character (フォルダ名)
+ * video_id : character (動画ID)
+ */
 
 var NicoLiveDatabase = {
     numvideos: 0,
@@ -773,7 +780,7 @@ var NicoLiveDatabase = {
     // フォルダDB(1.1.1+)
     createFolderDB:function(){
 	if(!this.dbconnect.tableExists('folder')){
-	    this.dbconnect.createTable('folder','folder_name character, video_id character');
+	    this.dbconnect.createTable('folder','id integer primary key, type integer, parent integer, name character, video_id character, foreign key(video_id) references nicovideo(video_id)');
 	}
     },
 
@@ -855,7 +862,7 @@ var NicoLiveDatabase = {
 	this.createRequestCondDB();
 	this.createGPStorageDB();
 	this.createPnameDB();
-	//this.createFolderDB(); // 1.1.1+
+	this.createFolderDB(); // 1.1.1+
     },
 
     init:function(){
