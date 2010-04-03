@@ -196,9 +196,9 @@ var NicoLiveOverlay = {
 	doc.getElementById('SYS_box_mylist_body').appendChild(div);
     },
 
-    // 拡張マイリスト削除.
+    // 仮想マイリスト削除.
     deleteExtraMylist:function(e){
-	if( !window.confirm('この拡張マイリストを削除しますか？') ) return;
+	if( !window.confirm('この仮想マイリストを削除しますか？') ) return;
 
 	let doc = e.target.ownerDocument;
 	let btn = e.target;
@@ -233,11 +233,11 @@ var NicoLiveOverlay = {
 	while( body.firstChild ) body.removeChild(body.firstChild);
     },
 
-    // 拡張マイリストの削除.
+    // 仮想マイリストの削除.
     appendDeleteExtraMylistButton:function(doc,id){
 	let btn = doc.createElement('input');
 	btn.setAttribute('type','button');
-	btn.setAttribute('value','この拡張マイリストを削除');
+	btn.setAttribute('value','この仮想マイリストを削除');
 	btn.setAttribute('nlh_id',id);
 	btn.className = 'submit';
 	btn.addEventListener('click',function(e){
@@ -253,7 +253,7 @@ var NicoLiveOverlay = {
 	let video_id = elem.getAttribute('nlh_video_id');
 	let doc = e.target.ownerDocument;
 	let title = doc.getElementById('SYS_box_mylist_header').getElementsByTagName('h1')[0].innerHTML;
-	if(window.confirm('動画 '+video_id+' を拡張マイリスト「'+title+'」から削除しますか？')){
+	if(window.confirm('動画 '+video_id+' を仮想マイリスト「'+title+'」から削除しますか？')){
 	    let db = this.getDatabase();
 	    let st = db.createStatement('DELETE FROM folder WHERE parent=?1 AND video_id=?2 AND type=1');
 	    st.bindInt32Parameter(0,id);
@@ -381,6 +381,37 @@ var NicoLiveOverlay = {
 	doc = null;
     },
 
+    listenToChangeSortOrderEvent:function(doc){
+	let func = function(e){
+	    let doc = e.target.ownerDocument;
+	    let body = doc.getElementById("SYS_box_mylist_body");
+	    let header = doc.getElementById('SYS_box_mylist_header');
+	    let sel = doc.getElementById('nlh_sortorder');
+	    let sortorder = ["",
+			     "title ASC","title DESC",
+			     "first_retrieve DESC","first_retrieve ASC",
+			     "view_counter DESC","view_counter ASC",
+			     "comment_num DESC","comment_num ASC",
+			     "mylist_counter DESC","mylist_counter ASC",
+			     "length DESC","length ASC"];
+
+	    let db = NicoLiveOverlay.getDatabase();
+	    let str = 'SELECT N.* FROM nicovideo N JOIN (SELECT * FROM folder F WHERE F.parent=?1 AND F.type=1) USING (video_id) ORDER BY '+sortorder[sel.value];
+	    let st = db.createStatement(str);
+	    let id = sel.getAttribute('nlh_id');
+	    st.bindInt32Parameter(0,id);
+	    while( body.firstChild ) body.removeChild(body.firstChild);
+
+	    while(st.executeStep()){
+		NicoLiveOverlay.createExtraMylistItem(doc,st.row, id);
+	    }
+	    st.finalize();
+	    db.close();
+	};
+	doc.getElementById('nlh_sortorder').addEventListener('change',func,true);
+	doc = null;
+    },
+
     clickExtraMylist:function(event){
 	let id = event.target.getAttribute('nlh_id');
 	let doc = event.target.ownerDocument;
@@ -403,9 +434,8 @@ var NicoLiveOverlay = {
 	str += '</select></td><td>に</td><td nowrap="nowrap"><input type="button" value="移動" id="SYS_btn_move_mylist" class="submit" /><input type="button" value="コピー" id="SYS_btn_copy_mylist" class="submit" /><input type="button" style="color: rgb(204, 0, 0);" value="削除" id="SYS_btn_remove_mylist" class="submit" /></td></tr></tbody></table></form><span id="nlh-showresult"></span>';
 	header.innerHTML = str;
 
-	header.innerHTML += '<h1>'+event.target.innerHTML+'</h1>';
-/*
-	    + '<select id="nlh_sortorder"style="width: 160px;" name="sort">'
+	header.innerHTML += '<h1>'+event.target.innerHTML+'</h1>'
+	    + '<select id="nlh_sortorder" nlh_id="'+id+'" style="width: 160px;" name="sort">'
 	    + '<option value="1">タイトル昇順</option>'
 	    + '<option value="2">タイトル降順</option>'
 	    + '<option value="3">投稿が新しい順</option>'
@@ -419,7 +449,7 @@ var NicoLiveOverlay = {
 	    + '<option value="11">時間が長い順</option>'
 	    + '<option value="12">時間が短い順</option>'
 	    + '</select>';
-*/
+
 	this.appendDeleteExtraMylistButton(doc,id);
 
 	this.debugprint('anchor was clicked:'+id);
@@ -436,11 +466,12 @@ var NicoLiveOverlay = {
 	this.createEventListenerForDeleteButton(doc);
 
 	this.addEventListenerForEditor(doc);
+	this.listenToChangeSortOrderEvent(doc);
 
 	header.scrollIntoView(true);
     },
 
-    // 拡張マイリスト一覧に行を追加.
+    // 仮想マイリスト一覧に行を追加.
     appendMylistRow:function(doc,table,itemname,id){
 	let tr,td;
 	tr = table.insertRow(table.rows.length);
@@ -461,7 +492,7 @@ var NicoLiveOverlay = {
 
     // 新規作成.
     newExtraMylist:function(e){
-	let name = window.prompt('追加する拡張マイリストの名前を入力してください','');
+	let name = window.prompt('追加する仮想マイリストの名前を入力してください','');
 	if(name){
 	    let db = this.getDatabase();
 	    let st = db.createStatement('INSERT INTO folder(type,parent,name) VALUES(0,-1,?1)');
@@ -567,7 +598,7 @@ var NicoLiveOverlay = {
 	return exist;
     },
 
-    // 拡張マイリストに動画を追加する.
+    // 仮想マイリストに動画を追加する.
     addToExtraMylist:function(e){
 	let doc = e.target.ownerDocument;
 	let unsafeWin = doc.defaultView.wrappedJSObject;
@@ -586,7 +617,7 @@ var NicoLiveOverlay = {
 	if(exist){
 	    this.addVideoDatabase(db,unsafeWin.Video);
 	    if(this.checkExistExtraMylist(db,id,video_id)){
-		doc.getElementById('nlh_messages').innerHTML = video_id+'はすでに拡張マイリストに登録済みです';
+		doc.getElementById('nlh_messages').innerHTML = video_id+'はすでに仮想マイリストに登録済みです';
 	    }else{
 		st = db.createStatement('INSERT INTO folder(type,parent,video_id) VALUES(1,?1,?2)');
 		st.bindInt32Parameter(0,id);
@@ -594,10 +625,10 @@ var NicoLiveOverlay = {
 		st.execute();
 		st.finalize();
 		this.debugprint('add:'+video_id+' -> '+id);
-		doc.getElementById('nlh_messages').innerHTML = video_id+'を拡張マイリストに登録しました';
+		doc.getElementById('nlh_messages').innerHTML = video_id+'を仮想マイリストに登録しました';
 	    }
 	}else{
-	    doc.getElementById('nlh_messages').innerHTML = '拡張マイリストが存在しないため登録できませんでした';
+	    doc.getElementById('nlh_messages').innerHTML = '仮想マイリストが存在しないため登録できませんでした';
 	}
 
 	db.close();
@@ -607,7 +638,7 @@ var NicoLiveOverlay = {
 	let btn = doc.createElement('input');
 	btn.setAttribute('type','button');
 	btn.className = 'submit';
-	btn.value = "拡張マイリストに登録";
+	btn.value = "仮想マイリストに登録";
 	btn.addEventListener('click',function(e){
 				 NicoLiveOverlay.addToExtraMylist(e);
 			     },true);
