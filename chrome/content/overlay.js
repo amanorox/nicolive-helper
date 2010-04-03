@@ -468,7 +468,21 @@ var NicoLiveOverlay = {
 	str += '</select></td><td>に</td><td nowrap="nowrap"><input type="button" value="移動" id="SYS_btn_move_mylist" class="submit" /><input type="button" value="コピー" id="SYS_btn_copy_mylist" class="submit" /><input type="button" style="color: rgb(204, 0, 0);" value="削除" id="SYS_btn_remove_mylist" class="submit" /></td></tr></tbody></table></form><span id="nlh-showresult"></span>';
 	header.innerHTML = str;
 
+	this.debugprint('anchor was clicked:'+id);
+	st = db.createStatement('SELECT N.* FROM nicovideo N JOIN (SELECT * FROM folder F WHERE F.parent=?1 AND F.type=1) USING (video_id)');
+	st.bindInt32Parameter(0,id);
+
+	let cnt=0;
+	while(st.executeStep()){
+	    //this.debugprint(st.row.video_id);
+	    this.createExtraMylistItem(doc,st.row, id);
+	    cnt++;
+	}
+	st.finalize();
+	db.close();
+
 	header.innerHTML += '<h1>'+event.target.innerHTML+'</h1>'
+	    + '<strong>全'+cnt+'件</strong><br />'
 	    + '<select id="nlh_sortorder" nlh_id="'+id+'" style="width: 160px;" name="sort">'
 	    + '<option value="1">タイトル昇順</option>'
 	    + '<option value="2">タイトル降順</option>'
@@ -486,19 +500,7 @@ var NicoLiveOverlay = {
 
 	this.appendDeleteExtraMylistButton(doc,id);
 
-	this.debugprint('anchor was clicked:'+id);
-	st = db.createStatement('SELECT N.* FROM nicovideo N JOIN (SELECT * FROM folder F WHERE F.parent=?1 AND F.type=1) USING (video_id)');
-	st.bindInt32Parameter(0,id);
-
-	while(st.executeStep()){
-	    //this.debugprint(st.row.video_id);
-	    this.createExtraMylistItem(doc,st.row, id);
-	}
-	st.finalize();
-	db.close();
-
 	this.createEventListenerForDeleteButton(doc);
-
 	this.addEventListenerForEditor(doc);
 	this.listenToChangeSortOrderEvent(doc);
 
