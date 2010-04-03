@@ -232,6 +232,25 @@ var NicoLiveOverlay = {
 	while( header.firstChild ) header.removeChild(header.firstChild);
 	while( body.firstChild ) body.removeChild(body.firstChild);
     },
+    // 仮想マイリストの名前変更.
+    renameExtraMylist:function(e){
+	let name = window.prompt('新しい仮想マイリストの名前を入力してください','');
+	if(name){
+	    let doc = e.target.ownerDocument;
+	    let id = e.target.getAttribute('nlh_id');
+	    let db = this.getDatabase();
+
+	    this.evaluateXPath(doc,doc,'//*[@id=\'SYS_box_mylist_header\']/h1')[0].innerHTML = name;
+	    this.evaluateXPath(doc,doc,'//*[@id=\'nlh_extramylistgroups\']//a[@nlh_id=\''+id+'\']')[0].innerHTML = name;
+	    // フォルダ名を変更.
+	    let st = db.createStatement('UPDATE folder SET name=?1 WHERE id=?2 AND type=0');
+	    st.bindUTF8StringParameter(0,name);
+	    st.bindInt32Parameter(1,id);
+	    st.execute();
+	    st.finalize();
+	    db.close();
+	}
+    },
 
     // 仮想マイリストの削除.
     appendDeleteExtraMylistButton:function(doc,id){
@@ -242,6 +261,16 @@ var NicoLiveOverlay = {
 	btn.className = 'submit';
 	btn.addEventListener('click',function(e){
 				 NicoLiveOverlay.deleteExtraMylist(e);
+			     },true);
+	doc.getElementById('SYS_box_mylist_header').appendChild(btn);
+
+	btn = doc.createElement('input');
+	btn.setAttribute('type','button');
+	btn.setAttribute('value','名前の変更');
+	btn.setAttribute('nlh_id',id);
+	btn.className = 'submit';
+	btn.addEventListener('click',function(e){
+				 NicoLiveOverlay.renameExtraMylist(e);
 			     },true);
 	doc.getElementById('SYS_box_mylist_header').appendChild(btn);
 	doc = null; id = null; btn = null;
