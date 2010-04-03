@@ -116,6 +116,11 @@ var NicoLiveOverlay = {
     },
 
     onPageLoad:function(e){
+	if( e.target.location.href.match(/^http:\/\/www.nicovideo.jp\/watch\/(.*)$/) ){
+	    this.process_videopage(e.target);
+	    return;
+	}
+
 	let player;
 	try{
 	    // 生放送のページかどうか.
@@ -682,7 +687,7 @@ var NicoLiveOverlay = {
 
 	let db = this.getDatabase();
 	let st = db.createStatement('SELECT id,name FROM folder WHERE type=0 ORDER BY name ASC');
-	let str = "<select id=\"nlh_extramylistgroups\">";
+	let str = "<select id=\"nlh_extramylistgroups\" style=\"font-size:12px; width:160px;\">";
 	while(st.executeStep()){
 	    str += "<option value=\""+st.row.id+"\">" + st.row.name + "</option>";
 	}
@@ -702,12 +707,12 @@ var NicoLiveOverlay = {
 	let doc = e.target;
 	try{
 	    
-	if( doc.location.href.match(/^http:\/\/www.nicovideo.jp\/my\/mylist/) ){
-	    this.process_mylistpage(doc);
-	}
-	if( doc.location.href.match(/^http:\/\/www.nicovideo.jp\/watch\/(.*)$/) ){
-	    this.process_videopage(doc);
-	}
+	    if( doc.location.href.match(/^http:\/\/www.nicovideo.jp\/my\/mylist/) ){
+		this.process_mylistpage(doc);
+	    }
+	    if( 0 && doc.location.href.match(/^http:\/\/www.nicovideo.jp\/watch\/(.*)$/) ){
+		this.process_videopage(doc);
+	    }
 
 	} catch (x) {
 	}
