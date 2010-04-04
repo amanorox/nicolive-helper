@@ -64,7 +64,7 @@ var NicoLiveBrowser = {
 	}
 	for(let i=0,item; item=videos[i]; i++){
 	    let d = item.href.match(/.+\/(.*?)$/);
-	    let info = { "vid": d[1], "uadp": uads[i].textContent };
+	    let info = { "vid": d[1], "uadp": uads[i].textContent.replace(/,/g,'') };
 	    this.ostream.writeString(d[1]+"\t"+uads[i].textContent+"\r\n");
 	}
 	this._page++;
@@ -74,7 +74,7 @@ var NicoLiveBrowser = {
 
     loadSearchingPage:function(){
 	let url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a"; // ミクオリジナル曲
-	url = "http://www.nicovideo.jp/tag/VOCALOID?page="+this._page+"&sort=f&order=a"; // VOCALOID
+	//url = "http://www.nicovideo.jp/tag/VOCALOID?page="+this._page+"&sort=f&order=a"; // VOCALOID
 	debugprint(url);
 	clearInterval(this._crawlingtimer);
 	$('live-page').setAttribute('src',url);
