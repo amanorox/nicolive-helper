@@ -169,9 +169,14 @@ var NicoLiveMylist = {
 		    } catch (x) {
 			description = "";
 		    }
-		    if( description ){
-			NicoLiveMylist.mylistcomment["_"+video_id[0]] = description;
-		    }
+
+		    let d = new Date(item.getElementsByTagName('pubDate')[0].textContent);
+
+		    let dat = {
+			"pubDate": d.getTime()/1000,  // UNIX time
+			"description": description
+		    };
+		    NicoLiveMylist.mylist_itemdata["_"+video_id[0]] = dat;
 		}// end for.
 		NicoLiveRequest.addStock(videos.join(','));
 	    }
@@ -291,9 +296,10 @@ var NicoLiveMylist = {
 
     init:function(){
 	debugprint("NicoLiveMylist.init");
-	this.mylists = new Array();
-	this.mylistdata = new Object();
-	this.mylistcomment = new Object();
+	this.mylists = new Array(); // マイリストグループ.
+	this.mylistdata = new Object(); // マイリスト全データ.
+
+	this.mylist_itemdata = new Object(); // マイリスト動画個々のデータ.
 
 	let req = new XMLHttpRequest();
 	if(!req) return;

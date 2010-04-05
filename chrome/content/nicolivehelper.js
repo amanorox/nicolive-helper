@@ -1134,6 +1134,10 @@ var NicoLiveHelper = {
 				return order;
 			    }
 			    break;
+			case 7:// マイリス登録日.
+			    tmpa = a.registerDate;
+			    tmpb = b.registerDate;
+			    break;
 			}
 			return (tmpa - tmpb) * order;
 		    });
@@ -1364,6 +1368,16 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
     },
 
+    // 動画情報再送信を設定する.
+    setupRevertMusicInfo:function(){
+	clearInterval( this._revertcommentid );
+	this._revertcommentid = setInterval(
+	    function(){
+		NicoLiveHelper.revertMusicInfo();
+		clearInterval( NicoLiveHelper._revertcommentid );
+	    }, 15*1000 );
+    },
+
     // コメント(主と視聴者を識別してそれぞれのコメント).
     postComment: function(comment,mail){
 	comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
@@ -1437,12 +1451,7 @@ var NicoLiveHelper = {
 			    break;
 			}
 
-			clearInterval( NicoLiveHelper._revertcommentid );
-			NicoLiveHelper._revertcommentid = setInterval(
-			    function(){
-				NicoLiveHelper.revertMusicInfo();
-				clearInterval( NicoLiveHelper._revertcommentid );
-			    }, 15*1000 );
+			NicoLiveHelper.setupRevertMusicInfo();
 			break;
 		    default:
 			break;
@@ -1978,7 +1987,13 @@ var NicoLiveHelper = {
 
 	info.pname = this.getPName(info);
 
-	info.mylistcomment = NicoLiveMylist.mylistcomment["_"+info.video_id];
+	try{
+	    info.mylistcomment = NicoLiveMylist.mylist_itemdata["_"+info.video_id].description;
+	    info.registerDate = NicoLiveMylist.mylist_itemdata["_"+info.video_id].pubDate;
+	} catch (x) {
+	    info.mylistcomment = "";
+	    info.registerDate = 0; // Unix time
+	}
 	return info;
     },
 
@@ -3118,18 +3133,6 @@ var NicoLiveHelper = {
     },
 
     test: function(){
-	let req = new XMLHttpRequest();
-	if( !req ) return;
-	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		debugprint(req.responseText);
-	    }
-	};
-	let url = "http://www.nicovideo.jp/api/mylist/list";
-	req.open('POST',url );
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	let data = "group_id=17891558";
-	req.send(data);
     }
 };
 
