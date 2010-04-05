@@ -579,6 +579,7 @@
 	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortStock(4,1)"/>
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,1)"/>
+	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,1)"/>
 	</menupopup>
       </menu>
       <menu label="&sort.descend_order;">
@@ -590,6 +591,7 @@
 	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortStock(4,-1)"/>
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,-1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,-1)"/>
+	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,-1)"/>
 	</menupopup>
       </menu>
       <menuitem label="&menu.stock_showdetail;" oncommand="NicoLiveRequest.showhideDetail();"/>

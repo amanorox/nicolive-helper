@@ -152,6 +152,7 @@
 <!ENTITY sort.playtime "再生時間">
 <!ENTITY sort.mylist_rate "マイリスト率">
 <!ENTITY sort.title "タイトル">
+<!ENTITY sort.registered_date "マイリスト登録日">
 
 <!ENTITY rate.name "レート">
 <!ENTITY rate.none "なし">

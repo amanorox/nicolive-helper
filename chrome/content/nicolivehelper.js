@@ -1134,6 +1134,10 @@ var NicoLiveHelper = {
 				return order;
 			    }
 			    break;
+			case 7:// マイリス登録日.
+			    tmpa = a.registerDate;
+			    tmpb = b.registerDate;
+			    break;
 			}
 			return (tmpa - tmpb) * order;
 		    });
@@ -1983,7 +1987,13 @@ var NicoLiveHelper = {
 
 	info.pname = this.getPName(info);
 
-	info.mylistcomment = NicoLiveMylist.mylistcomment["_"+info.video_id];
+	try{
+	    info.mylistcomment = NicoLiveMylist.mylist_itemdata["_"+info.video_id].description;
+	    info.registerDate = NicoLiveMylist.mylist_itemdata["_"+info.video_id].pubDate;
+	} catch (x) {
+	    info.mylistcomment = "";
+	    info.registerDate = 0; // Unix time
+	}
 	return info;
     },
 
