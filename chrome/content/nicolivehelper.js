@@ -2553,7 +2553,8 @@ var NicoLiveHelper = {
 	let elem = $('played-list-textbox');
 	elem.value += this.title+" "+this.request_id+" ("+GetFormattedDateString("%Y/%m/%d %H:%M",this.starttime*1000)+"-)\n";
 	for(let i=0,item;item=que[i];i++){
-	    let dat = item.textContent.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
+	    //debugprint(item.textContent);
+	    let dat = item.textContent.match(/^\s*\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"?(.*)\"?$/);
 	    if(dat){
 		let vid = dat[2];
 		let title = dat[6];
