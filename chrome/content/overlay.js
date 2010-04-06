@@ -116,7 +116,7 @@ var NicoLiveOverlay = {
     },
 
     onPageLoad:function(e){
-	if( e.target.location.href.match(/^http:\/\/www.nicovideo.jp\/watch\/(.*)$/) ){
+	if( 0 && e.target.location.href.match(/^http:\/\/www.nicovideo.jp\/watch\/(.*)$/) ){
 	    this.process_videopage(e.target);
 	    return;
 	}
@@ -727,10 +727,12 @@ var NicoLiveOverlay = {
 					function(e){
 					    NicoLiveOverlay.onPageLoad(e);
 					},true);
-	    appcontent.addEventListener("load",
-				       function(e){
-					   NicoLiveOverlay.onLoad(e);
-				       },true);
+	    if(0){
+		appcontent.addEventListener("load",
+					    function(e){
+						NicoLiveOverlay.onLoad(e);
+					    },true);
+	    }
 	}
 	this.nicolivehistory = new Array();
 	appcontent = null;
