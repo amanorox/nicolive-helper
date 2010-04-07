@@ -126,7 +126,8 @@
 
 <!ENTITY menu.db_addstock "ストック追加">
 <!ENTITY menu.db_sendrequest "リクエスト送信">
-<!ENTITY menu.db_delete "DBから削除">
+<!ENTITY menu.db_delete "この動画をDBから削除">
+<!ENTITY menu.db_delete_all "検索結果をDBから削除">
 
 <!ENTITY comment.menu_openprofile "プロフィールページを開く">
 <!ENTITY comment.menu_setname "コテハン設定">

@@ -520,19 +520,35 @@ var NicoLiveDatabase = {
 	CopyToClipboard(elem.getAttribute('nicovideo_id')); // 動画IDを取れる.
     },
 
-    deleteMovie:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
-	let video_id = elem.getAttribute('nicovideo_id');
+    deleteMovieByVideoId:function(video_id){
 	let st;
 	try{
 	    st = this.dbconnect.createStatement('delete from nicovideo where video_id=?1');
 	    st.bindUTF8StringParameter(0,video_id);
 	    st.execute();
 	    st.finalize();
-	    ShowNotice(video_id+"をDBから削除しました");
 	    this.ratecache["_"+video_id] = -1;
 	} catch (x) {
 	}
+    },
+
+    deleteMovie:function(){
+	let elem = FindParentElement(document.popupNode,'vbox');
+	let video_id = elem.getAttribute('nicovideo_id');
+	this.deleteMovieByVideoId(video_id);
+	ShowNotice(video_id+"をDBから削除しました");
+    },
+
+    // サーチ結果にある動画を全て削除する.
+    deleteSearchResults:function(){
+	if( !ConfirmPrompt('検索結果にある動画を全てDBから削除しますか？','動画の削除') ) return;
+
+	let videos = evaluateXPath(document,"//html:table[@id='database-table']//*[@nicovideo_id]");
+	for(let i=0,item; item=videos[i];i++){
+	    let video_id = item.getAttribute("nicovideo_id");
+	    this.deleteMovieByVideoId(video_id);
+	}
+	ShowNotice('検索結果にある動画を全てDBから削除しました');
     },
 
     setPName:function(){

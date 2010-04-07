@@ -559,6 +559,8 @@
       </menu>
       <menuseparator/>
       <menuitem label="&menu.db_delete;" oncommand="NicoLiveDatabase.deleteMovie();"/>
+      <menuseparator/>
+      <menuitem label="&menu.db_delete_all;" oncommand="NicoLiveDatabase.deleteSearchResults();"/>
     </menupopup>
 
     <!-- for stock -->
