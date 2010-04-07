@@ -1423,12 +1423,18 @@ var NicoLiveHelper = {
 						     }, 2000 );
 		    }
 		    if(video_id && retry){
-			let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
+			//let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
+			let str = NicoLivePreference.videoinfo_playfailed;
+			NicoLiveHelper.musicinfo = {
+			    "video_id": video_id
+			};
 			NicoLiveHelper.postCasterComment(str,"");
 			//$('played-list-textbox').value += str + "\n"; // これは要らないかな.
 			// たまに生引用拒否していなくてもエラーになるので.
 			// 再生エラータブ行き.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
+			    // ルーツ上から再生したときは再生エラーリストに追加.
+			    // コメントからの直接再生だと動画データがない可能性があるのでやらない.
 			    NicoLiveHelper.musicinfo.error = true;
 			    NicoLiveHelper.musicinfo.isplayed = true;
 			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);

@@ -44,10 +44,12 @@ var NicoLivePreference = {
 	    this.videoinfo[i].comment = branch.getUnicharPref("videoinfo"+(i+1));
 	    this.videoinfo[i].command = branch.getUnicharPref("videoinfo"+(i+1)+"-command");
 	}
+	// 再生失敗したときのコメント.
+	this.videoinfo_playfailed = branch.getUnicharPref("videoinfo.playfailed");
+
 	this.revert_videoinfo = branch.getIntPref("revert-videoinfo");
 
 	this.msg = new Object();
-
 	// リクエストの自動応答.
 	this.msg.deleted   = branch.getUnicharPref("msg-deleted");
 	this.msg.notaccept = branch.getUnicharPref("msg-notaccept");
