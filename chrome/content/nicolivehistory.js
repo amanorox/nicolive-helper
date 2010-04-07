@@ -55,15 +55,12 @@ var NicoLiveHistory = {
 	let button = CreateElement('button');
 	button.setAttribute("label",'リクエストに追加');
 	button.className = 'commandbtn';
-	//let str = JSON.stringify(item);
-	//button.setAttribute("oncommand","NicoLiveHelper.addRequestQueue(JSON.parse('"+str+"'));");
 	button.setAttribute("oncommand","NicoLiveHistory._addRequest('"+item.video_id+"');");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
 	button.setAttribute('label','再生');
 	button.className = 'commandbtn';
-	//button.setAttribute("oncommand","NicoLiveHistory._playFromHistory(JSON.parse('"+str+"'));");
 	button.setAttribute("oncommand","NicoLiveHistory._playFromHistory('"+item.video_id+"');");
 	hbox.appendChild(button);
 	vbox.appendChild(hbox);

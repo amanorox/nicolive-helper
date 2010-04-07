@@ -490,6 +490,12 @@ var NicoLiveRequest = {
 	    this.addErrorRequest(item);
 	}
     },
+
+    _addRequestFromError:function(video_id){
+	let item = NicoLiveHelper.findVideoInfo(video_id);
+	NicoLiveHelper.addRequestQueue(item);
+    },
+
     addErrorRequest:function(item){
 	let table = $('error-request-table');
 	let tr = table.insertRow(table.rows.length);
@@ -528,9 +534,7 @@ var NicoLiveRequest = {
 	let button = CreateElement('button');
 	button.setAttribute("label",'リクエストに追加');
 	button.className = 'commandbtn';
-	let jsonobj = JSON.stringify(item);
-	// ちょっとセコイかな?
-	button.setAttribute("oncommand","NicoLiveHelper.addRequestQueue(JSON.parse('"+jsonobj+"'));");
+	button.setAttribute("oncommand","NicoLiveRequest._addRequestFromError('"+item.video_id+"');");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
