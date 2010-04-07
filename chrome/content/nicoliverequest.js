@@ -493,6 +493,7 @@ var NicoLiveRequest = {
 
     _addRequestFromError:function(video_id){
 	let item = NicoLiveHelper.findVideoInfo(video_id);
+	if(item==null) return;
 	NicoLiveHelper.addRequestQueue(item);
     },
 
