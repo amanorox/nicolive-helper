@@ -71,6 +71,8 @@ var NicoLiveHelper = {
 
     _playmusictime: 0,  // playMusicを呼び出した時刻.
 
+    twitterinfo: {},  // Twitter投稿API
+
     // リクを受け付けるかどうかチェック.
     checkAcceptRequest: function(xml, comment_no){
 	if(xml.getElementsByTagName('error').length){ // 動画がない.
@@ -347,6 +349,7 @@ var NicoLiveHelper = {
 			}
 			NicoLiveHelper.sendMusicInfo();
 			NicoLiveHelper.addPlayListText(NicoLiveHelper.musicinfo);
+			NicoLiveHelper.postTweet("再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
 		    }
 		}
 		return;
@@ -1612,6 +1615,28 @@ var NicoLiveHelper = {
 	return;
     },
 
+    // Twitterにtweetする(ニコ生API経由).
+    postTweet:function(tweet){
+	if( !this.twitterinfo.status || !this.twitterinfo.live_enabled ) return;
+	let str = new Array();
+	let url;
+	str.push("entry_content="+encodeURIComponent(tweet));
+	str.push("token="+this.twitterinfo.token);
+	str.push("vid="+this.request_id);
+
+	var req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+	    }
+	};
+
+	url = this.twitterinfo.api_url + "twitterpost";
+	req.open('POST', url );
+	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	req.send(str.join('&'));
+    },
+
     // リクエスト消費順にソート.
     calcConsumptionRate:function(){
 	let rate = new Array();
@@ -2632,7 +2657,7 @@ var NicoLiveHelper = {
 			break;
 		    }
 		}
-
+		// サーバ時刻を調べる.
 		//let serverdate = req.getResponseHeader("Date");
 		let serverdate = evaluateXPath(xml,"/getplayerstatus/@time");
 		if(serverdate.length){
@@ -2643,10 +2668,23 @@ var NicoLiveHelper = {
 		serverdate = new Date(serverdate*1000);
 		NicoLiveHelper.serverconnecttime = serverdate.getTime()/1000;
 
+		// Twitter投稿について調べる.
+		let tw;
+		tw = evaluateXPath(xml,"/getplayerstatus/user/twitter_info/status");
+		if( tw.length ) NicoLiveHelper.twitterinfo.status = tw[0].textContent=="enabled"?true:false;
+		tw = evaluateXPath(xml,"/getplayerstatus/user/twitter_info/tweet_token");
+		if( tw.length ) NicoLiveHelper.twitterinfo.token = tw[0].textContent;
+		tw = evaluateXPath(xml,"/getplayerstatus/twitter/live_enabled");
+		if( tw.length ) NicoLiveHelper.twitterinfo.live_enabled = tw[0].textContent;
+		tw = evaluateXPath(xml,"/getplayerstatus/twitter/live_api_url"); // + "twitterpost"
+		if( tw.length ) NicoLiveHelper.twitterinfo.api_url = tw[0].textContent;
+		tw = evaluateXPath(xml,"/getplayerstatus/stream/twitter_tag");
+		if( tw.length ) NicoLiveHelper.twitterinfo.hashtag = tw[0].textContent;
+
 		debugprint("addr:"+NicoLiveHelper.addr);
 		debugprint("port:"+NicoLiveHelper.port);
 		debugprint("thread:"+NicoLiveHelper.thread);
-		
+
 		NicoLiveHelper._donotshowdisconnectalert = false;
 		if( evaluateXPath(xml,"//quesheet").length ){
 		    NicoLiveHelper.construct_playlist_for_timeshift(xml);
@@ -2774,6 +2812,7 @@ var NicoLiveHelper = {
 		if( req.status==200 ){
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
 		    if( confstatus.getAttribute('status')=='ok' ){
+			NicoLiveHelper.postTweet("「"+NicoLiveHelper.title+"」を開始しました from NicoLiveHelper");
 		    }else{
 			debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
 		    }
