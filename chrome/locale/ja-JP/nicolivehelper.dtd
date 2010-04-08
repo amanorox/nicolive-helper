@@ -109,7 +109,7 @@
 <!ENTITY browser.open "開く">
 <!ENTITY browser.close "閉じる">
 
-<!ENTITY live.watcher "来場者数 0">
+<!ENTITY live.watcher "来 0">
 
 <!ENTITY statusbar.add_db "動画DBに追加">
 

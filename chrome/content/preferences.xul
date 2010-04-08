@@ -621,6 +621,9 @@
     </vbox>
   </prefpane>
 
+  <prefpane id="nicolivehelper-prefpane-twitter" label="Twitter" image="chrome://nicolivehelper/content/data/twittericon.png">
+  </prefpane>
+
   <popupset>
     <menupopup id="popup-classifier">
       <menuitem label="削除" oncommand="NLHPreference.removeSelectedClass();"/>
