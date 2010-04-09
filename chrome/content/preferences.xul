@@ -642,9 +642,9 @@
 
       <html:hr/>
 
-      <checkbox label="配信開始した時につぶやく" preference="twitter-tweet-when-beginlive"/>
-      <checkbox label="動画を再生した時につぶやく" preference="twitter-tweet-when-playmovie"/>
-      <checkbox label="マイリスト登録した時につぶやく" preference="twitter-tweet-when-addmylist"/>
+      <hbox><checkbox label="配信開始した時につぶやく" preference="twitter-tweet-when-beginlive"/></hbox>
+      <hbox><checkbox label="動画を再生した時につぶやく" preference="twitter-tweet-when-playmovie"/></hbox>
+      <hbox><checkbox label="マイリスト登録した時につぶやく" preference="twitter-tweet-when-addmylist"/></hbox>
     </vbox>
   </prefpane>
 
