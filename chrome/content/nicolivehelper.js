@@ -3149,9 +3149,6 @@ var NicoLiveHelper = {
     loadVideoLength:function(){
 	this._videolength = new Object();
 
-	let req = new XMLHttpRequest();
-	if(!req) return;
-
 	let extpath = GetExtensionPath();
 	debugprint("Extension Path="+extpath.path);
 	extpath = extpath.parent;
