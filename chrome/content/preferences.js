@@ -1,4 +1,7 @@
 var NLHPreference = {
+    debugprint:function(txt){
+	//opener.debugprint(txt);
+    },
 
     previewVideoInfo:function(str){
 	let info = {
@@ -464,6 +467,73 @@ var NLHPreference = {
 	}
     },
 
+    // Twitterユーザの認証.
+    authorizeTwitterUser:function(){
+	let user = $('twitter-user').value;
+	let pass = $('twitter-password').value;
+	if( user && pass ){
+	    let func = function(statuscode,oauthobj){
+		if(statuscode!=200){
+		    $('twitter-authorization-result').value = "失敗";
+		}else{
+		    //$('twitter-authorization-result').value = oauthobj["screen_name"];
+		    $('twitter-authorized-username').value = oauthobj["screen_name"];
+		    NLHPreference.removeAllTwitterToken();
+		    NLHPreference.saveTwitterToken(oauthobj);
+		    NLHPreference.saveTwitterScreenName(oauthobj["screen_name"]);
+		}
+		$('twitter-authorization-button').disabled = false;
+	    };
+	    $('twitter-authorization-button').disabled = true;
+	    opener.NicoLiveTweet.getAccessTokenByXAuth(user,pass,func);
+	}
+    },
+
+    saveTwitterScreenName:function(name){
+	let pref = opener.NicoLivePreference.getBranch();
+	pref.setCharPref("twitter.auth-user",name);
+    },
+
+    // Twitterトークンをログインマネージャに保存.
+    saveTwitterToken:function(oauthobj){
+	let as_user = oauthobj["oauth_token"];
+	let as_pass = oauthobj["oauth_token_secret"];
+
+	let host = "chrome://nicolivehelper";
+	let nsLoginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1",
+                                                     Components.interfaces.nsILoginInfo,
+                                                     "init");
+	let loginInfo = new nsLoginInfo(host, null, "twitter token", as_user, as_pass, "", "");
+	this._login.addLogin(loginInfo);
+    },
+
+    getSavedTwitterToken:function(){
+	let hostname = "chrome://nicolivehelper";
+	let myLoginManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);  
+	let logins = myLoginManager.findLogins({}, hostname, null, 'twitter token');
+	if( logins.length ){
+	    this.debugprint('# of tokens:'+logins.length);
+	}else{
+	    this.debugprint('No twitter token in LoginManager.');
+	    $('twitter-authorization-result').value = "なし";
+	}
+    },
+
+    // Twitterトークンを全削除.
+    removeAllTwitterToken:function(){
+	try { 
+	    let host = "chrome://nicolivehelper";
+	    let logins = this._login.findLogins({}, host, null, 'twitter token');
+	    for (let i = 0; i < logins.length; ++i){
+		this.debugprint(logins[i]);
+		this._login.removeLogin(logins[i]);
+	    }
+	}
+	catch (e) {
+	    this.debugprint(e);
+	}
+    },
+
     init:function(){
 	let data = opener.NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
 	if( data.requestchecker ){
@@ -480,6 +550,10 @@ var NLHPreference = {
 	    this.setExistClasses();
 	}
 	this.buildFontList();
+
+	this._login = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
+
+	this.getSavedTwitterToken();
     },
     destroy:function(){
 	//Application.console.log('close advanced setting');

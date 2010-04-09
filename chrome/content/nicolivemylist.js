@@ -21,6 +21,14 @@ THE SOFTWARE.
  */
 
 var NicoLiveMylist = {
+    tweet:function(video_id){
+	let video = NicoLiveHelper.findVideoInfo(video_id);
+	if( video==null ) return;
+
+	if( NicoLivePreference.twitter.when_addmylist ){
+	    NicoLiveTweet.tweet("【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" from "+NicoLiveHelper.title);
+	}
+    },
 
     addDeflist2:function(video_id, item_id, token){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.

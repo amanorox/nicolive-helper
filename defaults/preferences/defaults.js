@@ -77,3 +77,8 @@ pref("extensions.nicolivehelper.custom-script",false);
 pref("extensions.nicolivehelper.do-classify",false);
 pref("extensions.nicolivehelper.classes-value","");
 pref("extensions.nicolivehelper.singlewindow",false);
+
+pref("extensions.nicolivehelper.twitter.use-api","self");
+pref("extensions.nicolivehelper.twitter.when-beginlive",false);
+pref("extensions.nicolivehelper.twitter.when-playmovie",false);
+pref("extensions.nicolivehelper.twitter.when-addmylist",false);

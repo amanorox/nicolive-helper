@@ -349,7 +349,6 @@ var NicoLiveHelper = {
 			}
 			NicoLiveHelper.sendMusicInfo();
 			NicoLiveHelper.addPlayListText(NicoLiveHelper.musicinfo);
-			NicoLiveHelper.postTweet("再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
 		    }
 		}
 		return;
@@ -892,6 +891,10 @@ var NicoLiveHelper = {
 	    NicoLiveHelper._sendMusicInfo();
 	};
 	this.clearCasterCommentAndRun(func);
+
+	if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
+	    NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+	}
     },
 
     // 動画情報を復元する.
@@ -2812,7 +2815,9 @@ var NicoLiveHelper = {
 		if( req.status==200 ){
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
 		    if( confstatus.getAttribute('status')=='ok' ){
-			NicoLiveHelper.postTweet("「"+NicoLiveHelper.title+"」を開始しました from NicoLiveHelper");
+			if( NicoLivePreference.twitter.when_beginlive ){
+			    NicoLiveTweet.tweet("【ニコ生】「"+NicoLiveHelper.title+"」を開始しました。 http://nico.ms/"+NicoLiveHelper.request_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+			}
 		    }else{
 			debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
 		    }

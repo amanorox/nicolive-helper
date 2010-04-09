@@ -30,23 +30,37 @@ var NicoLiveTweet = {
 
     oauth: {},
 
+    getSavedToken:function(){
+	let hostname = "chrome://nicolivehelper";
+	let myLoginManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);  
+	let logins = myLoginManager.findLogins({}, hostname, null, 'twitter token');
+	if( logins.length ){
+	    debugprint('# of tokens:'+logins.length);
+	    this.oauth = {};
+	    this.oauth["oauth_token"] = logins[0].username;
+	    this.oauth["oauth_token_secret"] = logins[0].password;
+	}else{
+	    debugprint('No twitter token in LoginManager.');
+	}
+    },
+
     getRequestToken:function(){
-	this.accessor = {
+	let accessor = {
 	    consumerSecret: this.consumerSecret,
 	    tokenSecret: ""
 	};
-	this.message = {
+	let message = {
 	    action: this.requestTokenURL,
 	    method: "POST",
 	    parameters: []
 	};
-	this.message.parameters.push(["oauth_consumer_key",this.consumer]);
-	this.message.parameters.push(["oauth_signature_method","HMAC-SHA1"]);
-	this.message.parameters.push(["oauth_timestamp",""]);
-	this.message.parameters.push(["oauth_nonce",""]);
-	this.message.parameters.push(["oauth_signature",""]);
-	OAuth.setTimestampAndNonce(this.message);
-	OAuth.SignatureMethod.sign(this.message,this.accessor);
+	message.parameters.push(["oauth_consumer_key",this.consumer]);
+	message.parameters.push(["oauth_signature_method","HMAC-SHA1"]);
+	message.parameters.push(["oauth_timestamp",""]);
+	message.parameters.push(["oauth_nonce",""]);
+	message.parameters.push(["oauth_signature",""]);
+	OAuth.setTimestampAndNonce(message);
+	OAuth.SignatureMethod.sign(message,accessor);
 
 	let req = new XMLHttpRequest();
 	if( !req ) return;
@@ -60,20 +74,20 @@ var NicoLiveTweet = {
 		    NicoLiveTweet.oauth[val[0]] = val[1];
 		}
 	    }
-	    debugprint('request token:'+req.responseText);
+	    //debugprint('request token:'+req.responseText);
 	};
 	let url = this.requestTokenURL;
 	req.open('POST', url );
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 
 	let str = new Array();
-	for(let i=0,item;item=this.message.parameters[i];i++){
+	for(let i=0,item;item=message.parameters[i];i++){
 	    str.push(item[0] +"=" + item[1]);
 	}
 	req.send(str.join('&'));
     },
 
-    getAccessTokenByXAuth:function(user_id,password){
+    getAccessTokenByXAuth:function(user_id,password,callback){
 	let accessor = {
 	    consumerSecret: this.consumerSecret,
 	    tokenSecret: ""
@@ -90,8 +104,8 @@ var NicoLiveTweet = {
 	message.parameters.push(["oauth_timestamp",""]);
 	message.parameters.push(["oauth_version","1.0"]);
 	message.parameters.push(["x_auth_mode","client_auth"]);
-	message.parameters.push(["x_auth_password","fushiori22"]);
-	message.parameters.push(["x_auth_username","amano_rox"]);
+	message.parameters.push(["x_auth_password",password]);
+	message.parameters.push(["x_auth_username",user_id]);
 
 	OAuth.setTimestampAndNonce(message);
 	OAuth.SignatureMethod.sign(message,accessor);
@@ -109,12 +123,11 @@ var NicoLiveTweet = {
 		    NicoLiveTweet.oauth[val[0]] = val[1];
 		}
 	    }
-	    debugprint('request token:'+req.responseText);
+	    if('function'==typeof callback) callback(req.status, NicoLiveTweet.oauth);
+	    //debugprint('request token:'+req.responseText);
 	};
 	let url = this.accessTokenURL;
 	req.open('POST', url );
-
-///	req.setRequestHeader('Authorization',OAuth.getAuthorizationHeader('http://miku39.jp/',this.message.parameters));
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 
 	let xauth = new Array();
@@ -127,6 +140,7 @@ var NicoLiveTweet = {
     },
 
     updateStatus:function(text){
+	if( !this.oauth["oauth_token_secret"] || !this.oauth["oauth_token"] ) return;
 	let accessor = {
 	    consumerSecret: this.consumerSecret,
 	    tokenSecret: this.oauth["oauth_token_secret"]
@@ -155,17 +169,33 @@ var NicoLiveTweet = {
 	    if( req.readyState!=4 ) return;
 	    /*
 	     403 {"request":"/1/statuses/update.json","error":"Status is a duplicate."}
-
-	     200 {"in_reply_to_status_id":null,"created_at":"Fri Apr 09 08:33:12 +0000 2010","truncated":false,"geo":null,"contributors":null,"place":null,"source":"<a href=\"http://com.nicovideo.jp/community/co105163\" rel=\"nofollow\">NicoLiveHelper</a>","coordinates":null,"favorited":false,"user":{"profile_background_image_url":"http://s.twimg.com/a/1270775308/images/themes/theme1/bg.png","created_at":"Thu Mar 20 11:38:48 +0000 2008","profile_link_color":"0000ff","followers_count":73,"description":"\u4e3b\u306bNicoLive Helper\u306e\u4e2d\u306e\u4eba\u3002\u305f\u307e\u306b\u521d\u97f3\u30df\u30af\u306e\u30e9\u30a4\u30d6\u3068VOCALOID\u751f\u653e\u9001\u4e3b\u3002\r\n\u4f55\u304b\u8981\u671b\u3042\u308b\u3068\u304d\u306f\u63b2\u793a\u677f\u3068\u304b@Replies\u3084Mentions\u306a\u3069\u3067\u3082\u3002\r\n\u81ea\u5206\u3067\u3082\u6f5c\u5728\u7684\u306a\u9700\u8981\u3092\u691c\u7d22\u3057\u3066\u8abf\u3079\u308b\u3051\u3069\u76f4\u63a5\u63d0\u6848\u304c\u3053\u306a\u3044\u3082\u306e\u306f\u539f\u5247\u63a1\u7528\u306a\u3057\u3002","following":false,"profile_background_tile":false,"friends_count":98,"profile_sidebar_fill_color":"e0ff92","statuses_count":1408,"url":"http://miku39.jp/blog/wp/","profile_image_url":"http://s.twimg.com/a/1270775308/images/default_profile_4_normal.png","notifications":false,"favourites_count":0,"profile_sidebar_border_color":"87bc44","contributors_enabled":false,"location":"iPhone: 35.696991,139.787491","screen_name":"amano_rox","geo_enabled":true,"time_zone":"Tokyo","profile_background_color":"9ae4e8","protected":false,"verified":false,"name":"\u3042\u307e\u306e","profile_text_color":"000000","id":14183509,"lang":"en","utc_offset":32400},"in_reply_to_screen_name":null,"in_reply_to_user_id":null,"id":11870775172,"text":"\u304a\u3001\u3046\u307e\u304f\u3044\u3063\u305f\u304b\u306a\u3002"}
+	     401 {"request":"/1/statuses/update.json","error":"Could not authenticate you."}
 	     */
-	    if( req.status==200 ){
+	    if( req.status!=200 ){
+		let result = JSON.parse(req.responseText);
+		ShowNotice('Twitter:'+result.error);
 	    }
-	    debugprint('update result:'+req.responseText);
+	    //debugprint('update result:'+req.responseText);
 	};
 	let url = this.updateURL;
 	req.open('POST', url );
 	req.setRequestHeader('Authorization',OAuth.getAuthorizationHeader('http://miku39.jp/',message.parameters));
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	req.send("status="+encodeURIComponent(text));
+    },
+
+    // つぶやく.
+    tweet:function(text){
+	if( NicoLivePreference.twitter.api=='self' ){
+	    this.updateStatus(text);
+	}else{
+	    NicoLiveHelper.postTweet(text);
+	}
+    },
+
+    init:function(){
+	this.getSavedToken();
     }
 };
+
+window.addEventListener("load", function(e){ NicoLiveTweet.init(); }, false);

@@ -117,6 +117,17 @@ var NicoLivePreference = {
 
 	this.readClasses();
 	this.readFont();
+
+	this.readTwitterSettings();
+    },
+
+    readTwitterSettings:function(){
+	let branch = this.getBranch();
+	this.twitter = {};
+	this.twitter.api = branch.getCharPref('twitter.use-api');
+	this.twitter.when_beginlive = branch.getBoolPref('twitter.when-beginlive');
+	this.twitter.when_playmovie = branch.getBoolPref('twitter.when-playmovie');
+	this.twitter.when_addmylist = branch.getBoolPref('twitter.when-addmylist');
     },
 
     readFont:function(){
