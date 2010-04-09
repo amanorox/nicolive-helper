@@ -1505,6 +1505,15 @@ var NicoLiveHelper = {
 	// というときのために、/clsを送る必要があるときは
 	// /clsか/clearを受けとるまで6秒間隔で/clsを送信.
 	if( 'function'!=typeof func ) return;
+
+	let sendclsfunc = function(){
+	    NicoLiveHelper.postCasterComment("/cls","");
+	    NicoLiveHelper._clscounter++;
+	    if(NicoLiveHelper._clscounter>10){
+		clearInterval(NicoLiveHelper._sendclsid);
+	    }
+	};
+
 	if( this.commentview==COMMENT_VIEW_HIDDEN_PERM ){
 	    // hidden/permのときは先に/clsを送らないといけない.
 	    if('function'!=typeof this.postclsfunc){
@@ -1512,11 +1521,10 @@ var NicoLiveHelper = {
 		this.postclsfunc = func;
 		this.postCasterComment("/cls","");
 		clearInterval(this._sendclsid);
-		this._sendclsid = setInterval(
-		    function(){
-			NicoLiveHelper.postCasterComment("/cls","");
-		    }, 6000 );
+		this._clscounter = 0;
+		this._sendclsid = setInterval( sendclsfunc, 6000 );
 	    }else{
+		// 1秒ごとにpost /cls関数が空いてないかチェック.
 		let timer = setInterval(
 		    function(){
 			if( 'function'!=typeof NicoLiveHelper.postclsfunc ){
@@ -1529,10 +1537,8 @@ var NicoLiveHelper = {
 				NicoLiveHelper.postclsfunc = func;
 				NicoLiveHelper.postCasterComment("/cls","");
 				clearInterval(NicoLiveHelper._sendclsid);
-				NicoLiveHelper._sendclsid = setInterval(
-				    function(){
-					NicoLiveHelper.postCasterComment("/cls","");
-				    }, 6000 );
+				NicoLiveHelper._clscounter = 0;
+				NicoLiveHelper._sendclsid = setInterval( sendclsfunc, 6000 );
 			    }
 			    clearInterval(timer);
 			}
