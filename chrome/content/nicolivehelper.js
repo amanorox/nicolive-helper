@@ -1431,9 +1431,6 @@ var NicoLiveHelper = {
 		    if(video_id && retry){
 			//let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
 			let str = NicoLivePreference.videoinfo_playfailed;
-			NicoLiveHelper.musicinfo = {
-			    "video_id": video_id
-			};
 			NicoLiveHelper.postCasterComment(str,"");
 			//$('played-list-textbox').value += str + "\n"; // これは要らないかな.
 			// たまに生引用拒否していなくてもエラーになるので.
