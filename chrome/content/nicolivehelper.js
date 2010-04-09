@@ -349,7 +349,6 @@ var NicoLiveHelper = {
 			}
 			NicoLiveHelper.sendMusicInfo();
 			NicoLiveHelper.addPlayListText(NicoLiveHelper.musicinfo);
-			NicoLiveHelper.postTweet("再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
 		    }
 		}
 		return;
@@ -892,6 +891,10 @@ var NicoLiveHelper = {
 	    NicoLiveHelper._sendMusicInfo();
 	};
 	this.clearCasterCommentAndRun(func);
+
+	if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
+	    NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+	}
     },
 
     // 動画情報を復元する.
@@ -1428,9 +1431,6 @@ var NicoLiveHelper = {
 		    if(video_id && retry){
 			//let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
 			let str = NicoLivePreference.videoinfo_playfailed;
-			NicoLiveHelper.musicinfo = {
-			    "video_id": video_id
-			};
 			NicoLiveHelper.postCasterComment(str,"");
 			//$('played-list-textbox').value += str + "\n"; // これは要らないかな.
 			// たまに生引用拒否していなくてもエラーになるので.
@@ -1505,6 +1505,15 @@ var NicoLiveHelper = {
 	// というときのために、/clsを送る必要があるときは
 	// /clsか/clearを受けとるまで6秒間隔で/clsを送信.
 	if( 'function'!=typeof func ) return;
+
+	let sendclsfunc = function(){
+	    NicoLiveHelper.postCasterComment("/cls","");
+	    NicoLiveHelper._clscounter++;
+	    if(NicoLiveHelper._clscounter>10){
+		clearInterval(NicoLiveHelper._sendclsid);
+	    }
+	};
+
 	if( this.commentview==COMMENT_VIEW_HIDDEN_PERM ){
 	    // hidden/permのときは先に/clsを送らないといけない.
 	    if('function'!=typeof this.postclsfunc){
@@ -1512,11 +1521,10 @@ var NicoLiveHelper = {
 		this.postclsfunc = func;
 		this.postCasterComment("/cls","");
 		clearInterval(this._sendclsid);
-		this._sendclsid = setInterval(
-		    function(){
-			NicoLiveHelper.postCasterComment("/cls","");
-		    }, 6000 );
+		this._clscounter = 0;
+		this._sendclsid = setInterval( sendclsfunc, 6000 );
 	    }else{
+		// 1秒ごとにpost /cls関数が空いてないかチェック.
 		let timer = setInterval(
 		    function(){
 			if( 'function'!=typeof NicoLiveHelper.postclsfunc ){
@@ -1529,10 +1537,8 @@ var NicoLiveHelper = {
 				NicoLiveHelper.postclsfunc = func;
 				NicoLiveHelper.postCasterComment("/cls","");
 				clearInterval(NicoLiveHelper._sendclsid);
-				NicoLiveHelper._sendclsid = setInterval(
-				    function(){
-					NicoLiveHelper.postCasterComment("/cls","");
-				    }, 6000 );
+				NicoLiveHelper._clscounter = 0;
+				NicoLiveHelper._sendclsid = setInterval( sendclsfunc, 6000 );
 			    }
 			    clearInterval(timer);
 			}
@@ -2812,7 +2818,9 @@ var NicoLiveHelper = {
 		if( req.status==200 ){
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
 		    if( confstatus.getAttribute('status')=='ok' ){
-			NicoLiveHelper.postTweet("「"+NicoLiveHelper.title+"」を開始しました from NicoLiveHelper");
+			if( NicoLivePreference.twitter.when_beginlive ){
+			    NicoLiveTweet.tweet("【ニコ生】「"+NicoLiveHelper.title+"」を開始しました。 http://nico.ms/"+NicoLiveHelper.request_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+			}
 		    }else{
 			debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
 		    }
@@ -3148,9 +3156,6 @@ var NicoLiveHelper = {
 
     loadVideoLength:function(){
 	this._videolength = new Object();
-
-	let req = new XMLHttpRequest();
-	if(!req) return;
 
 	let extpath = GetExtensionPath();
 	debugprint("Extension Path="+extpath.path);

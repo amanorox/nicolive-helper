@@ -21,6 +21,14 @@ THE SOFTWARE.
  */
 
 var NicoLiveMylist = {
+    tweet:function(video_id){
+	let video = NicoLiveHelper.findVideoInfo(video_id);
+	if( video==null ) return;
+
+	if( NicoLivePreference.twitter.when_addmylist ){
+	    NicoLiveTweet.tweet("【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" from "+NicoLiveHelper.request_id+" "+NicoLiveHelper.title);
+	}
+    },
 
     addDeflist2:function(video_id, item_id, token){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.
@@ -37,6 +45,7 @@ var NicoLiveMylist = {
 		let result = JSON.parse(xmlhttp.responseText);
 		switch(result.status){
 		case 'ok':
+		    NicoLiveMylist.tweet(video_id);
 		    break;
 		case 'fail':
 		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
@@ -72,7 +81,7 @@ var NicoLiveMylist = {
 	xmlhttp.send('');
     },
 
-    addMyList2:function(item_id,mylist_id,token){
+    addMyList2:function(item_id,mylist_id,token,video_id){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.
 	let url = "http://www.nicovideo.jp/api/mylist/add";
 	let reqstr = [];
@@ -89,6 +98,7 @@ var NicoLiveMylist = {
 		let result = JSON.parse(req.responseText);
 		switch(result.status){
 		case 'ok':
+		    NicoLiveMylist.tweet(video_id);
 		    break;
 		case 'fail':
 		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
@@ -120,7 +130,7 @@ var NicoLiveMylist = {
 			let item_id = req.responseText.match(/item_id\"\s*value=\"(.*)\">/);
 			debugprint('token='+token[1]);
 			debugprint('item_id='+item_id[1]);
-			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1]);
+			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1],video_id);
 		    } catch (x) {
 			ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
 		    }
