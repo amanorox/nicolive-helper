@@ -600,6 +600,21 @@ var NicoLiveComment = {
 	}
     },
 
+    // コメント用ポップアップメニュー表示処理.
+    showPopupMenuForComment:function(e){
+	let str = window.getSelection().toString();
+	if( str.match(/...-....-./) ){
+	    $('comment-search-jasrac').hidden = false;
+	    $('comment-search-elicense').hidden = true;
+	}else if( str.match(/\d{5}/) ){
+	    $('comment-search-jasrac').hidden = true;
+	    $('comment-search-elicense').hidden = false;
+	}else{
+	    $('comment-search-jasrac').hidden = true;
+	    $('comment-search-elicense').hidden = true;
+	}
+    },
+
     init:function(){
 	// コメントリフレクターの登録用.
 	this.reflector = new Object();

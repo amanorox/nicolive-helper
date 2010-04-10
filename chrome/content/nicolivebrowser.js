@@ -283,6 +283,7 @@ var NicoLiveBrowser = {
 	}
     },
 
+    // クロール開始.
     begincrawl:function(){
 	this._page = NicoLiveDatabase.loadGPStorage("nico_mikusong_nextpage",1);
 	if( this._page==1 ){

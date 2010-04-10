@@ -32,6 +32,7 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveclassifier.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivetweet.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverights.js" />
 
   <script>
   <![CDATA[
@@ -470,10 +471,12 @@
       <menuitem id="id-release-reflection" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
     </menupopup>
 
-    <menupopup id="popup-copycomment">
+    <!-- for comment body -->
+    <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(event);">
+      <menuitem label="JASRAC検索" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
+      <menuitem label="e-License検索" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>
     </menupopup>
-
     <menupopup id="popup-comment-anchor">
       <menuitem label="&comment.menu_copy;" oncommand="NicoLiveComment.copyComment();"/>
       <menuitem label="&comment.menu_setselfrequest;" oncommand="NicoLiveComment.setSelfRequest(event);"/>
