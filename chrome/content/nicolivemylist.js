@@ -170,23 +170,22 @@ var NicoLiveMylist = {
 		    }
 		    if(video_id){
 			videos.push(video_id[0]);
+			try{
+			    description = item.getElementsByTagName('description')[0].textContent;
+			    description = description.replace(/[\r\n]/mg,'<br>');
+			    description = description.match(/<p class="nico-memo">(.*?)<\/p>/)[1];
+			} catch (x) {
+			    description = "";
+			}
+
+			let d = new Date(item.getElementsByTagName('pubDate')[0].textContent);
+
+			let dat = {
+			    "pubDate": d.getTime()/1000,  // UNIX time
+			    "description": description
+			};
+			NicoLiveMylist.mylist_itemdata["_"+video_id[0]] = dat;
 		    }
-
-		    try{
-			description = item.getElementsByTagName('description')[0].textContent;
-			description = description.replace(/[\r\n]/mg,'<br>');
-			description = description.match(/<p class="nico-memo">(.*?)<\/p>/)[1];
-		    } catch (x) {
-			description = "";
-		    }
-
-		    let d = new Date(item.getElementsByTagName('pubDate')[0].textContent);
-
-		    let dat = {
-			"pubDate": d.getTime()/1000,  // UNIX time
-			"description": description
-		    };
-		    NicoLiveMylist.mylist_itemdata["_"+video_id[0]] = dat;
 		}// end for.
 		NicoLiveRequest.addStock(videos.join(','));
 	    }
