@@ -1509,7 +1509,7 @@ var NicoLiveHelper = {
 	let sendclsfunc = function(){
 	    NicoLiveHelper.postCasterComment("/cls","");
 	    NicoLiveHelper._clscounter++;
-	    if(NicoLiveHelper._clscounter>10){
+	    if(NicoLiveHelper._clscounter>=5){
 		clearInterval(NicoLiveHelper._sendclsid);
 	    }
 	};

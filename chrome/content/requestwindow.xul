@@ -74,6 +74,7 @@
     <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"></key>
     <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id);"></key>
     <key id="search-stock" key="f" modifiers="accel" oncommand="NicoLiveRequest.findRequestStock();"></key>
+    <key id="tweeting" key="t" modifiers="accel" oncommand="NicoLiveTweet.inputTweet();"></key>
   </keyset>
 
   <toolbar id="global-menu">

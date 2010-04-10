@@ -193,6 +193,16 @@ var NicoLiveTweet = {
 	}
     },
 
+    inputTweet:function(){
+	let hashtag = NicoLiveHelper.twitterinfo.hashtag;
+	hashtag = hashtag ? hashtag:"";
+	let url = NicoLiveHelper.request_id!='lv0' ? "http://nico.ms/"+NicoLiveHelper.request_id:"";
+	let result = InputPrompt("NicoLiv Helperからつぶやく","NicoLive Helper",(url&&hashtag)?(url + ' ' + hashtag):"");
+	if( result ){
+	    NicoLiveTweet.updateStatus(result);
+	}
+    },
+
     init:function(){
 	this.getSavedToken();
     }
