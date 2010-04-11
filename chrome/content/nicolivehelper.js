@@ -1254,12 +1254,15 @@ var NicoLiveHelper = {
 	if(!this.stock) return;
 	if(this.isOffline() || !this.iscaster) return;
 
-	if(this.requestqueue.length){
-	    if( this.chooseMusicFromRequestAndPlay() ) return;
+	if( this.endtime ){
+	    if(this.requestqueue.length){
+		if( this.chooseMusicFromRequestAndPlay() ) return;
+	    }
+	    if(this.stock.length){
+		if( this.chooseMusicFromStockAndPlay() ) return;
+	    }
 	}
-	if(this.stock.length){
-	    if( this.chooseMusicFromStockAndPlay() ) return;
-	}
+
 	// リクもストックもない.
 	clearInterval(this._playnext);
 	ShowNotice(LoadString('STR_NO_PLAYABLEVIDEO'));
@@ -1442,9 +1445,10 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.musicinfo.isplayed = true;
 			    NicoLiveHelper.addErrorRequestList(NicoLiveHelper.musicinfo);
 			}
-			//NicoLiveHelper.musicinfo.length_ms = 1000;
 			clearInterval(NicoLiveHelper._sendmusicid);
-			NicoLiveHelper.checkPlayNext();
+			if( NicoLiveHelper.endtime ){
+			    NicoLiveHelper.checkPlayNext();
+			}
 		    }else if(retry){
 			ShowNotice("コメント送信に失敗しました:"+comment);
 		    }
