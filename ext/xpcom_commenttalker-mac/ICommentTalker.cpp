@@ -102,7 +102,23 @@ int bouyomichan(const PRUnichar *execpath, const PRUnichar *text)
 int is_saykotoeri_active()
 {
     // /bin/ps aux | /usr/bin/grep "/usr/local/bin/SayKana" | grep -v grep
-    char*exe="/bin/ps aux | /usr/bin/grep -i '/usr/local/bin/SayKana' | grep -v grep";
+    const char*exe="/bin/ps aux | /usr/bin/grep -i '/usr/local/bin/SayKana' | grep -v grep";
+    FILE*file;
+    int flg=0;
+    file = popen(exe,"r");
+    while(1){
+        char buf[512];
+        if(fgets(buf,sizeof(buf),file)==NULL) break;
+        flg=1;
+    }
+    pclose(file);
+    return flg;
+}
+
+int is_saykotoeri2_active()
+{
+    // /bin/ps aux | /usr/bin/grep "/usr/local/bin/SayKana" | grep -v grep
+    const char*exe="/bin/ps aux | /usr/bin/grep -i '/usr/local/bin/SayKotoeri2' | grep -v grep";
     FILE*file;
     int flg=0;
     file = popen(exe,"r");
@@ -120,10 +136,23 @@ int saykotoeri(const PRUnichar *text)
 {
     if( is_saykotoeri_active() ) return 0;
 	char*utf8str = unicodetoutf8(text);	
-	char buf[4096];
+	char buf[8192];
 	sprintf(buf,"/usr/local/bin/saykotoeri \"%s\" & ",utf8str);
 	system(buf);
 	free(utf8str);
+	return 1;
+}
+
+int saykotoeri2(const PRUnichar*option, const PRUnichar *text)
+{
+    if( is_saykotoeri2_active() ) return 0;
+	char*utf8str = unicodetoutf8(text);
+	char*opt = unicodetoutf8(option);
+	char buf[8192];
+	sprintf(buf,"/usr/local/bin/SayKotoeri2 %s \"%s\" & ", opt, utf8str);
+	system(buf);
+	free(utf8str);
+	free(opt);
 	return 1;
 }
 
@@ -170,7 +199,9 @@ NS_IMETHODIMP NLHCommentTalker::Add(PRInt32 nData1, PRInt32 nData2, PRInt32 *_re
 /* long callTalkerProgram (in wstring execPath, in wstring strData); */
 NS_IMETHODIMP NLHCommentTalker::CallTalkerProgram(const PRUnichar *execPath, const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+	// IDLを再構築するのは面倒なので、空いている関数をSayKotoeri2に流用.
+	*_retval = saykotoeri2(execPath,strData);
+    return NS_OK;
 }
 
 /* long sayBouyomichan (in wstring server, in wstring strData); */

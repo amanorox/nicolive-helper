@@ -27,7 +27,8 @@ var NicoLiveTalker = {
 	if( $('use-bouyomichan').selected ){
 	    obj.sayBouyomichan( $('bouyomichan-server').value, text);
 	}
-	if( $('use-saykotoeri').selected ){
+	if( $('use-saykotoeri').selected || $('use-saykotoeri2').selected){
+	    // system()使うのでコマンドラインパラメータとして渡すのに危険なもの削除.
 	    text = text.replace(/[;\"'&]/g,"");
 	    this.talkqueue.push(text);
 	    //obj.sayKotoeri(text);
@@ -40,12 +41,30 @@ var NicoLiveTalker = {
 	    $('talker-left').value = this.talkqueue.length + "行";
 	    return;
 	}
+	let saykotoeri = 0;
+	if( $('use-saykotoeri').selected ) saykotoeri = 1;
+	if( $('use-saykotoeri2').selected ) saykotoeri = 2;
 
 	let obj = Components.classes["@miku39.jp/NLHCommentTalker;1"].createInstance(Components.interfaces.INLHCommentTalker);
 	let text = this.talkqueue.shift();
-	if( !obj.sayKotoeri(text) ){
-	    this.talkqueue.unshift(text);
+	switch(saykotoeri){
+	case 1:
+	    if( !obj.sayKotoeri(text) ){
+		this.talkqueue.unshift(text);
+	    }
+	    break;
+	case 2:
+	    let speed = "-s "+ $('nlhaddon-talk-speed').value;
+	    let volume = "-b " + $('nlhaddon-talk-volume').value;
+	    if( !obj.callTalkerProgram(speed+" "+volume,text) ){
+		this.talkqueue.unshift(text);
+	    }
+	    break;
+
+	default:
+	    break;	    
 	}
+
 	$('talker-left').value = this.talkqueue.length + "行";
     },
 
@@ -123,6 +142,8 @@ var NicoLiveTalker = {
 	    $('bouyomichan-server').value = prefs.getCharPref("ext.comment-talker.bouyomichan-server");
 	    $('nlhaddon-restrictlength').value = prefs.getIntPref("ext.comment-talker.length");
 	    $('nlhaddon-format').value = prefs.getUnicharPref("ext.comment-talker.format");
+	    $('nlhaddon-talk-speed').value = prefs.getIntPref("ext.comment-talker.speed");
+	    $('nlhaddon-talk-volume').value = prefs.getIntPref("ext.comment-talker.volume");
 	} catch (x) {
 	}
     },
@@ -133,6 +154,8 @@ var NicoLiveTalker = {
 	prefs.setCharPref("ext.comment-talker.bouyomichan-server",$('bouyomichan-server').value );
 	prefs.setIntPref("ext.comment-talker.length", $('nlhaddon-restrictlength').value);
 	prefs.setUnicharPref("ext.comment-talker.format",$('nlhaddon-format').value);
+	prefs.setIntPref("ext.comment-talker.speed", $('nlhaddon-talk-speed').value);
+	prefs.setIntPref("ext.comment-talker.volume", $('nlhaddon-talk-volume').value);
     }
 };
 
