@@ -1515,6 +1515,7 @@ var NicoLiveHelper = {
 	    NicoLiveHelper._clscounter++;
 	    if(NicoLiveHelper._clscounter>=5){
 		clearInterval(NicoLiveHelper._sendclsid);
+		NicoLiveHelper.postclsfunc = null;
 	    }
 	};
 
