@@ -4,4 +4,5 @@
 interface IWinLiveMessenger : nsISupports
 {
 	long SetWinLiveMessengerMsg(in wstring strData);
+	long SetSkypeMoodText(in wstring strData);
 };

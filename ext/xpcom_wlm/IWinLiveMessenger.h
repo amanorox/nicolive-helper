@@ -30,21 +30,27 @@ class NS_NO_VTABLE NS_SCRIPTABLE IWinLiveMessenger : public nsISupports {
   /* long SetWinLiveMessengerMsg (in wstring strData); */
   NS_SCRIPTABLE NS_IMETHOD SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) = 0;
 
+  /* long SetSkypeMoodText (in wstring strData); */
+  NS_SCRIPTABLE NS_IMETHOD SetSkypeMoodText(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) = 0;
+
 };
 
   NS_DEFINE_STATIC_IID_ACCESSOR(IWinLiveMessenger, IWINLIVEMESSENGER_IID)
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_IWINLIVEMESSENGER \
-  NS_SCRIPTABLE NS_IMETHOD SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM); 
+  NS_SCRIPTABLE NS_IMETHOD SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM); \
+  NS_SCRIPTABLE NS_IMETHOD SetSkypeMoodText(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_IWINLIVEMESSENGER(_to) \
-  NS_SCRIPTABLE NS_IMETHOD SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) { return _to SetWinLiveMessengerMsg(strData, _retval); } 
+  NS_SCRIPTABLE NS_IMETHOD SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) { return _to SetWinLiveMessengerMsg(strData, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetSkypeMoodText(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) { return _to SetSkypeMoodText(strData, _retval); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_IWINLIVEMESSENGER(_to) \
-  NS_SCRIPTABLE NS_IMETHOD SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetWinLiveMessengerMsg(strData, _retval); } 
+  NS_SCRIPTABLE NS_IMETHOD SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetWinLiveMessengerMsg(strData, _retval); } \
+  NS_SCRIPTABLE NS_IMETHOD SetSkypeMoodText(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetSkypeMoodText(strData, _retval); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -80,6 +86,12 @@ _MYCLASS_::~_MYCLASS_()
 
 /* long SetWinLiveMessengerMsg (in wstring strData); */
 NS_IMETHODIMP _MYCLASS_::SetWinLiveMessengerMsg(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* long SetSkypeMoodText (in wstring strData); */
+NS_IMETHODIMP _MYCLASS_::SetSkypeMoodText(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
