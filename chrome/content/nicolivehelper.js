@@ -108,6 +108,10 @@ var NicoLiveHelper = {
 		return {code:-2,msg:NicoLivePreference.msg.notaccept,movieinfo:info};
 	    }
 	}
+	// 生放送での引用拒否チェック.
+	if( info.no_live_play!=0 ){
+	    return {code:-1,msg:NicoLivePreference.msg.no_live_play,movieinfo:info};
+	}
 
 	if(NicoLivePreference.limitnewmovie){
 	    // 7日内に投稿された動画.
@@ -2023,6 +2027,9 @@ var NicoLiveHelper = {
 		break;
 	    case "movie_type":
 		info.movie_type = elem.textContent;
+		break;
+	    case "no_live_play":
+		info.no_live_play = elem.textContent;
 		break;
 	    default:
 		break;

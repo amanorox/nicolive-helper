@@ -57,6 +57,7 @@ var NicoLivePreference = {
 	this.msg.played    = branch.getUnicharPref("msg-played");
 	this.msg.requested = branch.getUnicharPref("msg-requested");
 	this.msg.accept    = branch.getUnicharPref("msg-accept");
+	this.msg.no_live_play = branch.getUnicharPref("msg-no-live-play");
 	this.msg.requestok = branch.getUnicharPref("msg-requestok");
 	this.msg.requestng = branch.getUnicharPref("msg-requestng");
 	this.msg.requestok_command = branch.getUnicharPref("msg-requestok-command");

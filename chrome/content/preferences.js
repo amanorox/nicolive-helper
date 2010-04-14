@@ -57,6 +57,7 @@ var NLHPreference = {
 	$('pref-msg-played').value = data["played"];
 	$('pref-msg-requested').value = data["requested"];
 	$('pref-msg-accept').value = data["accept"];
+	$('pref-msg-no-live-play').value = data["no-live-play"];
 	$('pref-msg-requestok').value = data["requestok"];
 	$('pref-msg-requestng').value = data["requestng"];
 	$('pref-msg-requestok-command').value = data["requestok_command"];
@@ -80,6 +81,7 @@ var NLHPreference = {
 	    "played":$('pref-msg-played').value,
 	    "requested":$('pref-msg-requested').value,
 	    "accept":$('pref-msg-accept').value,
+	    "no-live-play":$('pref-msg-no-live-play').value,
 	    "requestok":$('pref-msg-requestok').value,
 	    "requestng":$('pref-msg-requestng').value,
 	    "requestok_command":$('pref-msg-requestok-command').value,
@@ -276,6 +278,7 @@ var NLHPreference = {
 	$('pref-msg-played').value    = "その動画は既に再生されました";
 	$('pref-msg-requested').value = "その動画は既にリクエストされています";
 	$('pref-msg-accept').value    = "リクエストを受け付けました";
+	$('pref-msg-no-live-play').value = "その動画は生放送での引用が許可されていません";
 	$('pref-msg-requestok').value = "";
 	$('pref-msg-requestng').value = "";
 	$('pref-msg-requestok-command').value = "";
