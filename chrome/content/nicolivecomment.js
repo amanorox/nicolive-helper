@@ -311,13 +311,16 @@ var NicoLiveComment = {
 	}
     },
 
-    releaseReflector:function(user_id){
+    releaseReflector:function(){
+	// コメント反射を全解放.
+	let cnt=0;
 	for (u in this.reflector){
 	    this.delNGUser(u);
+	    cnt++;
 	}
 	this.reflector = new Object();
 	try{
-	    ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );
+	    if(cnt) ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );
 	    let users = evaluateXPath(document,"//*[@comment-reflector]");
 	    for(let i=0,user;user=users[i];i++){
 		RemoveElement(user);

@@ -298,7 +298,7 @@ var NicoLiveHelper = {
 	if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
-	    // ロスタイムのときは premium=2 からやってくる.
+	    // 放送終了時.
 	    let prefs = NicoLivePreference.getBranch();
 	    NicoLiveComment.releaseReflector();
 	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster || prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
@@ -2865,8 +2865,12 @@ var NicoLiveHelper = {
 		    let publishstatus = req.responseXML;
 		    NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
 		    let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
-		    // 取得した終了時刻がより現在より未来指していたら更新.
-		    if( GetCurrentTime() <= tmp ) NicoLiveHelper.endtime = tmp;
+		    if( (GetCurrentTime()-60) <= tmp ){
+			// 取得した終了時刻がより現在より未来指していたら更新.
+			NicoLiveHelper.endtime = tmp;
+		    }else{
+			NicoLiveComment.releaseReflector(); // ロスタイム突入なので全解放する.
+		    }
 		    debugprint('token='+NicoLiveHelper.token);
 		    debugprint('endtime='+NicoLiveHelper.endtime);
 		    if( doconfigurestream ){
@@ -3038,6 +3042,7 @@ var NicoLiveHelper = {
 	return this.request_id=="lv0";
     },
 
+    // シングルウィンドウモードで別の番組に接続する用.
     connectNewBroadcasting:function(request_id,title,iscaster){
 	$('debug-textbox').value = "";
 	debugprint("Connect To New Broadcasting("+request_id+").");
