@@ -2872,7 +2872,7 @@ var NicoLiveHelper = {
 		    let publishstatus = req.responseXML;
 		    NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
 		    let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
-		    if( (GetCurrentTime()-60) <= tmp ){
+		    if( GetCurrentTime() <= tmp ){
 			// 取得した終了時刻がより現在より未来指していたら更新.
 			NicoLiveHelper.endtime = tmp;
 		    }else{
