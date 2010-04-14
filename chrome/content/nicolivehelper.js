@@ -1953,6 +1953,7 @@ var NicoLiveHelper = {
 	let info = {};
 	info.cno = 0;
 	info.tags = [];
+	info.no_live_play = 0;
 
 	let root;
 	try{
