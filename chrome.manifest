@@ -2,4 +2,6 @@ content	nicolivehelper	chrome/content/
 
 locale nicolivehelper ja-JP chrome/locale/ja-JP/
 
+style chrome://nicolivehelper/content/requestwindow.xul chrome://nicolivehelper/content/requestwindow-mac.css os=Darwin
+
 overlay chrome://browser/content/browser.xul chrome://nicolivehelper/content/menu.xul
