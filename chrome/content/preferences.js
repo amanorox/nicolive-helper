@@ -256,50 +256,52 @@ var NLHPreference = {
 	 * タグ/{tags}
 	 * ♪{id} {title}<br>投稿日/{date} 時間/{length}<br>{additional}
 	 */
-	$('pref-videoinfo1').value = "♪Length:{length} Views:{view} Comments:{comment} NumMylist:{mylist}";
-	$('pref-videoinfo2').value = "♪{title}<br>Date:{date}";
-	$('pref-videoinfo3').value = "";
-	$('pref-videoinfo4').value = "";
+	$('pref-videoinfo1').value = undefined;
+	$('pref-videoinfo2').value = undefined;
+	$('pref-videoinfo3').value = undefined;
+	$('pref-videoinfo4').value = undefined;;
 	$('pref-typeofvideoinfo').value = 0;
 	$('pref-revert-videoinfo').value = 0;
-	$('pref-userdefined-uri').value = "";
+	$('pref-userdefined-uri').value = undefined;
 
-	$('pref-videoinfo1-command').value = "";	
-	$('pref-videoinfo2-command').value = "";	
-	$('pref-videoinfo3-command').value = "";	
-	$('pref-videoinfo4-command').value = "";	
+	$('pref-videoinfo1-command').value = undefined;	
+	$('pref-videoinfo2-command').value = undefined;	
+	$('pref-videoinfo3-command').value = undefined;	
+	$('pref-videoinfo4-command').value = undefined;
+
+	$('pref-videoinfo-playfailed').value = undefined;
     },
 
     // 運営コメントをデフォルトにする.
     resetAutoReply:function(){
-	$('pref-msg-deleted').value   = "その動画は削除されているか、見つかりません";
-	$('pref-msg-notaccept').value = "現在リクエストを受け付けていません";
-	$('pref-msg-newmovie').value  = "その動画は7日以内に投稿された動画です(新着制限)";
-	$('pref-msg-played').value    = "その動画は既に再生されました";
-	$('pref-msg-requested').value = "その動画は既にリクエストされています";
-	$('pref-msg-accept').value    = "リクエストを受け付けました";
-	$('pref-msg-no-live-play').value = "その動画は生放送での引用が許可されていません";
-	$('pref-msg-requestok').value = "";
-	$('pref-msg-requestng').value = "";
-	$('pref-msg-requestok-command').value = "";
-	$('pref-msg-requestng-command').value = "";
-	$('pref-startup-comment').value = "";
+	$('pref-msg-deleted').value   = undefined;
+	$('pref-msg-notaccept').value = undefined;
+	$('pref-msg-newmovie').value  = undefined;
+	$('pref-msg-played').value    = undefined;
+	$('pref-msg-requested').value = undefined;
+	$('pref-msg-accept').value    = undefined;
+	$('pref-msg-no-live-play').value = undefined;
+	$('pref-msg-requestok').value = undefined;
+	$('pref-msg-requestng').value = undefined;
+	$('pref-msg-requestok-command').value = undefined;
+	$('pref-msg-requestng-command').value = undefined;
+	$('pref-startup-comment').value = undefined;
 
-	$('pref-msg-lessmylists').value = "リクエストエラー:マイリスト数が少ないです";
-	$('pref-msg-greatermylists').value = "リクエストエラー:マイリスト数が多いです";
-	$('pref-msg-lessviews').value = "リクエストエラー:再生数が少ないです";
-	$('pref-msg-greaterviews').value = "リクエストエラー:再生数が多いです";
-	$('pref-msg-longertime').value = "リクエストエラー:再生時間が長いです";
-	$('pref-msg-outofdaterange').value = "リクエストエラー:投稿日時が範囲外です";
-	$('pref-msg-requiredkeyword').value = "リクエストエラー:タグにキーワードが含まれていません<br>{=info.restrict.requiredkeyword}";
-	$('pref-msg-forbiddenkeyword').value = "リクエストエラー:タグに「{=info.restrict.forbiddenkeyword}」が含まれています";
-	$('pref-msg-limitnumberofrequests').value = "リクエストは1人{=info.restrict.numberofrequests.toString()}件までです";
+	$('pref-msg-lessmylists').value = undefined;
+	$('pref-msg-greatermylists').value = undefined;
+	$('pref-msg-lessviews').value = undefined;
+	$('pref-msg-greaterviews').value = undefined;
+	$('pref-msg-longertime').value = undefined;
+	$('pref-msg-outofdaterange').value = undefined;
+	$('pref-msg-requiredkeyword').value = undefined;
+	$('pref-msg-forbiddenkeyword').value = undefined;
+	$('pref-msg-limitnumberofrequests').value = undefined;
     },
 
     // 視聴者コマンドの応答をリセットする.
     resetListenerCommand:function(){
-	$('pref-cmd-s').value = "リクエスト:{requestnum}件({requesttime}) ストック:{stocknum}件({stocktime})<br>現在:{=NicoLiveHelper.allowrequest?\"リクエスト受付中\":\"リクエスト受付停止中\"}";
-	$('pref-cmd-del').value = ">>{=info.comment_no} {=info.cancelnum}件のリクエストを削除しました";
+	$('pref-cmd-s').value = undefined;
+	$('pref-cmd-del').value = undefined;
     },
 
     // コメントログの保存先を選択.

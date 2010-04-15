@@ -138,3 +138,7 @@ a {
     text-decoration:underline;
     cursor:pointer;
 }
+
+toolbarbutton{
+    margin-right: 2px;
+}
