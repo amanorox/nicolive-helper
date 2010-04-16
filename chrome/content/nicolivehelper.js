@@ -2430,8 +2430,6 @@ var NicoLiveHelper = {
 	this.sendStartupComment();
 	if( NicoLivePreference.isjingle ) this.playJingle();
 
-	this.getpublishstatus();// obtain end_time.
-
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
 	    NicoLiveComment.openFile(this.request_id);
@@ -2521,7 +2519,7 @@ var NicoLiveHelper = {
 	if( this.endtime && this.endtime<now ){
 	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
 	    this.endtime = 0;
-	    this.getpublishstatus();
+	    this.getpublishstatus(this.request_id);
 	}
 
 	if(!this.musicinfo.length_ms){ currentmusic.setAttribute("tooltiptext",""); return; }
@@ -2669,7 +2667,7 @@ var NicoLiveHelper = {
 			    // 生主モードなら次曲再生できるようにセット.
 			    NicoLiveHelper.setupPlayNextMusic(remain);
 			}
-			// プログレスバー用に情報をセット.
+			// 再生中の動画情報をセット.
 			let tmp = currentplay.textContent.match(/(sm|nm|ze)\d+|\d{10}/);
 			if(tmp){
 			    NicoLiveHelper.musicstarttime  = st;
@@ -2710,9 +2708,14 @@ var NicoLiveHelper = {
 
 		NicoLiveHelper._donotshowdisconnectalert = false;
 		if( evaluateXPath(xml,"//quesheet").length ){
+		    // タイムシフトの場合プレイリストを再構築.
 		    NicoLiveHelper.construct_playlist_for_timeshift(xml);
 		}else{
-		    NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
+		    // 主コメトークンを取得してから接続.
+		    NicoLiveHelper.getpublishstatus(NicoLiveHelper.request_id,
+						   function(){
+						       NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
+						   });
 		}
 
 		$('statusbar-live-progress').setAttribute("tooltiptext",'ロスタイム:'+NicoLiveHelper.calcLossTime()+'秒');
@@ -2854,17 +2857,22 @@ var NicoLiveHelper = {
     startBroadcasting:function(){
 	// getpublishstatus + configurestream
 	if( !this.request_id || this.request_id=="lv0" ) return;
-	let doconfigurestream = true;
-	this.getpublishstatus(doconfigurestream);
+	this.getpublishstatus( this.request_id,
+			       function(){
+				   NicoLiveHelper.configureStream( NicoLiveHelper.token );
+			       } );
     },
+
     // getpublishstatusを行い、end_timeとtokenを得る.
-    getpublishstatus:function(doconfigurestream){
-	if( !this.iscaster ) return;
-	if( !this.request_id || this.request_id=="lv0" ) return;
-	if( this._dogetpublishstatus ) return;
+    // postfuncが指定されていた場合、通信終了時に指定の関数を呼び出す.
+    getpublishstatus:function( request_id, postfunc ){
+	if( !this.iscaster || !request_id || request_id=="lv0" ){
+	    postfunc();
+	    return;
+	}
 
 	debugprint('GET getpublishstatus');
-	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + this.request_id;
+	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + request_id;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
@@ -2881,16 +2889,16 @@ var NicoLiveHelper = {
 		    }
 		    debugprint('token='+NicoLiveHelper.token);
 		    debugprint('endtime='+NicoLiveHelper.endtime);
-		    if( doconfigurestream ){
-			NicoLiveHelper.configureStream( NicoLiveHelper.token );
+
+		    if( 'function'==typeof postfunc){
+			debugprint('calling post-function.');
+			postfunc();
 		    }
 		}
-		NicoLiveHelper._dogetpublishstatus = false;
 	    }
 	};
 	req.open('GET', url );
 	req.send("");
-	this._dogetpublishstatus = true;
     },
 
     // スタートアップコメントを送信開始する.
@@ -3085,6 +3093,38 @@ var NicoLiveHelper = {
 	}
     },
 
+    // 動画時間を定義したファイルを読み込む.
+    loadVideoLength:function(){
+	this._videolength = new Object();
+
+	let extpath = GetExtensionPath();
+	debugprint("Extension Path="+extpath.path);
+	extpath = extpath.parent;
+	extpath.append("nlh_videolength.csv");
+	debugprint("VideoLength CSV="+extpath.path);
+
+	try{
+	    let istream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+		.createInstance(Components.interfaces.nsIFileInputStream);
+	    istream.init(extpath, 0x01, 0444, 0);
+	    istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+	    // 行を配列に読み込む
+	    let line = {}, hasmore;
+	    let str = "";
+	    do {
+		hasmore = istream.readLine(line);
+		str = line.value;
+		let vlen = str.split(",");
+		this._videolength["_"+vlen[0]] = vlen[1];
+	    } while(hasmore);
+	    istream.close();
+	} catch (x) {
+	    debugprint("動画再生時間定義ファイル読み込みでエラーが発生しました");
+	    this._videolength = new Object();
+	}
+    },
+
     init: function(){
 	debugprint('Initializing NicoLive Helper...');
 
@@ -3176,38 +3216,19 @@ var NicoLiveHelper = {
 	}
     },
 
-    loadVideoLength:function(){
-	this._videolength = new Object();
-
-	let extpath = GetExtensionPath();
-	debugprint("Extension Path="+extpath.path);
-	extpath = extpath.parent;
-	extpath.append("nlh_videolength.csv");
-	debugprint("VideoLength CSV="+extpath.path);
-
-	try{
-	    let istream = Components.classes["@mozilla.org/network/file-input-stream;1"]
-		.createInstance(Components.interfaces.nsIFileInputStream);
-	    istream.init(extpath, 0x01, 0444, 0);
-	    istream.QueryInterface(Components.interfaces.nsILineInputStream);
-
-	    // 行を配列に読み込む
-	    let line = {}, hasmore;
-	    let str = "";
-	    do {
-		hasmore = istream.readLine(line);
-		str = line.value;
-		let vlen = str.split(",");
-		this._videolength["_"+vlen[0]] = vlen[1];
-	    } while(hasmore);
-	    istream.close();
-	} catch (x) {
-	    debugprint("動画再生時間定義ファイル読み込みでエラーが発生しました");
-	    this._videolength = new Object();
-	}
-    },
-
     test: function(){
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		debugprint(req.responseText);
+	    }
+	};
+	let url = "http://www.nicovideo.jp/api/mylist/list";
+	req.open('POST',url );
+	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	let data = "group_id=17998690";
+	req.send(data);
     }
 };
 
