@@ -1962,80 +1962,86 @@ var NicoLiveHelper = {
 	    return null;
 	}
 	if( !root ) return null;
-	for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
-	    switch( elem.tagName ){
-	    case "video_id":
-		info.video_id = elem.textContent;
-		break;
-	    case "title":
-		info.title = restorehtmlspecialchars(elem.textContent);
-		break;
-	    case "description":
-		info.description = restorehtmlspecialchars(elem.textContent).replace(/　/g,' ');
-		break;
-	    case "thumbnail_url":
-		info.thumbnail_url = elem.textContent;
-		break;
-	    case "first_retrieve":
-		info.first_retrieve = elem.textContent;
-		let date = info.first_retrieve.match(/\d+/g);
-		let d = new Date(date[0],date[1]-1,date[2],date[3],date[4],date[5]);
-		info.first_retrieve = d.getTime() / 1000; // seconds from epoc.
-		break;
-	    case "length":
-		if( this._videolength["_"+info.video_id] ){
-		    info.length = this._videolength["_"+info.video_id];
-		}else{
-		    info.length = elem.textContent;
-		}
-		let len = info.length.match(/\d+/g);
-		info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1],10))*1000;
-		break;
-	    case "view_counter":
-		info.view_counter = parseInt(elem.textContent);
-		break;
-	    case "comment_num":
-		info.comment_num = parseInt(elem.textContent);
-		break;
-	    case "mylist_counter":
-		info.mylist_counter = parseInt(elem.textContent);
-		break;
-	    case "tags":
-		// attribute domain=jp のチェックが必要.
-		// また、半角に正規化.
-		if( elem.getAttribute('domain')=='jp' ){
-		    let tag = elem.getElementsByTagName('tag');// DOM object
-		    info.tags = new Array();
-		    for(let i=0,item;item=tag[i];i++){
-			info.tags[i] = restorehtmlspecialchars(ZenToHan(item.textContent)); // string
+	try{
+	    for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
+		switch( elem.tagName ){
+		case "video_id":
+		    info.video_id = elem.textContent;
+		    break;
+		case "title":
+		    info.title = restorehtmlspecialchars(elem.textContent);
+		    break;
+		case "description":
+		    info.description = restorehtmlspecialchars(elem.textContent).replace(/　/g,' ');
+		    break;
+		case "thumbnail_url":
+		    info.thumbnail_url = elem.textContent;
+		    break;
+		case "first_retrieve":
+		    info.first_retrieve = elem.textContent;
+		    let date = info.first_retrieve.match(/\d+/g);
+		    let d = new Date(date[0],date[1]-1,date[2],date[3],date[4],date[5]);
+		    info.first_retrieve = d.getTime() / 1000; // seconds from epoc.
+		    break;
+		case "length":
+		    if( this._videolength["_"+info.video_id] ){
+			info.length = this._videolength["_"+info.video_id];
+		    }else{
+			info.length = elem.textContent;
 		    }
-		}else{
-		    let tag = elem.getElementsByTagName('tag');
-		    if( !info.overseastags ) info.overseastags = new Array();
-		    for(let i=0,item;item=tag[i];i++){
-			info.overseastags.push( restorehtmlspecialchars(ZenToHan(item.textContent)) );
+		    let len = info.length.match(/\d+/g);
+		    info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1],10))*1000;
+		    break;
+		case "view_counter":
+		    info.view_counter = parseInt(elem.textContent);
+		    break;
+		case "comment_num":
+		    info.comment_num = parseInt(elem.textContent);
+		    break;
+		case "mylist_counter":
+		    info.mylist_counter = parseInt(elem.textContent);
+		    break;
+		case "tags":
+		    // attribute domain=jp のチェックが必要.
+		    // また、半角に正規化.
+		    if( elem.getAttribute('domain')=='jp' ){
+			let tag = elem.getElementsByTagName('tag');// DOM object
+			info.tags = new Array();
+			for(let i=0,item;item=tag[i];i++){
+			    info.tags[i] = restorehtmlspecialchars(ZenToHan(item.textContent)); // string
+			}
+		    }else{
+			let tag = elem.getElementsByTagName('tag');
+			if( !info.overseastags ) info.overseastags = new Array();
+			for(let i=0,item;item=tag[i];i++){
+			    info.overseastags.push( restorehtmlspecialchars(ZenToHan(item.textContent)) );
+			}
 		    }
+		    break;
+		case "size_high":
+		    info.filesize = parseInt(elem.textContent);
+		    info.highbitrate = elem.textContent;
+		    info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
+		    break;
+		case "size_low":
+		    info.lowbitrate = elem.textContent;
+		    info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
+		    break;
+		case "movie_type":
+		    info.movie_type = elem.textContent;
+		    break;
+		case "no_live_play":
+		    info.no_live_play = elem.textContent;
+		    break;
+		default:
+		    break;
 		}
-		break;
-	    case "size_high":
-		info.filesize = parseInt(elem.textContent);
-		info.highbitrate = elem.textContent;
-		info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
-		break;
-	    case "size_low":
-		info.lowbitrate = elem.textContent;
-		info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
-		break;
-	    case "movie_type":
-		info.movie_type = elem.textContent;
-		break;
-	    case "no_live_play":
-		info.no_live_play = elem.textContent;
-		break;
-	    default:
-		break;
 	    }
+	} catch (x) {
+	    info.video_id = null;
+	    debugprint('error occured in xmlToMovieInfo:'+x);
 	}
+
 	// video_id がないときはエラーとしておこう、念のため.
 	if( !info.video_id ) return null;
 
