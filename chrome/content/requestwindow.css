@@ -16,17 +16,19 @@ table.requestview tr {
     border-bottom: 2px solid black;
 }
 
+/* テキスト範囲選択できるクラス */
 .selection {
     cursor: text ! important;
     -moz-user-focus: normal;
     -moz-user-select: text;
 }
 
-/* 詳細部分(非表示にしていいもの) */
+/* ストックの詳細部分(非表示にしていいもの) */
 .detail {
 /*    display:none; */
 }
 
+/* リク・ストックビュー内の水平線<hr/> */
 .requestview hr {
     padding: 0;
     margin: 0;
@@ -67,6 +69,11 @@ table#database-table tr:hover{
 /*    background-color: #eeeeee; */
 }
 
+tr.no_live_play:hover{
+    background-image: url("http://res.nimg.jp/img/common/tilebtn/delete.png");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
 
 tr.color1{
     background-color: #f2eef8;
@@ -95,6 +102,9 @@ tr.color8{
 
 tr.white{
     background-color: white;
+}
+
+tr.no_live_play{
 }
 
 

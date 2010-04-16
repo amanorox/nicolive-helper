@@ -59,6 +59,9 @@ var NicoLiveRequest = {
 	    img.setAttribute("width",this.visibleDetail?130:65 +"px");
 	    img.setAttribute("height",this.visibleDetail?100:50 + "px");
 	}else{
+	    if(item.no_live_play){
+		img.className = "no_live_play";
+	    }
 	    img.setAttribute("width","130px");
 	    img.setAttribute("height","100px");
 	}
@@ -501,16 +504,13 @@ var NicoLiveRequest = {
 	let table = $('error-request-table');
 	let tr = table.insertRow(table.rows.length);
 	tr.className = table.rows.length%2?"table_oddrow":"table_evenrow";
-	if(item.iscasterselection){
-	    tr.className = "table_casterselection";
-	}
-	if(item.error){
-	    tr.className = "white";
-	}
 	if(item.selfrequest){
 	    tr.className = "color6";  // green
-	}
-	if(item.isplayed){
+	}else if(item.no_live_play){
+	    tr.className = "table_played";
+	}else if(item.error){
+	    tr.className = "white";
+	}else if(item.isplayed){
 	    tr.className = "table_played";
 	}
 

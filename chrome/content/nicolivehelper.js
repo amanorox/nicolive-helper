@@ -109,7 +109,7 @@ var NicoLiveHelper = {
 	    }
 	}
 	// 生放送での引用拒否チェック.
-	if( info.no_live_play!=0 ){
+	if( info.no_live_play ){
 	    return {code:-1,msg:NicoLivePreference.msg.no_live_play,movieinfo:info};
 	}
 
@@ -2031,7 +2031,7 @@ var NicoLiveHelper = {
 		    info.movie_type = elem.textContent;
 		    break;
 		case "no_live_play":
-		    info.no_live_play = elem.textContent;
+		    info.no_live_play = parseInt(elem.textContent);
 		    break;
 		default:
 		    break;
