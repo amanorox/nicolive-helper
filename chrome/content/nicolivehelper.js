@@ -2980,7 +2980,7 @@ var NicoLiveHelper = {
 
     // 接続を開始する.
     start: function(request_id){
-	this.request_id = request_id;
+	this.request_id = request_id.toString();
 	debugprint("starting nicolive " + request_id);
 	this.getplayerstatus(request_id);
     },
@@ -3129,6 +3129,17 @@ var NicoLiveHelper = {
 	    debugprint("動画再生時間定義ファイル読み込みでエラーが発生しました");
 	    this._videolength = new Object();
 	}
+    },
+
+    nextBroadcasting:function(){
+	let id = this.request_id.match(/lv(\d+)/)[1];
+	let tab;
+	if( id==0 ){
+	    tab = window.opener.getBrowser().addTab('http://live.nicovideo.jp/editstream');
+	}else{
+	    tab = window.opener.getBrowser().addTab('http://live.nicovideo.jp/editstream?reuseid='+id);
+	}
+	window.opener.getBrowser().selectedTab = tab;
     },
 
     init: function(){

@@ -551,6 +551,13 @@ var NicoLiveComment = {
 	}
     },
 
+    // ログファイルに任意の文字列を書き込む.
+    writeMessageLog:function(str){
+	if(this.ostream){
+	    this.ostream.writeString(str+"\r\n");
+	}
+    },
+
     loadPresetAutocomplete:function(){
 	let prefs = NicoLivePreference.getBranch();
 	let str;
