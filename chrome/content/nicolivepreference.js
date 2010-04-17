@@ -256,6 +256,11 @@ var NicoLivePreference = {
 	var prefs = new PrefsWrapper1("extensions.nicolivehelper.");
 	return prefs;
     },
+    getSpecificBranch:function(branch){
+	// "greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified-1."
+	var prefs = new PrefsWrapper1(branch);
+	return prefs;
+    },
 
     register:function(){
 	let prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
