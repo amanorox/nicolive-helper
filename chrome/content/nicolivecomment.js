@@ -80,7 +80,7 @@ var NicoLiveComment = {
 	    str = comment.text;
 	}
 	str = htmlspecialchars(str);
-
+	    
 	let tmp = str.split(/(sm\d+|nm\d+|\d{10}|&\w+;)/);
 	for(let i=0;i<tmp.length;i++){
 	    if( !tmp[i].match(/(sm\d+|nm\d+|\d{10}|&\w+;)/) ){
@@ -94,9 +94,16 @@ var NicoLiveComment = {
 	str = str.replace(/((sm|nm)\d+)/g,"<hbox class=\"selection\" context=\"popup-comment-anchor\"><html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a></hbox>");
 	if( comment.premium!=3 ){
 	    // 数字10桁にもリンク.
-	    str = str.replace(/(\d{10})/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
+	    if( !str.match(/(sm|nm)\d+/) ){
+		str = str.replace(/(\d{10})/g,"<html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'$1');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/$1');\">$1</html:a>");
+	    }
 	}
-	td.innerHTML = "<hbox flex=\"1\" class=\"selection\" context=\"popup-copycomment\">"+str+"</hbox>";
+	try{
+	    td.innerHTML = "<hbox flex=\"1\" class=\"selection\" context=\"popup-copycomment\">"+str+"</hbox>";
+	} catch (x) {
+	    debugprint(x);
+	    debugprint(str);
+	}
 
 	td = tr.insertCell(tr.cells.length);
 	let datestr = GetDateString(comment.date*1000);
