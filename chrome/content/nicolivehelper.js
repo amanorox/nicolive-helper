@@ -303,6 +303,8 @@ var NicoLiveHelper = {
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
+	    //NicoLiveHelper.autoNextBroadcasting();
+
 	    let prefs = NicoLivePreference.getBranch();
 	    NicoLiveComment.releaseReflector();
 	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster || prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
@@ -2348,12 +2350,13 @@ var NicoLiveHelper = {
 	if( dat ){
 	    this.ticket = dat[1];
 	    debugprint('ticket='+this.ticket);
+	    ShowNotice("コメントサーバに接続しました");
+	    //NicoLiveHelper.configureStream( NicoLiveHelper.token );
 	}
 	dat = line.match(/<thread.*last_res=\"([0-9a-fA-Fx]*)\".*\/>/);
 	if(dat){
 	    this.last_res = parseInt(dat[1]);
 	    debugprint('last_res='+this.last_res);
-	    ShowNotice("コメントサーバに接続しました");
 	}
     },
 
@@ -3140,6 +3143,11 @@ var NicoLiveHelper = {
 	    tab = window.opener.getBrowser().addTab('http://live.nicovideo.jp/editstream?reuseid='+id);
 	}
 	window.opener.getBrowser().selectedTab = tab;
+    },
+    autoNextBroadcasting:function(){
+	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified-1.");
+	pref.setIntPref("WakutoriFMode",1);
+	this.nextBroadcasting();
     },
 
     init: function(){
