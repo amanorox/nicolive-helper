@@ -303,7 +303,7 @@ var NicoLiveHelper = {
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
-	    if( $('automatic-broadcasting').checked ){
+	    if( $('automatic-broadcasting').hasAttribute('checked') ){
 		NicoLiveHelper.autoNextBroadcasting();
 	    }
 
@@ -2353,7 +2353,7 @@ var NicoLiveHelper = {
 	    this.ticket = dat[1];
 	    debugprint('ticket='+this.ticket);
 	    ShowNotice("コメントサーバに接続しました");
-	    if( $('automatic-broadcasting').checked ){
+	    if( $('automatic-broadcasting').hasAttribute('checked') ){
 		NicoLiveHelper.configureStream( NicoLiveHelper.token );
 	    }
 	}
@@ -3149,7 +3149,7 @@ var NicoLiveHelper = {
 	window.opener.getBrowser().selectedTab = tab;
     },
     autoNextBroadcasting:function(){
-	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified-1.");
+	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified.");
 	pref.setIntPref("WakutoriFMode",1);
 	this.nextBroadcasting();
     },
