@@ -8,6 +8,8 @@
 #include <nsEmbedString.h>
 #include "ICommentTalker.h"
 
+#include "callVoiceUnder.h"
+
 #define MY_COMPONENT_CONTRACTID	"@miku39.jp/NLHCommentTalker;1"
 #define MY_COMPONENT_CLASSNAME	"NLH CommentTalker XPCOM"
 #define MY_COMPONENT_CID		{ 0x205b68cf, 0xac75, 0x49f7, { 0x8b, 0x2a, 0x39, 0x9d, 0xd6, 0xd5, 0x69, 0x2 } }
@@ -145,12 +147,13 @@ int saykotoeri(const PRUnichar *text)
 
 int saykotoeri2(const PRUnichar*option, const PRUnichar *text)
 {
-    if( is_saykotoeri2_active() ) return 0;
+    if( is_saykotoeri2_active() || is_saykotoeri_active() ) return 0;
 	char*utf8str = unicodetoutf8(text);
 	char*opt = unicodetoutf8(option);
 	char buf[8192];
 	sprintf(buf,"/usr/local/bin/SayKotoeri2 %s \"%s\" & ", opt, utf8str);
-	system(buf);
+	//system(buf);
+	callVoiceUnder(utf8str);
 	free(utf8str);
 	free(opt);
 	return 1;
