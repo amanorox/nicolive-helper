@@ -2977,10 +2977,25 @@ var NicoLiveHelper = {
 		let timerid = setInterval(
 		    function(){
 			if( !NicoLiveHelper.musicinfo.video_id ){
+			    if( $('automatic-broadcasting').hasAttribute('checked') ){
+				// Automatic Broadcastingのときはジングル再生に失敗しても
+				// 継続できるように.
+				NicoLiveHelper.setupPlayNextMusic(60*1000);
+			    }
 			    NicoLiveHelper.postCasterComment(jingle);
 			}
 			clearInterval(timerid);
 		    }, 5000);
+	    }
+	}else{
+	    if( !this.inplay ){
+		// 最近は枠取れたあとにしばらく入場できない場合があるため、
+		// 3分経過後に入場となったときにジングル再生が行なわれない.
+		// その場合にはジングル流さずに次を再生するようにして
+		// 自動配信を継続できるようにする.
+		if( $('automatic-broadcasting').hasAttribute('checked') ){
+		    NicoLiveHelper.setupPlayNextMusic(10);
+		}
 	    }
 	}
     },
