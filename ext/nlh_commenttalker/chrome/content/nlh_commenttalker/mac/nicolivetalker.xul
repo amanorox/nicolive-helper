@@ -25,7 +25,8 @@
 	<radiogroup id="use-what-talker-program" >
 	  <radio id="use-bouyomichan" label="棒読みちゃんを使用する"/>
 	  <radio id="use-saykotoeri" label="SayKotoeriを使用する"/>
-	  <radio id="use-saykotoeri2" label="SayKotoeri2を使用する"/>
+<!--	  <radio id="use-saykotoeri2" label="SayKotoeri2を使用する"/> -->
+	  <radio id="use-saykotoeri2" label="Voiceunderを使用する"/>
 	</radiogroup>
 	<spacer flex="1"/>
 	<vbox>
@@ -44,10 +45,10 @@
       <groupbox>
 	<caption label="設定"/>
 	<hbox align="center">
-	  <label value="読み上げ速度"/><textbox size="5" id="nlhaddon-talk-speed" min="50" max="300" value="100" type="number"/>
+	  <label disabled="true" value="読み上げ速度"/><textbox disabled="true" size="5" id="nlhaddon-talk-speed" min="50" max="300" value="100" type="number"/>
 	</hbox>
 	<hbox align="center">
-	  <label value="音量"/><textbox size="5" id="nlhaddon-talk-volume" min="0" max="100" value="100" type="number"/>
+	  <label disabled="true" value="音量"/><textbox size="5" disabled="true" id="nlhaddon-talk-volume" min="0" max="100" value="100" type="number"/>
 	</hbox>
 
 	<hbox><checkbox persist="checked" id="nlhaddon-read-castercomment" label="運営コメントを読み上げる"/></hbox>

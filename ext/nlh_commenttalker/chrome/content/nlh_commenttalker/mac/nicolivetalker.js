@@ -69,6 +69,8 @@ var NicoLiveTalker = {
     },
 
     test:function(){
+	//this.runProcess("","人付");
+	//this.runProcess("","工エエェェ(´д｀)ェェエエ工");
 	this.runProcess("","コメント読み上げのテストです");
     },
 
