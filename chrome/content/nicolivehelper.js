@@ -3149,6 +3149,7 @@ var NicoLiveHelper = {
 	window.opener.getBrowser().selectedTab = tab;
     },
     autoNextBroadcasting:function(){
+	if( !this.iscaster ) return;
 	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified.");
 	pref.setIntPref("WakutoriFMode",1);
 	this.nextBroadcasting();
