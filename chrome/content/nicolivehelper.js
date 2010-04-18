@@ -35,8 +35,6 @@ THE SOFTWARE.
  */
 
 var NicoLiveHelper = {
-    auto_live: false,
-
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
     port: 0,
@@ -305,7 +303,7 @@ var NicoLiveHelper = {
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
-	    if(NicoLiveHelper.auto_live){
+	    if( $('automatic-broadcasting').checked ){
 		NicoLiveHelper.autoNextBroadcasting();
 	    }
 
@@ -2355,7 +2353,7 @@ var NicoLiveHelper = {
 	    this.ticket = dat[1];
 	    debugprint('ticket='+this.ticket);
 	    ShowNotice("コメントサーバに接続しました");
-	    if( this.auto_live ){
+	    if( $('automatic-broadcasting').checked ){
 		NicoLiveHelper.configureStream( NicoLiveHelper.token );
 	    }
 	}
