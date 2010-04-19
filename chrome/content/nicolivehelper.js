@@ -303,8 +303,8 @@ var NicoLiveHelper = {
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
-	    if( NicoLiveHelper.iscaster && $('automatic-broadcasting').hasAttribute('checked') ){
-		NicoLiveHelper.nextBroadcasting();
+	    if( $('automatic-broadcasting').hasAttribute('checked') ){
+		NicoLiveHelper.autoNextBroadcasting();
 	    }
 
 	    let prefs = NicoLivePreference.getBranch();
@@ -2970,6 +2970,8 @@ var NicoLiveHelper = {
 	if(!jingle) return;
 	debugprint('jingle:'+jingle);
 
+	if( !this.iscaster ) return;
+
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){ // 何も動画が再生されてなければジングル再生.
 		this.inplay = true;
@@ -2994,7 +2996,7 @@ var NicoLiveHelper = {
 		// その場合にはジングル流さずに次を再生するようにして
 		// 自動配信を継続できるようにする.
 		if( $('automatic-broadcasting').hasAttribute('checked') ){
-		    NicoLiveHelper.setupPlayNextMusic(10);
+		    NicoLiveHelper.setupPlayNextMusic(10*1000);
 		}
 	    }
 	}
@@ -3153,22 +3155,21 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 次枠を取りに行く.
     nextBroadcasting:function(){
 	let id = this.request_id.match(/lv(\d+)/)[1];
 	let tab;
 	if( id==0 ){
-	    // オフラインのときは新規枠取り.
 	    tab = window.opener.getBrowser().addTab('http://live.nicovideo.jp/editstream');
 	}else{
-	    if( this.iscaster && $('automatic-broadcasting').hasAttribute('checked') ){
-		// 生主かつAutomatic BroadcastingがONのとき.
-		let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified.");
-		pref.setIntPref("WakutoriFMode",1);
-	    }
 	    tab = window.opener.getBrowser().addTab('http://live.nicovideo.jp/editstream?reuseid='+id);
 	}
 	window.opener.getBrowser().selectedTab = tab;
+    },
+    autoNextBroadcasting:function(){
+	if( !this.iscaster ) return;
+	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified.");
+	pref.setIntPref("WakutoriFMode",1);
+	this.nextBroadcasting();
     },
 
     init: function(){
