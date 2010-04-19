@@ -2970,6 +2970,8 @@ var NicoLiveHelper = {
 	if(!jingle) return;
 	debugprint('jingle:'+jingle);
 
+	if( !this.iscaster ) return;
+
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){ // 何も動画が再生されてなければジングル再生.
 		this.inplay = true;
@@ -2994,7 +2996,7 @@ var NicoLiveHelper = {
 		// その場合にはジングル流さずに次を再生するようにして
 		// 自動配信を継続できるようにする.
 		if( $('automatic-broadcasting').hasAttribute('checked') ){
-		    NicoLiveHelper.setupPlayNextMusic(10);
+		    NicoLiveHelper.setupPlayNextMusic(10*1000);
 		}
 	    }
 	}
