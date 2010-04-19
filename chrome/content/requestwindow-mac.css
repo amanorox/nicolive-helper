@@ -1,16 +1,16 @@
 toolbar {
-    -moz-appearance: -moz-mac-unified-toolbar;
-    padding-bottom: 1px;
+    -moz-appearance: -moz-mac-unified-toolbar !important;
+    padding-bottom: 1px !important;
 }
 
 toolbarbutton {
-    border: 1px solid transparent;
-    padding: 3px;
+    border: 1px solid transparent !important;
+    padding: 3px !important;
 }
 
 .toolbarbutton-icon[label]:not([label=""]),
 .toolbarbutton-icon[type="menu"] {
-    -moz-margin-end: 5px;
+    -moz-margin-end: 5px !important;
 }
 
 .toolbarbutton-text {
@@ -19,14 +19,14 @@ toolbarbutton {
 
 toolbarbutton:hover,
 toolbarbutton[buttonover="true"] {
-    border: 1px solid gray;
+    border: 1px solid gray !important;
 }
 
 toolbarbutton:hover:active,
 toolbarbutton[open="true"]:hover,
 toolbarbutton[open="true"] {
-    padding-top: 4px;
-    padding-bottom: 2px;
+    padding-top: 4px !important;
+    padding-bottom: 2px !important;
     -moz-padding-start: 4px !important;
     -moz-padding-end: 2px !important;
 }
@@ -37,6 +37,6 @@ toolbarbutton[checked="true"]{
     -moz-padding-start: 4px !important;
     -moz-padding-end: 2px !important;
 
-    background-color: #dddddd;
-    border: 1px inset gray;
+    background-color: #dddddd !important;
+    border: 1px inset gray !important;
 }
