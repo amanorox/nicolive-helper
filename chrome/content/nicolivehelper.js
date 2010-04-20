@@ -2967,10 +2967,17 @@ var NicoLiveHelper = {
 	    let n = GetRandomInt(0,candidates.length-1);
 	    jingle = candidates[n];
 	}
-	if(!jingle) return;
 	debugprint('jingle:'+jingle);
 
 	if( !this.iscaster ) return;
+
+	if(!jingle){
+	    if( $('automatic-broadcasting').hasAttribute('checked') ){
+		// Automatic Broadcastingのときはジングルなしに次曲を再生開始可に.
+		NicoLiveHelper.setupPlayNextMusic(10*1000);
+	    }
+	    return;
+	}
 
 	if( GetCurrentTime()-this.starttime < 180 ){
 	    if( !this.inplay ){ // 何も動画が再生されてなければジングル再生.
