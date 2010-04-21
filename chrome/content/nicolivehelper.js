@@ -2544,9 +2544,11 @@ var NicoLiveHelper = {
 	}
 
 	if( this.iscaster && this.endtime==0 ){
-	    if( (GetCurrentTime()-this._enterlosstime) > 2*60 ){
-		// 生主時、ロスタイムに入って2分経ったら.
-		this.finishBroadcasting();
+	    if( $('automatic-broadcasting').hasAttribute('checked') ){
+		if( (GetCurrentTime()-this._enterlosstime) > 2*60 ){
+		    // 自動配信中に、ロスタイムに入って2分経ったら.
+		    this.finishBroadcasting();
+		}
 	    }
 	}
 
