@@ -303,24 +303,7 @@ var NicoLiveHelper = {
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
-	    if( $('automatic-broadcasting').hasAttribute('checked') ){
-		NicoLiveHelper.autoNextBroadcasting();
-	    }
-
-	    let prefs = NicoLivePreference.getBranch();
-	    NicoLiveComment.releaseReflector();
-	    if( prefs.getBoolPref("autowindowclose") && NicoLiveHelper.iscaster || prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
-		if( prefs.getBoolPref("autotabclose") ){
-		    NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id);
-		}
-		NicoLiveHelper._donotshowdisconnectalert = true;
-		NicoLiveHelper.close();
-		window.close();
-	    }else{
-		AlertPrompt(NicoLiveHelper.request_id+' は終了しました',NicoLiveHelper.request_id);
-		NicoLiveHelper._donotshowdisconnectalert = true;
-		NicoLiveHelper.close();
-	    }
+	    NicoLiveHelper.finishBroadcasting();
 	}
 	if( chat.premium>3 ){
 	    // premium>3 はニコニコの中の人とか. 主コメが上書きされるので動画情報を復元.
@@ -526,6 +509,30 @@ var NicoLiveHelper = {
 		if(this.request_per_ppl[chat.user_id]<0) this.request_per_ppl[chat.user_id] = 0;
 		break;
 	    }
+	}
+    },
+
+    // 放送が終了した時に呼ぶ.
+    finishBroadcasting:function(){
+	let autolive = $('automatic-broadcasting').hasAttribute('checked');
+	if( autolive ){
+	    NicoLiveHelper.autoNextBroadcasting();
+	}
+
+	let prefs = NicoLivePreference.getBranch();
+	NicoLiveComment.releaseReflector();
+	if( (autolive || prefs.getBoolPref("autowindowclose")) && NicoLiveHelper.iscaster ||
+	    prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
+	    if( prefs.getBoolPref("autotabclose") ){
+		NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id);
+	    }
+	    NicoLiveHelper._donotshowdisconnectalert = true;
+	    NicoLiveHelper.close();
+	    window.close();
+	}else{
+	    AlertPrompt(NicoLiveHelper.request_id+' は終了しました',NicoLiveHelper.request_id);
+	    NicoLiveHelper._donotshowdisconnectalert = true;
+	    NicoLiveHelper.close();
 	}
     },
 
@@ -2533,6 +2540,14 @@ var NicoLiveHelper = {
 	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
 	    this.endtime = 0;
 	    this.getpublishstatus(this.request_id);
+	    this._enterlosstime = GetCurrentTime();
+	}
+
+	if( this.iscaster && this.endtime==0 ){
+	    if( (GetCurrentTime()-this._enterlosstime) > 2*60 ){
+		// 生主時、ロスタイムに入って2分経ったら.
+		this.finishBroadcasting();
+	    }
 	}
 
 	if(!this.musicinfo.length_ms){ currentmusic.setAttribute("tooltiptext",""); return; }
