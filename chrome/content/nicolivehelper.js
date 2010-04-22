@@ -2991,7 +2991,7 @@ var NicoLiveHelper = {
 	if(!jingle){
 	    if( $('automatic-broadcasting').hasAttribute('checked') ){
 		// Automatic Broadcastingのときはジングルなしに次曲を再生開始可に.
-		NicoLiveHelper.setupPlayNextMusic(20*1000);
+		if( !this.inplay ) NicoLiveHelper.setupPlayNextMusic(20*1000);
 	    }
 	    return;
 	}
