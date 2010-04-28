@@ -499,6 +499,12 @@ var NicoLiveRequest = {
 	if(item==null) return;
 	NicoLiveHelper.addRequestQueue(item);
     },
+    _addStockFromError:function(video_id){
+	let item = NicoLiveHelper.findVideoInfo(video_id);
+	if(item==null) return;
+	NicoLiveHelper.addStockQueue(item);
+    },
+
 
     addErrorRequest:function(item){
 	let table = $('error-request-table');
@@ -536,6 +542,12 @@ var NicoLiveRequest = {
 	button.setAttribute("label",'リクエストに追加');
 	button.className = 'commandbtn';
 	button.setAttribute("oncommand","NicoLiveRequest._addRequestFromError('"+item.video_id+"');");
+	hbox.appendChild(button);
+
+	button = CreateElement('button');
+	button.setAttribute("label",'ストックに追加');
+	button.className = 'commandbtn';
+	button.setAttribute("oncommand","NicoLiveRequest._addStockFromError('"+item.video_id+"');");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');

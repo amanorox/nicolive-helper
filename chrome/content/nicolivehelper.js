@@ -2094,6 +2094,8 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.addStockQueue(ans.movieinfo);
 		    break;
 		default:
+		    ans.movieinfo.error = true;
+		    NicoLiveHelper.addErrorRequestList(ans.movieinfo);
 		    break;
 		}
 	    }
