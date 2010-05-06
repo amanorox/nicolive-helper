@@ -112,6 +112,7 @@ var NicoLivePreference = {
 	NicoLiveComment.loadPresetAutocomplete();
 
 	this.ngwordfiltering = branch.getBoolPref("ngwordfiltering");
+	this.ngword_recomment = branch.getBoolPref("ngword-recomment");
 
 	this.do_customscript = branch.getBoolPref("custom-script");
 	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});

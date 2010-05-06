@@ -472,33 +472,37 @@ var NicoLiveComment = {
 	    this.regexstrings[i] = item.textContent;
 	}
     },
+
+    // 引っかかったNGワードを返す.
+    // 問題ないときはundefinedを返す.
     isNGWord:function(str){
 	let i,item;
 	let normalizedstr;
 	// case-sensitiveなのでindexOfでOK
 	for(i=0;item=this.casesensitivestrings[i];i++){
 	    if( str.indexOf(item) != -1 ){
-		return true;
+		return item;
 	    }
 	}
 
 	// case-insensitiveなので大文字小文字、ひらがなカタカナを区別しない.
 	normalizedstr = HiraToKana(str);
 	normalizedstr = ZenToHan(normalizedstr);
+	normalizedstr = HanToZenKana(normalizedstr);
 	for(i=0;item=this.caseinsensitivestrings[i];i++){
 	    let regex = new RegExp(item,"i");
 	    if(normalizedstr.match(regex)){
-		return true;
+		return item;
 	    }
 	}
 	// 正規表現.
 	for(i=0;item=this.regexstrings[i];i++){
 	    let regex = new RegExp(item);
 	    if(str.match(regex)){
-		return true;
+		return item;
 	    }
 	}
-	return false;
+	return undefined;
     },
 
     openDialog:function(){
