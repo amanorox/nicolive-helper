@@ -65,11 +65,9 @@ var NicoLiveComment = {
 	td = tr.insertCell(tr.cells.length);
 
 	let str;
-	if(this.namemap[comment.user_id]){
-	    str = this.namemap[comment.user_id].name;
-	}else{
-	    str = comment.user_id;
-	}
+	// nameが指定されていればその名前を使用する.
+	str = comment.name || this.namemap[comment.user_id] && this.namemap[comment.user_id].name || comment.user_id;
+
 	str = htmlspecialchars(str);
 	td.innerHTML = "<hbox class=\"selection\" tooltiptext=\""+(this.namemap[comment.user_id]?comment.user_id:"")+"\" context=\"popup-comment\" user_id=\""+comment.user_id+"\" comment_no=\""+comment.no+"\">"+str+"</hbox>";
 
@@ -485,21 +483,31 @@ var NicoLiveComment = {
 	    }
 	}
 
+	// NGワードに()が含まれているとRegExpのコンパイルで例外発生.
+
 	// case-insensitiveなので大文字小文字、ひらがなカタカナを区別しない.
 	normalizedstr = HiraToKana(str);
 	normalizedstr = ZenToHan(normalizedstr);
 	normalizedstr = HanToZenKana(normalizedstr);
 	for(i=0;item=this.caseinsensitivestrings[i];i++){
-	    let regex = new RegExp(item,"i");
-	    if(normalizedstr.match(regex)){
-		return item;
+	    try{
+		let regex = new RegExp(item,"i");
+		if(normalizedstr.match(regex)){
+		    return item;
+		}
+	    } catch (x) {
+		debugprint(x+'/'+item);
 	    }
 	}
 	// 正規表現.
 	for(i=0;item=this.regexstrings[i];i++){
-	    let regex = new RegExp(item);
-	    if(str.match(regex)){
-		return item;
+	    try{
+		let regex = new RegExp(item);
+		if(str.match(regex)){
+		    return item;
+		}
+	    } catch (x) {
+		debugprint(x+'/'+item);
 	    }
 	}
 	return undefined;

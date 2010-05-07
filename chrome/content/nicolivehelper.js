@@ -296,7 +296,7 @@ var NicoLiveHelper = {
 	    let ngword = NicoLiveComment.isNGWord(chat.text);
 	    if( ngword!=undefined ){
 		chat.isNGWord = true;
-		if( NicoLivePreference.ngword_recomment ){
+		if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
 		    let recomment = LoadFormattedString('STR_RECOMMENT_NGWORD',[chat.no, chat.text, ngword]);
 		    NicoLiveHelper.postCasterComment(recomment);
 		}
@@ -325,18 +325,14 @@ var NicoLiveHelper = {
 	    // /play smile:sm00000 main "title"
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	    if(dat){
+		// 再生コマンドが飛んできたときは次曲タイマしかけたりプレイリスト記録したり.
 		let vid = dat[2];
-
 		NicoLiveHelper.current_video_id = vid;
 		NicoLiveHelper.musicstarttime = GetCurrentTime();
 		NicoLiveHelper.inplay = true;
-		if(!NicoLiveHelper.iscaster){
-		    // リスナーの場合は動画情報を持っていないので取ってくる.
-		    NicoLiveHelper.setCurrentVideoInfo(vid,false);
-		}else{
+		if( NicoLiveHelper.iscaster ){
 		    if( NicoLiveHelper.musicinfo.video_id!=vid ){
-			// 直接運営コマンドを入力したときとかで、現在再生しているはずの曲と異なる場合.
-			// 動画情報の主コメは動画情報を取ってきてから.
+			// ツール上再生ボタンから再生した場合、musicinfo.video_idと一致するので.
 			NicoLiveHelper.setCurrentVideoInfo(vid,true);
 		    }else{
 			NicoLiveHelper.musicendtime = Math.floor(NicoLiveHelper.musicstarttime + NicoLiveHelper.musicinfo.length_ms/1000)+1;
@@ -349,6 +345,9 @@ var NicoLiveHelper = {
 			NicoLiveHelper.sendMusicInfo();
 			NicoLiveHelper.addPlayListText(NicoLiveHelper.musicinfo);
 		    }
+		}else{
+		    // リスナーの場合は動画情報を持っていないので取ってくる.
+		    NicoLiveHelper.setCurrentVideoInfo(vid,false);
 		}
 		return;
 	    }
@@ -589,13 +588,13 @@ var NicoLiveHelper = {
     extractComment: function(xmlchat){
 	let chat = {};
 	chat.text = xmlchat.textContent;
-
 	chat.date      = xmlchat.getAttribute('date');
 	chat.premium   = xmlchat.getAttribute('premium');
 	chat.user_id   = xmlchat.getAttribute('user_id');
 	chat.no        = xmlchat.getAttribute('no');
 	chat.anonymity = xmlchat.getAttribute('anonymity');
 	chat.mail      = xmlchat.getAttribute('mail');
+	chat.name      = xmlchat.getAttribute('name');
 
 	chat.date      = chat.date && parseInt(chat.date) || 0;
 	chat.premium   = chat.premium && parseInt(chat.premium) || 0;
