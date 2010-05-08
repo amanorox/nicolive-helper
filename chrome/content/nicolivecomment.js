@@ -134,6 +134,7 @@ var NicoLiveComment = {
 	    name = LoadFormattedString('STR_NAME_POSTFIX',[name]);
 	    break;
 	}
+	str = str.replace(/{=/g,'{-');
 	//NicoLiveHelper.postCasterComment(str,"",name);
 	let func = function(){
 	    NicoLiveHelper.postCasterComment(str,"",name,COMMENT_MSG_TYPE_NORMAL);

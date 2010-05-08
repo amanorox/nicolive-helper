@@ -298,6 +298,7 @@ var NicoLiveHelper = {
 		chat.isNGWord = true;
 		if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
 		    let recomment = LoadFormattedString('STR_RECOMMENT_NGWORD',[chat.no, chat.text, ngword]);
+		    recomment = recomment.replace(/{=/g,'{-');
 		    NicoLiveHelper.postCasterComment(recomment);
 		}
 	    }
