@@ -258,6 +258,10 @@ var NicoLiveComment = {
 	delete NicoLiveComment.reflector[userid];
 	RemoveElement(user[0]);
 	ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
+
+	// %Sさん　運営コメント:OFF
+	let str = LoadFormattedString("STR_TURN_OFF_REFLECTION",[name]);
+	NicoLiveHelper.postCasterComment(str);
     },
 
     addCommentReflectorCore:function(userid,name,disptype,addnguser){
@@ -268,6 +272,7 @@ var NicoLiveComment = {
 		// ここからリフレクション解除メニューの追加.
 		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
 		menuitem.setAttribute("comment-reflector",userid);
+		menuitem.setAttribute("comment-name",name);
 		menuitem.setAttribute("tooltiptext","ID="+userid);
 		menuitem.setAttribute("oncommand","NicoLiveComment.removeFromCommentReflector('"+userid+"','"+name+"');");
 		$('popup-comment').insertBefore(menuitem,$('id-release-reflection'));
@@ -280,11 +285,13 @@ var NicoLiveComment = {
 		debugprint(userid+'をNGユーザに追加します');
 		this.addNGUser(userid);
 	    }
+	    return true;
 	}
+	return false;
     },
 
     // リフレクション登録ダイアログを表示して設定する.
-    showCommentReflectorDialog:function(userid){
+    showCommentReflectorDialog:function(userid, comment_no){
 	if( !userid ) return;
 	let param = {
 	    "info": LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
@@ -300,19 +307,24 @@ var NicoLiveComment = {
 	let name = param['default'];
 	let disptype = param['disptype'];
 
-	this.addCommentReflectorCore(userid,name,disptype, param.addnguser );
+	if(this.addCommentReflectorCore(userid,name,disptype, param.addnguser )){
+	    // >>%S %Sさん　運営コメント:ON
+	    let str = LoadFormattedString("STR_TURN_ON_REFLECTION",[comment_no, name]);
+	    NicoLiveHelper.postCasterComment(str);
+	}
     },
 
     // コメントリフレクション登録.
     addCommentReflector:function(){
 	let userid = document.popupNode.getAttribute('user_id');
-	this.showCommentReflectorDialog(userid);
+	let comment_no = document.popupNode.getAttribute('comment_no');
+	this.showCommentReflectorDialog(userid, comment_no);
     },
     addReflectionFromCommentNo:function(comment_no){
 	if(comment_no<=0) return;
 	for(let i=0;i<this.commentlog.length;i++){
 	    if( this.commentlog[i].no == comment_no ){
-		this.showCommentReflectorDialog( this.commentlog[i].user_id);
+		this.showCommentReflectorDialog( this.commentlog[i].user_id, comment_no);
 	    }
 	}
     },
@@ -321,6 +333,10 @@ var NicoLiveComment = {
 	// コメント反射を全解放.
 	let cnt=0;
 	for (u in this.reflector){
+	    // %Sさん　運営コメント:OFF
+	    let name = this.reflector[u].name;
+	    let str = LoadFormattedString("STR_TURN_OFF_REFLECTION",[name]);
+	    NicoLiveHelper.postCasterComment(str);
 	    this.delNGUser(u);
 	    cnt++;
 	}
