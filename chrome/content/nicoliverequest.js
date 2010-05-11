@@ -80,6 +80,11 @@ var NicoLiveRequest = {
 	    text = document.createTextNode(' P名:'+pname);
 	    div.appendChild(text);
 	}
+	let mylist = NicoLiveMylist.isVideoExists(item.video_id);
+	if(mylist){
+	    text = document.createTextNode(' マ:'+mylist);
+	    div.appendChild(text);
+	}
 	div.appendChild(CreateHTMLElement('br'));
 
 	let datestr = GetDateString(item.first_retrieve*1000);
