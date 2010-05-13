@@ -482,7 +482,7 @@ var NicoLiveHelper = {
 		    if(!tmp[3]) tmp[3] = "0";
 		    let result = 0;
 		    let resultstr = new Array();
-		    for(let i=0;i<n;i++){
+		    for(let i=0;i<n && i<30;i++){
 			let dice = GetRandomInt(1,6);
 			resultstr.push(dice);
 			result += dice;
@@ -2424,7 +2424,11 @@ var NicoLiveHelper = {
 		    } catch (x) { debugprint(x); return; }
 		    if( !r ){ break; }
 		    if( lineData.value=="\0" ){
-			NicoLiveHelper.processLine(this.line);
+			try{
+			    NicoLiveHelper.processLine(this.line);
+			} catch (x) {
+			    AlertPrompt(x);
+			}
 			this.line = "";
 			continue;
 		    }
