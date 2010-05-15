@@ -403,14 +403,14 @@ var NicoLiveDatabase = {
     delayedUpdate:function(movies){
 	let now = GetCurrentTime();
 	let cnt=0;
-	debugprint('updating db...'+movies.length);
 	for(let i=0,item;item=movies[i];i++){
-	    if (cnt<10 && !item.done && (now-item.update_date) > 60*60*24*7 ){
+	    if (cnt<10 && !item.done /* && (now-item.update_date) > 60*60*24*7 */ ){
 		cnt++;
 		item.done = true;
 		this.updateOneVideo(item.video_id);
 	    }
 	}
+	debugprint('updating db...'+cnt);
 	if(cnt==0){
 	    clearInterval(this._updatehandle);
 	    debugprint('updating done.');
