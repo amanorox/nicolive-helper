@@ -268,6 +268,7 @@ var NicoLiveMylist = {
     },
 
     getAllMylists:function(mylists){
+	// mylists: マイリストグループリスト.
 	if( !NicoLivePreference.isLoadAllMylist() ) return;
 	let now = GetCurrentTime();
 	this.mylistdata = NicoLiveDatabase.loadGPStorage("nico_live_allmylist",{});
@@ -276,8 +277,12 @@ var NicoLiveMylist = {
 	    for(let i=0,item; item=mylists[i]; i++){
 		let id = "_"+item.id;
 		mylists[id] = item.name;
-		for(let j=0,item2; item2=this.mylistdata[id].mylistitem[j]; j++){
-		    this.mylistdata[id].mylistitem["_"+item2.item_data.video_id] = item2.item_data;
+		try{
+		    for(let j=0,item2; item2=this.mylistdata[id].mylistitem[j]; j++){
+			this.mylistdata[id].mylistitem["_"+item2.item_data.video_id] = item2.item_data;
+		    }
+		} catch (x) {
+		    debugprint(x);
 		}
 	    }
 	    return;
