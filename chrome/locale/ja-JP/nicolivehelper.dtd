@@ -104,7 +104,9 @@
 <!ENTITY db.do_search "検索実行">
 <!ENTITY db.add_stock "ストックに追加">
 <!ENTITY db.update "Update">
-<!ENTITY db.tooltip_update "検索結果のうち、1週間以上更新のなかった動画情報を更新します。表示は即時に反映されません(再検索が必要)">
+<!ENTITY db.tooltip_update "検索結果に表示されている動画の情報を更新します。表示は即時に反映されません(再検索が必要)">
+<!ENTITY db.category "カテゴリ">
+<!ENTITY db.new_category "新規カテゴリ...">
 
 <!ENTITY browser.open "開く">
 <!ENTITY browser.close "閉じる">
