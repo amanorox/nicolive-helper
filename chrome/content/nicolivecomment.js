@@ -478,13 +478,13 @@ var NicoLiveComment = {
 
 	let i,item;
 	for(i=0;item=this.casesensitivestrings[i];i++){
-	    this.casesensitivestrings[i] = item.textContent;
+	    this.casesensitivestrings[i] = item.textContent.replace(/\s+/g,'');
 	}
 	for(i=0;item=this.caseinsensitivestrings[i];i++){
-	    this.caseinsensitivestrings[i] = HiraToKana(item.textContent);
+	    this.caseinsensitivestrings[i] = HiraToKana(item.textContent).replace(/\s+/g,'');
 	}
 	for(i=0;item=this.regexstrings[i];i++){
-	    this.regexstrings[i] = item.textContent;
+	    this.regexstrings[i] = item.textContent.replace(/\s+/g,'');;
 	}
     },
 
