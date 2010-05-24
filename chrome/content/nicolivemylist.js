@@ -26,7 +26,11 @@ var NicoLiveMylist = {
 	if( video==null ) return;
 
 	if( NicoLivePreference.twitter.when_addmylist ){
-	    NicoLiveTweet.tweet("【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" from "+NicoLiveHelper.request_id+" "+NicoLiveHelper.title);
+	    if( NicoLiveHelper.request_id=="lv0" ){
+		NicoLiveTweet.tweet("【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" #"+video.video_id);
+	    }else{
+		NicoLiveTweet.tweet("【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" from "+NicoLiveHelper.request_id+" "+NicoLiveHelper.title);
+	    }
 	}
     },
 
