@@ -2872,6 +2872,7 @@ var NicoLiveHelper = {
 
     // 配信開始ステータスに変える.
     configureStream:function(token){
+	if( !this.iscaster ) return;
 	// exclude=0ってパラメタだから
 	// 視聴者を排除(exclude)するパラメタをOFF(0)にするって意味だろうな.
 	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=exclude&value=0&token="+token;
@@ -3302,18 +3303,13 @@ var NicoLiveHelper = {
     },
 
     test: function(){
-	let req = new XMLHttpRequest();
-	if( !req ) return;
-	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		debugprint(req.responseText);
-	    }
-	};
-	let url = "http://www.nicovideo.jp/api/mylist/list";
-	req.open('POST',url );
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	let data = "group_id=17998690";
-	req.send(data);
+	if(this.__counter==undefined) this.__counter=1;
+	for(let i=0;i<100;i++){
+	    let chat = JSON.parse('{"text":"sm1340413","date":1274459609,"premium":0,"user_id":"wfhjAiAXQZfx2iWGrdvLLzihNAc","no":'+this.__counter+',"anonymity":1,"mail":"184","name":null,"comment_no":'+this.__counter+'}');
+	    NicoLiveComment.push(chat);
+	    NicoLiveComment.addRow(chat);
+	    this.__counter++;
+	}
     }
 };
 

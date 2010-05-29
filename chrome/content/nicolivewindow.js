@@ -75,6 +75,18 @@ var NicoLiveWindow = {
 	return null;
     },
 
+    removeConsole:function(){
+	let tab = this.findTab(NicoLiveHelper.request_id);
+	if(tab){
+	    try{
+		let console = tab.linkedBrowser.contentDocument.getElementById('console_container').wrappedJSObject;
+		console.parentNode.removeChild(console);
+	    } catch (x) {
+		debugprint(x);
+	    }
+	}
+    },
+
     setupWindowOpener:function(){
 	// window.openerがないときに、ブラウザ本体を探して設定する.
 	if( !window.opener ){

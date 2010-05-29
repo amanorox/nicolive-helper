@@ -143,6 +143,7 @@
 	<menu label="その他">
 	  <menupopup>
 	    <menuitem id="automatic-broadcasting" persist="checked" label="Automatic Broadcasting(Experimental)" type="checkbox" autocheck="true"/>
+	    <menuitem id="get-extratime" label="ロスタイム作成" tooltiptext="生主用コンソールを消去して、ロスタイムを作成します。" oncommand="NicoLiveWindow.removeConsole();"/>
 	    <menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
 	    <menuitem label="&toolbar.clear.req.queue;" tooltiptext="&toolbar.clear.req.queue.help;" oncommand="NicoLiveHelper.clearRequestProcessingQueue();"/>
 	    <menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.forget();"/>
