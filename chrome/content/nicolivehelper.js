@@ -3145,6 +3145,7 @@ var NicoLiveHelper = {
 	    this.inplay = false;
 	    this._firstflag = false;
 	    this.musicinfo = {};
+	    this.isnotified = new Array(); // 残り3分通知を出したかどうかのフラグ.
 	    this.commentstate = COMMENT_STATE_NONE;
 	    this.commentview = COMMENT_VIEW_NORMAL;
 	    this.start(request_id);
