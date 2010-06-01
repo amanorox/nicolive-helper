@@ -873,7 +873,7 @@ var NicoLiveDatabase = {
 	    // ランキングページ.
 	    items = evaluateXPath(doc,"//div/p/a[@class='watch']/@href");
 	    for(let i=0,item; item=items[i]; i++){
-		debugprint(item.textContent);
+		//debugprint(item.textContent);
 		str += item.textContent + " ";
 	    }
 	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
