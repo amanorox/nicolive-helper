@@ -47,7 +47,7 @@ var NicoLiveBrowser = {
 
     parseSearchingPage:function(){
 	let tmp = $('live-page').contentDocument;
-	let videos = evaluateXPath(tmp,"//table[@summary='videos']//td/div/div/p/a");
+	let videos = evaluateXPath(tmp,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
 	let uads = evaluateXPath(tmp,"//*[@class='vinfo_uadp']");
 
 	debugprint('check page '+this._page);
@@ -63,7 +63,7 @@ var NicoLiveBrowser = {
 	    return;
 	}
 	for(let i=0,item; item=videos[i]; i++){
-	    let d = item.href.match(/.+\/(.*?)$/);
+	    let d = item.textContent.match(/.+\/(.*?)$/);
 	    let info = { "vid": d[1], "uadp": uads[i].textContent.replace(/,/g,'') };
 	    this.ostream.writeString(d[1]+"\t"+uads[i].textContent+"\r\n");
 	}
