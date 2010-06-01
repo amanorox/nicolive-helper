@@ -828,7 +828,7 @@ var NicoLiveRequest = {
 	    // ランキングページ.
 	    items = evaluateXPath(doc,"//div/p/a[@class='watch']/@href");
 	    for(let i=0,item; item=items[i]; i++){
-		debugprint(item.textContent);
+		//debugprint(item.textContent);
 		str += item.textContent + " ";
 	    }
 
