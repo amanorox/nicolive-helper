@@ -816,15 +816,22 @@ var NicoLiveRequest = {
 	// タブをドロップしたとき.
 	if( event.dataTransfer.types.contains("application/x-moz-tabbrowser-tab") ){
 	    debugprint("tab dropped");
+	    let str = "";
 	    let tab = event.dataTransfer.mozGetDataAt("application/x-moz-tabbrowser-tab",0);
 	    let doc = tab.linkedBrowser.contentDocument;
-	    let str = "";
-	    for(let i=1,item; item=doc.getElementById('item'+i);i++){
-		try{
-		    str += item.getElementsByClassName('watch')[0].getAttribute('href') + " ";
-		} catch (x) {
-		}
+	    // 検索ページ.
+	    let items = evaluateXPath(doc,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
+	    for(let i=0,item; item=items[i]; i++){
+		//debugprint(item.textContent);
+		str += item.textContent + " ";
 	    }
+	    // ランキングページ.
+	    items = evaluateXPath(doc,"//p/a[@class='watch']/@href");
+	    for(let i=0,item; item=items[i]; i++){
+		debugprint(item.textContent);
+		str += item.textContent + " ";
+	    }
+
 	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
 	    this.addStock(str);
 	    return;
