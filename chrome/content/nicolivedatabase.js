@@ -856,16 +856,8 @@ var NicoLiveDatabase = {
 	    let tab = event.dataTransfer.mozGetDataAt("application/x-moz-tabbrowser-tab",0);
 	    let doc = tab.linkedBrowser.contentDocument;
 	    let str = "";
-	    /* // old style
-	    for(let i=1,item; item=doc.getElementById('item'+i);i++){
-		try{
-		    str += item.getElementsByClassName('watch')[0].getAttribute('href') + " ";
-		} catch (x) {
-		}
-	    }
-	     */
 	    // 検索ページ.
-	    let items = evaluateXPath(doc,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
+	    let items = evaluateXPath(doc,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/p/a/@href");
 	    for(let i=0,item; item=items[i]; i++){
 		//debugprint(item.textContent);
 		str += item.textContent + " ";
