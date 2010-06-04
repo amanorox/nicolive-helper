@@ -47,7 +47,9 @@ var NicoLiveBrowser = {
 
     parseSearchingPage:function(){
 	let tmp = $('live-page').contentDocument;
-	let videos = evaluateXPath(tmp,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
+	//let videos = evaluateXPath(tmp,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
+	let videos = evaluateXPath(tmp,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/p/a/@href");
+
 	let uads = evaluateXPath(tmp,"//*[@class='vinfo_uadp']");
 
 	debugprint('check page '+this._page);
@@ -65,7 +67,7 @@ var NicoLiveBrowser = {
 	for(let i=0,item; item=videos[i]; i++){
 	    let d = item.textContent.match(/.+\/(.*?)$/);
 	    let info = { "vid": d[1], "uadp": uads[i].textContent.replace(/,/g,'') };
-	    this.ostream.writeString(d[1]+"\t"+uads[i].textContent+"\r\n");
+	    this.ostream.writeString(d[1]+"\t"+(uads[i].textContent.replace(/,/g,''))+"\r\n");
 	}
 	this._page++;
 	this._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 15*1000 );

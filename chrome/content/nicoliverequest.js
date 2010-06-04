@@ -820,7 +820,7 @@ var NicoLiveRequest = {
 	    let tab = event.dataTransfer.mozGetDataAt("application/x-moz-tabbrowser-tab",0);
 	    let doc = tab.linkedBrowser.contentDocument;
 	    // 検索ページ.
-	    let items = evaluateXPath(doc,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
+	    let items = evaluateXPath(doc,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/p/a/@href");
 	    for(let i=0,item; item=items[i]; i++){
 		//debugprint(item.textContent);
 		str += item.textContent + " ";
