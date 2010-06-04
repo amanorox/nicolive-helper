@@ -2171,10 +2171,10 @@ var NicoLiveHelper = {
 	    if(NicoLivePreference.isautoreply && ans.msg){
 		// 返答メッセージが指定してあれば主コメする.
 		let info = ans.movieinfo;
+		info.restrict = NicoLivePreference.restrict;
 		ans.msg = NicoLiveHelper.replaceMacros(ans.msg, info);
 		if( ans.msg ){
 		    let msg = ">>"+q.comment_no+" " + ans.msg;
-		    info.restrict = NicoLivePreference.restrict;
 		    if( q.comment_no!=0 ){
 			if( NicoLivePreference.show_autoreply ){
 			    let func = function(){
