@@ -961,10 +961,12 @@ var NicoLiveHelper = {
 	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
 	    return false;
 	}
+/*
 	if( !this.endtime ){
 	    ShowNotice(LoadString('STR_CANT_PLAY_IN_LOSSTIME'));
 	    return false;
 	}
+*/
 	return true;
     },
 
