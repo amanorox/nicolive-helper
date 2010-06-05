@@ -404,7 +404,7 @@ var NicoLiveDatabase = {
 	let now = GetCurrentTime();
 	let cnt=0;
 	for(let i=0,item;item=movies[i];i++){
-	    if (cnt<10 && !item.done /* && (now-item.update_date) > 60*60*24*7 */ ){
+	    if (cnt<10 && !item.done && (now-item.update_date) > 60*60*1 ){
 		cnt++;
 		item.done = true;
 		this.updateOneVideo(item.video_id);
