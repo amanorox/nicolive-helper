@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NicoLive Helper 1.1.8.2">
+	title="NicoLive Helper 1.1.9">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -71,11 +71,17 @@
   </script>
 
   <keyset>
+    <!-- リク・ストックを再描画する -->
     <key id="redraw-stock" keycode="VK_F5" oncommand="NicoLiveRequest.redrawStock();"></key>
+    <!-- F3 で次を検索 -->
     <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"></key>
+    <!-- CTRL+M で再生中の動画をとりあえずマイリストに登録 -->
     <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id);"></key>
+    <!-- CTRL+F でリク・ストックを検索 -->
     <key id="search-stock" key="f" modifiers="accel" oncommand="NicoLiveRequest.findRequestStock();"></key>
+    <!-- CTRL+T でつぶやく -->
     <key id="tweeting" key="t" modifiers="accel" oncommand="NicoLiveTweet.inputTweet();"></key>
+    <!-- CTRL+W でウィンドウ閉じる -->
     <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"></key>
   </keyset>
 
