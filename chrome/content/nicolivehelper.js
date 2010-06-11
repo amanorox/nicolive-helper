@@ -3062,6 +3062,7 @@ var NicoLiveHelper = {
 	// 視聴者ではリクエストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
 	Application.storage.set("nico_live_requestlist",this.requestqueue);
+	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
     },
     savePlaylist:function(){
 	// 視聴者ではプレイリストは保存しない.
