@@ -16,12 +16,19 @@
 
 bool isExistBouyomiChan()
 {
-	HANDLE mutex = CreateMutex(NULL,TRUE,L"–_“Ç‚Ý‚¿‚á‚ñ");
-	bool b;
+	HANDLE mutex;
+	bool b = false;
+
+	mutex = CreateMutex(NULL,TRUE,L"–_“Ç‚Ý‚¿‚á‚ñ");
 	if(mutex && GetLastError()==ERROR_ALREADY_EXISTS){
 		b = true;
-	}else{
-		b = false;
+	}
+	ReleaseMutex(mutex);
+	CloseHandle(mutex);
+
+	mutex = CreateMutex(NULL,TRUE,L"BouyomiChan");
+	if(mutex && GetLastError()==ERROR_ALREADY_EXISTS){
+		b = true;
 	}
 	ReleaseMutex(mutex);
 	CloseHandle(mutex);
