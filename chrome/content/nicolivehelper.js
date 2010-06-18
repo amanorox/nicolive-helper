@@ -1530,6 +1530,7 @@ var NicoLiveHelper = {
 	// コマンドは mail=green%20shita と付ける.
 	data += "&mail="+encodeURIComponent(mail);
 	req.send(data);
+	NicoLiveHelper.setupRevertMusicInfo();
     },
 
     // 必要に応じて/clsを送信したあとに、指定の関数を実行する.
