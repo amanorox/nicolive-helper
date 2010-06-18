@@ -916,7 +916,7 @@ var NicoLiveHelper = {
 	this.clearCasterCommentAndRun(func);
 
 	if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
-	    NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+	    NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" #"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
 	}
     },
 
@@ -1482,22 +1482,6 @@ var NicoLiveHelper = {
 			ShowNotice("コメント送信に失敗しました:"+comment);
 		    }
 		}else{
-		    switch( NicoLiveHelper.commentstate ){
-		    case COMMENT_STATE_MOVIEINFO_DONE:
-			if( type==COMMENT_MSG_TYPE_MOVIEINFO ) break;
-			if( type!=COMMENT_MSG_TYPE_MOVIEINFO && comment.indexOf('/')==0 ) break;
-			if( NicoLiveHelper._comment_video_id==comment ) break; // 主コメ経由で動画IDを流したときには動画情報の復元は不要.
-
-			if( mail.indexOf("hidden")==-1 && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
-			    // hiddenコメじゃなければ上コメは上書きされないので復帰必要なし.
-			    break;
-			}
-
-			NicoLiveHelper.setupRevertMusicInfo();
-			break;
-		    default:
-			break;
-		    }
 		}
 	    }
 	};
@@ -1530,7 +1514,23 @@ var NicoLiveHelper = {
 	// コマンドは mail=green%20shita と付ける.
 	data += "&mail="+encodeURIComponent(mail);
 	req.send(data);
-	//NicoLiveHelper.setupRevertMusicInfo();
+
+	// 主コメ送信のレスポンスが来たときにセットアップしていたのをここに移動.
+	switch( NicoLiveHelper.commentstate ){
+	case COMMENT_STATE_MOVIEINFO_DONE:
+	    if( type==COMMENT_MSG_TYPE_MOVIEINFO ) break;
+	    if( type!=COMMENT_MSG_TYPE_MOVIEINFO && comment.indexOf('/')==0 ) break;
+	    if( NicoLiveHelper._comment_video_id==comment ) break; // 主コメ経由で動画IDを流したときには動画情報の復元は不要.
+	    
+	    if( mail.indexOf("hidden")==-1 && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
+		// hiddenコメじゃなければ上コメは上書きされないので復帰必要なし.
+		break;
+	    }
+	    NicoLiveHelper.setupRevertMusicInfo();
+	    break;
+	default:
+	    break;
+	}
     },
 
     // 必要に応じて/clsを送信したあとに、指定の関数を実行する.
