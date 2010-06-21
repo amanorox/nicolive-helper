@@ -48,7 +48,7 @@ var NicoLiveBrowser = {
     parseSearchingPage:function(){
 	let tmp = $('live-page').contentDocument;
 	//let videos = evaluateXPath(tmp,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
-	let videos = evaluateXPath(tmp,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/p/a/@href");
+	let videos = evaluateXPath(tmp,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/table/tbody/tr/td/p/a/@href");
 
 	let uads = evaluateXPath(tmp,"//*[@class='vinfo_uadp']");
 
@@ -75,8 +75,11 @@ var NicoLiveBrowser = {
     },
 
     loadSearchingPage:function(){
-	let url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a"; // ミクオリジナル曲
+	let url;
+	url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a"; // ミクオリジナル曲
 	//url = "http://www.nicovideo.jp/tag/VOCALOID?page="+this._page+"&sort=f&order=a"; // VOCALOID
+	//url = "http://www.nicovideo.jp/tag/JOYSOUND%E9%85%8D%E4%BF%A1%E6%B1%BA%E5%AE%9A?page="+this._page+"&sort=f&order=a"; // JOYSOUND配信決定
+	//url = "http://www.nicovideo.jp/tag/JOYSOUND%E9%85%8D%E4%BF%A1%E4%B8%AD?page="+this._page+"&sort=f&order=a"; // JOYSOUND配信中
 	debugprint(url);
 	clearInterval(this._crawlingtimer);
 	$('live-page').setAttribute('src',url);

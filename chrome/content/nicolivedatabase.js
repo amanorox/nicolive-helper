@@ -857,7 +857,7 @@ var NicoLiveDatabase = {
 	    let doc = tab.linkedBrowser.contentDocument;
 	    let str = "";
 	    // 検索ページ.
-	    let items = evaluateXPath(doc,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/p/a/@href");
+	    let items = evaluateXPath(doc,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/table/tbody/tr/td/p/a/@href");
 	    for(let i=0,item; item=items[i]; i++){
 		//debugprint(item.textContent);
 		str += item.textContent + " ";
