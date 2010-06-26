@@ -115,7 +115,7 @@ var NicoLiveDatabase = {
 		}
 	    }
 	};
-	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+id;
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
 	req.open('GET', url );
 	req.send("");
     },
@@ -137,7 +137,7 @@ var NicoLiveDatabase = {
 		}
 	    }
 	};
-	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+id;
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
 	req.open('GET', url );
 	req.send("");
     },

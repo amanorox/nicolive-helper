@@ -131,7 +131,7 @@ var NicoLiveBrowser = {
 		NicoLiveBrowser.saveFileMovieInfo(info,uadp);
 	    }
 	};
-	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+sm;
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+sm;
 	req.open('GET', url );
 	req.send("");
     },

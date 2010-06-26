@@ -643,7 +643,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+video_id;
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
 	//debugprint(video_id+'のサムネイルを取得中...');
 	req.open('GET', url );
 	req.send("");
@@ -2111,7 +2111,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+sm;
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+sm;
 	req.open('GET', url );
 	req.send("");
     },
@@ -2249,8 +2249,9 @@ var NicoLiveHelper = {
 	    }
 	    NicoLiveHelper.processRequest();
 	    NicoLiveHelper.showRequestProgress();
+	    NicoLiveHelper.saveRequest();
 	};
-	let url = "http://www.nicovideo.jp/api/getthumbinfo/"+vid;
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+vid;
 	req.open('GET', url );
 	req.send("");
     },
