@@ -27,7 +27,7 @@ var NicoLiveRights = {
 	// xxxxxxxJRC (JRC)
 	try{
 	    code = code.match(/(...[-=/]....[-=/].)/)[1];
-	    code.replace(/[-=/]/g,"-");
+	    code = code.replace(/[-=/]/g,"-");
 	} catch (x) {
 	    return;
 	}

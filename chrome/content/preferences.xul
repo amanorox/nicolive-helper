@@ -475,6 +475,7 @@
       <preference id="pref-184comment" name="extensions.nicolivehelper.184comment" type="bool"/>
       <preference id="pref-autoscroll" name="extensions.nicolivehelper.autoscroll" type="bool"/>
 
+      <preference id="pref-notice-time"    name="extensions.nicolivehelper.notice.time" type="int"/>
       <preference id="pref-notice-area"    name="extensions.nicolivehelper.notice.area" type="bool"/>
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
@@ -611,8 +612,12 @@
 	    <separator/>
 
 	    <vbox flex="1">
-	      <label value="放送終了3分前の警告表示方法:"/>
+	      <label value="放送終了前の通知:"/>
 	      <vbox style="margin-left: 1em;">
+		<hbox>
+		  <textbox preference="pref-notice-time" value="3" type="number" min="1" max="10" size="3"/>
+		  <hbox align="center"><label value="分前"/></hbox>
+		</hbox>
 		<hbox>
 		  <checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します。" flex="0"/>
 		  <checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します。"/>

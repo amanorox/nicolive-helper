@@ -2519,8 +2519,10 @@ var NicoLiveHelper = {
 	debugprint('update PName Whitelist');
     },
 
+    // 残り時間が3分切ったときの通知処理.
     showNotice3minleft:function(){
-	let str = LoadString('STR_REMAIN_3MIN');
+	let t = NicoLivePreference.notice.time;
+	let str = LoadFormattedString('STR_REMAIN_3MIN',[t]);
 	if( NicoLivePreference.notice.area ){
 	    ShowNotice(str);
 	}
@@ -2545,8 +2547,9 @@ var NicoLiveHelper = {
 	liveprogress.label = GetTimeString(p);
 	if(p<0) p = 0;
 
-	if( (this.endtime && this.endtime-now>0 && this.endtime-now < 3*60) ||
-	    (!this.endtime && n>=0 && p > 27*60 + 30*60*n) ){
+	let nt = NicoLivePreference.notice.time;
+	if( (this.endtime && this.endtime-now>0 && this.endtime-now < nt*60) ||
+	    (!this.endtime && n>=0 && p > (30-nt)*60 + 30*60*n) ){
 		// 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
 		// 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
 		if(!this.isnotified[n]){

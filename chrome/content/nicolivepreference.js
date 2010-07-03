@@ -80,6 +80,7 @@ var NicoLivePreference = {
 	this.notice.area    = branch.getBoolPref("notice.area");
 	this.notice.dialog  = branch.getBoolPref("notice.dialog");
 	this.notice.comment = branch.getBoolPref("notice.comment");
+	this.notice.time    = branch.getIntPref("notice.time");
 
 	this.topmost = branch.getBoolPref("z-order");
 	SetWindowTopMost(window,this.topmost);

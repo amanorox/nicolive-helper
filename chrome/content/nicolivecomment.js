@@ -649,7 +649,7 @@ var NicoLiveComment = {
     // コメント用ポップアップメニュー表示処理.
     showPopupMenuForComment:function(e){
 	let str = window.getSelection().toString();
-	if( str.match(/...-....-./) ){
+	if( str.match(/...[-=/]....[-=/]./) ){
 	    $('comment-search-jasrac').hidden = false;
 	    $('comment-search-elicense').hidden = true;
 	}else if( str.match(/\d{5}/) ){
