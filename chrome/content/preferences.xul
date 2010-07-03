@@ -599,7 +599,7 @@
 	      </grid>
 	      <hbox><checkbox preference="pref-auto-close-tab" label="生放送終了時に自動でNicoLiveHelperを閉じる時、生放送のページも自動で閉じる"/></hbox>
 	      <hbox><checkbox preference="pref-autoscroll" label="Helperを開いたとき、自動で生放送プレイヤーの位置までスクロールする"/></hbox>
-	      <hbox><checkbox preference="pref-z-order" label="常に最前面に表示" tooltiptext="Windowsでのみ効果があります。ただし、ネイティブAPIによる最前面表示ではないため、限定的になります。"/></hbox>
+	      <hbox><checkbox preference="pref-z-order" label="常に最前面に表示 (Windows Only)" tooltiptext="Windowsでのみ効果があります。ただし、ネイティブAPIによる最前面表示ではないため、限定的になります。"/></hbox>
 	    </vbox>
 	  </tabpanel>
 
@@ -617,8 +617,6 @@
 		<hbox>
 		  <textbox preference="pref-notice-time" value="3" type="number" min="1" max="10" size="3"/>
 		  <hbox align="center"><label value="分前"/></hbox>
-		</hbox>
-		<hbox>
 		  <checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します。" flex="0"/>
 		  <checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します。"/>
 		  <checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コメントを使用して警告します。"/>
