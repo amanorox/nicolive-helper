@@ -82,17 +82,13 @@ var NicoLiveHistory = {
     },
 
     // プレイリストのテキストからマイリス登録.
-    addMylist:function(mylist_id,mylist_name){
+    addMylist:function(mylist_id,mylist_name,ev){
 	let notes = $('played-list-textbox');
 	let substring;
 	substring = notes.value.substr(notes.selectionStart,notes.selectionEnd-notes.selectionStart);
 
 	if(substring.length>=3){
-	    if(mylist_id=='default'){
-		NicoLiveMylist.addDeflist(substring);
-	    }else{
-		NicoLiveMylist._addMyList(mylist_id,mylist_name,substring);
-	    }
+	    NicoLiveMylist._addMyList(mylist_id,mylist_name,substring, ev);
 	}
     },
 
@@ -109,12 +105,12 @@ var NicoLiveHistory = {
 
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute('id','addto-mylist-from-history');
-	popupmenu.setAttribute("oncommand","NicoLiveHistory.addMylist(event.target.value,event.target.label);");
+	popupmenu.setAttribute("oncommand","NicoLiveHistory.addMylist(event.target.value,event.target.label,event);");
 	menu.insertBefore( popupmenu, menu.firstChild);
 
 	// 詳細表示用のコンテキストメニュー.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label);");
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
 	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-additionalinfo').nextSibling );
     },
 

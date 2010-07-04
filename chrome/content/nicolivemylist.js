@@ -34,12 +34,30 @@ var NicoLiveMylist = {
 	}
     },
 
-    addDeflist2:function(video_id, item_id, token){
+    // マイリストコメントのデフォルトを取得.
+    getDefaultMylistComment:function(){
+	let msg = "";
+	try{
+	    let lvid = NicoLiveHelper.request_id;
+	    let coid = NicoLiveHelper.community;
+	    let title = NicoLiveHelper.title;
+	    msg = "ニコ生 "+coid+"/"+title+"/"+lvid+" から登録\n";
+	    if( lvid=="lv0" ){
+		msg = "";
+	    }
+	} catch (x) {
+	    msg = "";
+	}
+	return msg;
+    },
+
+    addDeflist2:function(video_id, item_id, token, additional_msg){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.
 	var url = "http://www.nicovideo.jp/api/deflist/add";
 	var reqstr = [];
 	reqstr[0] = "item_id="+encodeURIComponent(item_id);
-	reqstr[1] = "token="+encodeURIComponent(token);
+	reqstr[1] = "description="+encodeURIComponent(additional_msg);
+	reqstr[2] = "token="+encodeURIComponent(token);
 
 	var xmlhttp = new XMLHttpRequest();
 	if(!xmlhttp) return;
@@ -63,7 +81,7 @@ var NicoLiveMylist = {
 	xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	xmlhttp.send(reqstr.join('&'));
     },
-    addDeflist:function(video_id){
+    addDeflist:function(video_id, additional_msg){
 	// 一段階目はトークンを取得する.
 	if( !video_id ) return;
 	var url = "http://www.nicovideo.jp/watch/"+video_id;
@@ -75,7 +93,7 @@ var NicoLiveMylist = {
 		    var tmp = xmlhttp.responseText.match(/onclick="addVideoToDeflist\(([0-9]+), '([^']+)'\);/);
 		    var item_id = tmp[1];
 		    var token = tmp[2];
-		    NicoLiveMylist.addDeflist2(video_id, item_id, token);
+		    NicoLiveMylist.addDeflist2(video_id, item_id, token, additional_msg);
 		} catch (x) {
 		    ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
 		}
@@ -85,14 +103,14 @@ var NicoLiveMylist = {
 	xmlhttp.send('');
     },
 
-    addMyList2:function(item_id,mylist_id,token,video_id){
+    addMyList2:function(item_id,mylist_id,token,video_id, additional_msg){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.
 	let url = "http://www.nicovideo.jp/api/mylist/add";
 	let reqstr = [];
 	reqstr[0] = "group_id="+encodeURIComponent(mylist_id);
 	reqstr[1] = "item_type=0"; // 0 means video.
 	reqstr[2] = "item_id="+encodeURIComponent(item_id);
-	reqstr[3] = "description=";
+	reqstr[3] = "description="+encodeURIComponent(additional_msg);
 	reqstr[4] = "token="+encodeURIComponent(token);
 
 	let req = new XMLHttpRequest();
@@ -117,10 +135,18 @@ var NicoLiveMylist = {
 	req.send(reqstr.join('&'));
     },
 
-    _addMyList:function(mylist_id,mylist_name,video_id){
+    // マイリストID、マイリスト名、動画IDを渡すと、対象のマイリスに動画を登録する.
+    // mylist_id が default のときはとりマイ.
+    _addMyList:function(mylist_id,mylist_name,video_id, ev){
 	try{
+	    let additional_msg = this.getDefaultMylistComment();
+	    if( ev.ctrlKey ){
+		additional_msg = InputPrompt("マイリストコメントを入力してください","マイリストコメント入力",additional_msg);
+		if( additional_msg==null ) additional_msg = "";
+	    }
+
 	    if( mylist_id=='default' ){
-		this.addDeflist(video_id);
+		this.addDeflist(video_id, additional_msg);
 		return;
 	    }
 	    // 一段階目はトークンを取得する.
@@ -134,7 +160,7 @@ var NicoLiveMylist = {
 			let item_id = req.responseText.match(/item_id\"\s*value=\"(.*)\">/);
 			debugprint('token='+token[1]);
 			debugprint('item_id='+item_id[1]);
-			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1],video_id);
+			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1],video_id, additional_msg);
 		    } catch (x) {
 			ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
 		    }
@@ -148,10 +174,10 @@ var NicoLiveMylist = {
 	}
     },
 
-    // 現在再生中の動画をマイリストする.
-    addMyList:function(mylist_id,mylist_name){
+    // ステータスバーから、現在再生中の動画をマイリストする.
+    addMyList:function(mylist_id,mylist_name,ev){
 	let video_id = NicoLiveHelper.musicinfo.video_id;
-	this._addMyList(mylist_id,mylist_name,video_id);
+	this._addMyList(mylist_id,mylist_name,video_id, ev);
     },
 
     addStockFromMylistWithComment:function(mylist_id,mylist_name){
@@ -338,7 +364,7 @@ var NicoLiveMylist = {
 		let popupmenu;
 		// ステータスバー用.
 		popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-		popupmenu.setAttribute("oncommand","NicoLiveMylist.addMyList(event.target.value,event.target.label);");
+		popupmenu.setAttribute("oncommand","NicoLiveMylist.addMyList(event.target.value,event.target.label,event);");
 		$('popup-add-mylist').insertBefore( popupmenu, $('popup-add-mylist').firstChild );
 
 		let elem;

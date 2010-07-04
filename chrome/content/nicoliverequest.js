@@ -838,20 +838,21 @@ var NicoLiveRequest = {
 	}
     },
 
-    addMylist:function(mylist_id,mylist_name){
+    // リクエスト、ストック、プレイリストの詳細表示のマイリス登録メニューから登録.
+    addMylist:function(mylist_id,mylist_name,ev){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id'); // 動画IDを取れる.
-	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id);
+	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id, ev);
     },
 
     // リク、ストックタブ用のマイリス追加メニューを作る.
     appendAddMylistMenu:function(mylists){
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label);");
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
 	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
 
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label);");
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
 	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
     },
 
