@@ -21,16 +21,12 @@ THE SOFTWARE.
  */
 
 var NicoLiveMylist = {
-    tweet:function(video_id){
+    tweet:function(video_id, additional_msg){
 	let video = NicoLiveHelper.findVideoInfo(video_id);
 	if( video==null ) return;
 
 	if( NicoLivePreference.twitter.when_addmylist ){
-	    if( NicoLiveHelper.request_id=="lv0" ){
-		NicoLiveTweet.tweet("【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" #"+video.video_id);
-	    }else{
-		NicoLiveTweet.tweet("【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" from "+NicoLiveHelper.request_id+" "+NicoLiveHelper.title);
-	    }
+	    NicoLiveTweet.tweet(additional_msg+" 【マイリスト】"+video.title+" http://nico.ms/"+video.video_id+" #"+video.video_id);
 	}
     },
 
@@ -67,7 +63,7 @@ var NicoLiveMylist = {
 		let result = JSON.parse(xmlhttp.responseText);
 		switch(result.status){
 		case 'ok':
-		    NicoLiveMylist.tweet(video_id);
+		    NicoLiveMylist.tweet(video_id, additional_msg);
 		    break;
 		case 'fail':
 		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
@@ -120,7 +116,7 @@ var NicoLiveMylist = {
 		let result = JSON.parse(req.responseText);
 		switch(result.status){
 		case 'ok':
-		    NicoLiveMylist.tweet(video_id);
+		    NicoLiveMylist.tweet(video_id, additional_msg);
 		    break;
 		case 'fail':
 		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
