@@ -2412,7 +2412,9 @@ var NicoLiveHelper = {
 	    onStopRequest: function(request, context, status){
 		try{
 		    if( !NicoLiveHelper._donotshowdisconnectalert ){
-			AlertPrompt('コメントサーバから切断されました。',NicoLiveHelper.request_id);
+			setTimeout( function(){
+					AlertPrompt('コメントサーバから切断されました。',NicoLiveHelper.request_id);
+				    }, 5000 );
 		    }
 		    NicoLiveHelper.close();
 		} catch (x) {
