@@ -261,7 +261,7 @@ var NicoLiveComment = {
 
 	// %Sさん　運営コメント:OFF
 	let str = LoadFormattedString("STR_TURN_OFF_REFLECTION",[name]);
-	NicoLiveHelper.postCasterComment(str);
+	NicoLiveHelper.postCasterComment(str,"");
     },
 
     addCommentReflectorCore:function(userid,name,disptype,addnguser){
@@ -310,7 +310,7 @@ var NicoLiveComment = {
 	if(this.addCommentReflectorCore(userid,name,disptype, param.addnguser )){
 	    // >>%S %Sさん　運営コメント:ON
 	    let str = LoadFormattedString("STR_TURN_ON_REFLECTION",[comment_no, name]);
-	    NicoLiveHelper.postCasterComment(str);
+	    NicoLiveHelper.postCasterComment(str,"");
 	}
     },
 
@@ -336,8 +336,8 @@ var NicoLiveComment = {
 	    // %Sさん　運営コメント:OFF
 	    let name = this.reflector[u].name;
 	    let str = LoadFormattedString("STR_TURN_OFF_REFLECTION",[name]);
-	    NicoLiveHelper.postCasterComment(str);
 	    this.delNGUser(u);
+	    NicoLiveHelper.postCasterComment(str,"");
 	    cnt++;
 	}
 	this.reflector = new Object();

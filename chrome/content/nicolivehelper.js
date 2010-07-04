@@ -299,7 +299,7 @@ var NicoLiveHelper = {
 		if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
 		    let recomment = LoadFormattedString('STR_RECOMMENT_NGWORD',[chat.no, chat.text, ngword]);
 		    recomment = recomment.replace(/{=/g,'{-');
-		    NicoLiveHelper.postCasterComment(recomment);
+		    NicoLiveHelper.postCasterComment(recomment,"");
 		}
 	    }
 	}
@@ -1518,15 +1518,18 @@ var NicoLiveHelper = {
 	// 主コメ送信のレスポンスが来たときにセットアップしていたのをここに移動.
 	switch( NicoLiveHelper.commentstate ){
 	case COMMENT_STATE_MOVIEINFO_DONE:
-	    if( type==COMMENT_MSG_TYPE_MOVIEINFO ) break;
-	    if( type!=COMMENT_MSG_TYPE_MOVIEINFO && comment.indexOf('/')==0 ) break;
-	    if( NicoLiveHelper._comment_video_id==comment ) break; // 主コメ経由で動画IDを流したときには動画情報の復元は不要.
-	    
-	    if( mail.indexOf("hidden")==-1 && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
-		// hiddenコメじゃなければ上コメは上書きされないので復帰必要なし.
-		break;
+	    try{
+		if( type==COMMENT_MSG_TYPE_MOVIEINFO ) break;
+		if( type!=COMMENT_MSG_TYPE_MOVIEINFO && comment.indexOf('/')==0 ) break;
+		if( NicoLiveHelper._comment_video_id==comment ) break; // 主コメ経由で動画IDを流したときには動画情報の復元は不要.
+		if( mail.indexOf("hidden")==-1 && NicoLiveHelper.commentview==COMMENT_VIEW_HIDDEN_PERM ){
+		    // hiddenコメじゃなければ上コメは上書きされないので復帰必要なし.
+		    break;
+		}
+		NicoLiveHelper.setupRevertMusicInfo();
+	    } catch (x) {
+		debugprint(x);
 	    }
-	    NicoLiveHelper.setupRevertMusicInfo();
 	    break;
 	default:
 	    break;
@@ -3032,7 +3035,7 @@ var NicoLiveHelper = {
 				// 継続できるように.
 				NicoLiveHelper.setupPlayNextMusic(60*1000);
 			    }
-			    NicoLiveHelper.postCasterComment(jingle);
+			    NicoLiveHelper.postCasterComment(jingle,"");
 			}
 			clearInterval(timerid);
 		    }, 5000);
