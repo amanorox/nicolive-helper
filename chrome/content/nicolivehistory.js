@@ -21,6 +21,7 @@ THE SOFTWARE.
  */
 
 var NicoLiveHistory = {
+    // 再生履歴から再生開始.
     _playFromHistory:function(video_id){
 	if( !NicoLiveHelper.canPlayCommand() ) return;
 	let item = NicoLiveHelper.findVideoInfo(video_id);
@@ -29,6 +30,7 @@ var NicoLiveHistory = {
 	    NicoLiveHelper.playMusic(1);
 	}
     },
+    // 再生履歴からリクエストに追加.
     _addRequest:function(video_id){
 	let item = NicoLiveHelper.findVideoInfo(video_id);
 	if( item!=null ){
@@ -36,6 +38,7 @@ var NicoLiveHistory = {
 	}
     },
 
+    // プレイリストにアイテムを追加.
     addPlayList:function(item){
 	let table = $('playlist-table');
 	if(!table) return;
@@ -67,6 +70,7 @@ var NicoLiveHistory = {
 	td.appendChild(vbox);
     },
 
+    // プレイリスト表示の更新.
     update:function(array){
 	let table = $('playlist-table');
 	if(!table){ return; }
@@ -77,6 +81,7 @@ var NicoLiveHistory = {
 	}
     },
 
+    // プレイリストのテキストからマイリス登録.
     addMylist:function(mylist_id,mylist_name){
 	let notes = $('played-list-textbox');
 	let substring;
