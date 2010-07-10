@@ -200,7 +200,9 @@ var NicoLiveTweet = {
 	let url = NicoLiveHelper.request_id!='lv0' ? "http://nico.ms/"+NicoLiveHelper.request_id:"";
 	let msg = (url&&hashtag)?(url + ' ' + hashtag):"";
 	if(msg){
-	    msg = "ニコ生視聴中:"+NicoLiveHelper.musicinfo.title + " " + msg;
+	    if( NicoLiveHelper.musicinfo.title ){
+		msg = "ニコ生視聴中:"+NicoLiveHelper.musicinfo.title + " " + msg;
+	    }
 	}
 	let result = InputPrompt("NicoLive Helperからつぶやく","NicoLive Helper",msg);
 	if( result ){
