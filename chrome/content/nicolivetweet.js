@@ -21,12 +21,13 @@ THE SOFTWARE.
  */
 
 var NicoLiveTweet = {
-    consumer: "YOUR-CONSUMER-KEY",
-    consumerSecret: "YOUR-CONSUMER-SECRET",
+    consumer: "s7oBmLr1QbvyMkwNojgMVw",
+    consumerSecret: "jGgsV5nKfchguFWcfmVtil1Dz77vCykiTznhzdwcV0",
 
     requestTokenURL: "http://twitter.com/oauth/request_token",
     accessTokenURL: "https://api.twitter.com/oauth/access_token",
     updateURL: "http://api.twitter.com/1/statuses/update.json",
+    authorizeURL: "http://api.twitter.com/oauth/authorize",
 
     oauth: {},
 
@@ -197,7 +198,11 @@ var NicoLiveTweet = {
 	let hashtag = NicoLiveHelper.twitterinfo.hashtag;
 	hashtag = hashtag ? hashtag:"";
 	let url = NicoLiveHelper.request_id!='lv0' ? "http://nico.ms/"+NicoLiveHelper.request_id:"";
-	let result = InputPrompt("NicoLive Helperからつぶやく","NicoLive Helper",(url&&hashtag)?(url + ' ' + hashtag):"");
+	let msg = (url&&hashtag)?(url + ' ' + hashtag):"";
+	if(msg){
+	    msg = "ニコ生視聴中:"+NicoLiveHelper.musicinfo.title + " " + msg;
+	}
+	let result = InputPrompt("NicoLive Helperからつぶやく","NicoLive Helper",msg);
 	if( result ){
 	    NicoLiveTweet.updateStatus(result);
 	}
