@@ -201,7 +201,7 @@ var NicoLiveTweet = {
 	let msg = (url&&hashtag)?(url + ' ' + hashtag):"";
 	if(msg){
 	    if( NicoLiveHelper.musicinfo.title ){
-		msg = "ニコ生視聴中:"+NicoLiveHelper.musicinfo.title + " " + msg;
+		msg = "ニコ生視聴中:"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.musicinfo.title + " " + msg;
 	    }
 	}
 	let result = InputPrompt("NicoLive Helperからつぶやく","NicoLive Helper",msg);
