@@ -133,6 +133,11 @@ var NicoLiveComment = {
 	    str = '\u200b' + comment.text;
 	    name = LoadFormattedString('STR_NAME_POSTFIX',[name]);
 	    break;
+	case 2:
+	    // BSP
+	    str = "/press show green \""+comment.text+"\" \""+name+"さん\"";
+	    name = null;
+	    break;
 	}
 	str = str.replace(/{=/g,'{-');
 	//NicoLiveHelper.postCasterComment(str,"",name);
@@ -283,7 +288,7 @@ var NicoLiveComment = {
 	    ShowNotice( LoadFormattedString('STR_OK_REGISTER_REFRECTION',[userid,name]) );
 	    if( addnguser ){
 		debugprint(userid+'をNGユーザに追加します');
-		this.addNGUser(userid);
+		//this.addNGUser(userid);
 	    }
 	    return true;
 	}

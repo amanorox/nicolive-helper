@@ -55,6 +55,7 @@ function retval()
 	<radiogroup id="name-select-radio">
 	  <radio id="name-included" persist="selected" label="運営コメントに名前を含めて表示" tooltiptext="運営コメントに名前を含めます"/>
 	  <radio id="name-attribute" persist="selected" label="運営コメント欄の四隅にある名前表示欄に表示" tooltiptext="運営コメント表示欄の四隅にある名前表示欄を利用して名前を表示します"/>
+	  <radio id="name-bsp" persist="selected" label="バックステージパスコメントを使用して表示"/>
 	</radiogroup>
       </row>
       <row>
