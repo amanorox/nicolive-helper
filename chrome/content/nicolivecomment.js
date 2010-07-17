@@ -318,7 +318,13 @@ var NicoLiveComment = {
 
 	if(this.addCommentReflectorCore(userid,name,disptype, param.addnguser )){
 	    // >>%S %Sさん　運営コメント:ON
-	    let str = LoadFormattedString("STR_TURN_ON_REFLECTION",[comment_no, name]);
+	    let str;
+	    if( disptype==2 ){
+		// BSP
+		str = LoadFormattedString("STR_TURN_ON_REFLECTION_BSP",[comment_no, name]);
+	    }else{
+		str = LoadFormattedString("STR_TURN_ON_REFLECTION",[comment_no, name]);
+	    }
 	    NicoLiveHelper.postCasterComment(str,"");
 	}
     },
