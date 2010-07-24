@@ -319,6 +319,7 @@ var NicoLiveComment = {
 	if(this.addCommentReflectorCore(userid,name,disptype, param.addnguser )){
 	    // >>%S %Sさん　運営コメント:ON
 	    let str;
+	    if( !comment_no ) comment_no = "";
 	    if( disptype==2 ){
 		// BSP
 		str = LoadFormattedString("STR_TURN_ON_REFLECTION_BSP",[comment_no, name]);
