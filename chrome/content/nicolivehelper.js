@@ -1808,6 +1808,8 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
 	return removeditem[0];
     },
+    // 指定のリクを先頭に移動する.
+    // idx: 1,2,3,...
     topToRequest:function(idx){
 	idx--;
 	let t;
@@ -1818,6 +1820,7 @@ var NicoLiveHelper = {
 	    this.saveRequest();
 	}
     },
+    // 指定の動画IDのリクを先頭に移動する.
     topToRequestById:function(video_id){
 	let i,item;
 	for(i=0;item=this.requestqueue[i];i++){
@@ -1827,6 +1830,8 @@ var NicoLiveHelper = {
 	    }
 	}
     },
+    // リクエストを最後に移動する.
+    // idx: 1,2,3,...
     bottomToRequest:function(idx){
 	idx--;
 	let t;
@@ -1837,7 +1842,8 @@ var NicoLiveHelper = {
 	    this.saveRequest();
 	}
     },
-
+    // リクを1つ上に移動.
+    // idx: 1,2,3,...
     floatRequest:function(idx){
 	idx--; 
 	if(idx<=0) return;
@@ -1847,6 +1853,8 @@ var NicoLiveHelper = {
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
     },
+    // リクを1つ下に移動.
+    // idx: 1,2,3,...
     sinkRequest:function(idx){
 	if(idx>=this.requestqueue.length) return;
 	idx--;
@@ -1879,8 +1887,8 @@ var NicoLiveHelper = {
 
 	this.updateRemainRequestsAndStocks();
     },
-
-    // ストック--->リクエストキュー
+    // ストックからリクエストキューに追加.
+    // idx: 1,2,3....
     addRequestFromStock:function(idx){
 	if(idx>this.stock.length) return;
 
