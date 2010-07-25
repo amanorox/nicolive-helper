@@ -147,7 +147,7 @@
 <!ENTITY comment.menu_moverequest_to_top "リクエストを先頭に移動する">
 
 
-<!ENTITY sort.comment_no "コメ番順にソート">
+<!ENTITY sort.comment_no "コメント番号順ソート">
 <!ENTITY sort.descend_order "降順">
 <!ENTITY sort.ascend_order "昇順">
 <!ENTITY sort.view_counter "再生数">

@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NicoLive Helper 1.1.11">
+	title="NicoLive Helper 1.1.12">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -557,6 +557,7 @@
       <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare();" tooltiptext="&menu.tooltip_prepare;"/>
       <menuseparator/>
       <menuitem label="&menu.comment_reflection;" tooltiptext="&menu.tooltip_comment_reflection;" oncommand="NicoLiveRequest.addToCommentReflector(event);"/>
+      <menuitem id="id-release-reflection-from-request" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
       <menuseparator/>
       <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>

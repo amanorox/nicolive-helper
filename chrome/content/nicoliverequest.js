@@ -923,7 +923,7 @@ var NicoLiveRequest = {
 	    let tr = FindParentElement(document.popupNode,'html:tr');
 	    let n = tr.getAttribute('request-index');
 	    let item = NicoLiveHelper.getRequestItem(n);
-	    NicoLiveComment.showCommentReflectorDialog(item.user_id);
+	    NicoLiveComment.showCommentReflectorDialog(item.user_id,item.cno);
 	} catch (x) {
 	    debugprint(x);
 	}
