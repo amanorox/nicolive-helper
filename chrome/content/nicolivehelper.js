@@ -2156,7 +2156,7 @@ var NicoLiveHelper = {
 	    ans.movieinfo.cno = q.comment_no;
 	    ans.movieinfo.user_id = q.user_id;
 	    ans.movieinfo.request_id = NicoLiveHelper.request_id;
-	    
+
 	    if(ans.code==0){
 		let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
 		if(checker!=null){
@@ -2246,6 +2246,7 @@ var NicoLiveHelper = {
 			// 実験したところ、タイムアウトもこっちでokみたい.
 			NicoLiveHelper.requestprocessingqueue.splice(i,1);
 			ShowNotice(q.video_id+"の動画情報取得に失敗したため、リクエストから削除します(code="+req.status+")");
+			debugprint(q.video_id+"の動画情報取得に失敗したため、リクエストから削除します(code="+req.status+")");
 		    }
 		    break;
 		}
@@ -3294,14 +3295,6 @@ var NicoLiveHelper = {
 
 	this.updatePNameWhitelist();
 	this.loadVideoLength();
-
-	// Windows Live Messengerに番組名を通知する.
-	if(IsWINNT() && !this.isOffline()){
-	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
-	    if(!this.isOffline()){
-		obj.SetWinLiveMessengerMsg(this.title);
-	    }
-	}
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
@@ -3309,11 +3302,6 @@ var NicoLiveHelper = {
 	this.saveAll();
 	this.saveToStorage();
 	this.close();
-
-	if(IsWINNT() && !this.isOffline()){
-	    let obj = Components.classes["@miku39.jp/WinLiveMessenger;1"].createInstance(Components.interfaces.IWinLiveMessenger);
-	    obj.SetWinLiveMessengerMsg("");
-	}
     },
 
     test: function(){
