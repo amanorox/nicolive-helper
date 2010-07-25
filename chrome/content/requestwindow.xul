@@ -505,11 +505,15 @@
 
     <!-- request tab -->
     <menupopup id="popup-copyrequest">
-      <menu label="&classify.train;">
-	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+      <menu label="&classify.menu;">
+	<menupopup>
+	  <menu label="&classify.train;">
+	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+	    </menupopup>
+	  </menu>
+	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
 	</menupopup>
       </menu>
-      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
       <menuitem label="&sort.comment_no;" oncommand="NicoLiveHelper.sortRequestByCommentNo();"/>
@@ -552,6 +556,8 @@
       </menu>
       <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare();" tooltiptext="&menu.tooltip_prepare;"/>
       <menuseparator/>
+      <menuitem label="&menu.comment_reflection;" tooltiptext="&menu.tooltip_comment_reflection;" oncommand="NicoLiveRequest.addToCommentReflector(event);"/>
+      <menuseparator/>
       <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
 
@@ -589,11 +595,15 @@
 
     <!-- for stock -->
     <menupopup id="popup-sort-stock">
-      <menu label="&classify.train;">
-	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+      <menu label="&classify.menu;">
+	<menupopup>
+	  <menu label="&classify.train;">
+	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+	    </menupopup>
+	  </menu>
+	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
 	</menupopup>
       </menu>
-      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
       <menu label="&sort.ascend_order;">
@@ -643,11 +653,15 @@
 
     <!-- for playlist -->
     <menupopup id="popup-playlist">
-      <menu label="&classify.train;">
-	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+      <menu label="&classify.menu;">
+	<menupopup>
+	  <menu label="&classify.train;">
+	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+	    </menupopup>
+	  </menu>
+	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
 	</menupopup>
       </menu>
-      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
       <menuseparator/>
 
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>

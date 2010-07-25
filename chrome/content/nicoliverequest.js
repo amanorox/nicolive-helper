@@ -187,6 +187,7 @@ var NicoLiveRequest = {
 	}
 
 	let n = table.rows.length;
+	tr.setAttribute("request-index",n); // 1,2,3,...
 
 	td = tr.insertCell(tr.cells.length);
 
@@ -244,7 +245,6 @@ var NicoLiveRequest = {
 	if(!table){ return; }
 	this._add(table,item);
     },
-
 
     // 再生済み動画の表示更新.
     updateStockViewForPlayedVideo:function(q){
@@ -637,6 +637,7 @@ var NicoLiveRequest = {
 		clearInterval(this.playlist_timer);
 	    }
 	} catch (x) {
+	    //debugprint(x);
 	}
     },
 
@@ -916,6 +917,19 @@ var NicoLiveRequest = {
 	}
     },
 
+    // リク主をコメントリフレクタに登録する.
+    addToCommentReflector:function(){
+	try{
+	    let tr = FindParentElement(document.popupNode,'html:tr');
+	    let n = tr.getAttribute('request-index');
+	    let item = NicoLiveHelper.getRequestItem(n);
+	    NicoLiveComment.showCommentReflectorDialog(item.user_id);
+	} catch (x) {
+	    debugprint(x);
+	}
+    },
+
+    // 動画の先読みを行う.
     prepare:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let vid = elem.getAttribute('nicovideo_id');

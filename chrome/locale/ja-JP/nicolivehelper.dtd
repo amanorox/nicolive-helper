@@ -118,8 +118,10 @@
 <!ENTITY menu.copy_video_id "動画IDをコピー">
 <!ENTITY menu.set_pname "P名設定">
 <!ENTITY menu.set_additional "追加情報設定">
-<!ENTITY menu.prepare_video "先読み">
-<!ENTITY menu.tooltip_prepare "/prepareを送信する">
+<!ENTITY menu.prepare_video "動画の先読み">
+<!ENTITY menu.tooltip_prepare "動画ファイルを先読みを行うために、/prepareを送信します。">
+<!ENTITY menu.comment_reflection "コメントリフレクション登録">
+<!ENTITY menu.tooltip_comment_reflection "リクエスト主をコメントリフレクション登録します。">
 <!ENTITY menu.copy_allrequest "全リクエストをコピー">
 <!ENTITY menu.turnoff_playedflag "再生済みを解除">
 <!ENTITY menu.stock_savefile "ストックをファイルに保存">
@@ -167,5 +169,6 @@
 
 <!ENTITY comment.reflector.title "コメントリフレクション登録">
 
-<!ENTITY classify.train "学習">
-<!ENTITY classify.check "分類チェック">
+<!ENTITY classify.menu "機械学習">
+<!ENTITY classify.train "分類の学習">
+<!ENTITY classify.check "分類のチェック">

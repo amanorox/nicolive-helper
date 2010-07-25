@@ -1790,6 +1790,12 @@ var NicoLiveHelper = {
 	}
     },
 
+    // リクエストを返す.
+    getRequestItem:function(idx){
+	idx--;
+	return this.requestqueue[idx];
+    },
+
     // リクエストリストに追加する.
     addRequestQueue:function(item){
 	if( !item ) return;
