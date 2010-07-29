@@ -75,7 +75,9 @@ var NicoLivePreference = {
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 
 	this.comment184 = branch.getBoolPref("184comment");
+	this.post_pagetitle = branch.getBoolPref("post_pagetitle"); // URLのタイトルをコメント.
 
+	// 放送終了通知の設定.
 	this.notice = {};
 	this.notice.area    = branch.getBoolPref("notice.area");
 	this.notice.dialog  = branch.getBoolPref("notice.dialog");

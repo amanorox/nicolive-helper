@@ -333,7 +333,8 @@ var NicoLiveHelper = {
 		NicoLiveHelper.inplay = true;
 		if( NicoLiveHelper.iscaster ){
 		    if( NicoLiveHelper.musicinfo.video_id!=vid ){
-			// ツール上再生ボタンから再生した場合、musicinfo.video_idと一致するので.
+			// ツール上再生ボタンから再生した場合、musicinfo.video_idと一致するので、
+			// 一致しないときは別の手段で再生しているために現在再生動画の情報を取得する.
 			NicoLiveHelper.setCurrentVideoInfo(vid,true);
 		    }else{
 			NicoLiveHelper.musicendtime = Math.floor(NicoLiveHelper.musicstarttime + NicoLiveHelper.musicinfo.length_ms/1000)+1;
@@ -446,6 +447,15 @@ var NicoLiveHelper = {
 	    }
 
 	    if(!NicoLiveHelper.iscaster) break;
+
+	    if( NicoLivePreference.post_pagetitle ){
+		let uri = chat.text.match(/(h?ttps?:\/\/[-_.!~*\'()a-zA-Z0-9;/\?:@&=+$,%#]+)/);
+		if( uri ){
+		    debugprint(uri[0]);
+		    NicoLiveHelper.checkURI(uri[0], chat.no);
+		}
+	    }
+
 	    switch(chat.text){
 	    case "/ver":
 	    case "/version":
@@ -544,6 +554,7 @@ var NicoLiveHelper = {
 	}
     },
 
+    // 生放送のページのタブを閉じる.
     closeBroadcastingTab:function(request_id){
 	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
 	let browserEnumerator = wm.getEnumerator("navigator:browser");
@@ -564,6 +575,28 @@ var NicoLiveHelper = {
 		}
 	    }
 	}
+    },
+
+    // URIをチェックする.
+    checkURI:function(uri, comment_no){
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let title;
+		try{
+		    let tmp = req.responseText.replace(/[\r\n]/g,"");
+		    title = tmp.match(/<title>(.*)<\/title>/i)[1];
+		    debugprint("Title:"+title);
+
+		    NicoLiveHelper.postCasterComment(">>"+comment_no+" "+title,"");
+		} catch (x) {
+		    debugprint(x);
+		}
+	    }
+	};
+	req.open('GET', uri );
+	req.send("");
     },
 
     // リクエストをキャンセルする.

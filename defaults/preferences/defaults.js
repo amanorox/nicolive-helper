@@ -55,6 +55,7 @@ pref("extensions.nicolivehelper.msg-limitnumberofrequests","リクエストは1�
 pref("extensions.nicolivehelper.savecomment",false);
 pref("extensions.nicolivehelper.commentlogDir","");
 pref("extensions.nicolivehelper.184comment",true);
+pref("extensions.nicolivehelper.post_pagetitle",false);
 pref("extensions.nicolivehelper.request.restrict",false);
 pref("extensions.nicolivehelper.request.date-from","2007-08-31");
 pref("extensions.nicolivehelper.request.date-to","2007-08-31");
