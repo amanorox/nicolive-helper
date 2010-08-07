@@ -32,6 +32,7 @@ var NicoLiveTweet = {
     oauth: {},
 
     getSavedToken:function(){
+	// ログインマネージャに保存したトークンとシークレットトークンを読み込む.
 	let hostname = "chrome://nicolivehelper";
 	let myLoginManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);  
 	let logins = myLoginManager.findLogins({}, hostname, null, 'twitter token');
@@ -45,9 +46,11 @@ var NicoLiveTweet = {
 	}
     },
 
-    getRequestToken:function(){
+    getRequestToken:function(consumer,consumerSecret){
+	// Desktop clientで7-digit PINコードを使うときにまずはrequest token URLにアクセスしoauth_tokenを取得して、
+	// authorize URLにoauth_tokenをGETパラメタで渡すと、7-digit PINコードを取得できる.
 	let accessor = {
-	    consumerSecret: this.consumerSecret,
+	    consumerSecret: consumerSecret,
 	    tokenSecret: ""
 	};
 	let message = {
@@ -55,7 +58,7 @@ var NicoLiveTweet = {
 	    method: "POST",
 	    parameters: []
 	};
-	message.parameters.push(["oauth_consumer_key",this.consumer]);
+	message.parameters.push(["oauth_consumer_key",consumer]);
 	message.parameters.push(["oauth_signature_method","HMAC-SHA1"]);
 	message.parameters.push(["oauth_timestamp",""]);
 	message.parameters.push(["oauth_nonce",""]);
@@ -88,7 +91,60 @@ var NicoLiveTweet = {
 	req.send(str.join('&'));
     },
 
+    getAccessToken:function(consumer,consumerSecret,pin){
+	// 7-digit PINを使ったアクセストークンの取得.
+	let accessor = {
+	    consumerSecret: consumerSecret,
+	    tokenSecret: ""
+	};
+	let message = {
+	    action: this.accessTokenURL,
+	    method: "POST",
+	    parameters: []
+	};
+	message.parameters.push(["oauth_consumer_key",consumer]);
+	message.parameters.push(["oauth_nonce",""]);
+	message.parameters.push(["oauth_signature",""]);
+	message.parameters.push(["oauth_signature_method","HMAC-SHA1"]);
+	message.parameters.push(["oauth_timestamp",""]);
+	message.parameters.push(["oauth_token",this.oauth.oauth_token]);
+	message.parameters.push(["oauth_verifier",pin]);
+	message.parameters.push(["oauth_version","1.0"]);
+
+	OAuth.setTimestampAndNonce(message);
+	OAuth.SignatureMethod.sign(message,accessor);
+
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+
+	req.onreadystatechange = function(){
+	    if( req.readyState!=4 ) return;
+	    if( req.status==200 ){
+		let values = req.responseText.split('&');
+		NicoLiveTweet.oauth = {};
+		for(let i=0,item;item=values[i];i++){
+		    let val = item.split('=');
+		    NicoLiveTweet.oauth[val[0]] = val[1];
+		}
+	    }
+	    debugprint('status='+req.status);
+	    debugprint(req.responseText);
+	};
+	let url = this.accessTokenURL;
+	req.open('POST', url );
+	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+
+	let xauth = new Array();
+	let str = new Array();
+	xauth = message.parameters;
+	for(let i=0,item;item=xauth[i];i++){
+	    str.push(item[0] +"=" + item[1] + "");
+	}
+	req.send(str.join('&'));	
+    },
+
     getAccessTokenByXAuth:function(user_id,password,callback){
+	// xAuthを使用したアクセストークンの取得.
 	let accessor = {
 	    consumerSecret: this.consumerSecret,
 	    tokenSecret: ""

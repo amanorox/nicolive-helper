@@ -602,6 +602,7 @@ var NicoLiveRequest = {
 		status = flv.ext_getStatus();
 		if(this.playlist_first && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
+		    //flv.ext_setVideoSize("full");
 		    this.playlist_first = false;
 		    
 		    let flvcontainer = this.opentab.contentDocument.getElementById('flvplayer_container').wrappedJSObject;
@@ -617,6 +618,7 @@ var NicoLiveRequest = {
 		    let progress = parseInt(flv.ext_getPlayheadTime()/flv.ext_getTotalTime()*100,10);
 		    playprogress.value = progress;
 		    $('statusbar-music-name').label = NicoLiveHelper.stock[this.playlist_start-1].title;
+		    //debugprint(flv.ext_getVideoSize());
 		    break;
 
 		case "end":
