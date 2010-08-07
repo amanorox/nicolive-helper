@@ -78,7 +78,7 @@ var NicoLiveTweet = {
 		    NicoLiveTweet.oauth[val[0]] = val[1];
 		}
 	    }
-	    //debugprint('request token:'+req.responseText);
+	    debugprint('request token:'+req.responseText);
 	};
 	let url = this.requestTokenURL;
 	req.open('POST', url );
