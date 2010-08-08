@@ -76,7 +76,7 @@
     <!-- F3 で次を検索 -->
     <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"></key>
     <!-- CTRL+M で再生中の動画をとりあえずマイリストに登録 -->
-    <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id,"");"></key>
+    <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id,'');"></key>
     <!-- CTRL+F でリク・ストックを検索 -->
     <key id="search-stock" key="f" modifiers="accel" oncommand="NicoLiveRequest.findRequestStock();"></key>
     <!-- CTRL+T でつぶやく -->
