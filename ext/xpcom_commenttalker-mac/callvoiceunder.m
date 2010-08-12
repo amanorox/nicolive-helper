@@ -21,7 +21,7 @@ int callVoiceUnder(char*utf8str)
 	
     //printf("%p,%p,%p\n",myAppNotification,nCenter,str);
     [str release];
-    //[myAppNotification release];
+    [myAppNotification release];
     //[nCenter release];
     return 0;
 }
