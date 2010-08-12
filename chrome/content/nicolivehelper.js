@@ -1023,7 +1023,7 @@ var NicoLiveHelper = {
 	this.musicinfo = music;
 	this.musicinfo.mylist = NicoLiveMylist.isVideoExists(this.musicinfo.video_id);
 
-	let str = "/play " + this.musicinfo.video_id;
+	let str = "/play" + ($('menuid-soundonly').checked?"sound ":" ")+ this.musicinfo.video_id;
 	if($('do-subdisplay').checked){
 	    str += " sub"; // サブ画面で再生する.
 	}
@@ -1356,11 +1356,17 @@ var NicoLiveHelper = {
 	clearInterval(this._playnext);
     },
 
-    dosoundonly:function(){
-	let str = "/soundonly on";
+    dosoundonly:function(on){
+	let str;
+	if(on){
+	    str = "/soundonly on";
+	}else{
+	    str = "/soundonly off";
+	}
 	if($('do-subdisplay').checked){
 	    str += " sub";
 	}
+	debugprint(str);
 	this.postCasterComment(str,"");
     },
 

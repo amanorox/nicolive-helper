@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NicoLive Helper 1.1.12">
+	title="NicoLive Helper 1.1.13">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -86,6 +86,7 @@
   </keyset>
 
   <toolbar id="global-menu">
+    <!-- auto/manual sequential/random playstyle -->
     <toolbarbutton label="&playstyle.manual_sequential;" type="menu" id="toolbar-playstyle">
       <menupopup id="toolbar-popup-playstyle">
 	<menuitem label="&playstyle.manual_sequential;" playstyle="0" oncommand="NicoLiveHelper.setPlayStyle(0);"/>
@@ -98,23 +99,28 @@
 	<menuitem label="&playstyle.auto_consumption;" playstyle="5" tooltiptext="&playstyle.tooltip_consumption;" oncommand="NicoLiveHelper.setPlayStyle(5);"/>
       </menupopup>
     </toolbarbutton>
+    <!-- allow/disallow request -->
     <toolbarbutton label="&allow_request;" type="menu" id="toolbar-allowrequest">
       <menupopup>
 	<menuitem label="&allow_request;" allowrequest="true" oncommand="NicoLiveHelper.setAllowRequest(true);"/>
 	<menuitem label="&disallow_request;" allowrequest="false" oncommand="NicoLiveHelper.setAllowRequest(false);"/>
       </menupopup>
     </toolbarbutton>
-    <toolbarbutton label="&play.next;" tooltiptext="&play.tooltip_next;" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();">
-    </toolbarbutton>
-    <toolbarbutton persist="checked" type="checkbox" autoCheck="true" id="do-pauseplay" label="&play.pause;" tooltiptext="&play.tooltip_pause;" image="chrome://nicolivehelper/content/data/pause.png">
-    </toolbarbutton>
-    <toolbarbutton label="&play.stop;" tooltiptext="&play.tooltip_stop;" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();">
-    </toolbarbutton>
-    <toolbarbutton tooltiptext="&play.tooltip_soundonly;" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly();">
-    </toolbarbutton>
-    <toolbarbutton tooltiptext="&play.tooltip_swap;" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');">
-    </toolbarbutton>
+    <!-- play next -->
+    <toolbarbutton label="&play.next;" tooltiptext="&play.tooltip_next;" image="chrome://nicolivehelper/content/data/play.png" oncommand="NicoLiveHelper.playNext();"/>
+    <!-- pause to play -->
+    <toolbarbutton persist="checked" type="checkbox" autoCheck="true" id="do-pauseplay" label="&play.pause;" tooltiptext="&play.tooltip_pause;" image="chrome://nicolivehelper/content/data/pause.png"/>
+    <!-- stop to play current video -->
+    <toolbarbutton label="&play.stop;" tooltiptext="&play.tooltip_stop;" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();"/>
+    <!-- do soundonly -->
+<!--    <toolbarbutton tooltiptext="&play.tooltip_soundonly;" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly();"/> -->
+    <toolbarbutton persist="checked" id="menuid-soundonly" type="checkbox" autoCheck="true" label="SoundOnly" tooltiptext="&play.tooltip_soundonly;" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly(this.checked)"/>
+
+    <!-- swap main and sub screen -->
+    <toolbarbutton tooltiptext="&play.tooltip_swap;" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');"/>
+    <!-- play in subscreen -->
     <toolbarbutton persist="checked" label="&play.subdisplay;" id="do-subdisplay" autoCheck="true" type="checkbox" tooltiptext="&play.tooltip_subdisplay;"/>
+    <!-- command menu -->
     <toolbarbutton label="&toolbar.command;" type="menu">
       <menupopup>
 	<menu label="&toolbar.backuprestore;" tooltiptext="&toolbar.backuprestore.help;"><!-- バックアップと復元 -->
@@ -131,15 +137,20 @@
 	  </menupopup>
 	</menu>
 	<menuseparator/>
+	<!-- 連続コメント -->
 	<menuitem label="&toolbar.continuouscomment;" oncommand="OpenContinuousCommentWindow();"/>
 	<menuseparator/>
+	<!-- アンケート関係 -->
 	<menuitem label="&toolbar.votestart;" tooltiptext="&toolbar.tooltip_votestart;" oncommand="OpenVoteDialog();"/>
 	<menuitem label="&toolbar.voteshowresult;" tooltiptext="&toolbar.tooltip_voteshowresult;" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
 	<menuitem label="&toolbar.votestop;" tooltiptext="&toolbar.tooltip_votestop;" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
 	<menuseparator/>
+	<!-- サウンドオンリーの解除 -->
 	<menuitem label="&toolbar.soundonly;" tooltiptext="&toolbar.tooltip_soundonly;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off','');"/>
 	<menuitem label="&toolbar.soundonlysub;" tooltiptext="&toolbar.tooltip_soundonlysub;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
+	<!-- カメラ映像にする -->
 	<menuitem label="&toolbar.playcamera;" tooltiptext="&toolbar.tooltip_playcamera;" oncommand="NicoLiveHelper.postCasterComment('/play','');"/>
+	<!-- 運営コメント欄の消去 -->
 	<menuitem label="&toolbar.clearcomment;" tooltiptext="&toolbar.tooltip_clearcomment;" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/>
 	<menuseparator/>
 	<menuitem label="&toolbar.downloadjson;" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
