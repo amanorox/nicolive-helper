@@ -1361,6 +1361,7 @@ var NicoLiveHelper = {
 	if(on){
 	    str = "/soundonly on";
 	}else{
+	    return;
 	    str = "/soundonly off";
 	}
 	if($('do-subdisplay').checked){
