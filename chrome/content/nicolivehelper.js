@@ -2588,6 +2588,7 @@ var NicoLiveHelper = {
     showNotice3minleft:function(){
 	let str;
 	str = NicoLivePreference.getBranch().getUnicharPref('notice.message');
+	str = this.replaceMacros(str,this.musicinfo);
 	if( NicoLivePreference.notice.area ){
 	    ShowNotice(str);
 	}
