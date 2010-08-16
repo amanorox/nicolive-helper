@@ -862,6 +862,11 @@ var NicoLiveHelper = {
 		tmp = info.mylistcomment;
 		if(!tmp) tmp = "";
 		break;
+
+	    case 'pref:min-ago':
+		// 枠終了 n 分前通知の設定値.
+		tmp = NicoLivePreference.notice.time;
+		break;
 	    }
 	    return tmp;
 	};
@@ -2579,10 +2584,10 @@ var NicoLiveHelper = {
 	debugprint('update PName Whitelist');
     },
 
-    // 残り時間が3分切ったときの通知処理.
+    // 残り時間が n 分 になったときの通知処理.
     showNotice3minleft:function(){
-	let t = NicoLivePreference.notice.time;
-	let str = LoadFormattedString('STR_REMAIN_3MIN',[t]);
+	let str;
+	str = NicoLivePreference.getBranch().getUnicharPref('notice.message');
 	if( NicoLivePreference.notice.area ){
 	    ShowNotice(str);
 	}

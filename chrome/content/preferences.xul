@@ -480,6 +480,7 @@
       <preference id="pref-notice-area"    name="extensions.nicolivehelper.notice.area" type="bool"/>
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
+      <preference id="pref-notice-message" name="extensions.nicolivehelper.notice.message" type="unichar"/>
 
       <preference id="pref-ngwordfiltering" name="extensions.nicolivehelper.ngwordfiltering" type="bool"/>
       <preference id="pref-ngword-recomment" name="extensions.nicolivehelper.ngword-recomment" type="bool"/>
@@ -622,6 +623,10 @@
 		  <checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します。" flex="0"/>
 		  <checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します。"/>
 		  <checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コメントを使用して警告します。"/>
+		</hbox>
+		<hbox align="center">
+		  <label value="通知メッセージ"/>
+		  <textbox preference="pref-notice-message"/>
 		</hbox>
 	      </vbox>
 	      <separator/>
