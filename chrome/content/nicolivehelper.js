@@ -441,7 +441,7 @@ var NicoLiveHelper = {
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
 		    let selfreq = chat.text.match(/自(貼|張)/);
-		    NicoLiveHelper.addRequest(sm[1], chat.no, selfreq?"0":chat.user_id);
+		    NicoLiveHelper.addRequest(sm[1], chat.no, chat.user_id, selfreq);
 		    return;
 		}
 	    }
@@ -2189,17 +2189,16 @@ var NicoLiveHelper = {
 	while( NicoLiveHelper.requestprocessingqueue.length && NicoLiveHelper.requestprocessingqueue[0].xml!=null ){
 	    q = NicoLiveHelper.requestprocessingqueue.shift();
 
-	    // リクのあった動画をチェック.
 	    let ans = NicoLiveHelper.checkAcceptRequest( q.xml, q.comment_no );
-	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではない.
-	    ans.movieinfo.selfrequest = q.user_id=="0"?true:false;        // 自貼りのユーザーIDは0.
+	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではなくて主セレ扱い.
+	    ans.movieinfo.selfrequest = q.is_self_request;
 
 	    // リクエスト制限数をチェック.
 	    let nlim = NicoLivePreference.nreq_per_ppl;
 	    if(!NicoLiveHelper.request_per_ppl[q.user_id]){
 		NicoLiveHelper.request_per_ppl[q.user_id] = 0;
 	    }
-	    if( ans.code==0 && q.user_id!="0"){
+	    if( ans.code==0 && !q.is_self_request){
 		// 自貼りはカウントしなくてOK.
 		NicoLiveHelper.request_per_ppl[q.user_id]++;
 	    }
@@ -2209,8 +2208,8 @@ var NicoLiveHelper = {
 		ans.msg = NicoLivePreference.msg.limitnumberofrequests;
 		ans.code = -1;
 	    }
-	    
-	    // 動画情報にはコメ番とユーザーIDを含む.
+
+	    // 動画情報にはコメ番とリク主のユーザーIDを含む.
 	    ans.movieinfo.cno = q.comment_no;
 	    ans.movieinfo.user_id = q.user_id;
 	    ans.movieinfo.request_id = NicoLiveHelper.request_id;
@@ -2271,7 +2270,8 @@ var NicoLiveHelper = {
     },
 
     // 動画情報を取得してリクエストに追加する.
-    addRequest: function(vid,cno,userid){
+    // 自貼りのときは is_self_request を真にしておく. そうでないときはパラメタ不要.
+    addRequest: function(vid,cno,userid, is_self_request){
 	/*
 	 * vid : 動画ID,cnoコメ番
 	 * cno : 0のときはリクエストじゃないとき.
@@ -2286,6 +2286,7 @@ var NicoLiveHelper = {
 	request.video_id = vid;
 	request.comment_no = cno;
 	request.user_id = userid;
+	request.is_self_request = is_self_request;
 	request.xml = null;
 	request.time = GetCurrentTime();
 	this.requestprocessingqueue.push(request);
