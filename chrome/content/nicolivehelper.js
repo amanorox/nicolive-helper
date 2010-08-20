@@ -2448,8 +2448,42 @@ var NicoLiveHelper = {
 	}
     },
 
-    // コメントサーバに接続.
-    // getplayerstatusでコメントサーバを調べたあとに呼ばれる.
+    /** コメントサーバに接続.
+     * @param server 接続先サーバ.
+     * @param port ポート番号.
+     * @param receiver データリスナ.
+     * @return 成功したらI/Oストリームを返す. そうでなければ null. しかしnullを返すルートを作ってなかった.
+     */
+    connectCommentServer2:function(server,port,receiver){
+	//<thread thread="1005799549" res_from="-50" version="20061206"/>
+	var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"].getService(Components.interfaces.nsISocketTransportService);
+	var socket = socketTransportService.createTransport(null,0,server,port,null);
+	var iStream, ciStream;
+	var pump;
+
+	iStream = socket.openInputStream(0,0,0);
+	ciStream = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
+	ciStream.init(iStream,"UTF-8",0,Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
+
+	pump = Components.classes["@mozilla.org/network/input-stream-pump;1"].createInstance(Components.interfaces.nsIInputStreamPump);
+	pump.init(iStream,-1,-1,0,0,false);
+
+	var oStream, coStream;
+	oStream = socket.openOutputStream(0,0,0);
+	coStream = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+	coStream.init(oStream,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
+
+	pump.asyncRead(receiver, null);
+
+	return { "istream": ciStream, "ostream": coStream };
+    },
+
+    /** コメントサーバに接続.
+     * @param server サーバ.
+     * @param port ポート.
+     * @param thread スレッド番号.
+     * getplayerstatusでコメントサーバを調べたあとに呼ばれる.
+     */
     connectCommentServer: function(server,port,thread){
 	//<thread thread="1005799549" res_from="-50" version="20061206"/>
 	var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"].getService(Components.interfaces.nsISocketTransportService);
@@ -2562,10 +2596,10 @@ var NicoLiveHelper = {
 	} catch (x) {
 	}
 
-	if( this.oStream ){
+	if( this.coStream ){
 	    debugprint("delete output stream");
-	    this.oStream.close();
-	    delete this.oStream;
+	    this.coStream.close();
+	    delete this.coStream;
 	}
 	if( this.ciStream ){
 	    debugprint("delete input stream");
