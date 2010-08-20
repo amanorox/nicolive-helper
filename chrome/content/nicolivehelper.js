@@ -2449,10 +2449,11 @@ var NicoLiveHelper = {
     },
 
     /** コメントサーバに接続.
+     * TCP接続するだけのシンプル版.
      * @param server 接続先サーバ.
      * @param port ポート番号.
      * @param receiver データリスナ.
-     * @return 成功したらI/Oストリームを返す. そうでなければ null. しかしnullを返すルートを作ってなかった.
+     * @return 成功したらI/Oストリームを返す.
      */
     connectCommentServer2:function(server,port,receiver){
 	//<thread thread="1005799549" res_from="-50" version="20061206"/>
@@ -2486,26 +2487,12 @@ var NicoLiveHelper = {
      */
     connectCommentServer: function(server,port,thread){
 	//<thread thread="1005799549" res_from="-50" version="20061206"/>
-	var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"].getService(Components.interfaces.nsISocketTransportService);
-	var socket = socketTransportService.createTransport(null,0,server,port,null);
-	var iStream = socket.openInputStream(0,0,0);
 	this.connecttime = new Date();
 	this.connecttime = this.connecttime.getTime()/1000; // convert to second from epoc.
 
-	this.ciStream = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
-	this.ciStream.init(iStream,"UTF-8",0,Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
-
-	this.pump = Components.classes["@mozilla.org/network/input-stream-pump;1"].createInstance(Components.interfaces.nsIInputStreamPump);
-	this.pump.init(iStream,-1,-1,0,0,false);
-
-	this.oStream = socket.openOutputStream(0,0,0);
-	this.coStream = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
-	this.coStream.init(this.oStream,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
-
 	var dataListener = {
 	    line: "",
-	    onStartRequest: function(request, context){
-	    },
+	    onStartRequest: function(request, context){},
 	    onStopRequest: function(request, context, status){
 		try{
 		    if( !NicoLiveHelper._donotshowdisconnectalert ){
@@ -2540,6 +2527,10 @@ var NicoLiveHelper = {
 	    }
 	};
 
+	let iostream = this.connectCommentServer2( server, port, dataListener );
+	this.coStream = iostream.ostream;
+	this.ciStream = iostream.istream;
+
 	let str = "<thread thread=\""+thread+"\" res_from=\"-100\" version=\"20061206\"/>\0";
 	if( 0 && this._timeshift ){
 	    // タイムシフトで時間軸で順次コメント取ってくるのは面倒.
@@ -2551,7 +2542,6 @@ var NicoLiveHelper = {
 	    this.connecttime = 0;
 	}
 	this.coStream.writeString(str);
-	this.pump.asyncRead(dataListener,null);
 
 	// 30分に1回送ってればいいのかね.
 	this._keepconnection = setInterval( function(){
