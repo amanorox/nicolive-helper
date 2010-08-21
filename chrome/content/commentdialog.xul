@@ -60,7 +60,7 @@ function retval()
       </row>
       <row>
 	<label value=""/>
-	<checkbox persist="checked" id="add-nglist" label="NGユーザ登録を行う"/>
+	<checkbox persist="checked" id="add-nglist" label="NGユーザ登録を行う(現在はチェックしてもNG登録されません)"/>
       </row>
     </rows>
 

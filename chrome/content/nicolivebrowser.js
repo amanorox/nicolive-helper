@@ -58,9 +58,10 @@ var NicoLiveBrowser = {
 	    debugprint('retry to crawl after 1min.');
 
 	    clearInterval(this._crawlingtimer);
-	    this._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 30*1000 );
+	    this._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 60*1000 );
 	    if( $('live-page').getAttribute('src')!='about:blank' ){
-		this.close();
+		setTimeout(function(){ NicoLiveBrowser.close(); }, 10*1000 );
+		//this.close();
 	    }
 	    return;
 	}
