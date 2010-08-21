@@ -2456,7 +2456,7 @@ var NicoLiveHelper = {
      * @return 成功したらI/Oストリームを返す.
      */
     connectCommentServer2:function(server,port,receiver){
-	//<thread thread="1005799549" res_from="-50" version="20061206"/>
+	debugprint("connect to:"+server+":"+port);
 	var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"].getService(Components.interfaces.nsISocketTransportService);
 	var socket = socketTransportService.createTransport(null,0,server,port,null);
 	var iStream, ciStream;
