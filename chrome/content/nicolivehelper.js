@@ -2496,9 +2496,17 @@ var NicoLiveHelper = {
 	    onStopRequest: function(request, context, status){
 		try{
 		    if( !NicoLiveHelper._donotshowdisconnectalert ){
+			var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+			let musictime = $('statusbar-music-name');
+			musictime.label="コメントサーバから切断されました。";
+			sound.playSystemSound("_moz_alertdialog");
+			ShowNotice('コメントサーバから切断されました。',true);
+			
+			/*
 			setTimeout( function(){
 					AlertPrompt('コメントサーバから切断されました。',NicoLiveHelper.request_id);
 				    }, 5000 );
+			 */
 		    }
 		    NicoLiveHelper.close();
 		} catch (x) {

@@ -230,11 +230,12 @@ function debugalert(txt){
 
 
 var noticeid;
-function ShowNotice(txt){
+function ShowNotice(txt, dontclear){
     $('noticewin').removeAllNotifications(false);
     $('noticewin').appendNotification(txt,null,null,
 				      $('noticewin').PRIORITY_WARNING_LOW,null);
     clearInterval(noticeid);
+    if( dontclear ) return;
     noticeid = setInterval( function(){
 				$('noticewin').removeAllNotifications(false);
 				clearInterval(noticeid);
