@@ -21,6 +21,7 @@ pref("extensions.nicolivehelper.limitnewmovie",false);
 pref("extensions.nicolivehelper.accept-playedvideo",false);
 pref("extensions.nicolivehelper.accept-nreq",0);
 pref("extensions.nicolivehelper.nocomment-for-directplay",false);
+pref("extensions.nicolivehelper.no-auto-pname",false);
 pref("extensions.nicolivehelper.revert-videoinfo",0);
 pref("extensions.nicolivehelper.videoinfo1","♪Length:{length} Views:{view} Comments:{comment} Mylist:{mylist}");
 pref("extensions.nicolivehelper.videoinfo2","♪{title}<br>Date:{date}");

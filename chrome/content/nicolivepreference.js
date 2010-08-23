@@ -26,6 +26,7 @@ var NicoLivePreference = {
     readAdvancedPrefs:function(fromobserver){
 	let branch = this.getBranch();
 	this.nocomment_for_directplay = branch.getBoolPref("nocomment-for-directplay");
+	this.no_auto_pname = branch.getBoolPref("no-auto-pname");
 
 	this.listenercommand = new Object();
 	try{

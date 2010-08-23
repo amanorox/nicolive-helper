@@ -83,14 +83,15 @@
       <preference id="pref-revert-videoinfo" name="extensions.nicolivehelper.revert-videoinfo" type="int"/>
       <preference id="pref-userdefined-uri" name="extensions.nicolivehelper.userdefined-data-uri" type="string"/>
       <preference id="pref-nocomment-for-directplay" name="extensions.nicolivehelper.nocomment-for-directplay" type="bool"/>
+      <preference id="pref-no-autopname" name="extensions.nicolivehelper.no-auto-pname" type="bool"/>
     </preferences>
 
-    <tabbox flex="1">
+    <tabbox>
       <tabs>
 	<tab label="動画情報"></tab>
 	<tab label="P名ホワイトリスト"></tab>
       </tabs>
-      <tabpanels flex="1">
+      <tabpanels>
 	<tabpanel orient="vertical">
 	  <hbox>
 	    <menulist preference="pref-typeofvideoinfo">
@@ -150,13 +151,14 @@
 		</hbox>
 	      </row>
 	      <hbox align="center">
-		<label control="vinfo-playfailed" value="動画の再生に失敗した時:" tooltiptext="生放送引用拒否などで再生コマンド(/play)が失敗した時に送信されます。"/>
+		<label control="vinfo-playfailed" value="動画の再生に失敗した時:" tooltiptext="生放送引用許可がない等で再生コマンド(/play)が失敗した時に送信されます。"/>
 		<textbox preference="pref-videoinfo-playfailed" id="vinfo-playfailed" flex="1"/>
 	      </hbox>
 	    </rows>
 	  </grid>
 	  </groupbox>
 	  <hbox><checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない" tooltiptext="コメントタブの入力欄から動画IDを入力して動画を再生した場合、動画情報を送信しなくなります。"/></hbox>
+	  <hbox><checkbox preference="pref-no-autopname" label="P名D名を自動認識しない" tooltiptext="タグの末尾にP,DがあるものをP名として自動認識しなくなり、P名ホワイトリストのみを頼りにP名を付けます。"/></hbox>
 	  <hbox align="center">
 	    <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
 	    <textbox preference="pref-userdefined-uri" id="userdefined-uri" flex="1"/>
@@ -172,7 +174,7 @@
 
 	</tabpanel>
 	<tabpanel orient="vertical">
-	  <textbox id="pname-whitelist" multiline="true" flex="1" emptytext="1行につき1人のP名、D名を入力してください" tooltiptext="1行につき1人のP名,D名を入力してください"/>
+	  <textbox id="pname-whitelist" rows="10" multiline="true" emptytext="1行につき1人のP名、D名を入力してください" tooltiptext="1行につき1人のP名,D名を入力してください"/>
 	  <hbox>
 	    <button label="保存" oncommand="NLHPreference.savePNameWhitelist();"/>
 	  </hbox>
@@ -211,14 +213,14 @@
       <preference id="pref-continuousCommentDir" name="extensions.nicolivehelper.continuous-commentDir" type="file"/>
     </preferences>
 
-    <tabbox flex="1">
+    <tabbox>
       <tabs>
 	<tab label="リクエストの応答"></tab>
 	<tab label="リクエスト制限の応答"></tab>
 	<tab label="リクエスト可否"></tab>
 	<tab label="スタートアップ"></tab>
       </tabs>
-      <tabpanels flex="1">
+      <tabpanels>
 	<tabpanel orient="vertical">
 	  <grid>
 	    <columns>
@@ -328,9 +330,9 @@
 	  </grid>
 	</tabpanel>
 	<tabpanel orient="vertical">
-	  <vbox flex="1">
+	  <vbox>
 	    <label value="スタートアップ時に行うコメント:" control="startup-comment"/>
-	    <textbox preference="pref-startup-comment" id="startup-comment" multiline="true" flex="1" emptytext="5秒間隔で1行ずつ送信します"/>
+	    <textbox preference="pref-startup-comment" id="startup-comment" rows="10" multiline="true" emptytext="5秒間隔で1行ずつ送信します"/>
 	  </vbox>
 	</tabpanel>
       </tabpanels>

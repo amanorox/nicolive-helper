@@ -687,6 +687,7 @@ var NicoLiveHelper = {
 	if( pname_whitelist["_"+str] ){
 	    return true;
 	}
+	if( NicoLivePreference.no_auto_pname ) return false;
 	if(str.match(/(PSP|アイドルマスターSP|m[a@]shup|drop|step|overlap|vocaloid_map|mikunopop|mikupop|ship|dump)$/i)) return false;
 	if(str.match(/(M[A@]D|joysound|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|4D|TOD|oid|clannad|2nd|3rd|second|third|append|CD|solid|vivid)$/i)) return false;
 	let t = str.match(/.*([^jO][pP]|jP)[)]?$/);
