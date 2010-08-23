@@ -145,13 +145,15 @@
 	<menuitem label="&toolbar.voteshowresult;" tooltiptext="&toolbar.tooltip_voteshowresult;" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
 	<menuitem label="&toolbar.votestop;" tooltiptext="&toolbar.tooltip_votestop;" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
 	<menuseparator/>
+	<menuitem label="サウンドオンリー(メイン)" tooltiptext="/soundonly on" oncommand="NicoLiveHelper.postCasterComment('/soundonly on','');"/>
+	<menuitem label="サウンドオンリー(サブ)" tooltiptext="/soundonly on sub" oncommand="NicoLiveHelper.postCasterComment('/soundonly on sub','');"/>
 	<!-- サウンドオンリーの解除 -->
 	<menuitem label="&toolbar.soundonly;" tooltiptext="&toolbar.tooltip_soundonly;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off','');"/>
 	<menuitem label="&toolbar.soundonlysub;" tooltiptext="&toolbar.tooltip_soundonlysub;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
 	<!-- カメラ映像にする -->
 	<menuitem label="&toolbar.playcamera;" tooltiptext="&toolbar.tooltip_playcamera;" oncommand="NicoLiveHelper.postCasterComment('/play','');"/>
 	<!-- 運営コメント欄の消去 -->
-	<menuitem label="&toolbar.clearcomment;" tooltiptext="&toolbar.tooltip_clearcomment;" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/>
+	<!-- <menuitem label="&toolbar.clearcomment;" tooltiptext="&toolbar.tooltip_clearcomment;" oncommand="NicoLiveHelper.postCasterComment('/cls','');"/> -->
 	<menuseparator/>
 	<menuitem label="&toolbar.downloadjson;" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
 	<menuseparator/>
