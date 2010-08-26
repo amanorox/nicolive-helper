@@ -1281,7 +1281,8 @@ var NicoLiveHelper = {
 	if( isrand ){
 	    // ・ランダム再生で、ストックの再生スタイルが指定なし
 	    // ・ストックから選択するとき、ストック再生スタイルが2(ランダム)
-	    n = GetRandomInt(0,notplayed.length-1);
+	    //n = GetRandomInt(0,notplayed.length-1);
+	    n = (rand()>>4) % notplayed.length;
 	}
 	if( this.isconsumptionrateplay && !isstock ){
 	    // ストックにはリクエスト消費数がないので無視してok
@@ -2922,7 +2923,9 @@ var NicoLiveHelper = {
 		if( !NicoLivePreference.doprepare ) return; // /prepareしない.
 
 		if(NicoLiveHelper.requestqueue.length){
-		    if( NicoLiveHelper.israndomplay ) return; // ランダム再生は予測できないのでやらない.
+		    if( NicoLiveHelper.israndomplay ){
+			return; // ランダム再生は予測できないのでやらない.
+		    }
 		    let n = 0;
 		    if( NicoLiveHelper.isconsumptionrateplay ){
 			let rate = NicoLiveHelper.calcConsumptionRate();
@@ -3321,6 +3324,7 @@ var NicoLiveHelper = {
 
     init: function(){
 	debugprint('Initializing NicoLive Helper...');
+	srand( GetCurrentTime() );
 
 	// リクエストのコメ番順シーケンシャル処理用.
 	this.requestprocessingqueue = new Array();

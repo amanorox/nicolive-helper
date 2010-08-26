@@ -387,6 +387,20 @@ function GetRandomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
+
+var g_randomseed = GetCurrentTime();
+function srand(seed)
+{
+    g_randomseed = seed;
+}
+function rand()
+{
+    g_randomseed = (g_randomseed * 214013 + 2531011) & 0x7fffffff;
+    return g_randomseed;
+}
+
+
 function ZenToHan(str){
     return str.replace(/[ａ-ｚＡ-Ｚ０-９－（）＠]/g,
 		       function(s){ return String.fromCharCode(s.charCodeAt(0)-65248); });
