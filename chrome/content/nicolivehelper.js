@@ -2441,7 +2441,7 @@ var NicoLiveHelper = {
 	    debugprint('ticket='+this.ticket);
 	    ShowNotice("コメントサーバに接続しました");
 	    if( $('automatic-broadcasting').hasAttribute('checked') ){
-		NicoLiveHelper.configureStream( NicoLiveHelper.token );
+		NicoLiveHelper.configureStream0( NicoLiveHelper.token );
 	    }
 	}
 	dat = line.match(/<thread.*last_res=\"([0-9a-fA-Fx]*)\".*\/>/);
@@ -2663,6 +2663,10 @@ var NicoLiveHelper = {
 	    this.endtime = 0;
 	    this.getpublishstatus(this.request_id);
 	    this._enterlosstime = GetCurrentTime();
+	}
+
+	if( p>1 && this._exclude ){
+	    this.getpublishstatus(this.request_id);
 	}
 
 	if( this.iscaster && this.endtime==0 ){
@@ -2975,13 +2979,41 @@ var NicoLiveHelper = {
 	req.send(data);
     },
 
+    // 配信開始する前に配信タイプを指定する必要があるので、
+    // 従来の配信開始configureStreamの前ってことで 0 を付けただけ.
+    configureStream0:function(token){
+	if( !this.iscaster ) return;
+	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=hq&value=0&version=2&token="+token;
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
+		    if( confstatus.getAttribute('status')=='ok' ){
+			NicoLiveHelper.configureStream(token);
+		    }else{
+			debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
+		    }
+		}else{
+		    debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
+		}
+	    }
+	};
+	req.open('GET', conf );
+	req.send("");
+    },
 
     // 配信開始ステータスに変える.
     configureStream:function(token){
 	if( !this.iscaster ) return;
 	// exclude=0ってパラメタだから
 	// 視聴者を排除(exclude)するパラメタをOFF(0)にするって意味だろうな.
-	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=exclude&value=0&token="+token;
+	// 新バージョンは version=2 を渡して、開演、終了時刻を知る必要がある.
+	// 配信開始前にこれがある
+	// 外部配信 http://watch.live.nicovideo.jp/api/configurestream/lv25214688?token=39cf24389dfda675eb2ba996934627794c86fd9b&key=hq&value=1&version=2
+	// 簡易配信 http://watch.live.nicovideo.jp/api/configurestream/lv25214688?token=39cf24389dfda675eb2ba996934627794c86fd9b&key=hq&value=0&version=2
+	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=exclude&value=0&version=2&token="+token;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
@@ -2991,6 +3023,12 @@ var NicoLiveHelper = {
 		    if( confstatus.getAttribute('status')=='ok' ){
 			if( NicoLivePreference.twitter.when_beginlive ){
 			    NicoLiveTweet.tweet("【ニコ生】「"+NicoLiveHelper.title+"」を開始しました。 http://nico.ms/"+NicoLiveHelper.request_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+			}
+			try{
+			    NicoLiveHelper.starttime = parseInt(req.responseXML.getElementsByTagName('start_time')[0].textContent);
+			    NicoLiveHelper.endtime = parseInt(req.responseXML.getElementsByTagName('end_time')[0].textContent);
+			} catch (x) {
+			    debugprint(x);
 			}
 		    }else{
 			debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
@@ -3010,7 +3048,7 @@ var NicoLiveHelper = {
 	if( !this.request_id || this.request_id=="lv0" ) return;
 	this.getpublishstatus( this.request_id,
 			       function(){
-				   NicoLiveHelper.configureStream( NicoLiveHelper.token );
+				   NicoLiveHelper.configureStream0( NicoLiveHelper.token );
 			       } );
     },
 
@@ -3018,19 +3056,22 @@ var NicoLiveHelper = {
     // postfuncが指定されていた場合、通信終了時に指定の関数を呼び出す.
     getpublishstatus:function( request_id, postfunc ){
 	if( !this.iscaster || !request_id || request_id=="lv0" ){
-	    postfunc();
+	    if( 'function'==typeof postfunc){
+		postfunc();
+	    }
 	    return;
 	}
 
 	debugprint('GET getpublishstatus');
-	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + request_id;
+	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + request_id + "&version=2";
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 ){
 		if( req.status==200 ){
 		    let publishstatus = req.responseXML;
-		    NicoLiveHelper.token   = publishstatus.getElementsByTagName('token')[0].textContent;
+		    NicoLiveHelper.token = publishstatus.getElementsByTagName('token')[0].textContent;
+		    NicoLiveHelper.starttime = parseInt(publishstatus.getElementsByTagName('start_time')[0].textContent);
 		    let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
 		    if( GetCurrentTime() <= tmp ){
 			// 取得した終了時刻がより現在より未来指していたら更新.
@@ -3038,8 +3079,11 @@ var NicoLiveHelper = {
 		    }else{
 			NicoLiveComment.releaseReflector(); // ロスタイム突入なので全解放する.
 		    }
+		    NicoLiveHelper._exclude = parseInt(publishstatus.getElementsByTagName('exclude')[0].textContent);
 		    debugprint('token='+NicoLiveHelper.token);
+		    debugprint('starttime='+NicoLiveHelper.starttime);
 		    debugprint('endtime='+NicoLiveHelper.endtime);
+		    debugprint('exclude='+NicoLiveHelper._exclude);
 
 		    if( 'function'==typeof postfunc){
 			debugprint('calling post-function.');
