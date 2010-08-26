@@ -109,7 +109,13 @@ var NicoLiveOverlay = {
 	}
 	if(url!="lv0"){
 	    if( !window.content.document.body.innerHTML.match(/console\.swf/) ){
+		// 生主コンソールがないならリスナ.
 		iscaster = false;
+	    }
+	    if( window.content.document.getElementById("utility_container") ){
+		// 新バージョンではutility_containerがあれば生主.
+		iscaster = true;
+		this.debugprint("utility_container is found.");
 	    }
 	}
 	this.open(url,title,iscaster);
@@ -132,10 +138,12 @@ var NicoLiveOverlay = {
 
 	// innerHTMLを見るしかできないのです.
 	if(player.innerHTML.match(/console\.swf/)){
+	    // 配信コンソールがあれば生主.
 	    iscaster = true;
 	}
 	try{
 	    if( e.target.getElementById("utility_container") ){
+		// 新バージョン用のチェック.
 		iscaster = true;
 		this.debugprint("utility_container is found.");
 	    }
