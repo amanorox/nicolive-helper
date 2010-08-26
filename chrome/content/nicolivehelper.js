@@ -1282,7 +1282,7 @@ var NicoLiveHelper = {
 	    // ・ランダム再生で、ストックの再生スタイルが指定なし
 	    // ・ストックから選択するとき、ストック再生スタイルが2(ランダム)
 	    //n = GetRandomInt(0,notplayed.length-1);
-	    n = (rand()>>4) % notplayed.length;
+	    n = GetRandomIntLCG(0,notplayed.length-1);
 	}
 	if( this.isconsumptionrateplay && !isstock ){
 	    // ストックにはリクエスト消費数がないので無視してok
@@ -2923,27 +2923,23 @@ var NicoLiveHelper = {
 		if( !NicoLivePreference.doprepare ) return; // /prepareしない.
 
 		if(NicoLiveHelper.requestqueue.length){
-		    if( NicoLiveHelper.israndomplay ){
-			return; // ランダム再生は予測できないのでやらない.
+		    let seed = rand();
+		    srand(seed);
+		    let n = NicoLiveHelper.chooseNextMusicToPlay(NicoLiveHelper.requestqueue, false);
+		    srand(seed);
+		    if(n){
+			NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[n-1].video_id,"");
+			return;
 		    }
-		    let n = 0;
-		    if( NicoLiveHelper.isconsumptionrateplay ){
-			let rate = NicoLiveHelper.calcConsumptionRate();
-			for(let i=0;i<rate.length;i++){
-			    n = NicoLiveHelper.findRequestByUserId(NicoLiveHelper.requestqueue, rate[i].user_id);
-			    if(n>=0) break;
-			}
-			if(n<0) n=0;
-		    }
-		    NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.requestqueue[n].video_id,"");
-		}else if(NicoLiveHelper.stock.length){
-		    if( NicoLiveHelper.israndomplay && $('stock-playstyle').value==0 ) return;
-		    if( $('stock-playstyle').value==2 ) return; // ランダムではprepareしない
-		    for(let i=0,item;item=NicoLiveHelper.stock[i];i++){
-			if(!NicoLiveHelper.isPlayedMusic(item.video_id)){
-			    NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.stock[i].video_id,"");
-			    break;
-			}
+		}
+		if(NicoLiveHelper.stock.length){
+		    let seed = rand();
+		    srand(seed);
+		    let n = NicoLiveHelper.chooseNextMusicToPlay(NicoLiveHelper.stock, true);
+		    srand(seed);
+		    if(n){
+			NicoLiveHelper.postCasterComment("/prepare "+NicoLiveHelper.stock[n-1].video_id,"");
+			return;
 		    }
 		}
 	    }, parseInt((du+interval)/5*4) );

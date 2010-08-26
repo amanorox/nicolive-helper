@@ -388,7 +388,7 @@ function GetRandomInt(min, max){
 }
 
 
-
+// LCGの疑似乱数はランダム再生専用のため、他の用途では使用禁止.
 var g_randomseed = GetCurrentTime();
 function srand(seed)
 {
@@ -399,7 +399,12 @@ function rand()
     g_randomseed = (g_randomseed * 214013 + 2531011) & 0x7fffffff;
     return g_randomseed;
 }
-
+// min以上、max以下の範囲で乱数を返す.
+function GetRandomIntLCG(min,max)
+{
+    let tmp = rand() >> 4;
+    return (tmp % (max-min+1)) + min;
+}
 
 function ZenToHan(str){
     return str.replace(/[ａ-ｚＡ-Ｚ０-９－（）＠]/g,
