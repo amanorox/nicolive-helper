@@ -119,7 +119,10 @@ var NicoLiveOverlay = {
 		this.debugprint("utility_container is found.");
 	    }
 	}
-	url = window.content.document.defaultView.wrappedJSObject.Video.id;
+	if( url.indexOf("co") != -1 ){
+	    // co番号でアクセスした場合、lv番号を取得する.
+	    url = window.content.document.defaultView.wrappedJSObject.Video.id;
+	}
 	this.open(url,title,iscaster);
     },
 

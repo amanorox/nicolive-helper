@@ -542,7 +542,7 @@ var NicoLiveHelper = {
 	if( (autolive || prefs.getBoolPref("autowindowclose")) && NicoLiveHelper.iscaster ||
 	    prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
 	    if( prefs.getBoolPref("autotabclose") ){
-		NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id);
+		NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
 	    }
 	    NicoLiveHelper._donotshowdisconnectalert = true;
 	    NicoLiveHelper.close();
@@ -555,18 +555,19 @@ var NicoLiveHelper = {
     },
 
     // 生放送のページのタブを閉じる.
-    closeBroadcastingTab:function(request_id){
+    closeBroadcastingTab:function(request_id, community_id){
 	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
 	let browserEnumerator = wm.getEnumerator("navigator:browser");
-
-	let url = "http://live.nicovideo.jp/watch/"+request_id;
+	let url1 = "http://live.nicovideo.jp/watch/"+request_id;
+	let url2 = "http://live.nicovideo.jp/watch/"+community_id;
+	
 	while(browserEnumerator.hasMoreElements()) {
 	    let browserInstance = browserEnumerator.getNext().gBrowser;
 	    // browser インスタンスの全てのタブを確認する.
 	    let numTabs = browserInstance.tabContainer.childNodes.length;
 	    for(let index=0; index<numTabs; index++) {
 		let currentBrowser = browserInstance.getBrowserAtIndex(index);
-		if (currentBrowser.currentURI.spec.match(url)) {
+		if (currentBrowser.currentURI.spec.match(url1) || currentBrowser.currentURI.spec.match(url2)) {
 		    try{
 			window.opener.gBrowser.removeTab( browserInstance.tabContainer.childNodes[index] );
 		    } catch (x) {

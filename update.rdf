@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$R3pNz"
-                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="3.5"
-                   em:maxVersion="3.6.*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.14.xpi"
-                   em:updateHash="sha1:6bf79773bdb5cb4e7b14c56dfc000e74ce009ecc"
-                   em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="1.1.14">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
   <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBABPAAN4hYFZMzjjfahcOte0C5qBfeopuL5qbWMAS0iXTfjIVxkLYpz45nifExfL93PXVui3Rbo6bnnIrq4IpYAZsJ7K87Lk9AZRgQZB/OznnKmCOOKSiEf0TGxACikxx5o6J1293nsBVpc+m9uH02u/f5sRbTtUUPACi+7tlBZQg">
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAFuDFnz8Cvetsf4qNApbVfYBGdwOy70IoS2+jO27nxtRXJUIowXzHtzWv962P7RrL9GKiVOQwqo3/3kb0pINtSXZJpGuDfUoIbJTtfOD6/G/+Crz63rRD3SzwofB/ON9Z8eYE6BU1nSXG7CW1/4ypbXU+sMApm4HgdoQoV/lTwW9">
     <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$R3pNz"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="3.5"
+                   em:maxVersion="3.6.*"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.14.1.xpi"
+                   em:updateHash="sha1:b0f0c5f6dd4e01e92ae9a73b5e8e57fed55e6859"
+                   em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="1.1.14.1">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
   </RDF:Description>
 </RDF:RDF>
