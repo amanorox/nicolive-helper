@@ -90,9 +90,10 @@ var NicoLiveOverlay = {
 	//Application.console.log(url+' '+title);
     },
 
+    // メニューからopenする.
     openNicoLiveWindow:function(){
 	let url = window.content.location.href;
-	url = url.match(/watch\/(lv\d+)/);
+	url = url.match(/watch\/((lv|co)\d+)/);
 	if(!url) url="lv0";
 	else url = url[1];
 
@@ -118,6 +119,7 @@ var NicoLiveOverlay = {
 		this.debugprint("utility_container is found.");
 	    }
 	}
+	url = window.content.document.defaultView.wrappedJSObject.Video.id;
 	this.open(url,title,iscaster);
     },
 
@@ -135,6 +137,11 @@ var NicoLiveOverlay = {
 	}
 	let iscaster = false;
 	if( !player ) return;
+
+	let doc = e.target;
+	let unsafeWin = doc.defaultView.wrappedJSObject;
+	let video_id = unsafeWin.Video.id;
+	this.debugprint("live id="+video_id);
 
 	// innerHTMLを見るしかできないのです.
 	if(player.innerHTML.match(/console\.swf/)){
@@ -155,8 +162,7 @@ var NicoLiveOverlay = {
 	let prefs = this.getPref();
 	if( prefs.getBoolPref("autowindowopen") && iscaster ||
 	    prefs.getBoolPref("autowindowopen-listener") && !iscaster ){
-	    let url = e.target.location.href;
-	    url = url.match(/lv\d+/);
+	    let url = video_id;
 	    if(url){
 		let title;
 		try{
