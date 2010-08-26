@@ -134,6 +134,15 @@ var NicoLiveOverlay = {
 	if(player.innerHTML.match(/console\.swf/)){
 	    iscaster = true;
 	}
+	try{
+	    if( e.target.getElementById("utility_container") ){
+		iscaster = true;
+		this.debugprint("utility_container is found.");
+	    }
+	} catch (x) {
+	    this.debugprint(x);
+	    iscaster = false;
+	}
 
 	let prefs = this.getPref();
 	if( prefs.getBoolPref("autowindowopen") && iscaster ||
