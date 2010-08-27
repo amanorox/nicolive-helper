@@ -2645,6 +2645,12 @@ var NicoLiveHelper = {
 	let p = now - this.starttime;  // Progress
 	let n = Math.floor(p/(30*60)); // 30分単位に0,1,2,...
 	liveprogress.label = GetTimeString(p);
+
+	if( (p%60)==0 && this._exclude ){
+	    // 配信開始していない間は1分ごとにステータスチェック.
+	    this.getpublishstatus(this.request_id);
+	}
+
 	if(p<0) p = 0;
 
 	let nt = NicoLivePreference.notice.time;
@@ -2661,17 +2667,12 @@ var NicoLiveHelper = {
 	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
 	    this.endtime = 0;
 	    this.getpublishstatus(this.request_id);
-	    this._enterlosstime = GetCurrentTime();
-	}
-
-	if( (p%60)==0 && this._exclude ){
-	    // 配信開始していない間は1分ごとにステータスチェック.
-	    this.getpublishstatus(this.request_id);
+	    this._enterlosstime = now;
 	}
 
 	if( this.iscaster && this.endtime==0 ){
 	    if( $('automatic-broadcasting').hasAttribute('checked') ){
-		if( (GetCurrentTime()-this._enterlosstime) > 2*60 ){
+		if( (now-this._enterlosstime) > 2*60 ){
 		    // 自動配信中に、ロスタイムに入って2分経ったら.
 		    this.finishBroadcasting();
 		}
