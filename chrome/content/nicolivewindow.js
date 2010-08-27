@@ -100,7 +100,7 @@ var NicoLiveWindow = {
 	let prefs = NicoLivePreference.getBranch();
 	if( prefs.getBoolPref("autoscroll") ){
 	    try{
-		let tab = this.findTab(NicoLiveHelper.request_id);
+		let tab = this.findTab(NicoLiveHelper.request_id) || this.findTab(NicoLiveHelper.community);
 		let player;
 		if(tab){
 		    player = tab.linkedBrowser.contentDocument.getElementById('WatchPlayer').wrappedJSObject;

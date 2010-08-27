@@ -56,36 +56,30 @@ var NicoLiveOverlay = {
 	return win;
     },
 
-    open:function(url,title,iscaster){
+    open:function(url,title,iscaster,community_id){
 	let feature="chrome,resizable=yes";
 	Application.storage.set("nico_request_id",url);
 	Application.storage.set("nico_live_title",title);
 	Application.storage.set("nico_live_caster",iscaster);
+	Application.storage.set("nico_live_coid",community_id);
 
 	if( this.isSingleWindowMode() ){
 	    let win = this.findWindow();
 	    if(win){
 		this.debugprint("NicoLive Helper Window Exists.");
-		win.NicoLiveHelper.connectNewBroadcasting(url,title,iscaster);
+		win.NicoLiveHelper.connectNewBroadcasting(url,title,iscaster,community_id);
 		win.focus();
 	    }else{
 		let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_lv0",feature);
-		w.arguments = [ url, title, iscaster ];
+		w.arguments = [ url, title, iscaster, community_id ];
 		w.focus();
 		this.debugprint("Open NicoLive Helper Window.");
 	    }
 	}else{
 	    let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
-	    w.arguments = [ url, title, iscaster ];
+	    w.arguments = [ url, title, iscaster, community_id ];
 	    w.focus();
 	}
-/*
-	let win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
-	    .openWindow(null, 'chrome://nicolivehelper/content/requestwindow.xul','NLH_'+url, feature, null);
-	win.arguments = [ url, title, iscaster ];
-	win.opener = window;
-	win.focus();
-*/
 	this.insertHistory(url,title);
 	//Application.console.log(url+' '+title);
     },
@@ -119,11 +113,13 @@ var NicoLiveOverlay = {
 		this.debugprint("utility_container is found.");
 	    }
 	}
+	let community_id = "";
 	if( url.indexOf("co") != -1 ){
 	    // co番号でアクセスした場合、lv番号を取得する.
+	    community_id = url;
 	    url = window.content.document.defaultView.wrappedJSObject.Video.id;
 	}
-	this.open(url,title,iscaster);
+	this.open(url,title,iscaster,community_id);
     },
 
     onPageLoad:function(e){
@@ -178,7 +174,13 @@ var NicoLiveOverlay = {
 			    title = "タイトルなし";
 			}
 		    }
-		    this.open(url,title,iscaster);
+		    let community_id;
+		    try{
+			community_id = e.target.location.href.match(/co\d+$/);
+		    } catch (x) {
+			this.debugprint(x);
+		    }
+		    this.open(url,title,iscaster,community_id);
 		} catch (x) {
 		}
 	    }

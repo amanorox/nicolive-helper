@@ -2504,12 +2504,11 @@ var NicoLiveHelper = {
 			musictime.label="コメントサーバから切断されました。";
 			sound.playSystemSound("_moz_alertdialog");
 			ShowNotice('コメントサーバから切断されました。',true);
-			
-			/*
+
 			setTimeout( function(){
 					AlertPrompt('コメントサーバから切断されました。',NicoLiveHelper.request_id);
 				    }, 5000 );
-			 */
+
 		    }
 		    NicoLiveHelper.close();
 		} catch (x) {
@@ -3280,7 +3279,7 @@ var NicoLiveHelper = {
     },
 
     // シングルウィンドウモードで別の番組に接続する用.
-    connectNewBroadcasting:function(request_id,title,iscaster){
+    connectNewBroadcasting:function(request_id,title,iscaster,community_id){
 	$('debug-textbox').value = "";
 	debugprint("Connect To New Broadcasting("+request_id+").");
 	NicoLiveComment.releaseReflector();
@@ -3292,6 +3291,7 @@ var NicoLiveHelper = {
 	    // これだけ初期化しておけば大丈夫かな.
 	    this.title = title;
 	    this.request_id = request_id;
+	    this.community = community_id;
 	    this.postkey = "";
 	    this.last_res = 0;
 	    this.inplay = false;
@@ -3300,6 +3300,7 @@ var NicoLiveHelper = {
 	    this.isnotified = new Array(); // 残り3分通知を出したかどうかのフラグ.
 	    this.commentstate = COMMENT_STATE_NONE;
 	    this.commentview = COMMENT_VIEW_NORMAL;
+	    this.resetRequestCount(); // 1人あたりのリクエスト受け付け数ワーク.
 	    this.start(request_id);
 	}else{
 	    // offline
@@ -3372,11 +3373,12 @@ var NicoLiveHelper = {
 	this.requestprocessingqueue = new Array();
 	this.musicinfo.length_ms = 0;
 
-	let request_id, title, iscaster;
+	let request_id, title, iscaster, community_id;
 	try{
 	    request_id = window.arguments[0];
 	    title      = window.arguments[1];
 	    iscaster   = window.arguments[2];
+	    community_id = window.arguments[3];
 	    if( request_id==null || title==null || iscaster==null ){
 		request_id = "lv0";
 		title = "";
@@ -3387,8 +3389,10 @@ var NicoLiveHelper = {
 	    request_id = Application.storage.get("nico_request_id","lv0");
 	    title      = Application.storage.get("nico_live_title","");
 	    iscaster   = Application.storage.get("nico_live_caster",true);
+	    community_id = Application.storage.get("nico_live_coid","co154");
 	}
 	debugprint("Caster:"+iscaster);
+	debugprint("Community:"+community_id);
 
 	debugprint(request_id);
 	this.requestqueue = new Array();
@@ -3418,6 +3422,7 @@ var NicoLiveHelper = {
 		this.loadRequestAndHistory();
 	    }
 	    this.start(request_id);
+	    this.community = community_id;
 	}else{
 	    // offline
 	    if( NicoLivePreference.isSingleWindowMode() ){
