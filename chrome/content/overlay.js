@@ -94,7 +94,7 @@ var NicoLiveOverlay = {
 	let title;
 	let iscaster = true;
 	try{
-	    title = window.content.document.getElementById("title").textContent;
+	    title = window.content.document.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1];
 	} catch (x) {
 	    try{
 		title = window.content.document.getElementsByTagName('title')[0].textContent;
@@ -166,7 +166,7 @@ var NicoLiveOverlay = {
 		let title;
 		try{
 		    try{
-			title = e.target.getElementById("title").textContent;
+			title = e.target.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1];
 		    } catch (x) {
 			try{
 			    title = e.target.getElementsByTagName('title')[0].textContent;
