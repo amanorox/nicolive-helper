@@ -2665,7 +2665,8 @@ var NicoLiveHelper = {
 	    this._enterlosstime = GetCurrentTime();
 	}
 
-	if( p>1 && this._exclude ){
+	if( (p%60)==0 && this._exclude ){
+	    // 配信開始していない間は1分ごとにステータスチェック.
 	    this.getpublishstatus(this.request_id);
 	}
 
