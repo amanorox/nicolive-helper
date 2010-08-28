@@ -2809,6 +2809,7 @@ var NicoLiveHelper = {
 		if( NicoLiveHelper.iscaster!="0" ){
 		    NicoLiveHelper.iscaster=true;
 		    debugprint('あなたは生放送主です');
+		    HttpObserver.init();
 		}else{
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('あなたは視聴者です');
@@ -2961,6 +2962,9 @@ var NicoLiveHelper = {
 
     // ロスタイムを秒で返す.
     calcLossTime:function(){
+	// ニコ生新バージョンだと放送開始時刻によらず一定っぽい感じがするので.
+	return 60;
+
 	let tmp = 120 - (this.starttime % 60);
 	if( tmp>105 ) tmp = 60;
 	tmp = Math.floor(tmp/10)*10; // 10秒未満の端数は切り捨て.
@@ -3022,6 +3026,7 @@ var NicoLiveHelper = {
 	// 配信開始前にこれがある
 	// 外部配信 http://watch.live.nicovideo.jp/api/configurestream/lv25214688?token=39cf24389dfda675eb2ba996934627794c86fd9b&key=hq&value=1&version=2
 	// 簡易配信 http://watch.live.nicovideo.jp/api/configurestream/lv25214688?token=39cf24389dfda675eb2ba996934627794c86fd9b&key=hq&value=0&version=2
+	// 配信終了 http://watch.live.nicovideo.jp/api/configurestream/lv25353436?token=8c1fdb8790312869e872ae6617a3ddf43de8eb5b&version=2&key=end%5Fnow
 	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=exclude&value=0&version=2&token="+token;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
@@ -3449,6 +3454,7 @@ var NicoLiveHelper = {
 	this.saveAll();
 	this.saveToStorage();
 	this.close();
+	HttpObserver.destroy();
     },
 
     test: function(){

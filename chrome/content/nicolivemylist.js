@@ -37,7 +37,7 @@ var NicoLiveMylist = {
 	    let lvid = NicoLiveHelper.request_id;
 	    let coid = NicoLiveHelper.community;
 	    let title = NicoLiveHelper.title;
-	    msg = "ニコ生 "+coid+" "+title+" "+lvid+" から登録\n";
+	    msg = ""+coid+" "+title+" "+lvid+" から登録\n";
 	    if( lvid=="lv0" ){
 		msg = "";
 	    }
