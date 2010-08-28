@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NicoLive Helper 1.1.14.2">
+	title="NicoLive Helper 1.1.15">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -161,6 +161,7 @@
 	<menuitem label="次枠へ" tooltiptext="次枠を開始するために、新規番組登録画面に移動します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
 	<menu label="その他">
 	  <menupopup>
+	    <menuitem label="放送ID(lvXXXXX)を入力して接続" oncommand="NicoLiveWindow.connectToBroadcasting();"/>
 	    <menuitem id="automatic-broadcasting" persist="checked" label="Automatic Broadcasting(Experimental)" type="checkbox" autocheck="true"/>
 	    <menuitem id="get-extratime" label="ロスタイム作成" tooltiptext="旧バージョン用：生主用コンソールを消去して、ロスタイムを作成します。" oncommand="NicoLiveWindow.removeConsole();"/>
 	    <menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>

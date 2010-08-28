@@ -96,6 +96,14 @@ var NicoLiveWindow = {
 	}
     },
 
+    connectToBroadcasting:function(){
+	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)を入力してください","放送ID(lvXXXX)を入力","");
+	lvid = lvid.match(/lv\d+/);
+	if(lvid){
+	    NicoLiveHelper.connectNewBroadcasting(lvid,"",true,"");
+	}
+    },
+
     init: function(){
 	let prefs = NicoLivePreference.getBranch();
 	if( prefs.getBoolPref("autoscroll") ){

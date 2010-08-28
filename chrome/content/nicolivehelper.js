@@ -2789,6 +2789,14 @@ var NicoLiveHelper = {
 		return;
 	    }
 	    try {
+		if( !NicoLiveHelper.title ){
+		    NicoLiveHelper.title  = xml.getElementsByTagName('title')[0].textContent;
+		}
+		if( NicoLivePreference.isSingleWindowMode() ){
+		    document.title = NicoLiveHelper.request_id+":"+NicoLiveHelper.title+" (Single Window/NicoLive Helper)";
+		}else{
+		    document.title = NicoLiveHelper.request_id+":"+NicoLiveHelper.title+" (NicoLive Helper)";
+		}
 		NicoLiveHelper.user_id    = xml.getElementsByTagName('user_id')[0].textContent;
 		NicoLiveHelper.is_premium = xml.getElementsByTagName('is_premium')[0].textContent;
 		NicoLiveHelper.addr       = xml.getElementsByTagName('addr')[0].textContent;
@@ -3288,7 +3296,6 @@ var NicoLiveHelper = {
 	if(request_id && request_id!="lv0"){
 	    // online
 	    title = title.replace(/\u200b/g,"");
-	    document.title = request_id+":"+title+" (Single Window/NicoLive Helper)";
 	    // これだけ初期化しておけば大丈夫かな.
 	    this.title = title;
 	    this.request_id = request_id;
@@ -3412,11 +3419,6 @@ var NicoLiveHelper = {
 	if(request_id && request_id!="lv0"){
 	    // online
 	    title = title.replace(/\u200b/g,"");
-	    if( NicoLivePreference.isSingleWindowMode() ){
-		document.title = request_id+":"+title+" (Single Window/NicoLive Helper)";
-	    }else{
-		document.title = request_id+":"+title+" (NicoLive Helper)";
-	    }
 	    this.title = title;
 
 	    if( iscaster || NicoLivePreference.isSingleWindowMode() ){
