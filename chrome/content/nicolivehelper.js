@@ -52,7 +52,7 @@ var NicoLiveHelper = {
     secofweek: 604800,    // 1週間の秒数(60*60*24*7).
 
     starttime: 0,          // 放送の始まった時刻(UNIX time) by getplayerstatus.
-    endtime: 0,            // 放送の終わる時刻(UNIX time) by getpublishstatus.
+    endtime: 0,            // 放送の終わる時刻(UNIX time) by getpublishstatus. ロスタイムになると 0 になる.
     musicstarttime: 0,     // 曲の再生開始時刻(UNIX time) /playを受け取った時刻.
     musicendtime: 0,       // 曲の終了予定時刻(UNIX time) 上記+再生時間.
 
@@ -2653,8 +2653,20 @@ var NicoLiveHelper = {
 
 	if(p<0) p = 0;
 
+	let remaintime = this.endtime - now;
+
+	// 3分前になったら自動無料延長の実施.
+	if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
+	    // 連続して呼ばないように、残り3分以下かつ15秒ごとに.
+	    // モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
+	    if( $('auto-freeextend').hasAttribute('checked') ){
+		debugprint("自動無料延長を行います");
+		this.getsalelist( true );
+	    }
+	}
+
 	let nt = NicoLivePreference.notice.time;
-	if( (this.endtime && this.endtime-now>0 && this.endtime-now < nt*60) ||
+	if( (this.endtime && remaintime>0 && remaintime < nt*60) ||
 	    (!this.endtime && n>=0 && p > (30-nt)*60 + 30*60*n) ){
 		// 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
 		// 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
@@ -3111,6 +3123,9 @@ var NicoLiveHelper = {
     },
 
     getremainpoint:function(){
+	if( this.isOffline() ) return;
+	if( !this.iscaster ) return;
+
 	let url = "http://watch.live.nicovideo.jp/api/getremainpoint?v=" + this.request_id;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
@@ -3125,7 +3140,12 @@ var NicoLiveHelper = {
 	req.open('GET', url );
 	req.send("");
     },
+
+    // 延長アイテムを取得し、延長を行います.
     getsalelist:function( do_freeextend ){
+	if(!this.iscaster) return;
+	if(this.isOffline()) return;
+
 	let url = "http://watch.live.nicovideo.jp/api/getsalelist?v=" + this.request_id;
 	let req = new XMLHttpRequest();
 	if( !req ) return;
@@ -3158,6 +3178,9 @@ var NicoLiveHelper = {
 
     // 無料延長.
     freeExtend:function(num, code){
+	if( this.isOffline() ) return;
+	if( !this.iscaster ) return;
+
 	let url = "http://watch.live.nicovideo.jp/api/usepoint";
 	let req = new XMLHttpRequest();
 	if(!req) return;
@@ -3170,7 +3193,9 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('new_end_time')[0].textContent);
 			    debugprint("New endtime="+NicoLiveHelper.endtime);
 			    let t = GetDateString( NicoLiveHelper.endtime * 1000 );
-			    NicoLiveHelper.postCasterComment("無料延長を行いました。新しい終了時刻は "+t+" です","");
+			    let str = "無料延長を行いました。新しい終了時刻は "+t+" です";
+			    NicoLiveHelper.postCasterComment(str,"");
+			    ShowNotice(str);
 			}else{
 			    ShowNotice("無料延長に失敗しました");
 			}
