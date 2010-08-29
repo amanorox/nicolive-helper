@@ -2658,11 +2658,11 @@ var NicoLiveHelper = {
 
 	// 3分前になったら自動無料延長の実施.
 	if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
-	    this._extendcnt++;
-	    if( this._extendcnt<4 ){
-		// 連続して呼ばないように、残り3分以下かつ15秒ごとに.
-		// モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
-		if( $('auto-freeextend').hasAttribute('checked') ){
+	    // 連続して呼ばないように、残り3分以下かつ15秒ごとに.
+	    // モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
+	    if( $('auto-freeextend').hasAttribute('checked') ){
+		this._extendcnt++;
+		if( this._extendcnt<4 ){
 		    debugprint("自動無料延長を行います");
 		    this.getsalelist( true );
 		}
