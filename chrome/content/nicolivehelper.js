@@ -3110,6 +3110,95 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    getremainpoint:function(){
+	let url = "http://watch.live.nicovideo.jp/api/getremainpoint?v=" + this.request_id;
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let remain = req.responseXML;
+		    debugprint("remain point="+remain.getElementsByTagName("remain")[0].textContent);
+		}
+	    }
+	};
+	req.open('GET', url );
+	req.send("");
+    },
+    getsalelist:function( do_freeextend ){
+	let url = "http://watch.live.nicovideo.jp/api/getsalelist?v=" + this.request_id;
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    //debugprint(req.responseText);
+		    // price=0 で item=freeextend な item を得る.
+		    let freeitem = evaluateXPath(req.responseXML,"/getsalelist/item[item='freeextend' and price=0]");
+		    // 予約枠で無料延長特典があるなら、freeextendかつ0ポイントが 1個ある.
+		    if( freeitem.length==1 ){
+			debugprint("a free extendable item is found.");
+			let num = freeitem[0].getElementsByTagName('num')[0].textContent;
+			let code = freeitem[0].getElementsByTagName('code')[0].textContent;
+			debugprint("num="+num);
+			debugprint("code="+code);
+			if( do_freeextend ){
+			    NicoLiveHelper.freeExtend(num, code);
+			}
+		    }else{
+			debugprint("無料延長可能なアイテムがありませんでした");
+			ShowNotice("無料延長可能なアイテムがありませんでした");
+		    }
+		}
+	    }
+	};
+	req.open('GET', url );
+	req.send("");
+    },
+
+    // 無料延長.
+    freeExtend:function(num, code){
+	let url = "http://watch.live.nicovideo.jp/api/usepoint";
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let xml = req.responseXML;
+		    try{
+			if( xml.getElementsByTagName('usepoint')[0].getAttribute('status')=='ok' ){
+			    NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('new_end_time')[0].textContent);
+			    debugprint("New endtime="+NicoLiveHelper.endtime);
+			    let t = GetDateString( NicoLiveHelper.endtime * 1000 );
+			    NicoLiveHelper.postCasterComment("無料延長を行いました。新しい終了時刻は "+t+" です","");
+			}else{
+			    ShowNotice("無料延長に失敗しました");
+			}
+		    } catch (x) {
+			debugprint(x);
+			ShowNotice("無料延長に失敗しました");
+		    }
+		}else{
+		    ShowNotice("無料延長に失敗しました(HTTPエラー)");
+		}
+	    }
+	};
+	req.open('POST',url);
+	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	let data = new Array();
+	let now = GetCurrentTime();
+	let remain = this.endtime - now;
+	data.push("token="+this.token);
+	data.push("remain="+remain);  // 残り秒数
+	data.push("date="+now); // 現在日時
+	data.push("num="+num); // セールスリストの番号.
+	data.push("code="+code); // セールスリストのコード.
+	data.push("item=freeextend"); // 無料延長.
+	data.push("v="+this.request_id);
+	debugprint('free-extend:'+data.join(','));
+	req.send(data.join('&'));
+    },
+
     // スタートアップコメントを送信開始する.
     sendStartupComment:function(){
 	if( !this.iscaster ) return;
