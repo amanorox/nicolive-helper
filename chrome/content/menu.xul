@@ -17,10 +17,18 @@
     <menuitem id="nicolive-popup-menu" label="NicoLive Helper" oncommand="NicoLiveOverlay.openNicoLiveWindow();" />
   </popup>
 
-<!--
   <statusbar id="status-bar">
-    <statusbarpanel id="NicoLive-panel" label="NicoLive Helper" />
+    <!--<statusbarpanel id="NicoLive-panel" label="NicoLive Helper" />-->
+    <statusbarpanel id="nicolivehelper-panel" context="nicolivehelper-contextmenu" class="statusbarpanel-iconic" src="chrome://nicolivehelper/content/data/play.png" />
   </statusbar>
--->
+
+  <popupset>
+    <menupopup id="nicolivehelper-contextmenu">
+      <menuitem id="nlh-open-window" label="NicoLive Helperを開く" oncommand="NicoLiveOverlay.openNicoLiveWindow();"/>
+      <menuseparator/>
+      <menuitem id="nlh-go-mypage" label="マイページ" onclick="if(event.button==0){window._content.document.location.href='http://live.nicovideo.jp/my';}else if(event.button==1){openNewTabWith('http://live.nicovideo.jp/my',window._content.document,null,event);}" />
+      <menuitem id="nlh-go-editstream" label="放送する" onclick="if(event.button==0){window._content.document.location.href='http://live.nicovideo.jp/editstream';}else if(event.button==1){openNewTabWith('http://live.nicovideo.jp/editstream',window._content.document,null,event);}" />
+    </menupopup>
+  </popupset>
 
 </overlay>
