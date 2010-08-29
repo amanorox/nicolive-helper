@@ -70,6 +70,7 @@ var NicoLiveHelper = {
     commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
 
     _playmusictime: 0,  // playMusicを呼び出した時刻.
+    _extendcnt: 0, // 延長処理を呼んだ回数.
 
     twitterinfo: {},  // Twitter投稿API
 
@@ -2657,11 +2658,14 @@ var NicoLiveHelper = {
 
 	// 3分前になったら自動無料延長の実施.
 	if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
-	    // 連続して呼ばないように、残り3分以下かつ15秒ごとに.
-	    // モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
-	    if( $('auto-freeextend').hasAttribute('checked') ){
-		debugprint("自動無料延長を行います");
-		this.getsalelist( true );
+	    this._extendcnt++;
+	    if( this._extendcnt<4 ){
+		// 連続して呼ばないように、残り3分以下かつ15秒ごとに.
+		// モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
+		if( $('auto-freeextend').hasAttribute('checked') ){
+		    debugprint("自動無料延長を行います");
+		    this.getsalelist( true );
+		}
 	    }
 	}
 
@@ -3192,6 +3196,7 @@ var NicoLiveHelper = {
 			if( xml.getElementsByTagName('usepoint')[0].getAttribute('status')=='ok' ){
 			    NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('new_end_time')[0].textContent);
 			    debugprint("New endtime="+NicoLiveHelper.endtime);
+			    NicoLiveHelper._extendcnt = 0;
 			    let t = GetDateString( NicoLiveHelper.endtime * 1000 );
 			    let str = "無料延長を行いました。新しい終了時刻は "+t+" です";
 			    NicoLiveHelper.postCasterComment(str,"");
