@@ -2507,7 +2507,7 @@ var NicoLiveHelper = {
 			ShowNotice('コメントサーバから切断されました。',true);
 
 			setTimeout( function(){
-					AlertPrompt('コメントサーバから切断されました。',NicoLiveHelper.request_id);
+					AlertPrompt('コメントサーバから切断されました。(code='+status+')',NicoLiveHelper.request_id);
 				    }, 5000 );
 
 		    }
