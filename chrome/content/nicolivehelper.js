@@ -75,12 +75,14 @@ var NicoLiveHelper = {
     twitterinfo: {},  // Twitter投稿API
 
     // リクを受け付けるかどうかチェック.
-    checkAcceptRequest: function(xml, comment_no){
+    checkAcceptRequest: function(xml, comment_no, is_self_request){
 	if(xml.getElementsByTagName('error').length){ // 動画がない.
 	    return {code:-1,msg:NicoLivePreference.msg.deleted,movieinfo:{}};
 	}
 	let info = this.xmlToMovieInfo(xml);
 	if( !info ){
+	    ShowNotice("コメント番号 "+comment_no+" のリクエストは動画情報を取得できませんでした");
+	    debugprint("コメント番号 "+comment_no+" のリクエストは動画情報を取得できませんでした");
 	    return {code:-1,msg:"",movieinfo:{}};
 	}
 
@@ -99,8 +101,8 @@ var NicoLiveHelper = {
 	    info.classify = NicoLiveClassifier.classify(str);
 	}
 
-	// リクを受け付けていない.
-	if( !this.allowrequest ){
+	if( !this.allowrequest && !is_self_request){
+	    // リクを受け付けていない(自貼りを除く).
 	    // アンカーチェックはここでやる.
 	    if( this.anchor.start && this.anchor.end &&
 		this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
@@ -114,7 +116,7 @@ var NicoLiveHelper = {
 	    return {code:-1,msg:NicoLivePreference.msg.no_live_play,movieinfo:info};
 	}
 
-	if(NicoLivePreference.limitnewmovie){
+	if(NicoLivePreference.limitnewmovie && !is_self_request){
 	    // 7日内に投稿された動画.
 	    let sevendaysago = GetCurrentTime()-this.secofweek;
 	    let d = new Date(sevendaysago*1000);
@@ -126,7 +128,7 @@ var NicoLiveHelper = {
 	}
 
 	// 再生済み.
-	if(!NicoLivePreference.accept_playedvideo && this.isPlayedMusic(info.video_id)){
+	if(!is_self_request && !NicoLivePreference.accept_playedvideo && this.isPlayedMusic(info.video_id)){
 	    return {code:-4,msg:NicoLivePreference.msg.played,movieinfo:info};
 	}
 
@@ -136,7 +138,7 @@ var NicoLiveHelper = {
 	}
 
 	// リクエスト制限のチェック.
-	if(NicoLivePreference.restrict.dorestrict){
+	if(!is_self_request && NicoLivePreference.restrict.dorestrict){
 	    let msg = this.checkMovieRestriction(info);
 	    if( msg!=null ){
 		return {code:-6,"msg":msg,movieinfo:info};
@@ -2190,10 +2192,12 @@ var NicoLiveHelper = {
     // リクエスト処理キューを先頭から処理する.
     processRequest:function(){
 	let q;
+	let cnt = 0;
 	while( NicoLiveHelper.requestprocessingqueue.length && NicoLiveHelper.requestprocessingqueue[0].xml!=null ){
+	    cnt++;
 	    q = NicoLiveHelper.requestprocessingqueue.shift();
 
-	    let ans = NicoLiveHelper.checkAcceptRequest( q.xml, q.comment_no );
+	    let ans = NicoLiveHelper.checkAcceptRequest( q.xml, q.comment_no, q.is_self_request );
 	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではなくて主セレ扱い.
 	    ans.movieinfo.selfrequest = q.is_self_request;
 
@@ -2257,6 +2261,9 @@ var NicoLiveHelper = {
 	    }
 	    NicoLiveHelper.updateRemainRequestsAndStocks();
 	}// end of while	
+	if( cnt ){
+	    NicoLiveHelper.saveRequest();
+	}
     },
 
     // リクエストの処理状況を表示する.
@@ -2316,7 +2323,6 @@ var NicoLiveHelper = {
 	    }
 	    NicoLiveHelper.processRequest();
 	    NicoLiveHelper.showRequestProgress();
-	    NicoLiveHelper.saveRequest();
 	};
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+vid;
 	req.open('GET', url );
