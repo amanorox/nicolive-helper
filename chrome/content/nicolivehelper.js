@@ -683,6 +683,7 @@ var NicoLiveHelper = {
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
 	//debugprint(video_id+'のサムネイルを取得中...');
 	req.open('GET', url );
+	req.setRequestHeader('User-Agent',this._useragent);
 	req.send("");
     },
 
@@ -2180,6 +2181,7 @@ var NicoLiveHelper = {
 	};
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+sm;
 	req.open('GET', url );
+	req.setRequestHeader('User-Agent',this._useragent);
 	req.send("");
     },
 
@@ -2326,6 +2328,7 @@ var NicoLiveHelper = {
 	};
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+vid;
 	req.open('GET', url );
+	req.setRequestHeader('User-Agent',this._useragent);
 	req.send("");
     },
 
@@ -3505,6 +3508,7 @@ var NicoLiveHelper = {
 
     init: function(){
 	debugprint('Initializing NicoLive Helper...');
+	this._useragent = 'NicoLiveHelper/'+GetAddonVersion();
 	srand( GetCurrentTime() );
 
 	// リクエストのコメ番順シーケンシャル処理用.

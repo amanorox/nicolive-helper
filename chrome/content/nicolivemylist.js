@@ -74,6 +74,7 @@ var NicoLiveMylist = {
 	    }
 	};
 	xmlhttp.open('POST', url );
+	xmlhttp.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	xmlhttp.send(reqstr.join('&'));
     },
@@ -96,6 +97,7 @@ var NicoLiveMylist = {
 	    }
 	};
 	xmlhttp.open('GET', url );
+	xmlhttp.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	xmlhttp.send('');
     },
 
@@ -127,6 +129,7 @@ var NicoLiveMylist = {
 	    }
 	};
 	req.open('POST', url );
+	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	req.send(reqstr.join('&'));
     },
@@ -163,6 +166,7 @@ var NicoLiveMylist = {
 		}
 	    };
 	    req.open('GET', url );
+	    req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	    req.send('');
 	    debugprint('add to mylist:'+video_id+'->'+mylist_name);
 	} catch (x) {
@@ -217,6 +221,7 @@ var NicoLiveMylist = {
 	    }
 	};
 	req.open('GET', url );
+	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.send('');
     },
 
@@ -245,6 +250,7 @@ var NicoLiveMylist = {
 	    }
 	};
 	req.open('GET', url );
+	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.send('');
     },
 
@@ -328,6 +334,7 @@ var NicoLiveMylist = {
 	    };
 	    let url = "http://www.nicovideo.jp/api/mylist/list";
 	    req.open('POST',url );
+	    req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	    req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	    let data = "group_id="+item.id;
 	    req.send(data);
@@ -384,6 +391,7 @@ var NicoLiveMylist = {
 	};
 	let url = "http://www.nicovideo.jp/api/mylistgroup/list";
 	req.open('GET',url);
+	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 	req.send('');
     }
