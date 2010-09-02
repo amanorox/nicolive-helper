@@ -2987,11 +2987,9 @@ var NicoLiveHelper = {
 
     // ロスタイムを秒で返す.
     calcLossTime:function(){
-	// ニコ生新バージョンだと放送開始時刻によらず一定っぽい感じがするので.
-	return 60;
-
+	// どうも新バージョンでもロスタイム時間は以下の式でOKみたい.
 	let tmp = 120 - (this.starttime % 60);
-	if( tmp>105 ) tmp = 60;
+	if( tmp>115 ) tmp = 60;
 	tmp = Math.floor(tmp/10)*10; // 10秒未満の端数は切り捨て.
 	return tmp;
     },
