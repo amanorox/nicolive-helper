@@ -7,6 +7,12 @@ const CLASS_ID = Components.ID("6224daa1-71a2-4d1a-ad90-01ca1c08e323");
 const CLASS_NAME = "Simple AutoComplete";
 const CONTRACT_ID = "@mozilla.org/autocomplete/search;1?name=simple-autocomplete";
 
+try{
+    Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+} catch (x) {
+}
+
+
 // Implements nsIAutoCompleteResult
 function SimpleAutoCompleteResult(searchString, searchResult,
                                   defaultIndex, errorDescription,
@@ -124,6 +130,10 @@ function SimpleAutoCompleteSearch() {
 }
 
 SimpleAutoCompleteSearch.prototype = {
+    classID: CLASS_ID,
+    classDescription: CLASS_NAME,
+    contractID: CONTRACT_ID,
+
   /*
    * Search for a given string and notify a listener (either synchronously
    * or asynchronously) of the result
@@ -164,11 +174,12 @@ SimpleAutoCompleteSearch.prototype = {
   stopSearch: function() {
   },
     
-  QueryInterface: function(aIID) {
+  _QueryInterface: function(aIID) {
     if (!aIID.equals(Ci.nsIAutoCompleteSearch) && !aIID.equals(Ci.nsISupports))
         throw Components.results.NS_ERROR_NO_INTERFACE;
     return this;
-  }
+  },
+  QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsIAutoCompleteSearch])
 };
 
 // Factory
@@ -210,3 +221,7 @@ var SimpleAutoCompleteSearchModule = {
 
 // Module initialization
 function NSGetModule(aCompMgr, aFileSpec) { return SimpleAutoCompleteSearchModule; }
+
+if (XPCOMUtils.generateNSGetFactory){
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([SimpleAutoCompleteSearch]);
+}

@@ -847,6 +847,7 @@ var NicoLiveRequest = {
 
     // リクエスト、ストック、プレイリストの詳細表示のマイリス登録メニューから登録.
     addMylist:function(mylist_id,mylist_name,ev){
+	debugprint("MylistID:"+mylist_id+" Name:"+mylist_name);
 	let elem = FindParentElement(document.popupNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id'); // 動画IDを取れる.
 	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id, ev);
@@ -855,7 +856,7 @@ var NicoLiveRequest = {
     // リク、ストックタブ用のマイリス追加メニューを作る.
     appendAddMylistMenu:function(mylists){
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
+	popupmenu.setAttribute("oncommand","alert(document.popupNode);NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
 	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
 
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
