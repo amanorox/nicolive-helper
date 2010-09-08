@@ -174,12 +174,12 @@ SimpleAutoCompleteSearch.prototype = {
   stopSearch: function() {
   },
     
-  _QueryInterface: function(aIID) {
+  QueryInterface: function(aIID) {
     if (!aIID.equals(Ci.nsIAutoCompleteSearch) && !aIID.equals(Ci.nsISupports))
         throw Components.results.NS_ERROR_NO_INTERFACE;
     return this;
   },
-  QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsIAutoCompleteSearch])
+  _QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsIAutoCompleteSearch])
 };
 
 // Factory
