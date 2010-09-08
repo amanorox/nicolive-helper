@@ -1,7 +1,10 @@
 /**
  * いろいろと便利関数などを.
  */
-Components.utils.import("resource://gre/modules/AddonManager.jsm");  // Fx4.0
+try{
+    Components.utils.import("resource://gre/modules/AddonManager.jsm");  // Fx4.0
+} catch (x) {
+}
 
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const HTML_NS= "http://www.w3.org/1999/xhtml";
