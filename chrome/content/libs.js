@@ -1,6 +1,8 @@
 /**
  * いろいろと便利関数などを.
  */
+Components.utils.import("resource://gre/modules/AddonManager.jsm");  // Fx4.0
+
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const HTML_NS= "http://www.w3.org/1999/xhtml";
 const MYLIST_URL = "http://www.nicovideo.jp/mylistgroup_edit";
@@ -31,9 +33,24 @@ function $$(tag){
 
 function GetAddonVersion()
 {
-    var em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
-    var addon = em.getItemForID("nicolivehelper@miku39.jp");
-    var version = addon.version;
+    let version;
+    try{
+	var em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
+	var addon = em.getItemForID("nicolivehelper@miku39.jp");
+	version = addon.version;
+    } catch (x) {
+	// Fx4
+	AddonManager.getAddonByID("nicolivehelper@miku39.jp",
+				  function(addon) {
+				      version = addon.version;
+				      //alert("My extension's version is " + addon.version);  
+				  });
+	// Piroさん(http://piro.sakura.ne.jp/)が値が設定されるまで待つことをやっていたので真似してしまう.
+	var thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
+	while (version === void(0)) {
+	    thread.processNextEvent(true);
+	}
+    }
     return version;
 }
 
@@ -117,10 +134,25 @@ function OpenFile(path){
 // NicoLiveHelperのインストールパスを返す.
 function GetExtensionPath(){
     let id = "nicolivehelper@miku39.jp";
-    let ext = Components.classes["@mozilla.org/extensions/manager;1"]
-        .getService(Components.interfaces.nsIExtensionManager)
-        .getInstallLocation(id)
-        .getItemLocation(id);
+    let ext;
+    try{
+	ext = Components.classes["@mozilla.org/extensions/manager;1"]
+            .getService(Components.interfaces.nsIExtensionManager)
+            .getInstallLocation(id)
+            .getItemLocation(id);
+    } catch (x) {
+	let _addon;
+	AddonManager.getAddonByID("nicolivehelper@miku39.jp",
+				  function(addon) {
+				      _addon = addon;
+				  });
+	// Piroさん(http://piro.sakura.ne.jp/)が値が設定されるまで待つことをやっていたので真似してしまう.
+	var thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
+	while (_addon === void(0)) {
+	    thread.processNextEvent(true);
+	}
+	ext = _addon.getResourceURI('/').QueryInterface(Components.interfaces.nsIFileURL).file.clone();
+    }
     return ext;
 }
 
@@ -164,6 +196,7 @@ function InputPromptWithCheck(text,caption,input,checktext){
 }
 
 function FindParentElement(elem,tag){
+    debugprint("Element:"+elem+" Tag:"+tag);
     while(elem.parentNode &&
 	  (!elem.tagName || (elem.tagName.toUpperCase()!=tag.toUpperCase()))){
 	elem = elem.parentNode;
