@@ -473,8 +473,8 @@
     <!-- for statusbar -->
     <menupopup id="popup-add-mylist">
       <menu label="&rate.name;">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,NicoLiveHelper.musicinfo.video_id);"
-		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,NicoLiveHelper.musicinfo.video_id);">
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,NicoLiveHelper.musicinfo.video_id, this.triggerNode);"
+		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,NicoLiveHelper.musicinfo.video_id, this.triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
 	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
 	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
@@ -489,33 +489,32 @@
     <!-- for comment -->
     <menupopup id="popup-comment">
       <hbox>
-<!--	<menuseparator/> -->
 	<label value="" id="popup-comment-displayuserid"/>
       </hbox>
-      <menuitem id="popup-comment-openprofile" label="&comment.menu_openprofile;" oncommand="NicoLiveComment.openProfile();"/>
+      <menuitem id="popup-comment-openprofile" label="&comment.menu_openprofile;" oncommand="NicoLiveComment.openProfile(this.triggerNode);"/>
       <menuseparator/>
-      <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName();"/>
+      <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName(this.triggerNode);"/>
       <menu label="&comment.menu_color;">
 	<menupopup>
-	  <menuitem label="&comment.menu_clearcolor;" oncommand="NicoLiveComment.clearColorSetting();"/>
-	  <colorpicker id="comment-color" onselect="NicoLiveComment.changeColor();"/>
+	  <menuitem label="&comment.menu_clearcolor;" oncommand="NicoLiveComment.clearColorSetting(this.triggerNode);"/>
+	  <colorpicker id="comment-color" onselect="NicoLiveComment.changeColor(this.triggerNode);"/>
 	</menupopup>
       </menu>
-      <menuitem label="&comment.menu_reflection;" tooltiptext="&comment.tooltip_reflection;" oncommand="NicoLiveComment.addCommentReflector();"/>
+      <menuitem label="&comment.menu_reflection;" tooltiptext="&comment.tooltip_reflection;" oncommand="NicoLiveComment.addCommentReflector(this.triggerNode);"/>
       <menuseparator/>
       <menuitem id="id-release-reflection" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
     </menupopup>
 
     <!-- for comment body -->
-    <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(event);">
+    <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment();">
       <menuitem label="JASRAC検索" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
       <menuitem label="e-License検索" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
-      <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>
+      <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment(this.triggerNode);"/>
     </menupopup>
     <menupopup id="popup-comment-anchor">
-      <menuitem label="&comment.menu_copy;" oncommand="NicoLiveComment.copyComment();"/>
-      <menuitem label="&comment.menu_setselfrequest;" oncommand="NicoLiveComment.setSelfRequest(event);"/>
-      <menuitem label="&comment.menu_moverequest_to_top;" oncommand="NicoLiveComment.moveRequestToTop(event);"/>
+      <menuitem label="&comment.menu_copy;" oncommand="NicoLiveComment.copyComment(this.triggerNode);"/>
+      <menuitem label="&comment.menu_setselfrequest;" oncommand="NicoLiveComment.setSelfRequest(this.triggerNode);"/>
+      <menuitem label="&comment.menu_moverequest_to_top;" oncommand="NicoLiveComment.moveRequestToTop(this.triggerNode);"/>
     </menupopup>
 
     <menupopup id="popup-comment-kotehan">
@@ -527,10 +526,10 @@
       <menu label="&classify.menu;">
 	<menupopup>
 	  <menu label="&classify.train;">
-	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,this.triggerNode);">
 	    </menupopup>
 	  </menu>
-	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
+	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(this.triggerNode);"/>
 	</menupopup>
       </menu>
       <menuseparator/>
@@ -560,11 +559,11 @@
       </menu>
 
       <menuseparator/>
-      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();" id="menu-request-additionalinfo"/>
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard(this.triggerNode);"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(this.triggerNode);"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(this.triggerNode);" id="menu-request-additionalinfo"/>
       <menu label="&rate.name;">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,null,this.triggerNode);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,null,this.triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
 	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
 	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
@@ -573,9 +572,9 @@
 	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
-      <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare();" tooltiptext="&menu.tooltip_prepare;"/>
+      <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare(this.triggerNode);" tooltiptext="&menu.tooltip_prepare;"/>
       <menuseparator/>
-      <menuitem label="&menu.comment_reflection;" tooltiptext="&menu.tooltip_comment_reflection;" oncommand="NicoLiveRequest.addToCommentReflector(event);"/>
+      <menuitem label="&menu.comment_reflection;" tooltiptext="&menu.tooltip_comment_reflection;" oncommand="NicoLiveRequest.addToCommentReflector(this.triggerNode);"/>
       <menuitem id="id-release-reflection-from-request" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
       <menuseparator/>
       <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
@@ -584,21 +583,21 @@
     <!-- for error tab -->
     <menupopup id="popup-error-request">
       <menu label="&classify.train;">
-	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,this.triggerNode);">
 	</menupopup>
       </menu>
-      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
+      <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(this.triggerNode);"/>
     </menupopup>
 
     <!-- for database -->
     <menupopup id="popup-db-result">
-      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="&menu.db_addstock;" oncommand="NicoLiveDatabase.addStockOne();"/>
-      <menuitem label="&menu.db_sendrequest;" oncommand="NicoLiveDatabase.sendRequestOne();"/>
-      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();"/>
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard(this.triggerNode);"/>
+      <menuitem label="&menu.db_addstock;" oncommand="NicoLiveDatabase.addStockOne(this.triggerNode);"/>
+      <menuitem label="&menu.db_sendrequest;" oncommand="NicoLiveDatabase.sendRequestOne(this.triggerNode);"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(this.triggerNode);"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(this.triggerNode);"/>
       <menu label="&rate.name;">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,null,this.triggerNode);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,null,this.triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
 	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
 	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
@@ -608,7 +607,7 @@
 	</menupopup>
       </menu>
       <menuseparator/>
-      <menuitem label="&menu.db_delete;" oncommand="NicoLiveDatabase.deleteMovie();"/>
+      <menuitem label="&menu.db_delete;" oncommand="NicoLiveDatabase.deleteMovie(this.triggerNode);"/>
       <menuseparator/>
       <menuitem label="&menu.db_delete_all;" oncommand="NicoLiveDatabase.deleteSearchResults();"/>
     </menupopup>
@@ -618,10 +617,10 @@
       <menu label="&classify.menu;">
 	<menupopup>
 	  <menu label="&classify.train;">
-	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,this.triggerNode);">
 	    </menupopup>
 	  </menu>
-	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
+	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(this.triggerNode);"/>
 	</menupopup>
       </menu>
       <menuseparator/>
@@ -652,11 +651,11 @@
       </menu>
       <menuitem label="&menu.stock_showdetail;" oncommand="NicoLiveRequest.showhideDetail();"/>
       <menuseparator/>
-      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();" id="menu-stock-additionalinfo"/>
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard(this.triggerNode);"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(this.triggerNode);"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(this.triggerNode);" id="menu-stock-additionalinfo"/>
       <menu label="&rate.name;">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,null,this.triggerNode);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,null,this.triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
 	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
 	  <menuitem label="&rate.2;" value="20" type="checkbox"/>
@@ -665,13 +664,13 @@
 	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
-      <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare();" tooltiptext="&menu.tooltip_prepare;"/>
-      <menuitem label="&menu.turnoff_playedflag;" oncommand="NicoLiveRequest.offPlayedStatus();"/>
+      <menuitem label="&menu.prepare_video;" oncommand="NicoLiveRequest.prepare(this.triggerNode);" tooltiptext="&menu.tooltip_prepare;"/>
+      <menuitem label="&menu.turnoff_playedflag;" oncommand="NicoLiveRequest.offPlayedStatus(this.triggerNode);"/>
       <menuseparator/>
       <menuitem label="&menu.stock_savefile;" oncommand="NicoLiveRequest.saveStockToFile();"/>
       <menuitem label="test" oncommand="alert(document.popupNode);"/>
       <menu label="submenu">
-	<menupopup oncommand="alert(document.popupNode);">
+	<menupopup oncommand="alert(this.triggerNode);">
 	  <menuitem label="test1"/>
 	  <menuitem label="test2" oncommand="alert('2/'+document.popupNode);"/>
 	</menupopup>
@@ -683,19 +682,19 @@
       <menu label="&classify.menu;">
 	<menupopup>
 	  <menu label="&classify.train;">
-	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event);">
+	    <menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,this.triggerNode);">
 	    </menupopup>
 	  </menu>
-	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event);"/>
+	  <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(this.triggerNode);"/>
 	</menupopup>
       </menu>
       <menuseparator/>
 
-      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();" id="menu-playlist-additionalinfo"/>
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard(this.triggerNode);"/>
+      <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(this.triggerNode);"/>
+      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(this.triggerNode);" id="menu-playlist-additionalinfo"/>
       <menu label="&rate.name;">
-	<menupopup oncommand="NicoLiveDatabase.setFavorite(event);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event);">
+	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,null,this.triggerNode);" onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,null,this.triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
 	  <menuitem label="&rate.1;" value="10" type="checkbox"/>
 	  <menuitem label="&rate.2;" value="20" type="checkbox"/>

@@ -707,8 +707,8 @@ var NicoLiveRequest = {
 
 
     // ストックの再生済み状態をOFFにする.
-    offPlayedStatus:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    offPlayedStatus:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 	NicoLiveHelper.offPlayedStatus(video_id);
 
@@ -846,21 +846,23 @@ var NicoLiveRequest = {
     },
 
     // リクエスト、ストック、プレイリストの詳細表示のマイリス登録メニューから登録.
-    addMylist:function(mylist_id,mylist_name,ev){
+    addMylist:function(mylist_id,mylist_name,ev, triggerNode){
 	debugprint("MylistID:"+mylist_id+" Name:"+mylist_name);
-	let elem = FindParentElement(document.popupNode,'vbox');
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id'); // 動画IDを取れる.
 	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id, ev);
     },
 
     // リク、ストックタブ用のマイリス追加メニューを作る.
     appendAddMylistMenu:function(mylists){
+	// こちらはストックのコンテキストメニューのマイリスト追加メニュー.
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","alert(document.popupNode);NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event,$('popup-sort-stock').triggerNode);");
 	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
 
+	// こっちはリクエストの方.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event,$('popup-copyrequest').triggerNode);");
 	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
     },
 
@@ -925,9 +927,9 @@ var NicoLiveRequest = {
     },
 
     // リク主をコメントリフレクタに登録する.
-    addToCommentReflector:function(){
+    addToCommentReflector:function(triggerNode){
 	try{
-	    let tr = FindParentElement(document.popupNode,'html:tr');
+	    let tr = FindParentElement(document.popupNode||triggerNode,'html:tr');
 	    let n = tr.getAttribute('request-index');
 	    let item = NicoLiveHelper.getRequestItem(n);
 	    NicoLiveComment.showCommentReflectorDialog(item.user_id,item.cno);
@@ -937,15 +939,15 @@ var NicoLiveRequest = {
     },
 
     // 動画の先読みを行う.
-    prepare:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    prepare:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let vid = elem.getAttribute('nicovideo_id');
 	NicoLiveHelper.postCasterComment('/prepare '+vid,""); // 動画IDを取れる.
     },
 
     // 学習を行う.
-    doTrain:function(e){
-	let vbox = FindParentElement(document.popupNode,'vbox');
+    doTrain:function(e, triggerNode){
+	let vbox = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let vid = vbox.getAttribute('nicovideo_id');
 	let item = NicoLiveHelper.findVideoInfo(vid);
 	if(item==null) return;
@@ -959,7 +961,7 @@ var NicoLiveRequest = {
     },
 
     // 分類を行う.
-    doClassify:function(e){
+    doClassify:function(triggerNode){
 	let vbox = FindParentElement(document.popupNode,'vbox');
 	let vid = vbox.getAttribute('nicovideo_id');
 	let item = NicoLiveHelper.findVideoInfo(vid);

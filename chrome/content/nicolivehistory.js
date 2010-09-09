@@ -110,7 +110,7 @@ var NicoLiveHistory = {
 
 	// 詳細表示用のコンテキストメニュー.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event,$('popup-playlist').triggerNode);");
 	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-additionalinfo').nextSibling );
     },
 

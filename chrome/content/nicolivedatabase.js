@@ -430,14 +430,14 @@ var NicoLiveDatabase = {
     },
 
     // 選択した1つをストックに追加.
-    addStockOne:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    addStockOne:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	NicoLiveRequest.addStock(elem.getAttribute('nicovideo_id'));
     },
 
     // 選択した1つをリクエスト送信.
-    sendRequestOne:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    sendRequestOne:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 	if(NicoLiveHelper.iscaster || NicoLiveHelper.isOffline()){
 	    NicoLiveRequest.addRequest(video_id);
@@ -517,8 +517,8 @@ var NicoLiveDatabase = {
     },
 
     // 現在のvbox内の動画IDをコピーする(リク、ストック、DBで共通利用可)
-    copyToClipboard:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    copyToClipboard:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	CopyToClipboard(elem.getAttribute('nicovideo_id')); // 動画IDを取れる.
     },
 
@@ -534,8 +534,8 @@ var NicoLiveDatabase = {
 	}
     },
 
-    deleteMovie:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    deleteMovie:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 	this.deleteMovieByVideoId(video_id);
 	ShowNotice(video_id+"をDBから削除しました");
@@ -553,8 +553,8 @@ var NicoLiveDatabase = {
 	ShowNotice('検索結果にある動画を全てDBから削除しました');
     },
 
-    setPName:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    setPName:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 	let oldpname = this.getPName(video_id);
 	let pname = InputPrompt( LoadFormattedString('STR_TEXT_DB_SET_PNAME',[video_id]),
@@ -594,8 +594,8 @@ var NicoLiveDatabase = {
 	return pname;
     },
 
-    setAdditional:function(){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    setAdditional:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id');
 
 	let oldadditional = this.getAdditional(video_id);
@@ -631,8 +631,8 @@ var NicoLiveDatabase = {
     },
 
     // レート(お気に入り度)をセット.
-    setFavorite:function(e,vid){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    setFavorite:function(e,vid, triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id;
 	if(vid){
 	    video_id = vid;
@@ -696,8 +696,8 @@ var NicoLiveDatabase = {
     },
 
     // レート設定メニューが開かれるとき.
-    showingRateMenu:function(e,vid){
-	let elem = FindParentElement(document.popupNode,'vbox');
+    showingRateMenu:function(e,vid, triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let video_id;
 	if(vid){
 	    video_id = vid;

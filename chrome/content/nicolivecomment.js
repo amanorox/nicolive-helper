@@ -151,8 +151,8 @@ var NicoLiveComment = {
 	}
     },
 
-    copyComment:function(){
-	let elem = FindParentElement(document.popupNode,'hbox');
+    copyComment:function(triggerNode){
+	let elem = FindParentElement(document.popupNode||triggerNode,'hbox');
 	let str = window.getSelection().toString() || elem.textContent;
 	CopyToClipboard(str);
     },
@@ -331,9 +331,9 @@ var NicoLiveComment = {
     },
 
     // コメントリフレクション登録.
-    addCommentReflector:function(){
-	let userid = document.popupNode.getAttribute('user_id');
-	let comment_no = document.popupNode.getAttribute('comment_no');
+    addCommentReflector:function(triggerNode){
+	let userid = (document.popupNode||triggerNode).getAttribute('user_id');
+	let comment_no = (document.popupNode||triggerNode).getAttribute('comment_no');
 	this.showCommentReflectorDialog(userid, comment_no);
     },
     addReflectionFromCommentNo:function(comment_no){
@@ -367,14 +367,14 @@ var NicoLiveComment = {
 	}
     },
 
-    clearColorSetting:function(){
-	let userid = document.popupNode.getAttribute('user_id');
+    clearColorSetting:function(triggerNode){
+	let userid = (document.popupNode||triggerNode).getAttribute('user_id');
 	delete this.colormap[userid];
 	this.updateCommentViewer();
     },
 
-    changeColor:function(){
-	let userid = document.popupNode.getAttribute('user_id');
+    changeColor:function(triggerNode){
+	let userid = (document.popupNode||triggerNode).getAttribute('user_id');
 	let color = $('comment-color').color;
 	if( !color ) return;
 	let now = GetCurrentTime();
@@ -409,8 +409,8 @@ var NicoLiveComment = {
 	}
     },
 
-    openProfile:function(){
-	let userid = document.popupNode.getAttribute('user_id');
+    openProfile:function(triggerNode){
+	let userid = (document.popupNode||triggerNode).getAttribute('user_id');
 	if(userid>0){
 	    window.opener.getBrowser().addTab('http://www.nicovideo.jp/user/'+userid);
 	}
@@ -426,8 +426,8 @@ var NicoLiveComment = {
 	this.updateCommentViewer();
 	this.createNameList();
     },
-    addName:function(){
-	let userid = document.popupNode.getAttribute('user_id');
+    addName:function(triggerNode){
+	let userid = (document.popupNode||triggerNode).getAttribute('user_id');
 	this.addNameFromId(userid);
     },
 
@@ -641,17 +641,17 @@ var NicoLiveComment = {
     },
 
     // コメント内の動画へのリンクでのポップアップメニュー処理.
-    setSelfRequest:function(e){
-	let video_id = document.popupNode.textContent;
+    setSelfRequest:function(triggerNode){
+	let video_id = (document.popupNode||triggerNode).textContent;
 	NicoLiveHelper.setSelfRequestFlag(video_id);
     },
-    moveRequestToTop:function(e){
-	let video_id = document.popupNode.textContent;
+    moveRequestToTop:function(triggerNode){
+	let video_id = (document.popupNode||triggerNode).textContent;
 	NicoLiveHelper.topToRequestById(video_id);
     },
 
     // ID欄でのポップアップメニューの表示処理.
-    showPopupMenuForID:function(e){
+    showPopupMenuForID:function(e, triggerNode){
 	let userid = document.popupNode.getAttribute('user_id');
 	let commentno = document.popupNode.getAttribute('comment_no');
 	$('popup-comment-displayuserid').value = "No."+commentno+"/" + userid;
@@ -663,7 +663,7 @@ var NicoLiveComment = {
     },
 
     // コメント用ポップアップメニュー表示処理.
-    showPopupMenuForComment:function(e){
+    showPopupMenuForComment:function(){
 	let str = window.getSelection().toString();
 	if( str.match(/...[-+=/]....[-+=/]./) ){
 	    $('comment-search-jasrac').hidden = false;
