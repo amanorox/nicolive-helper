@@ -496,8 +496,8 @@
       <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName(this.triggerNode);"/>
       <menu label="&comment.menu_color;">
 	<menupopup>
-	  <menuitem label="&comment.menu_clearcolor;" oncommand="NicoLiveComment.clearColorSetting(this.triggerNode);"/>
-	  <colorpicker id="comment-color" onselect="NicoLiveComment.changeColor(this.triggerNode);"/>
+	  <menuitem label="&comment.menu_clearcolor;" oncommand="NicoLiveComment.clearColorSetting($('popup-comment').triggerNode);"/>
+	  <colorpicker id="comment-color" onselect="NicoLiveComment.changeColor($('popup-comment').triggerNode);"/>
 	</menupopup>
       </menu>
       <menuitem label="&comment.menu_reflection;" tooltiptext="&comment.tooltip_reflection;" oncommand="NicoLiveComment.addCommentReflector(this.triggerNode);"/>
