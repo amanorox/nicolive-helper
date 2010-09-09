@@ -1,3 +1,6 @@
 content		nlh_commenttalker	chrome/content/nlh_commenttalker/ platform
 
 overlay chrome://nicolivehelper/content/requestwindow.xul chrome://nlh_commenttalker/content/nicolivetalker.xul
+
+interfaces platform/WINNT_X86-msvc/components/ICommentTalker.xpt
+binary-component platform/WINNT_x86-msvc/components/NLHCommentTalker.dll ABI=WINNT_x86-msvc

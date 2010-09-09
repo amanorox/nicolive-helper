@@ -669,6 +669,13 @@
       <menuitem label="&menu.turnoff_playedflag;" oncommand="NicoLiveRequest.offPlayedStatus();"/>
       <menuseparator/>
       <menuitem label="&menu.stock_savefile;" oncommand="NicoLiveRequest.saveStockToFile();"/>
+      <menuitem label="test" oncommand="alert(document.popupNode);"/>
+      <menu label="submenu">
+	<menupopup oncommand="alert(document.popupNode);">
+	  <menuitem label="test1"/>
+	  <menuitem label="test2" oncommand="alert('2/'+document.popupNode);"/>
+	</menupopup>
+      </menu>
     </menupopup>
 
     <!-- for playlist -->
