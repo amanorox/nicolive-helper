@@ -962,7 +962,7 @@ var NicoLiveRequest = {
 
     // 分類を行う.
     doClassify:function(triggerNode){
-	let vbox = FindParentElement(document.popupNode,'vbox');
+	let vbox = FindParentElement(document.popupNode||triggerNode,'vbox');
 	let vid = vbox.getAttribute('nicovideo_id');
 	let item = NicoLiveHelper.findVideoInfo(vid);
 	if(item==null) return;
