@@ -17,10 +17,12 @@
     <menuitem id="nicolive-popup-menu" label="NicoLive Helper" oncommand="NicoLiveOverlay.openNicoLiveWindow();" />
   </popup>
 
+<!--
   <statusbar id="status-bar">
-    <!--<statusbarpanel id="NicoLive-panel" label="NicoLive Helper" />-->
+    <statusbarpanel id="NicoLive-panel" label="NicoLive Helper" />
     <statusbarpanel id="nicolivehelper-panel" context="nicolivehelper-contextmenu" class="statusbarpanel-iconic" src="chrome://nicolivehelper/content/data/play.png" />
   </statusbar>
+-->
 
   <popupset>
     <menupopup id="nicolivehelper-contextmenu">
