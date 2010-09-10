@@ -2671,7 +2671,7 @@ var NicoLiveHelper = {
 	    // モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
 	    if( $('auto-freeextend').hasAttribute('checked') ){
 		this._extendcnt++;
-		if( this._extendcnt<4 ){
+		if( this._extendcnt<=4 ){
 		    debugprint("自動無料延長を行います");
 		    this.getsalelist( true );
 		}
