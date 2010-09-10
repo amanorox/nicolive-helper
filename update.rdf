@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="1.1.15">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
                    em:maxVersion="3.6.*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.14.2.xpi"
-                   em:updateHash="sha1:50062d2daa36d598f072cef49eb201bf8e5f7301"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.15.xpi"
+                   em:updateHash="sha1:00746e9c52a8610ec57f41208fe7d5a26b032683"
                    em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBACriLnQLX4ZkkFW+0/DRq22ulMEKke8ATOp7g/+SPYfRHM8rhate3vpFRdma1AEbTxBKRrocRypqmoFCgBEvp7aZSEAVZIXOEJaOfglUj6n2SXvAnGjV1Axl5+SbtgEtMp5XJgy8w4dYqvd1Tv9pXjph8nShR9U/SwKrtqpZnvt+">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="1.1.14.2">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAGK4oRjk/JtqMDdIUxK2LSiePCojRWpLDlNGoCHDanlO51M7WjItki7vY/hVe5holoUO+Wb/Mb2tyB0jhTgyE9t/e0NUuNjSjVAOrLTQyUXjZ6k4tMbu7H1c8UibCls/jESBMnt8PFtUE84+OkWthi8Wg1i52jNg6T+XxzXOPt/z">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
 </RDF:RDF>
