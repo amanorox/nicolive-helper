@@ -101,8 +101,8 @@ var NicoLiveHelper = {
 	    info.classify = NicoLiveClassifier.classify(str);
 	}
 
-	if( !this.allowrequest && !is_self_request){
-	    // リクを受け付けていない(自貼りを除く).
+	if( !this.allowrequest ){
+	    // リクを受け付けていない
 	    // アンカーチェックはここでやる.
 	    if( this.anchor.start && this.anchor.end &&
 		this.anchor.start <= comment_no && comment_no <= this.anchor.end ){
