@@ -37,7 +37,7 @@ var NicoLiveTweet = {
 	let myLoginManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);  
 	let logins = myLoginManager.findLogins({}, hostname, null, 'twitter token');
 	if( logins.length ){
-	    debugprint('# of tokens:'+logins.length);
+	    debugprint('# of twitter tokens:'+logins.length);
 	    this.oauth = {};
 	    this.oauth["oauth_token"] = logins[0].username;
 	    this.oauth["oauth_token_secret"] = logins[0].password;

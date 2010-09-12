@@ -82,7 +82,6 @@ var NicoLiveHelper = {
 	let info = this.xmlToMovieInfo(xml);
 	if( !info ){
 	    ShowNotice("コメント番号 "+comment_no+" のリクエストは動画情報を取得できませんでした");
-	    debugprint("コメント番号 "+comment_no+" のリクエストは動画情報を取得できませんでした");
 	    return {code:-1,msg:"",movieinfo:{}};
 	}
 
@@ -1457,7 +1456,9 @@ var NicoLiveHelper = {
 	this.updateRemainRequestsAndStocks();
     },
 
-    // 動画情報再送信を設定する.
+    /**
+     * 15秒後に動画情報再送信を行う.
+     */
     setupRevertMusicInfo:function(){
 	clearInterval( this._revertcommentid );
 	this._revertcommentid = setInterval(
@@ -1477,16 +1478,18 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 主コメを投げる.
-    // comment : 運営コメント
-    // mail : 運営コマンド
-    // name : 左上名前欄に表示する名前
-    // type : コメント種別(undefined or null:自動応答, 1:動画情報, 2:普通の主コメ
-    // retry : 送信エラーになったときのリトライ時にtrue
+    /**
+     * 運営コメントを行う.
+     * @param comment 運営コメント
+     * @param mail コマンド(hiddenや色など)
+     * @param name 名前欄に表示する名前
+     * @param type コメント種別(undefined or null:自動応答, 1:動画情報, 2:普通の主コメ
+     * @param retry 送信エラーになったときのリトライ時にtrue
+     */
     postCasterComment: function(comment,mail,name,type,retry){
-	if(!this.iscaster) return;
-	if(this.isOffline()) return;
-	if(comment.length<=0) return;
+	if( !this.iscaster || this.isOffline() ) return;
+	if( comment.length<=0 ) return;
+	if( !mail ) mail = "";
 
 	var req = new XMLHttpRequest();
 	if( !req ) return;
@@ -1495,10 +1498,10 @@ var NicoLiveHelper = {
 		debugprint('castercomment:'+req.responseText);
 		// status=error&error=0
 		if( req.responseText.indexOf("status=error")!=-1 ){
-		    // 世界の新着、生放送引用拒否動画は、主コメがエラーになる.
-		    let video_id = null;
+		    // 世界の新着、生放送引用拒否動画は、/playコマンドはエラーになる.
+		    let video_id;
 		    try{
-			video_id = comment.match(/^\/play\s+((sm|nm)\d+)/)[1];
+			video_id = comment.match(/^\/play(sound)*\s+((sm|nm)\d+)/)[1];
 		    } catch (x) {
 			video_id = "";
 		    }
@@ -1512,11 +1515,10 @@ var NicoLiveHelper = {
 						     }, 2000 );
 		    }
 		    if(video_id && retry){
-			//let str = LoadFormattedString('STR_FAILED_TO_PLAY_VIDEO',[video_id]);
+			// 再生に失敗.
 			let str = NicoLivePreference.videoinfo_playfailed;
 			NicoLiveHelper.postCasterComment(str,"");
 			//$('played-list-textbox').value += str + "\n"; // これは要らないかな.
-			// たまに生引用拒否していなくてもエラーになるので.
 			// 再生エラータブ行き.
 			if( video_id==NicoLiveHelper.musicinfo.video_id ){
 			    // ルーツ上から再生したときは再生エラーリストに追加.
@@ -1587,7 +1589,10 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 必要に応じて/clsを送信したあとに、指定の関数を実行する.
+    /**
+     * 運営コメント欄を/clsで消去したあと、指定の関数を実行する.
+     * 消去の必要がない場合は消去せずに指定の関数を実行する.
+     */
     clearCasterCommentAndRun:function(func){
 	// /clsが飲み込まれて送られてこなかったらどうしよう.
 	// というときのために、/clsを送る必要があるときは
@@ -1826,15 +1831,25 @@ var NicoLiveHelper = {
 	this.israndomplay = flg;
     },
 
-    // リクを受け付ける.
-    setAllowRequest:function(flg){
+    /**
+     * リクエスト可否を切り替える.
+     * @param flg 可否のフラグ
+     * @param ev 押されているキーを取得するためのevent
+     */
+    setAllowRequest:function(flg, ev){
 	this.allowrequest = flg;
 	let str = flg ? NicoLivePreference.msg.requestok : NicoLivePreference.msg.requestng;
 	let command = flg ? NicoLivePreference.msg.requestok_command : NicoLivePreference.msg.requestng_command;
 	if(!command) command = "";
+	if( ev.ctrlKey ){
+	    // CTRLキーが押されていたら運営コメントを入力して、それを使用.
+	    let tmp = InputPrompt('リクエスト'+(flg?"許可":"不可")+'に切り替える時の運営コメントを入力してください','リクエスト可否切り替えコメントの入力',str);
+	    if( tmp ) str = tmp;
+	}
 	if(str){
 	    this.postCasterComment(str,command);
 	}
+	if( !flg ) this.anchor = {};
 	let e = evaluateXPath(document,"//*[@id='toolbar-allowrequest']//*[@allowrequest='"+flg+"']");
 	if(e.length){
 	    $('toolbar-allowrequest').label = e[0].label;
@@ -2147,7 +2162,9 @@ var NicoLiveHelper = {
 	return info;
     },
 
-    // 動画をストックに追加する.
+    /**
+     * 動画をストックに追加する.
+     */
     addStock: function(sm){
 	if(sm.length<3) return;
 	if(this.isStockedMusic(sm)) return;
@@ -2282,14 +2299,14 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 動画情報を取得してリクエストに追加する.
-    // 自貼りのときは is_self_request を真にしておく. そうでないときはパラメタ不要.
+    /**
+     * 動画をリクエストに追加する.
+     * @param vid 動画ID
+     * @param cno コメント番号
+     * @param userid リク主のユーザID
+     * @param is_self_request 自貼りか否か.
+     */
     addRequest: function(vid,cno,userid, is_self_request){
-	/*
-	 * vid : 動画ID,cnoコメ番
-	 * cno : 0のときはリクエストじゃないとき.
-	 * userid : "0"のときは自張り. 
-	 */
 	if(vid.length<3) return;
 
 	var req = new XMLHttpRequest();
@@ -2318,7 +2335,6 @@ var NicoLiveHelper = {
 			// 実験したところ、タイムアウトもこっちでokみたい.
 			NicoLiveHelper.requestprocessingqueue.splice(i,1);
 			ShowNotice(q.video_id+"の動画情報取得に失敗したため、リクエストから削除します(code="+req.status+")");
-			debugprint(q.video_id+"の動画情報取得に失敗したため、リクエストから削除します(code="+req.status+")");
 		    }
 		    break;
 		}
@@ -2332,6 +2348,11 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    /**
+     * リクエストチェックスクリプトを走らせる.
+     * @param info 動画情報
+     * @return リクエスト拒否メッセージを返す. 何も返さないとチェックはパスしたものとする.
+     */
     runRequestCheckerScript:function(info){
 	if(NicoLivePreference.do_customscript){
 	    let r;
@@ -3177,7 +3198,6 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.freeExtend(num, code);
 			}
 		    }else{
-			debugprint("無料延長可能なアイテムがありませんでした");
 			ShowNotice("無料延長可能なアイテムがありませんでした");
 		    }
 		}

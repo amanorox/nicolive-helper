@@ -231,6 +231,7 @@ function debugalert(txt){
 
 var noticeid;
 function ShowNotice(txt, dontclear){
+    debugprint(txt);
     $('noticewin').removeAllNotifications(false);
     $('noticewin').appendNotification(txt,null,null,
 				      $('noticewin').PRIORITY_WARNING_LOW,null);
