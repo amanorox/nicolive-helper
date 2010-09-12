@@ -642,7 +642,7 @@ var NicoLiveRequest = {
 		    break;
 		}
 	    } catch (x) {
-		debugprint(x);
+//		debugprint(x);
 	    }
 	}else{
 	    clearInterval(this.playlist_timer);
