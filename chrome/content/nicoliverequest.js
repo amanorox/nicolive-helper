@@ -350,10 +350,11 @@ var NicoLiveRequest = {
 		let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+nextmusic.video_id);
 		NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
 	    }
+
 	    NicoLiveRequest.playlist_start = n;
 	    clearInterval(NicoLiveRequest.playlist_timer);
-	    NicoLiveRequest.playlist_first = true;
-	    NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",2000);
+	    NicoLiveRequest.playlist_first = 2;
+	    NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",3000);
 	}
     },
     // ストックの削除ボタン.
@@ -595,8 +596,8 @@ var NicoLiveRequest = {
 
     test:function(){
 	// playing, paused, end
-	try{
-	    if(this.opentab.contentDocument){
+	if(this.opentab.contentDocument){
+	    try{
 		let status;
 		let flv = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject; 
 		status = flv.ext_getStatus();
@@ -606,7 +607,7 @@ var NicoLiveRequest = {
 			flv.ext_setVideoSize( this._screensize );
 		    }
 		    //flv.ext_setVideoSize("full");
-		    this.playlist_first = false;
+		    this.playlist_first--;
 		    
 		    let flvcontainer = this.opentab.contentDocument.getElementById('flvplayer_container').wrappedJSObject;
 		    this.opentab.contentWindow.scroll(0,flvcontainer.offsetTop-32);
@@ -615,6 +616,7 @@ var NicoLiveRequest = {
 		    let t = NicoLiveHelper.stock[this.playlist_start-1].length;
 		    debugprint(vid+","+GetTimeString(flv.ext_getTotalTime()));
 		}
+		//debugprint(status);
 		switch(status){
 		case "playing":
 		    let playprogress = $('statusbar-music-progressmeter');
@@ -635,15 +637,15 @@ var NicoLiveRequest = {
 		    this.playlist_start++;
 		    if(nextmusic){
 			this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
-			this.playlist_first = true;
+			this.playlist_first = 2;
 		    }
 		    break;
 		}
-	    }else{
-		clearInterval(this.playlist_timer);
+	    } catch (x) {
+		debugprint(x);
 	    }
-	} catch (x) {
-	    //debugprint(x);
+	}else{
+	    clearInterval(this.playlist_timer);
 	}
     },
 
