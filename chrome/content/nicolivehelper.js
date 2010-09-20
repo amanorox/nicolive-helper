@@ -1841,7 +1841,7 @@ var NicoLiveHelper = {
 	let str = flg ? NicoLivePreference.msg.requestok : NicoLivePreference.msg.requestng;
 	let command = flg ? NicoLivePreference.msg.requestok_command : NicoLivePreference.msg.requestng_command;
 	if(!command) command = "";
-	if( ev.ctrlKey ){
+	if( ev && ev.ctrlKey ){
 	    // CTRLキーが押されていたら運営コメントを入力して、それを使用.
 	    let tmp = InputPrompt('リクエスト'+(flg?"許可":"不可")+'に切り替える時の運営コメントを入力してください','リクエスト可否切り替えコメントの入力',str);
 	    if( tmp ) str = tmp;
