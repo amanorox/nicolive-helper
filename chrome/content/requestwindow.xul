@@ -246,6 +246,7 @@
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleStock();"/>
 	    <button type="menu" label="&button.load_mylist;">
 	      <menupopup id="menupopup-from-mylist">
+		<menuitem label="とりあえずマイリスト" oncommand="NicoLiveMylist.addToStockFromDeflist();"/>
 	      </menupopup>
 	    </button>
 
