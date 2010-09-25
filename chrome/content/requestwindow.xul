@@ -84,6 +84,8 @@
     <key id="tweeting" key="t" modifiers="accel" oncommand="NicoLiveTweet.inputTweet();"></key>
     <!-- CTRL+W: Close this window -->
     <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"></key>
+    <!-- CTRL+R: Reconnect -->
+    <key id="reconnect" key="r" modifiers="accel" oncommand="NicoLiveHelper.reconnect();"></key>
   </keyset>
 
   <toolbar id="global-menu">

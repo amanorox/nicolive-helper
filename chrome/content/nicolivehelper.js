@@ -550,7 +550,10 @@ var NicoLiveHelper = {
 	    NicoLiveHelper.close();
 	    window.close();
 	}else{
-	    AlertPrompt(NicoLiveHelper.request_id+' は終了しました',NicoLiveHelper.request_id);
+	    sound.playSystemSound("_moz_alertdialog");
+	    let msg = NicoLiveHelper.request_id+':'+NicoLiveHelper.title+' は終了しました';
+	    ShowNotice(msg,true);
+	    //AlertPrompt(NicoLiveHelper.request_id+' は終了しました',NicoLiveHelper.request_id);
 	    NicoLiveHelper._donotshowdisconnectalert = true;
 	    NicoLiveHelper.close();
 	}
@@ -3436,6 +3439,14 @@ var NicoLiveHelper = {
     // オフラインかどうか.
     isOffline:function(){
 	return this.request_id=="lv0";
+    },
+
+    // 再接続.
+    reconnect:function(){
+	if( this.isOffline() ) return;
+	if( ConfirmPrompt('再接続を行いますか?','再接続') ){
+	    this.connectNewBroadcasting(this.request_id, this.title, this.iscaster, this.community);
+	}
     },
 
     // シングルウィンドウモードで別の番組に接続する用.
