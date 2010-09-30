@@ -633,8 +633,8 @@ var NicoLiveHelper = {
 	chat.user_id   = xmlchat.getAttribute('user_id');
 	chat.no        = xmlchat.getAttribute('no');
 	chat.anonymity = xmlchat.getAttribute('anonymity');
-	chat.mail      = xmlchat.getAttribute('mail');
-	chat.name      = xmlchat.getAttribute('name');
+	chat.mail      = xmlchat.getAttribute('mail') || "";
+	chat.name      = xmlchat.getAttribute('name') || "";
 
 	chat.date      = chat.date && parseInt(chat.date) || 0;
 	chat.premium   = chat.premium && parseInt(chat.premium) || 0;
