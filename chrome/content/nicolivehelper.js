@@ -550,6 +550,7 @@ var NicoLiveHelper = {
 	    NicoLiveHelper.close();
 	    window.close();
 	}else{
+	    var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
 	    sound.playSystemSound("_moz_alertdialog");
 	    let msg = NicoLiveHelper.request_id+':'+NicoLiveHelper.title+' は終了しました';
 	    ShowNotice(msg,true);
