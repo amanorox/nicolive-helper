@@ -112,7 +112,7 @@ var NicoLiveWindow = {
 		let player;
 		if(tab){
 		    player = tab.linkedBrowser.contentDocument.getElementById('WatchPlayer').wrappedJSObject;
-		    tab.linkedBrowser.contentWindow.scroll(0,player.offsetTop-32);
+		    tab.linkedBrowser.contentWindow.scroll(0,player.offsetTop-16);
 		}
 	    } catch (x) {
 	    }
