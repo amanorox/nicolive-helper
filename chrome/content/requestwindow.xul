@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NicoLive Helper 1.1.17">
+	title="NicoLive Helper 1.1.18">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -31,6 +31,8 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehistory.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewindow.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveclassifier.js" />
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivefolder.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivetweet.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverights.js" />
@@ -205,6 +207,7 @@
 	<tab id="tabs-playlist" label="&tab.playlist;"/>
 	<tab id="tabs-comment" label="&tab.comment;"/>
 	<tab id="tabs-db" label="&tab.database;"/>
+	<tab id="tabs-newdb" label="NewDB"/>
 	<tab id="tabs-debug" label="&tab.debug;"/>
       </tabs>
       <tabpanels flex="1" id="tabpanels">
@@ -435,6 +438,38 @@
 	  </vbox>
 	</vbox>
 
+	<vbox id="tab-newdb">
+	  <hbox flex="1">
+	    <listbox id="folder-listbox" onselect="NicoLiveFolderDB.selectFolder(this);" context="folder-list-menu">
+	    </listbox>
+	    <vbox flex="1">
+	      <hbox>
+		<menulist id="folder-item-sortmenu" oncommand="NicoLiveFolderDB.sort(this);">
+		  <menupopup>
+		    <menuitem value="1" label="タイトル昇順"/>
+		    <menuitem value="2" label="タイトル降順"/>
+		    <menuitem value="3" label="投稿が新しい順"/>
+		    <menuitem value="4" label="投稿が古い順"/>
+		    <menuitem value="5" label="再生が多い順"/>
+		    <menuitem value="6" label="再生が少ない順"/>
+		    <menuitem value="7" label="コメントが多い順"/>
+		    <menuitem value="8" label="コメントが少ない順"/>
+		    <menuitem value="9" label="マイリスト登録が多い順"/>
+		    <menuitem value="10" label="マイリスト登録が少ない順"/>
+		    <menuitem value="11" label="時間が長い順"/>
+		    <menuitem value="12" label="時間が短い順"/>
+		  </menupopup>
+		</menulist>
+		<hbox align="center">
+		  <label id="folder-listitem-num" value="0件"/>
+		</hbox>
+	      </hbox>
+	      <listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu">
+	      </listbox>
+	    </vbox>
+	  </hbox>
+	</vbox>
+
 	<!-- debug tab -->
 	<vbox id="tab-debug">
 	  <textbox id="debug-textbox" emptytext="for debugging." multiline="true" flex="1" />
@@ -610,6 +645,7 @@
 	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
+      <menuitem label="検索結果を全てコピー" oncommand="NicoLiveDatabase.copyAllToClipboard();"/>
       <menuseparator/>
       <menuitem label="&menu.db_delete;" oncommand="NicoLiveDatabase.deleteMovie();"/>
       <menuseparator/>
@@ -700,6 +736,25 @@
 	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
+    </menupopup>
+
+    <!-- for folder -->
+    <menupopup id="folder-list-menu">
+      <menuitem label="新規作成" oncommand="NicoLiveFolderDB.newList();"/>
+      <menuitem label="名前変更" oncommand="NicoLiveFolderDB.renameList();"/>
+      <menuitem label="削除" oncommand="NicoLiveFolderDB.deleteList();"/>
+      <menuseparator/>
+      <menuitem label="動画を追加" oncommand="NicoLiveFolderDB.appendVideos();"/>
+    </menupopup>
+
+    <menupopup id="folder-item-menu">
+      <menuitem label="動画ページを開く" oncommand="NicoLiveFolderDB.openVideoPage();"/>
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveFolderDB.copyVideoId();"/>
+      <menuseparator/>
+      <menuitem label="移動"/>
+      <menuitem label="コピー"/>
+      <menuseparator/>
+      <menuitem label="削除" oncommand="NicoLiveFolderDB.deleteVideo();"/>
     </menupopup>
 
   </popupset>

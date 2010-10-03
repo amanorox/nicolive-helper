@@ -550,8 +550,7 @@ var NicoLiveHelper = {
 	    NicoLiveHelper.close();
 	    window.close();
 	}else{
-	    var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-	    sound.playSystemSound("_moz_alertdialog");
+	    PlayAlertSound();
 	    let msg = NicoLiveHelper.request_id+':'+NicoLiveHelper.title+' は終了しました';
 	    ShowNotice(msg,true);
 	    //AlertPrompt(NicoLiveHelper.request_id+' は終了しました',NicoLiveHelper.request_id);
@@ -2534,10 +2533,9 @@ var NicoLiveHelper = {
 	    onStopRequest: function(request, context, status){
 		try{
 		    if( !NicoLiveHelper._donotshowdisconnectalert ){
-			var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
 			let musictime = $('statusbar-music-name');
 			musictime.label="コメントサーバから切断されました。";
-			sound.playSystemSound("_moz_alertdialog");
+			PlayAlertSound();
 			ShowNotice('コメントサーバから切断されました。',true);
 
 			setTimeout( function(){

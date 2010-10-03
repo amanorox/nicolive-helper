@@ -429,6 +429,14 @@ var NicoLiveDatabase = {
 	NicoLiveRequest.addStock(str);
     },
 
+    copyAllToClipboard:function(){
+	let str = "";
+	for(let i=0,item;item=this._searchresult[i];i++){
+	    str += item.video_id + ",";
+	}
+	CopyToClipboard(str);
+    },
+
     // 選択した1つをストックに追加.
     addStockOne:function(){
 	let elem = FindParentElement(document.popupNode,'vbox');

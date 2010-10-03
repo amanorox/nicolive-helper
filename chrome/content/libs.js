@@ -124,6 +124,10 @@ function GetExtensionPath(){
     return ext;
 }
 
+function PlayAlertSound(){
+    var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+    sound.playSystemSound("_moz_alertdialog");
+}
 
 function AlertPrompt(text,caption){
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
