@@ -198,6 +198,28 @@ var NicoLiveFolderDB = {
 	CopyToClipboard(str);
     },
 
+    addToStock:function(){
+	let items = $('folder-item-listbox').selectedItems;
+	let str = "";
+	for(let i=0,item; item=items[i]; i++){
+	    str += item.getAttribute('vid') + " ";
+	}
+	NicoLiveRequest.addStock(str);
+    },
+    sendRequest:function(){
+	if(NicoLiveHelper.iscaster || NicoLiveHelper.isOffline()){
+	    let items = $('folder-item-listbox').selectedItems;
+	    let str = "";
+	    for(let i=0,item; item=items[i]; i++){
+		str += item.getAttribute('vid') + " ";
+	    }
+	    NicoLiveRequest.addRequest(str);
+	}else{
+	    let video_id = $('folder-item-listbox').selectedItem.getAttribute('vid');
+	    NicoLiveHelper.postListenerComment(video_id,"");
+	}
+    },
+
     deleteVideo:function(){
 	let items = $('folder-item-listbox').selectedItems;
 	if( !items.length ) return;

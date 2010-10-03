@@ -207,7 +207,7 @@
 	<tab id="tabs-playlist" label="&tab.playlist;"/>
 	<tab id="tabs-comment" label="&tab.comment;"/>
 	<tab id="tabs-db" label="&tab.database;"/>
-	<tab id="tabs-newdb" label="NewDB"/>
+	<tab id="tabs-newdb" label="NewDBβ"/>
 	<tab id="tabs-debug" label="&tab.debug;"/>
       </tabs>
       <tabpanels flex="1" id="tabpanels">
@@ -751,8 +751,8 @@
       <menuitem label="動画ページを開く" oncommand="NicoLiveFolderDB.openVideoPage();"/>
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveFolderDB.copyVideoId();"/>
       <menuseparator/>
-      <menuitem label="移動"/>
-      <menuitem label="コピー"/>
+      <menuitem label="ストックに追加" oncommand="NicoLiveFolderDB.addToStock();"/>
+      <menuitem label="リクエスト送信" oncommand="NicoLiveFolderDB.sendRequest();"/>
       <menuseparator/>
       <menuitem label="削除" oncommand="NicoLiveFolderDB.deleteVideo();"/>
     </menupopup>

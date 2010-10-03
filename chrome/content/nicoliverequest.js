@@ -649,7 +649,9 @@ var NicoLiveRequest = {
 	}
     },
 
-    // ストックに追加する. 動画IDはまとめて渡すことができる.
+    /** ストックに追加する.
+     * @param sm 動画IDの文字列(複数可)
+     */
     addStock:function(sm){
 	if(sm.length<3) return;
 	$('input-stock').value="";
