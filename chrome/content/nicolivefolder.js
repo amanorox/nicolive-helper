@@ -127,11 +127,17 @@ var NicoLiveFolderDB = {
 	let min = parseInt(item.length/60);
 	let sec = parseInt(item.length%60);
 
+	let rate = "";
+	for(let i=0;i<item.favorite/10;i++){
+	    rate += "★";
+	}
+	if(!rate) rate="なし";
 	div.innerHTML = item.video_id + " "+item.title+"<br/>"
 	    + "投稿日:"+posteddate+" 時間:"+(min+":"+(sec<10?("0"+sec):sec))+"<br/>"
 	    + "再生:"+FormatCommas(item.view_counter)
 	    + " コメント:"+FormatCommas(item.comment_num)
-	    + " マイリスト:"+FormatCommas(item.mylist_counter);
+	    + " マイリスト:"+FormatCommas(item.mylist_counter)
+	    + " レート:"+rate;
 
 	hbox.appendChild(image);
 	hbox.appendChild(div);
