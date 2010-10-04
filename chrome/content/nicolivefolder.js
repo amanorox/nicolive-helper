@@ -358,8 +358,8 @@ var NicoLiveFolderDB = {
     },
 
     onkeydown:function(event){
-	debugprint(event);
-	this._data = event;
+	//debugprint(event);
+	//this._data = event;
 	switch( event.keyCode ){
 	case 65: // A
 	    if( event.ctrlKey ){
@@ -370,6 +370,7 @@ var NicoLiveFolderDB = {
 	    this.deleteVideo();
 	    break;
 	}
+	return true;
     },
 
     // フォルダリストの表示.
