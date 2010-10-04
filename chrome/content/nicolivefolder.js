@@ -83,7 +83,7 @@ var NicoLiveFolderDB = {
 	let oldname = list.getAttribute('label');
 	let id = list.getAttribute('value');
 
-	let name = InputPrompt('リスト「'+oldname+'」の新しい名前を入力してください','リスト名の変更');
+	let name = InputPrompt('リスト「'+oldname+'」の新しい名前を入力してください','リスト名の変更',oldname);
 	if(name){
 	    let db = this.getDatabase();
 
