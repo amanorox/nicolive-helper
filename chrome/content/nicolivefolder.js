@@ -163,27 +163,8 @@ var NicoLiveFolderDB = {
     },
 
     selectFolder:function(listbox){
-	let item = listbox.selectedItem;
-	if( !item ) return;
-	let folder_id = item.getAttribute('value');
-
-	let db = this.getDatabase();
-	let st;
-	st = db.createStatement('SELECT N.* FROM nicovideo N JOIN (SELECT * FROM folder F WHERE F.parent=?1 AND F.type=1) USING (video_id)');
-	st.bindInt32Parameter(0,folder_id);
-	let cnt=0;
-	let folder_listbox = $('folder-item-listbox');
-	this.removeAllListboxItems(folder_listbox);
-
-	while(st.executeStep()){
-	    //debugprint(st.row.video_id);
-	    let listitem = this.createListItemElement(st.row);
-	    folder_listbox.appendChild(listitem);
-	    cnt++;
-	}
-	st.finalize();
-
-	this.updateItemNum();
+	this.sort( $('folder-item-sortmenu') );
+	return;
     },
 
     sort:function(sortmenu){
