@@ -126,8 +126,10 @@ var NicoLiveFolderDB = {
 	this.removeAllListboxItems( $('folder-item-listbox') );
     },
 
-    // 動画情報の要素を作成.
-    createListItem:function(item){
+    /**
+     * 動画情報を表示しているリストアイテム要素を作成.
+     */
+    createListItemElement:function(item){
 	let posteddate = GetDateString(item.first_retrieve*1000);
 
 	let listitem = CreateElement('listitem');
@@ -175,7 +177,7 @@ var NicoLiveFolderDB = {
 
 	while(st.executeStep()){
 	    //debugprint(st.row.video_id);
-	    let listitem = this.createListItem(st.row);
+	    let listitem = this.createListItemElement(st.row);
 	    folder_listbox.appendChild(listitem);
 	    cnt++;
 	}
@@ -202,7 +204,7 @@ var NicoLiveFolderDB = {
 	let folder_listbox = $('folder-item-listbox');
 	this.removeAllListboxItems(folder_listbox);
 	while(st.executeStep()){
-	    let listitem = this.createListItem(st.row);
+	    let listitem = this.createListItemElement(st.row);
 	    folder_listbox.appendChild(listitem);
 	}
 	st.finalize();
@@ -287,6 +289,8 @@ var NicoLiveFolderDB = {
 	    let l = vids.match(/(sm|nm)\d+/g);
 	    if(l){
 		for(let i=0,video_id;video_id=l[i];i++){
+		    if( this.checkExistItem(id,video_id) ) continue;
+
 		    let st = db.createStatement('INSERT INTO folder(type,parent,video_id) VALUES(1,?1,?2)');
 		    st.bindInt32Parameter(0,id);
 		    st.bindUTF8StringParameter(1,video_id);
