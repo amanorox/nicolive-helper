@@ -470,7 +470,7 @@
 	      </hbox>
 	      <listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu"
 		       ondragstart="NicoLiveFolderDB.startDraggingItem(event);"
-		       onkeydown="NicoLiveFolderDB.onkeydown(event);">
+		       onkeydown="NicoLiveFolderDB.onkeydown(event); return true;">
 	      </listbox>
 	    </vbox>
 	  </hbox>
