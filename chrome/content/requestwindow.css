@@ -152,3 +152,8 @@ a {
 toolbarbutton{
     margin-right: 2px;
 }
+
+#folder-listbox listitem:-moz-drag-over {
+    border: 1px solid black;
+    font-weight: bold;
+}

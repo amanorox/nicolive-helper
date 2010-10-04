@@ -25,6 +25,21 @@ var NicoLiveFolderDB = {
 	return NicoLiveDatabase.dbconnect;
     },
 
+    // 指定のリストIDに指定の動画IDが存在しているかどうか.
+    checkExistItem:function(list_id,video_id){
+	let db = this.getDatabase();
+	let st = db.createStatement('SELECT * FROM folder WHERE parent=?1 AND video_id=?2');
+	st.bindInt32Parameter(0,list_id);
+	st.bindUTF8StringParameter(1,video_id);
+	let exist = false;
+	while(st.executeStep()){
+	    exist = true;
+	}
+	st.finalize();
+	return exist;
+    },
+
+
     // リストに表示されているアイテム数表示.
     updateItemNum:function(){
 	$('folder-listitem-num').value = $('folder-item-listbox').children.length +"件";
@@ -280,6 +295,95 @@ var NicoLiveFolderDB = {
 		}
 		this.sort( $('folder-item-sortmenu') );
 	    }
+	}
+    },
+
+    startDraggingItem:function(event){
+	let dt = event.dataTransfer;
+	//dt.setData('application/x-moz-node', $('folder-item-listbox').selectedItems);
+	let dragitems = $('folder-item-listbox').selectedItems;
+	for(let i=0,item; item=dragitems[i]; i++){
+	    dt.mozSetDataAt('application/x-moz-node', item , i );
+	}
+    },
+
+    checkDrag:function(event){
+	let b = event.dataTransfer.types.contains("application/x-moz-node");
+	if( b ){
+	    event.preventDefault();
+	}
+	return true;
+    },
+
+    /**
+     * アイテムを移動する.
+     * @param destination 移動先リストID
+     * @param source 移動元リストID
+     * @param video_id 動画ID
+     */
+    moveItem:function(destination,source,video_id){
+	let db = this.getDatabase();
+	let st = db.createStatement('UPDATE folder SET parent=?1 WHERE parent=?2 AND video_id=?3');
+	st.bindInt32Parameter(0,destination);
+	st.bindInt32Parameter(1,source);
+	st.bindUTF8StringParameter(2,video_id);
+	st.execute();
+	st.finalize();
+    },
+
+    /**
+     * アイテムをコピーする.
+     * @param destination コピー先リストID
+     * @param video_id 動画ID
+     */
+    copyItem:function(destination,video_id){
+	let db = this.getDatabase();
+	let st = db.createStatement('INSERT INTO folder(type,parent,video_id) VALUES(1,?1,?2)');
+	st.bindInt32Parameter(0,destination);
+	st.bindUTF8StringParameter(1,video_id);
+	st.execute();
+	st.finalize();
+    },
+
+    dropItem:function(event){
+	this._data = event.dataTransfer;
+	let dt = event.dataTransfer;
+	let effect = dt.dropEffect; // copy, move
+	let target = event.target;
+	let target_list_id = target.value;
+	let source_list_id = $('folder-listbox').selectedItem.value;
+	debugprint($('folder-listbox').selectedItem.label+"/"+source_list_id+"->"+target.label+"/"+target.value);
+
+	for (let i = 0; i < dt.mozItemCount; i++){
+	    let node = dt.mozGetDataAt("application/x-moz-node", i);
+	    let vid = node.getAttribute('vid');
+
+	    if( this.checkExistItem(target_list_id, vid) ) continue;
+
+	    switch( effect ){
+	    case "move":
+		this.moveItem(target_list_id, source_list_id, vid);
+		RemoveElement(node);
+		break;
+	    case "copy":
+		this.copyItem(target_list_id, vid);
+		break;
+	    }
+	}
+    },
+
+    onkeydown:function(event){
+	debugprint(event);
+	this._data = event;
+	switch( event.keyCode ){
+	case 65: // A
+	    if( event.ctrlKey ){
+		$('folder-item-listbox').selectAll();
+	    }
+	    break;
+	case 46: // DEL
+	    this.deleteVideo();
+	    break;
 	}
     },
 
