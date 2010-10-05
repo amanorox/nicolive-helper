@@ -128,9 +128,10 @@
 
 <!ENTITY menu.stock_showdetail "詳細の表示/非表示">
 
-<!ENTITY menu.db_addstock "ストック追加">
+<!ENTITY menu.db_addtostock "ストック追加">
 <!ENTITY menu.db_sendrequest "リクエスト送信">
 <!ENTITY menu.db_delete "この動画をDBから削除">
+<!ENTITY menu.db_delete_result "検索結果を全てコピー">
 <!ENTITY menu.db_delete_all "検索結果をDBから削除">
 
 <!ENTITY comment.menu_openprofile "プロフィールページを開く">
@@ -145,7 +146,8 @@
 <!ENTITY comment.menu_copy "コピー">
 <!ENTITY comment.menu_setselfrequest "リクエストを自貼りに設定する">
 <!ENTITY comment.menu_moverequest_to_top "リクエストを先頭に移動する">
-
+<!ENTITY comment.menu.jasracsearch "JASRAC検索">
+<!ENTITY comment.menu.elicensesearch "e-License検索">
 
 <!ENTITY sort.comment_no "コメント番号順ソート">
 <!ENTITY sort.descend_order "降順">
@@ -172,3 +174,26 @@
 <!ENTITY classify.menu "機械学習">
 <!ENTITY classify.train "分類の学習">
 <!ENTITY classify.check "分類のチェック">
+
+<!-- フォルダDB -->
+<!ENTITY folder.new "新規作成">
+<!ENTITY folder.new.help "リストを新規に作成します。">
+<!ENTITY folder.rename "名前変更">
+<!ENTITY folder.rename.help "選択しているリストの名前を変更します。">
+<!ENTITY folder.delete "削除">
+<!ENTITY folder.delete.help "選択しているリストを削除します。">
+<!ENTITY folder.addvideo "動画を追加">
+<!ENTITY folder.addvideo.help "選択しているリストに動画を追加します。">
+
+<!ENTITY folderitem.play "動画を再生する">
+<!ENTITY folderitem.play.help "動画ページを開き、動画を再生開始します。">
+<!ENTITY folderitem.openpage "動画ページを開く">
+<!ENTITY folderitem.openpage.help "新規にタブを作成して、動画のページを開きます。">
+<!ENTITY folderitem.deletevideo "削除">
+
+<!ENTITY folderitem.copy.help "選択している動画IDをクリップボードにコピーします。">
+<!ENTITY folderitem.addtostock.help "選択している動画をストックに追加します。">
+<!ENTITY folderitem.sendrequest.help "選択している動画IDをリクエストとして送信するか(視聴者)、リクエストに追加します(放送主)。">
+<!ENTITY folderitem.deletevideo.help "選択している動画をリストから削除します。">
+
+<!ENTITY toriaezu_mylist "とりあえずマイリスト">

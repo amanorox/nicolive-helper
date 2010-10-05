@@ -25,6 +25,10 @@ var NicoLivePlaylist = {
     _tab: null,
     _firsttime: true,
 
+    playing:function(){
+	
+    },
+
     newTab:function(video_id){
 	this._firsttime = true;
 	this._current_video_id = video_id;

@@ -250,7 +250,7 @@
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleStock();"/>
 	    <button type="menu" label="&button.load_mylist;">
 	      <menupopup id="menupopup-from-mylist">
-		<menuitem label="とりあえずマイリスト" oncommand="NicoLiveMylist.addToStockFromDeflist();"/>
+		<menuitem label="&toriaezu_mylist;" oncommand="NicoLiveMylist.addToStockFromDeflist();"/>
 	      </menupopup>
 	    </button>
 
@@ -553,8 +553,8 @@
 
     <!-- for comment body -->
     <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(event);">
-      <menuitem label="JASRAC検索" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
-      <menuitem label="e-License検索" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
+      <menuitem label="&comment.menu.jasracsearch;" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
+      <menuitem label="&comment.menu.elicensesearch;" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>
     </menupopup>
     <menupopup id="popup-comment-anchor">
@@ -638,7 +638,7 @@
     <!-- for database -->
     <menupopup id="popup-db-result">
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyToClipboard();"/>
-      <menuitem label="&menu.db_addstock;" oncommand="NicoLiveDatabase.addStockOne();"/>
+      <menuitem label="&menu.db_addtostock;" oncommand="NicoLiveDatabase.addStockOne();"/>
       <menuitem label="&menu.db_sendrequest;" oncommand="NicoLiveDatabase.sendRequestOne();"/>
       <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName();"/>
       <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional();"/>
@@ -652,7 +652,7 @@
 	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
-      <menuitem label="検索結果を全てコピー" oncommand="NicoLiveDatabase.copyAllToClipboard();"/>
+      <menuitem label="&menu.db_delete_result;" oncommand="NicoLiveDatabase.copyAllToClipboard();"/>
       <menuseparator/>
       <menuitem label="&menu.db_delete;" oncommand="NicoLiveDatabase.deleteMovie();"/>
       <menuseparator/>
@@ -747,21 +747,22 @@
 
     <!-- for folder -->
     <menupopup id="folder-list-menu">
-      <menuitem label="新規作成" oncommand="NicoLiveFolderDB.newList();"/>
-      <menuitem label="名前変更" oncommand="NicoLiveFolderDB.renameList();"/>
-      <menuitem label="削除" oncommand="NicoLiveFolderDB.deleteList();"/>
+      <menuitem label="&folder.new;" oncommand="NicoLiveFolderDB.newList();" tooltiptext="&folder.new.help;"/>
+      <menuitem label="&folder.rename;" oncommand="NicoLiveFolderDB.renameList();" tooltiptext="&folder.rename.help;"/>
+      <menuitem label="&folder.delete;" oncommand="NicoLiveFolderDB.deleteList();" tooltiptext="&folder.delete.help;"/>
       <menuseparator/>
-      <menuitem label="動画を追加" oncommand="NicoLiveFolderDB.appendVideos();"/>
+      <menuitem label="&folder.addvideo;" oncommand="NicoLiveFolderDB.appendVideos();" tooltiptext="&folder.addvideo.help;"/>
     </menupopup>
 
     <menupopup id="folder-item-menu">
-      <menuitem label="動画ページを開く" oncommand="NicoLiveFolderDB.openVideoPage();"/>
-      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveFolderDB.copyVideoId();"/>
+      <menuitem label="&folderitem.play;" oncommand="NicoLiveFolderDB.playVideo();" tooltiptext="&folderitem.play.help;"/>
+      <menuitem label="&folderitem.openpage;" oncommand="NicoLiveFolderDB.openVideoPage();" tooltiptext="&folderitem.openpage.help;"/>
+      <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveFolderDB.copyVideoId();" tooltiptext="&folderitem.copy.help;"/>
       <menuseparator/>
-      <menuitem label="ストックに追加" oncommand="NicoLiveFolderDB.addToStock();"/>
-      <menuitem label="リクエスト送信" oncommand="NicoLiveFolderDB.sendRequest();"/>
+      <menuitem label="&menu.db_addtostock;" oncommand="NicoLiveFolderDB.addToStock();" tooltiptext="&folderitem.addtostock.help;"/>
+      <menuitem label="&menu.db_sendrequest;" oncommand="NicoLiveFolderDB.sendRequest();" tooltiptext="&folderitem.sendrequest.help;"/>
       <menuseparator/>
-      <menuitem label="削除" oncommand="NicoLiveFolderDB.deleteVideo();"/>
+      <menuitem label="&folderitem.deletevideo;" oncommand="NicoLiveFolderDB.deleteVideo();" tooltiptext="&folderitem.deletevideo.help;"/>
     </menupopup>
 
   </popupset>

@@ -168,7 +168,7 @@ var NicoLiveFolderDB = {
     },
 
     sort:function(sortmenu){
-	debugprint(sortmenu.selectedItem.value);
+	//debugprint(sortmenu.selectedItem.value);
 	let sortorder = ["",
 			 "title ASC","title DESC",
 			 "first_retrieve DESC","first_retrieve ASC",
@@ -386,6 +386,48 @@ var NicoLiveFolderDB = {
 	st.finalize();
     },
 
+
+    playVideo:function(){
+	let item = $('folder-item-listbox').selectedItem;
+	if( !item ) return;
+	let vid = item.getAttribute('vid');
+	this._tab = NicoLivePlaylist.newTab(vid);
+	clearInterval(this._starttoplay_timer);
+	this._starttoplay_timer = setInterval("NicoLiveFolderDB._playVideo();", 3000);
+	this._play_firsttime = 2;
+    },
+    _playVideo:function(){
+	// playing, paused, end
+	if(this._tab.contentDocument){
+	    try{
+		let status;
+		let flv = this._tab.contentDocument.getElementById('flvplayer').wrappedJSObject; 
+		status = flv.ext_getStatus();
+		if(this._play_firsttime && flv.ext_getPlayheadTime()==0){
+		    flv.ext_play(true);
+		    if( this._screensize ){
+			flv.ext_setVideoSize( this._screensize );
+		    }
+		    //flv.ext_setVideoSize("full");
+		    this._play_firsttime--;
+		    let flvcontainer = this._tab.contentDocument.getElementById('flvplayer_container').wrappedJSObject;
+		    this._tab.contentWindow.scroll(0,flvcontainer.offsetTop-32);
+		}
+		//debugprint(status);
+		switch(status){
+		case "playing":
+		    this._screensize = flv.ext_getVideoSize();
+		    break;
+		case "end":
+		    break;
+		}
+	    } catch (x) {
+//		debugprint(x);
+	    }
+	}else{
+	    clearInterval(this._starttoplay_timer);
+	}
+    },
 
     init:function(){
 	this.showFolderList();
