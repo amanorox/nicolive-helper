@@ -33,6 +33,7 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveclassifier.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivefolder.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveplaylist.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivetweet.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverights.js" />

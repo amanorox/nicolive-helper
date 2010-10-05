@@ -344,19 +344,16 @@ var NicoLiveRequest = {
 	    NicoLiveHelper.playStock(n,true);
 	}else{
 	    let nextmusic = NicoLiveHelper.stock[ n-1 ];
-	    try{
-		NicoLiveRequest.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
-	    } catch (x) {
-		let tab = window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/'+nextmusic.video_id);
-		NicoLiveRequest.opentab = window.opener.getBrowser().getBrowserForTab(tab);
-	    }
+	    NicoLiveRequest.opentab = NicoLivePlaylist.newTab(nextmusic.video_id);
 
 	    NicoLiveRequest.playlist_start = n;
 	    clearInterval(NicoLiveRequest.playlist_timer);
 	    NicoLiveRequest.playlist_first = 2;
+
 	    NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",3000);
 	}
     },
+
     // ストックの削除ボタン.
     _stockDelete:function(event){
 	let tr = FindParentElement(event.target,'tr');
@@ -604,7 +601,7 @@ var NicoLiveRequest = {
 		if(this.playlist_first && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
 		    if( this._screensize ){
-			flv.ext_setVideoSize( this._screensize );
+			flv.ext_setVideoSize( NicoLiveRequest._screensize );
 		    }
 		    //flv.ext_setVideoSize("full");
 		    this.playlist_first--;

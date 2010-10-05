@@ -255,6 +255,7 @@ var NicoLiveFolderDB = {
 	let item = $('folder-item-listbox').selectedItem;
 	if( !item ) return;
 	let vid = item.getAttribute('vid');
+	//NicoLivePlaylist.newTab(vid);
 	window.opener.getBrowser().addTab("http://www.nicovideo.jp/watch/"+vid);
     },
 
@@ -364,6 +365,8 @@ var NicoLiveFolderDB = {
 	case 65: // A
 	    if( event.ctrlKey ){
 		$('folder-item-listbox').selectAll();
+		event.stopPropagation();
+		return false;
 	    }
 	    break;
 	case 46: // DEL
