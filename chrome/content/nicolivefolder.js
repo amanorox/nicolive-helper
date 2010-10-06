@@ -39,16 +39,9 @@ var NicoLiveFolderDB = {
 	return exist;
     },
 
-
     // リストに表示されているアイテム数表示.
     updateItemNum:function(){
 	$('folder-listitem-num').value = $('folder-item-listbox').children.length +"件";
-    },
-
-    removeAllListboxItems:function(listbox){
-	while(listbox.hasChildNodes()) { 
-	    listbox.removeChild(listbox.childNodes[0]);
-	}
     },
 
     // リストに要素を追加.
@@ -123,7 +116,7 @@ var NicoLiveFolderDB = {
 	st.execute();
 	st.finalize();
 
-	this.removeAllListboxItems( $('folder-item-listbox') );
+	RemoveChildren( $('folder-item-listbox') );
     },
 
     /**
@@ -183,7 +176,7 @@ var NicoLiveFolderDB = {
 	st.bindInt32Parameter(0,id);
 
 	let folder_listbox = $('folder-item-listbox');
-	this.removeAllListboxItems(folder_listbox);
+	RemoveChildren(folder_listbox);
 	while(st.executeStep()){
 	    let listitem = this.createListItemElement(st.row);
 	    folder_listbox.appendChild(listitem);

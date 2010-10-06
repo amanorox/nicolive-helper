@@ -79,6 +79,12 @@ function RemoveElement(elem){
     elem.parentNode.removeChild(elem);
 }
 
+function RemoveChildren(elem){
+    while(elem.hasChildNodes()) { 
+	elem.removeChild(elem.childNodes[0]);
+    }
+}
+
 function CreateMenuItem(label,value){
     var elem;
     elem = document.createElementNS(XUL_NS,'menuitem');
