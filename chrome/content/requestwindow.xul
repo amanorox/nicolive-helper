@@ -210,7 +210,6 @@
 	<tab id="tabs-playlist" label="&tab.playlist;"/>
 	<tab id="tabs-comment" label="&tab.comment;"/>
 	<tab id="tabs-db" label="&tab.database;"/>
-	<tab id="tabs-newdb" label="NewDBβ"/>
 	<tab id="tabs-debug" label="&tab.debug;"/>
       </tabs>
       <tabpanels flex="1" id="tabpanels">
@@ -386,97 +385,101 @@
 	      ondragenter="return NicoLiveDatabase.checkDrag(event)"
 	      ondragover="return NicoLiveDatabase.checkDrag(event)"
 	      ondrop="NicoLiveDatabase.dropToDatabase(event)">
-	  <hbox align="center">
-	    <button type="menu" label="&db.add_from_mylist_to_db;">
-	      <menupopup id="menupopup-from-mylist-to-db">
-	      </menupopup>
-	    </button>
-	    <textbox id="input-db" emptytext="&db.emptytext_input;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveDatabase.addVideos(this.value);"/>
-	    <spacer flex="1"/>
-	    <label id="db-label"/>
-	  </hbox>
-	  <groupbox style="max-height:8em;">
-	    <vbox id="search-condition" flex="1" style="overflow:auto;">
-	    </vbox>
-	  </groupbox>
-	  <hbox>
-	    <menulist id="db-search-max" value="100" oncommand="NicoLiveDatabase.search();">
-	      <menupopup>
-		<menuitem label="&db.result_10;" value="10"/>
-		<menuitem label="&db.result_20;" value="20"/>
-		<menuitem label="&db.result_50;" value="50"/>
-		<menuitem label="&db.result_100;" value="100"/>
-		<menuitem label="&db.result_200;" value="200"/>
-		<menuitem label="&db.result_500;" value="500"/>
-		<menuitem label="&db.result_1000;" value="1000"/>
-	      </menupopup>
-	    </menulist>
-	    <menulist id="db-search-orderby" oncommand="NicoLiveDatabase.search();">
-	      <menupopup>
-		<menuitem label="&sort.title;" value="title"/>
-		<menuitem label="&sort.playtime;" value="length"/>
-		<menuitem label="&sort.view_counter;" value="view_counter"/>
-		<menuitem label="&sort.comment_num;" value="comment_num"/>
-		<menuitem label="&sort.mylist_counter;" value="mylist_counter"/>
-		<menuitem label="&sort.posteddate;" value="first_retrieve"/>
-		<menuitem label="&sort.mylist_rate;" value="mylist_rate"/>
-		<menuitem label="&rate.name;" value="favorite"/>
-	      </menupopup>
-	    </menulist>
-	    <menulist id="db-search-order" oncommand="NicoLiveDatabase.search();">
-	      <menupopup>
-		<menuitem label="&sort.ascend_order;" value="asc"/>
-		<menuitem label="&sort.descend_order;" value="desc"/>
-	      </menupopup>
-	    </menulist>
-	    <button label="&db.do_search;" oncommand="NicoLiveDatabase.search();"/>
-	    <button label="&db.add_stock;" oncommand="NicoLiveDatabase.addStockAll();"/>
-	    <spacer flex="1"/>
-	    <button label="&db.update;" tooltiptext="&db.tooltip_update;" oncommand="NicoLiveDatabase.updateDatabase(NicoLiveDatabase._searchresult);"/>
-	  </hbox>
-	  <!-- 検索結果表示 -->
-	  <vbox flex="1" style="overflow:auto">
-	    <html:table id="database-table" class="requestview">
-	    </html:table>
-	  </vbox>
-	</vbox>
-
-	<vbox id="tab-newdb">
-	  <hbox flex="1">
-	    <listbox id="folder-listbox" context="folder-list-menu"
-		     onselect="NicoLiveFolderDB.selectFolder(this);"
-		     ondragenter="NicoLiveFolderDB.checkDrag(event);"
-		     ondragover="NicoLiveFolderDB.checkDrag(event);"
-		     ondrop="NicoLiveFolderDB.dropItem(event);">
-	    </listbox>
-	    <vbox flex="1">
+	  <deck id="db-deck" flex="1" persist="selectedIndex">
+	    <vbox>
+	      <hbox align="center">
+		<button label="フォルダ" oncommand="$('db-deck').selectedIndex=1;"/>
+		<button type="menu" label="&db.add_from_mylist_to_db;">
+		  <menupopup id="menupopup-from-mylist-to-db">
+		  </menupopup>
+		</button>
+		<textbox id="input-db" emptytext="&db.emptytext_input;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveDatabase.addVideos(this.value);"/>
+		<spacer flex="1"/>
+		<label id="db-label"/>
+	      </hbox>
+	      <groupbox style="max-height:8em;">
+		<vbox id="search-condition" flex="1" style="overflow:auto;">
+		</vbox>
+	      </groupbox>
 	      <hbox>
-		<menulist id="folder-item-sortmenu" oncommand="NicoLiveFolderDB.sort(this);">
+		<menulist id="db-search-max" value="100" oncommand="NicoLiveDatabase.search();">
 		  <menupopup>
-		    <menuitem value="1" label="タイトル昇順"/>
-		    <menuitem value="2" label="タイトル降順"/>
-		    <menuitem value="3" label="投稿が新しい順"/>
-		    <menuitem value="4" label="投稿が古い順"/>
-		    <menuitem value="5" label="再生が多い順"/>
-		    <menuitem value="6" label="再生が少ない順"/>
-		    <menuitem value="7" label="コメントが多い順"/>
-		    <menuitem value="8" label="コメントが少ない順"/>
-		    <menuitem value="9" label="マイリスト登録が多い順"/>
-		    <menuitem value="10" label="マイリスト登録が少ない順"/>
-		    <menuitem value="11" label="時間が長い順"/>
-		    <menuitem value="12" label="時間が短い順"/>
+		    <menuitem label="&db.result_10;" value="10"/>
+		    <menuitem label="&db.result_20;" value="20"/>
+		    <menuitem label="&db.result_50;" value="50"/>
+		    <menuitem label="&db.result_100;" value="100"/>
+		    <menuitem label="&db.result_200;" value="200"/>
+		    <menuitem label="&db.result_500;" value="500"/>
+		    <menuitem label="&db.result_1000;" value="1000"/>
 		  </menupopup>
 		</menulist>
-		<hbox align="center">
-		  <label id="folder-listitem-num" value="0件"/>
-		</hbox>
+		<menulist id="db-search-orderby" oncommand="NicoLiveDatabase.search();">
+		  <menupopup>
+		    <menuitem label="&sort.title;" value="title"/>
+		    <menuitem label="&sort.playtime;" value="length"/>
+		    <menuitem label="&sort.view_counter;" value="view_counter"/>
+		    <menuitem label="&sort.comment_num;" value="comment_num"/>
+		    <menuitem label="&sort.mylist_counter;" value="mylist_counter"/>
+		    <menuitem label="&sort.posteddate;" value="first_retrieve"/>
+		    <menuitem label="&sort.mylist_rate;" value="mylist_rate"/>
+		    <menuitem label="&rate.name;" value="favorite"/>
+		  </menupopup>
+		</menulist>
+		<menulist id="db-search-order" oncommand="NicoLiveDatabase.search();">
+		  <menupopup>
+		    <menuitem label="&sort.ascend_order;" value="asc"/>
+		    <menuitem label="&sort.descend_order;" value="desc"/>
+		  </menupopup>
+		</menulist>
+		<button label="&db.do_search;" oncommand="NicoLiveDatabase.search();"/>
+		<button label="&db.add_stock;" oncommand="NicoLiveDatabase.addStockAll();"/>
+		<spacer flex="1"/>
+		<button label="&db.update;" tooltiptext="&db.tooltip_update;" oncommand="NicoLiveDatabase.updateDatabase(NicoLiveDatabase._searchresult);"/>
 	      </hbox>
-	      <listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu"
-		       ondragstart="NicoLiveFolderDB.startDraggingItem(event);"
-		       onkeydown="return NicoLiveFolderDB.onkeydown(event);">
-	      </listbox>
+	      <!-- 検索結果表示 -->
+	      <vbox flex="1" style="overflow:auto">
+		<html:table id="database-table" class="requestview">
+		</html:table>
+	      </vbox>
 	    </vbox>
-	  </hbox>
+	    <!-- folder DB -->
+	    <hbox flex="1">
+	      <listbox id="folder-listbox" context="folder-list-menu"
+		       onselect="NicoLiveFolderDB.selectFolder(this);"
+		       ondragenter="NicoLiveFolderDB.checkDrag(event);"
+		       ondragover="NicoLiveFolderDB.checkDrag(event);"
+		       ondrop="NicoLiveFolderDB.dropItem(event);">
+	      </listbox>
+	      <vbox flex="1">
+		<hbox>
+		  <button label="DB検索" oncommand="$('db-deck').selectedIndex=0;"/>
+		  <menulist id="folder-item-sortmenu" oncommand="NicoLiveFolderDB.sort(this);">
+		    <menupopup>
+		      <menuitem value="1" label="タイトル昇順"/>
+		      <menuitem value="2" label="タイトル降順"/>
+		      <menuitem value="3" label="投稿が新しい順"/>
+		      <menuitem value="4" label="投稿が古い順"/>
+		      <menuitem value="5" label="再生が多い順"/>
+		      <menuitem value="6" label="再生が少ない順"/>
+		      <menuitem value="7" label="コメントが多い順"/>
+		      <menuitem value="8" label="コメントが少ない順"/>
+		      <menuitem value="9" label="マイリスト登録が多い順"/>
+		      <menuitem value="10" label="マイリスト登録が少ない順"/>
+		      <menuitem value="11" label="時間が長い順"/>
+		      <menuitem value="12" label="時間が短い順"/>
+		    </menupopup>
+		  </menulist>
+		  <hbox align="center">
+		    <label id="folder-listitem-num" value="0件"/>
+		  </hbox>
+		</hbox>
+		<listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu"
+			 ondragstart="NicoLiveFolderDB.startDraggingItem(event);"
+			 onkeydown="return NicoLiveFolderDB.onkeydown(event);">
+		</listbox>
+	      </vbox>
+	    </hbox>
+	  </deck>
 	</vbox>
 
 	<!-- debug tab -->
