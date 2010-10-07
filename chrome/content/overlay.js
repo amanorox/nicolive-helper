@@ -114,7 +114,7 @@ var NicoLiveOverlay = {
 	    }
 	}
 	let community_id = "";
-	if( url.indexOf("co") != -1 ){
+	if( url.indexOf("co")!=-1 || url.indexOf("ch")!=-1){
 	    // co番号でアクセスした場合、lv番号を取得する.
 	    community_id = url;
 	    url = window.content.document.defaultView.wrappedJSObject.Video.id;
@@ -176,7 +176,7 @@ var NicoLiveOverlay = {
 		    }
 		    let community_id;
 		    try{
-			community_id = e.target.location.href.match(/co\d+$/);
+			community_id = e.target.location.href.match(/(co|ch)\d+$/)[0];
 		    } catch (x) {
 			this.debugprint(x);
 		    }

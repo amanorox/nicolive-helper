@@ -1740,6 +1740,16 @@ var NicoLiveHelper = {
 	req.send(str.join('&'));
     },
 
+    // BSPコメを使ってコメント(放送主のみ).
+    postBSPComment:function(){
+	if( !this.iscaster ) return;
+	let msg = InputPrompt('バックステージパスコメントを入力してください','BSPコメント','');
+	if(msg){
+	    let str = "/press show green \""+msg+"\" \""+this.user_name+"\"";
+	    this.postCasterComment(str,'');
+	}
+    },
+
     // リクエスト消費順にソート.
     calcConsumptionRate:function(){
 	let rate = new Array();
@@ -2846,13 +2856,14 @@ var NicoLiveHelper = {
 		    document.title = NicoLiveHelper.request_id+":"+NicoLiveHelper.title+" (NicoLive Helper)";
 		}
 		NicoLiveHelper.user_id    = xml.getElementsByTagName('user_id')[0].textContent;
+		NicoLiveHelper.user_name  = xml.getElementsByTagName('nickname')[0].textContent;
 		NicoLiveHelper.is_premium = xml.getElementsByTagName('is_premium')[0].textContent;
 		NicoLiveHelper.addr       = xml.getElementsByTagName('addr')[0].textContent;
 		NicoLiveHelper.port       = xml.getElementsByTagName('port')[0].textContent;
 		NicoLiveHelper.thread     = xml.getElementsByTagName('thread')[0].textContent;
 		NicoLiveHelper.iscaster   = xml.getElementsByTagName('is_owner')[0].textContent;
-		NicoLiveHelper.starttime  = parseInt(xml.getElementsByTagName('start_time')[0].textContent);
-		NicoLiveHelper.opentime   = parseInt(xml.getElementsByTagName('open_time')[0].textContent);
+		NicoLiveHelper.starttime  = parseInt(xml.getElementsByTagName('start_time')[0].textContent);// 開演時刻.
+		NicoLiveHelper.opentime   = parseInt(xml.getElementsByTagName('open_time')[0].textContent); // 開場時刻.
 		NicoLiveHelper.community  = xml.getElementsByTagName('default_community')[0].textContent;
 		if( NicoLiveHelper.iscaster!="0" ){
 		    NicoLiveHelper.iscaster=true;
