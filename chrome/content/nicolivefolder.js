@@ -387,16 +387,18 @@ var NicoLiveFolderDB = {
 	this._tab = NicoLivePlaylist.newTab(vid);
 	clearInterval(this._starttoplay_timer);
 	this._starttoplay_timer = setInterval("NicoLiveFolderDB._playVideo();", 3000);
-	this._play_firsttime = 2;
+	this._play_firsttime = 1;
     },
     _playVideo:function(){
 	// playing, paused, end
 	if(this._tab.contentDocument){
 	    try{
-		let status;
-		let flv = this._tab.contentDocument.getElementById('flvplayer').wrappedJSObject; 
+		let status, loadratio;
+		let flv = this._tab.contentDocument.getElementById('flvplayer').wrappedJSObject.__proto__;
 		status = flv.ext_getStatus();
-		if(this._play_firsttime && flv.ext_getPlayheadTime()==0){
+		loadratio = flv.ext_getLoadedRatio();
+
+		if(loadratio>0.05 && this._play_firsttime && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
 		    if( this._screensize ){
 			flv.ext_setVideoSize( this._screensize );

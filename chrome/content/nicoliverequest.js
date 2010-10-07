@@ -348,7 +348,7 @@ var NicoLiveRequest = {
 
 	    NicoLiveRequest.playlist_start = n;
 	    clearInterval(NicoLiveRequest.playlist_timer);
-	    NicoLiveRequest.playlist_first = 2;
+	    NicoLiveRequest.playlist_first = 1;
 
 	    NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",3000);
 	}
@@ -595,10 +595,12 @@ var NicoLiveRequest = {
 	// playing, paused, end
 	if(this.opentab.contentDocument){
 	    try{
-		let status;
-		let flv = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject; 
+		let status,loadratio;
+		let flv = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject.__proto__;
 		status = flv.ext_getStatus();
-		if(this.playlist_first && flv.ext_getPlayheadTime()==0){
+		loadratio = flv.ext_getLoadedRatio();
+
+		if(loadratio>0.05 && this.playlist_first && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
 		    if( this._screensize ){
 			flv.ext_setVideoSize( NicoLiveRequest._screensize );
@@ -634,12 +636,12 @@ var NicoLiveRequest = {
 		    this.playlist_start++;
 		    if(nextmusic){
 			this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
-			this.playlist_first = 2;
+			this.playlist_first = 1;
 		    }
 		    break;
 		}
 	    } catch (x) {
-//		debugprint(x);
+//		debugprint(GetCurrentTime()+"/"+x);
 	    }
 	}else{
 	    clearInterval(this.playlist_timer);
