@@ -98,7 +98,6 @@ var NicoLiveFolderDB = {
 	let name = list.getAttribute('label');
 	let id = list.getAttribute('value');
 
-	PlayAlertSound();
 	if( !ConfirmPrompt('リスト「'+name+'」を削除しますか ?','リストの削除') ) return;
 
 	$('folder-listbox').removeItemAt( $('folder-listbox').selectedIndex );
@@ -221,7 +220,6 @@ var NicoLiveFolderDB = {
 	let items = $('folder-item-listbox').selectedItems;
 	if( !items.length ) return;
 
-	PlayAlertSound();
 	if( !ConfirmPrompt("選択した動画をリストから削除しますか ?","リスト内の動画の削除") ) return;
 
 	let id = $('folder-listbox').selectedItem.value;
