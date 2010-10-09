@@ -81,7 +81,8 @@ var NicoLiveHistory = {
 	}
     },
 
-    // プレイリストのテキストからマイリス登録.
+    /** プレイリストのテキストから範囲選択して指定した動画のマイリス登録.
+     */
     addMylist:function(mylist_id,mylist_name,ev){
 	let notes = $('played-list-textbox');
 	let substring;
@@ -110,7 +111,7 @@ var NicoLiveHistory = {
 
 	// 詳細表示用のコンテキストメニュー.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event);");
+	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event,document.popupNode||$('popup-playlist').triggerNode);");
 	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-additionalinfo').nextSibling );
     },
 
