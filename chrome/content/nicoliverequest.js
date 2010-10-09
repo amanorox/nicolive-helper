@@ -600,7 +600,7 @@ var NicoLiveRequest = {
 		status = flv.ext_getStatus();
 		loadratio = flv.ext_getLoadedRatio();
 
-		if(loadratio>0.05 && this.playlist_first && flv.ext_getPlayheadTime()==0){
+		if(loadratio>0.1 && this.playlist_first && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
 		    if( this._screensize ){
 			flv.ext_setVideoSize( NicoLiveRequest._screensize );
