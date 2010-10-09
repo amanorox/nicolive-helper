@@ -396,7 +396,7 @@ var NicoLiveFolderDB = {
 		status = flv.ext_getStatus();
 		loadratio = flv.ext_getLoadedRatio();
 
-		if(loadratio>0.05 && this._play_firsttime && flv.ext_getPlayheadTime()==0){
+		if(loadratio>0.1 && this._play_firsttime && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
 		    if( this._screensize ){
 			flv.ext_setVideoSize( this._screensize );
