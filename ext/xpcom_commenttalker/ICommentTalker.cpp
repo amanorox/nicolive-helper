@@ -153,30 +153,30 @@ NS_GENERIC_FACTORY_CONSTRUCTOR(NLHCommentTalker)
 
 NS_DEFINE_NAMED_CID(MY_COMPONENT_CID);
 
-static const mozilla::Module::CIDEntry kSampleCIDs[] = {
+static const mozilla::Module::CIDEntry kNLHCommentTalkerCIDs[] = {
     { &kMY_COMPONENT_CID, false, NULL, NLHCommentTalkerConstructor },
     { NULL }
 };
 
-static const mozilla::Module::ContractIDEntry kSampleContracts[] = {
+static const mozilla::Module::ContractIDEntry kNLHCommentTalkerContracts[] = {
     { MY_COMPONENT_CONTRACTID, &kMY_COMPONENT_CID },
     { NULL }
 };
 
-static const mozilla::Module::CategoryEntry kSampleCategories[] = {
+static const mozilla::Module::CategoryEntry kNLHCommentTalkerCategories[] = {
     { "my-nlh-category", "my-nlh-key", MY_COMPONENT_CONTRACTID },
     { NULL }
 };
 
-static const mozilla::Module kSampleModule = {
+static const mozilla::Module kNLHCommentTalkerModule = {
     mozilla::Module::kVersion,
-    kSampleCIDs,
-    kSampleContracts,
-    kSampleCategories
+    kNLHCommentTalkerCIDs,
+    kNLHCommentTalkerContracts,
+    kNLHCommentTalkerCategories
 };
 
-NSMODULE_DEFN(NLHCommentTalkerModule) = &kSampleModule;
-NS_IMPL_MOZILLA192_NSGETMODULE(&kSampleModule)
+NSMODULE_DEFN(NLHCommentTalkerModule) = &kNLHCommentTalkerModule;
+NS_IMPL_MOZILLA192_NSGETMODULE(&kNLHCommentTalkerModule)
 
 
 #ifdef _MANAGED
