@@ -435,7 +435,6 @@ var NicoLiveComment = {
 	this.createNameList();
     },
 
-
     /** コテハン登録.
      * @param node メニューがポップアップしたノード.
      */
@@ -680,7 +679,7 @@ var NicoLiveComment = {
     },
 
     // コメント用ポップアップメニュー表示処理.
-    showPopupMenuForComment:function(e){
+    showPopupMenuForComment:function(){
 	let str = window.getSelection().toString();
 	if( str.match(/...[-+=/]....[-+=/]./) ){
 	    $('comment-search-jasrac').hidden = false;

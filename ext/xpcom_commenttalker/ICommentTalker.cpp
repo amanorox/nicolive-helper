@@ -4,7 +4,7 @@
 #include "ICommentTalker.h"
 
 #pragma comment(lib,"nspr4.lib")
-#pragma comment(lib,"xpcomglue_s.lib")
+#pragma comment(lib,"xpcomglue_s_nomozalloc.lib")
 #pragma comment(lib,"xpcomglue.lib")
 #pragma comment(lib,"xpcom.lib")
 
@@ -145,23 +145,38 @@ NS_IMETHODIMP NLHCommentTalker::SayKotoeri(const PRUnichar *strData, PRInt32 *_r
 /* End of implementation class template. */
 
 
-#include "nsIGenericFactory.h"
+#include "mozilla/ModuleUtils.h"
+#include "nsIClassInfoImpl.h"
 
 
 NS_GENERIC_FACTORY_CONSTRUCTOR(NLHCommentTalker)
 
-static nsModuleComponentInfo components[] =
-{
-	{
-		MY_COMPONENT_CLASSNAME, 
-		MY_COMPONENT_CID,
-		MY_COMPONENT_CONTRACTID,
-		NLHCommentTalkerConstructor,
-	}
+NS_DEFINE_NAMED_CID(MY_COMPONENT_CID);
+
+static const mozilla::Module::CIDEntry kSampleCIDs[] = {
+    { &kMY_COMPONENT_CID, false, NULL, NLHCommentTalkerConstructor },
+    { NULL }
 };
 
-NS_IMPL_NSGETMODULE(NLHCommentTalkerModule, components) 
+static const mozilla::Module::ContractIDEntry kSampleContracts[] = {
+    { MY_COMPONENT_CONTRACTID, &kMY_COMPONENT_CID },
+    { NULL }
+};
 
+static const mozilla::Module::CategoryEntry kSampleCategories[] = {
+    { "my-nlh-category", "my-nlh-key", MY_COMPONENT_CONTRACTID },
+    { NULL }
+};
+
+static const mozilla::Module kSampleModule = {
+    mozilla::Module::kVersion,
+    kSampleCIDs,
+    kSampleContracts,
+    kSampleCategories
+};
+
+NSMODULE_DEFN(NLHCommentTalkerModule) = &kSampleModule;
+NS_IMPL_MOZILLA192_NSGETMODULE(&kSampleModule)
 
 
 #ifdef _MANAGED

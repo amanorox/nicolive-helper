@@ -862,11 +862,13 @@ var NicoLiveRequest = {
 
     // リク、ストックタブ用のマイリス追加メニューを作る.
     appendAddMylistMenu:function(mylists){
+	// こちらはストックのコンテキストメニューのマイリスト追加メニュー.
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute("oncommand",
 			       "NicoLiveRequest.addMylist(event.target.value,event.target.label,event,document.popupNode||$('popup-sort-stock').triggerNode);");
 	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
 
+	// こっちはリクエストの方.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute("oncommand",
 			       "NicoLiveRequest.addMylist(event.target.value,event.target.label,event,document.popupNode||$('popup-copyrequest').triggerNode);");

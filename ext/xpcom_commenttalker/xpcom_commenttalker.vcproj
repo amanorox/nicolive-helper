@@ -102,6 +102,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="xpidl-build.bat $(ProjectDir)ICommentTalker.idl"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"

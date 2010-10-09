@@ -1,9 +1,9 @@
 /**
  * いろいろと便利関数などを.
  */
- try{
-     // Fx4.0
-     Components.utils.import("resource://gre/modules/AddonManager.jsm");
+try{
+    // Fx4.0
+    Components.utils.import("resource://gre/modules/AddonManager.jsm");
 } catch (x) {
 } 
 
@@ -143,6 +143,7 @@ function OpenFile(path){
 
 // NicoLiveHelperのインストールパスを返す.
 function GetExtensionPath(){
+    let id = "nicolivehelper@miku39.jp";
     let ext;
     try{
 	ext = Components.classes["@mozilla.org/extensions/manager;1"]
@@ -209,6 +210,7 @@ function InputPromptWithCheck(text,caption,input,checktext){
 }
 
 function FindParentElement(elem,tag){
+    //debugprint("Element:"+elem+" Tag:"+tag);
     while(elem.parentNode &&
 	  (!elem.tagName || (elem.tagName.toUpperCase()!=tag.toUpperCase()))){
 	elem = elem.parentNode;
