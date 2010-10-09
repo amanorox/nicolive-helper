@@ -151,8 +151,11 @@ var NicoLiveComment = {
 	}
     },
 
-    copyComment:function(){
-	let elem = FindParentElement(document.popupNode,'hbox');
+    /** コメントをコピーする.
+     * @param node メニューがポップアップしたノード
+     */
+    copyComment:function(node){
+	let elem = FindParentElement(node,'hbox');
 	let str = window.getSelection().toString() || elem.textContent;
 	CopyToClipboard(str);
     },

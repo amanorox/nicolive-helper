@@ -560,10 +560,10 @@
     <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(event);">
       <menuitem label="&comment.menu.jasracsearch;" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
       <menuitem label="&comment.menu.elicensesearch;" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
-      <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment();"/>
+      <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment(document.popupNode||$('popup-copycomment').triggerNode);"/>
     </menupopup>
     <menupopup id="popup-comment-anchor">
-      <menuitem label="&comment.menu_copy;" oncommand="NicoLiveComment.copyComment();"/>
+      <menuitem label="&comment.menu_copy;" oncommand="NicoLiveComment.copyComment(document.popupNode||$('popup-copycomment').triggerNode);"/>
       <menuitem label="&comment.menu_setselfrequest;" oncommand="NicoLiveComment.setSelfRequest(event);"/>
       <menuitem label="&comment.menu_moverequest_to_top;" oncommand="NicoLiveComment.moveRequestToTop(event);"/>
     </menupopup>
