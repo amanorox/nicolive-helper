@@ -140,9 +140,10 @@
 				);
 				OTHER_LDFLAGS = (
 					"-lnspr4",
-					"-lxpcomglue_s",
+					"-lxpcomglue_s_nomozalloc",
 					"-lxpcomglue",
 					"-lxpcom",
+					"-lmozalloc",
 				);
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";
@@ -171,9 +172,10 @@
 				);
 				OTHER_LDFLAGS = (
 					"-lnspr4",
-					"-lxpcomglue_s",
+					"-lxpcomglue_s_nomozalloc",
 					"-lxpcomglue",
 					"-lxpcom",
+					"-lmozalloc",
 				);
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";

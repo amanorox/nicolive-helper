@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+#include <mozilla-config.h>
 #include <nsEmbedString.h>
 #include "ICommentTalker.h"
 
@@ -31,7 +32,7 @@ int PRUnicharLen(const PRUnichar*uni)
 char*unicodetoutf8(const PRUnichar*uni)
 {
 	int len = PRUnicharLen(uni) + 1;
-	char*ret = (char*)malloc( len * 6 );
+	char*ret = (char*)(malloc)( len * 6 );
 	char*buf = ret;
 	int i;
 	for(i=0;i<len;i++,uni++){
@@ -141,7 +142,7 @@ int saykotoeri(const PRUnichar *text)
 	char buf[8192];
 	sprintf(buf,"/usr/local/bin/saykotoeri \"%s\" & ",utf8str);
 	system(buf);
-	free(utf8str);
+	(free)(utf8str);
 	return 1;
 }
 
@@ -154,8 +155,8 @@ int saykotoeri2(const PRUnichar*option, const PRUnichar *text)
 	sprintf(buf,"/usr/local/bin/SayKotoeri2 %s \"%s\" & ", opt, utf8str);
 	//system(buf);
 	callVoiceUnder(utf8str);
-	free(utf8str);
-	free(opt);
+	(free)(utf8str);
+	(free)(opt);
 	return 1;
 }
 
@@ -225,20 +226,35 @@ NS_IMETHODIMP NLHCommentTalker::SayKotoeri(const PRUnichar *strData, PRInt32 *_r
 /* End of implementation class template. */
 
 
-#include "nsIGenericFactory.h"
+#include "mozilla/ModuleUtils.h"
+#include "nsIClassInfoImpl.h"
 
 
 NS_GENERIC_FACTORY_CONSTRUCTOR(NLHCommentTalker)
 
-static nsModuleComponentInfo components[] =
-{
-	{
-		MY_COMPONENT_CLASSNAME, 
-		MY_COMPONENT_CID,
-		MY_COMPONENT_CONTRACTID,
-		NLHCommentTalkerConstructor,
-	}
+NS_DEFINE_NAMED_CID(MY_COMPONENT_CID);
+
+static const mozilla::Module::CIDEntry kNLHCommentTalkerCIDs[] = {
+    { &kMY_COMPONENT_CID, false, NULL, NLHCommentTalkerConstructor },
+    { NULL }
 };
 
-NS_IMPL_NSGETMODULE(NLHCommentTalkerModule, components) 
+static const mozilla::Module::ContractIDEntry kNLHCommentTalkerContracts[] = {
+    { MY_COMPONENT_CONTRACTID, &kMY_COMPONENT_CID },
+    { NULL }
+};
 
+static const mozilla::Module::CategoryEntry kNLHCommentTalkerCategories[] = {
+    { "my-nlh-category", "my-nlh-key", MY_COMPONENT_CONTRACTID },
+    { NULL }
+};
+
+static const mozilla::Module kNLHCommentTalkerModule = {
+    mozilla::Module::kVersion,
+    kNLHCommentTalkerCIDs,
+    kNLHCommentTalkerContracts,
+    kNLHCommentTalkerCategories
+};
+
+NSMODULE_DEFN(NLHCommentTalkerModule) = &kNLHCommentTalkerModule;
+NS_IMPL_MOZILLA192_NSGETMODULE(&kNLHCommentTalkerModule)
