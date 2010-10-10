@@ -3024,6 +3024,8 @@ var NicoLiveHelper = {
 
     // ロスタイムを秒で返す.
     calcLossTime:function(){
+	return 60; // やっぱり1分固定の予感が.
+
 	// どうも新バージョンでもロスタイム時間は以下の式でOKみたい.
 	let tmp = 120 - (this.starttime % 60);
 	if( tmp>115 ) tmp = 60;
