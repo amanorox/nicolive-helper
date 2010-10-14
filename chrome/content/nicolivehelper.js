@@ -3483,6 +3483,7 @@ var NicoLiveHelper = {
 	    this._firstflag = false;
 	    this.musicinfo = {};
 	    this.isnotified = new Array(); // 残り3分通知を出したかどうかのフラグ.
+	    this.previouschat = "";
 	    this.commentstate = COMMENT_STATE_NONE;
 	    this.commentview = COMMENT_VIEW_NORMAL;
 	    this.resetRequestCount(); // 1人あたりのリクエスト受け付け数ワーク.
