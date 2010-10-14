@@ -80,7 +80,7 @@
     <!-- F3: Find next -->
     <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"></key>
     <!-- CTRL+M: Add a currently playing movie to Toriaezu-mylist -->
-    <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id,'');"></key>
+    <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id, NicoLiveMylist.getDefaultMylistComment());"></key>
     <!-- CTRL+F: Find a movie in a request or a stock tab -->
     <key id="search-stock" key="f" modifiers="accel" oncommand="NicoLiveRequest.findRequestStock();"></key>
     <!-- CTRL+T: Tweet by Twitter -->
