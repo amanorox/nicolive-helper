@@ -346,6 +346,19 @@ function GetFormattedDateString(format,ms){
     return d.toLocaleFormat(format);
 }
 
+// レート数値をスターの個数の文字列にする.
+function GetFavRateString(rate){
+    let tmp;
+    let str = "";
+    tmp = rate / 10;
+    for(let i=0;i<tmp;i++){
+	str += "★";
+    }
+    if(!str) str="なし";
+    return str;
+}
+
+
 function GetSelectedTag(tags,selection,color){
     let r = new Array();
     let i,tag;

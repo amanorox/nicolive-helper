@@ -474,12 +474,8 @@ var NicoLiveDatabase = {
 
 	td = tr.insertCell(tr.cells.length);
 
-	let tooltip = "";
-	for(let i=0;i<item.favorite/10;i++){
-	    tooltip += "★";
-	}
-	if(tooltip) tooltip = "レート:"+tooltip;
-	else tooltip="レート:なし";
+	let tooltip = "レート:"+GetFavRateString(item.favorite);
+
 	let str;
 	str = "<vbox context=\"popup-db-result\" nicovideo_id=\""+item.video_id+"\" tooltiptext=\""+tooltip+"\">"
 	    + "<html:div>"
@@ -668,16 +664,8 @@ var NicoLiveDatabase = {
 	for(let i=0,item; item=videolist[i]; i++){
 	    if( video_id==item.getAttribute('nicovideo_id') ){
 		try{
-		    let tooltip="";
+		    let tooltip="レート:"+GetFavRateString(rate);
 		    let oldtooltip = item.getAttribute("tooltiptext");
-		    for(let i=0;i<rate/10;i++){
-			tooltip += "★";
-		    }
-		    if(tooltip){
-			tooltip = "レート:"+tooltip;
-		    }else{
-			tooltip = "レート:なし";
-		    }
 		    tooltip = oldtooltip.replace(/^レート:.*$/m,tooltip);
 		    item.setAttribute('tooltiptext',tooltip);
 		} catch (x) {

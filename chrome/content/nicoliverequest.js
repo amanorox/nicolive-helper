@@ -27,17 +27,9 @@ var NicoLiveRequest = {
     // 動画情報を表示しているvboxを作成して返す.
     createVideoInformation:function(item,isstock){
 	let vbox = CreateElement('vbox');
-	let tmp,tooltip="";
+	let tooltip="";
 	let i;
-	tmp = NicoLiveDatabase.getFavorite(item.video_id) / 10;
-	for(i=0;i<tmp;i++){
-	    tooltip += "★";
-	}
-	if(tooltip){
-	    tooltip = "レート:"+tooltip+"\n";
-	}else{
-	    tooltip = "レート:なし\n";
-	}
+	tooltip = "レート:"+GetFavRateString(NicoLiveDatabase.getFavorite(item.video_id)) + "\n";
 	tooltip += item.highbitrate+"kbps/"+item.lowbitrate+"kbps";
 	vbox.setAttribute('tooltiptext',tooltip);
 	vbox.setAttribute('nicovideo_id',item.video_id);

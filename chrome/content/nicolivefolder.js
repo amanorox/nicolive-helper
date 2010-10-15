@@ -136,11 +136,7 @@ var NicoLiveFolderDB = {
 	let min = parseInt(item.length/60);
 	let sec = parseInt(item.length%60);
 
-	let rate = "";
-	for(let i=0;i<item.favorite/10;i++){
-	    rate += "★";
-	}
-	if(!rate) rate="なし";
+	let rate = GetFavRateString(item.favorite);
 	div.innerHTML = item.video_id + " "+item.title+"<br/>"
 	    + "投稿日:"+posteddate+" 時間:"+(min+":"+(sec<10?("0"+sec):sec))+"<br/>"
 	    + "再生:"+FormatCommas(item.view_counter)
