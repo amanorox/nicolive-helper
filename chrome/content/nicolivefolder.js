@@ -25,7 +25,10 @@ var NicoLiveFolderDB = {
 	return NicoLiveDatabase.dbconnect;
     },
 
-    // 指定のリストIDに指定の動画IDが存在しているかどうか.
+    /** 指定のリストIDに指定の動画IDが存在しているかどうか.
+     * @param list_id リストID
+     * @param video_id 動画ID(ひとつ)
+     */
     checkExistItem:function(list_id,video_id){
 	let db = this.getDatabase();
 	let st = db.createStatement('SELECT * FROM folder WHERE parent=?1 AND video_id=?2');
@@ -118,8 +121,8 @@ var NicoLiveFolderDB = {
 	RemoveChildren( $('folder-item-listbox') );
     },
 
-    /**
-     * 動画情報を表示しているリストアイテム要素を作成.
+    /** 動画情報を表示しているリストアイテム要素を作成.
+     * @param item 動画情報のオブジェクト
      */
     createListItemElement:function(item){
 	let posteddate = GetDateString(item.first_retrieve*1000);
@@ -246,29 +249,73 @@ var NicoLiveFolderDB = {
 	window.opener.getBrowser().addTab("http://www.nicovideo.jp/watch/"+vid);
     },
 
+    /**
+     * @param id リストID
+     * @param vids 動画ID(複数含む文字列可)
+     */
+    _appendVideos:function(id, vids){
+	if( !vids ) return;
+
+	NicoLiveDatabase.addVideos(vids);
+
+	let db = this.getDatabase();
+	let l = vids.match(/(sm|nm)\d+/g);
+	if(l){
+	    for(let i=0,video_id;video_id=l[i];i++){
+		if( this.checkExistItem(id,video_id) ) continue;
+
+		let st = db.createStatement('INSERT INTO folder(type,parent,video_id) VALUES(1,?1,?2)');
+		st.bindInt32Parameter(0,id);
+		st.bindUTF8StringParameter(1,video_id);
+		st.execute();
+		st.finalize();
+	    }
+	    this.sort( $('folder-item-sortmenu') );
+	}
+    },
+
+    /** 動画IDを入力して追加.
+     */
     appendVideos:function(){
 	if( !$('folder-listbox').selectedItem ) return;
 	let id = $('folder-listbox').selectedItem.value;
 	let vids = InputPrompt("リストへ追加する動画ID(複数可)を入力してください","リストへ動画の追加");
 	if( vids ){
-	    NicoLiveDatabase.addVideos(vids);
-
-	    let db = this.getDatabase();
-
-	    let l = vids.match(/(sm|nm)\d+/g);
-	    if(l){
-		for(let i=0,video_id;video_id=l[i];i++){
-		    if( this.checkExistItem(id,video_id) ) continue;
-
-		    let st = db.createStatement('INSERT INTO folder(type,parent,video_id) VALUES(1,?1,?2)');
-		    st.bindInt32Parameter(0,id);
-		    st.bindUTF8StringParameter(1,video_id);
-		    st.execute();
-		    st.finalize();
-		}
-		this.sort( $('folder-item-sortmenu') );
-	    }
+	    this._appendVideos( id, vids );
 	}
+    },
+
+    /** マイリストから追加.
+     * @param id リストID
+     * @param mylist_id マイリストID
+     */
+    appendVideosFromMylist:function(id,mylist_id){
+	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let xml = req.responseXML;
+		let items = xml.getElementsByTagName('item');
+		let videos = new Array();
+		debugprint('mylist rss items:'+items.length);
+		for(let i=0,item;item=items[i];i++){
+		    let video_id;
+		    try{
+			video_id = item.getElementsByTagName('link')[0].textContent.match(/(sm|nm)\d+/);
+		    } catch (x) {
+			video_id = "";
+		    }
+		    if(video_id){
+			videos.push(video_id[0]);
+		    }
+		}// end for.
+		NicoLiveFolderDB._appendVideos(id, videos.join(','));
+	    }
+	};
+	req.open('GET', url );
+	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
+	req.send('');
     },
 
     startDraggingItem:function(event){
@@ -286,6 +333,77 @@ var NicoLiveFolderDB = {
 	    event.preventDefault();
 	}
 	return true;
+    },
+    checkDragOnItemList:function(event){
+	let b = event.dataTransfer.types.contains("application/x-moz-node");
+	if( !b ){
+	    event.preventDefault();
+	}
+	return true;
+    },
+
+    /** アイテムリストにいろいろドロップ.
+     * @param event eventオブジェクト
+     */
+    dropToItemList:function(event){
+	if( !$('folder-listbox').selectedItem ) return;
+	let b = event.dataTransfer.types.contains("application/x-moz-node");
+	if( b ){
+	    return;
+	}
+	let id = $('folder-listbox').selectedItem.value;
+
+	// ファイルをドロップしたとき.
+	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	if (file instanceof Components.interfaces.nsIFile){
+	    if( !file.leafName.match(/\.txt$/) ) return;
+	    debugprint("file dropped:"+file.path);
+	    return;
+	}
+	// テキストをドロップしたとき.
+	if( event.dataTransfer.types.contains('text/plain') ){
+	    let txt = event.dataTransfer.mozGetDataAt("text/plain",0);
+	    debugprint('text dropped.');
+	    try{
+		let mylist_id = txt.match(/mylist\/(\d+)/)[1];
+		this.appendVideosFromMylist( id, mylist_id );
+	    } catch (x) {
+		this._appendVideos( id, txt );
+	    }
+	    return;
+	}
+	// アンカーをドロップしたとき.
+	if( event.dataTransfer.types.contains("text/uri-list") ){
+	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
+	    debugprint("uri dropped:"+uri);
+	    try{
+		let mylist_id = uri.match(/mylist\/(\d+)/)[1];
+		this.appendVideosFromMylist( id, mylist_id );
+	    } catch (x) {
+		this._appendVideos( id, uri );
+	    }
+	    return;
+	}
+	// タブをドロップしたとき.
+	if( event.dataTransfer.types.contains("application/x-moz-tabbrowser-tab") ){
+	    debugprint("tab dropped");
+	    let str = "";
+	    let tab = event.dataTransfer.mozGetDataAt("application/x-moz-tabbrowser-tab",0);
+	    let doc = tab.linkedBrowser.contentDocument;
+	    // 検索ページ.
+	    let items = evaluateXPath(doc,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/table/tbody/tr/td/p/a/@href");
+	    for(let i=0,item; item=items[i]; i++){
+		str += item.textContent + " ";
+	    }
+	    // ランキングページ.
+	    items = evaluateXPath(doc,"//div/p/a[@class='watch']/@href");
+	    for(let i=0,item; item=items[i]; i++){
+		str += item.textContent + " ";
+	    }
+	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
+	    this._appendVideos( id, str );
+	    return;
+	}
     },
 
     /**

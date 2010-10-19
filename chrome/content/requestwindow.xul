@@ -475,6 +475,9 @@
 		</hbox>
 		<listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu"
 			 ondragstart="NicoLiveFolderDB.startDraggingItem(event);"
+			 ondragenter="NicoLiveFolderDB.checkDragOnItemList(event);"
+			 ondragover="NicoLiveFolderDB.checkDragOnItemList(event);"
+			 ondrop="NicoLiveFolderDB.dropToItemList(event);"
 			 onkeydown="return NicoLiveFolderDB.onkeydown(event);">
 		</listbox>
 	      </vbox>
