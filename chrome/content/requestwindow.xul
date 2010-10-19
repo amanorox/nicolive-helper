@@ -446,9 +446,9 @@
 	    <hbox flex="1">
 	      <listbox id="folder-listbox" context="folder-list-menu"
 		       onselect="NicoLiveFolderDB.selectFolder(this);"
-		       ondragenter="NicoLiveFolderDB.checkDrag(event);"
-		       ondragover="NicoLiveFolderDB.checkDrag(event);"
-		       ondrop="NicoLiveFolderDB.dropItem(event);">
+		       ondragenter="NicoLiveFolderDB.checkDragOnList(event);"
+		       ondragover="NicoLiveFolderDB.checkDragOnList(event);"
+		       ondrop="NicoLiveFolderDB.dropItemOnList(event);">
 	      </listbox>
 	      <vbox flex="1">
 		<hbox>

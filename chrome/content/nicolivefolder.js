@@ -280,7 +280,7 @@ var NicoLiveFolderDB = {
 	}
     },
 
-    checkDrag:function(event){
+    checkDragOnList:function(event){
 	let b = event.dataTransfer.types.contains("application/x-moz-node");
 	if( b ){
 	    event.preventDefault();
@@ -318,7 +318,7 @@ var NicoLiveFolderDB = {
 	st.finalize();
     },
 
-    dropItem:function(event){
+    dropItemOnList:function(event){
 	this._data = event.dataTransfer;
 	let dt = event.dataTransfer;
 	let effect = dt.dropEffect; // copy, move
