@@ -342,6 +342,31 @@ var NicoLiveFolderDB = {
 	return true;
     },
 
+    /** テキストファイルからリストに追加.
+     * @param file nsIFile
+     */
+    readTextFile:function(file){
+	if( !$('folder-listbox').selectedItem ) return;
+	let id = $('folder-listbox').selectedItem.value;
+
+	// file は nsIFile
+	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	istream.init(file, 0x01, 0444, 0);
+	istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+	// 行を配列に読み込む
+	let line = {}, hasmore;
+	let first = true;
+	do {
+	    hasmore = istream.readLine(line);
+	    if( line.value.match(/(sm|nm)\d+|\d{10}/) ){
+		this._appendVideos(id,line.value);
+	    }
+	} while(hasmore);
+
+	istream.close();
+    },
+
     /** アイテムリストにいろいろドロップ.
      * @param event eventオブジェクト
      */
@@ -358,6 +383,7 @@ var NicoLiveFolderDB = {
 	if (file instanceof Components.interfaces.nsIFile){
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("file dropped:"+file.path);
+	    this.readTextFile(file);
 	    return;
 	}
 	// テキストをドロップしたとき.
