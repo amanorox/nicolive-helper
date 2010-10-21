@@ -72,6 +72,7 @@ var NLHPreference = {
 	$('pref-msg-requiredkeyword').value = data["requiredkeyword"];
 	$('pref-msg-forbiddenkeyword').value = data["forbiddenkeyword"];
 	$('pref-msg-limitnumberofrequests').value = data["limitnumberofrequests"];
+	$('pref-msg-within-livespace').value = data["within-livespace"];
     },
     addPresetComment:function(presetname){
 	let data = {
@@ -95,7 +96,8 @@ var NLHPreference = {
 	    "outofdaterange":$('pref-msg-outofdaterange').value,
 	    "requiredkeyword":$('pref-msg-requiredkeyword').value,
 	    "forbiddenkeyword":$('pref-msg-forbiddenkeyword').value,
-	    "limitnumberofrequests":$('pref-msg-limitnumberofrequests').value
+	    "limitnumberofrequests":$('pref-msg-limitnumberofrequests').value,
+	    "within-livespace":$('pref-msg-within-livespace').value
 	};
 	this.presetcomment[presetname] = data;
 	opener.NicoLiveDatabase.saveGPStorage('nico_live_commentpreset',this.presetcomment);
@@ -296,6 +298,7 @@ var NLHPreference = {
 	$('pref-msg-requiredkeyword').value = undefined;
 	$('pref-msg-forbiddenkeyword').value = undefined;
 	$('pref-msg-limitnumberofrequests').value = undefined;
+	$('pref-msg-within-livespace').value = undefined;
     },
 
     // 視聴者コマンドの応答をリセットする.
