@@ -376,6 +376,8 @@ var NicoLiveFolderDB = {
 	if( b ){
 	    return;
 	}
+	event.stopPropagation();
+
 	let id = $('folder-listbox').selectedItem.value;
 
 	// ファイルをドロップしたとき.

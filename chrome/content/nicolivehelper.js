@@ -194,6 +194,17 @@ var NicoLiveHelper = {
 	    }
 	}
 
+	// 枠内収まるかチェック.
+	if(NicoLivePreference.accept_within_livespace){
+	    let t = this.getTotalMusicTime(true);
+	    let sec = t.min*60 + t.sec; // リクの残り時間.
+	    let remain = this.endtime - this.musicendtime - sec; // 枠の残り時間.
+
+	    if( remain < info.length_ms/1000 ){
+		return {code:-7,msg:NicoLivePreference.msg.within_livespace,movieinfo:info};
+	    }
+	}
+
 	// code:0を返すことで受け付ける.
 	return {code:0,msg:success_msg,movieinfo:info};
     },
@@ -2873,6 +2884,7 @@ var NicoLiveHelper = {
 		    debugprint('あなたは生放送主です');
 		    HttpObserver.init();
 		}else{
+		    NicoLiveHelper.endtime    = NicoLiveHelper.starttime + 60*30;
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('あなたは視聴者です');
 		}

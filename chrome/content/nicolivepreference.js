@@ -72,6 +72,7 @@ var NicoLivePreference = {
 	this.msg.requiredkeyword = branch.getUnicharPref("msg-requiredkeyword");
 	this.msg.forbiddenkeyword = branch.getUnicharPref("msg-forbiddenkeyword");
 	this.msg.limitnumberofrequests = branch.getUnicharPref("msg-limitnumberofrequests");
+	this.msg.within_livespace = branch.getUnicharPref("msg-within-livespace");
 
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 
@@ -195,6 +196,7 @@ var NicoLivePreference = {
 	this.show_autoreply = branch.getBoolPref("show-autoreply"); // リクエストの応答を運営コメ欄に表示する.
 	this.limitnewmovie = branch.getBoolPref("limitnewmovie");
 	this.accept_playedvideo = branch.getBoolPref("accept-playedvideo");
+	this.accept_within_livespace = branch.getBoolPref("accept-within-livespace");
 	this.nreq_per_ppl = branch.getIntPref("accept-nreq");
 
 	this.mikuonly = branch.getBoolPref("mikuonly");

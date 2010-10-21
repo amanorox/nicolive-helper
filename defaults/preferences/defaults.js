@@ -19,6 +19,7 @@ pref("extensions.nicolivehelper.autoreply",true);
 pref("extensions.nicolivehelper.show-autoreply",false);
 pref("extensions.nicolivehelper.limitnewmovie",false);
 pref("extensions.nicolivehelper.accept-playedvideo",false);
+pref("extensions.nicolivehelper.accept-within-livespace",false);
 pref("extensions.nicolivehelper.accept-nreq",0);
 pref("extensions.nicolivehelper.nocomment-for-directplay",false);
 pref("extensions.nicolivehelper.no-auto-pname",false);
@@ -40,6 +41,7 @@ pref("extensions.nicolivehelper.msg-played","その動画は既に再生され�
 pref("extensions.nicolivehelper.msg-requested","その動画は既にリクエストされています");
 pref("extensions.nicolivehelper.msg-accept","リクエストを受け付けました");
 pref("extensions.nicolivehelper.msg-no-live-play","その動画は生放送での引用が許可されていません");
+pref("extensions.nicolivehelper.msg-within-livespace","この枠内に収まらないため受け付けられませんでした");
 pref("extensions.nicolivehelper.msg-requestok","");
 pref("extensions.nicolivehelper.msg-requestok-command","");
 pref("extensions.nicolivehelper.msg-requestng","");
