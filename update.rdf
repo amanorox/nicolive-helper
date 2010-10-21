@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBALK+c6H/EkVUfZQ3yonMS7ECjoutUazm4EhLY+x8y7mvVY0b/w2ouJjxwln1xSeSGcpE0XInqkZTmJKJtvMSISvVeSKKW6yO1KyXhuJXMivvaTWNcahd2y4wi4Yq8n+mAKl9WtnhM19NaFmG72ZKamjHAL0a9M30m80A1+AidlBc">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
-                   em:maxVersion="3.6.*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.18.xpi"
-                   em:updateHash="sha1:bdecd614266916042956af75d9e01e822f90b3e6"
+                   em:maxVersion="4.0.*"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.19.xpi"
+                   em:updateHash="sha1:f35e5b60cf76c934bacb5906811ce57e6d99b976"
                    em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="1.1.18">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAKuJsxwTTQZ2Aa9GKfFCV34J1Mv8KT4uVBSInNl38RhauODR/1tNNX9dDDA3SltwncBIb8RakAN8BfaetV+GLZAjaZJrG6/w5GujR/h3f2KyR+4hHpFyTXdpm7LvmrNVJ35aWvkwf2vpBL0NKG06JehY9wrSB+/sJqq3WIU5xaS/">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="1.1.19">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
   </RDF:Description>
 </RDF:RDF>
