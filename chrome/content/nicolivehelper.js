@@ -889,6 +889,22 @@ var NicoLiveHelper = {
 		// 枠終了 n 分前通知の設定値.
 		tmp = NicoLivePreference.notice.time;
 		break;
+
+	    case 'progress':
+		// 現在の動画の進行具合の棒グラフ.
+		let progress = GetCurrentTime()-NicoLiveHelper.musicstarttime;
+		let progressbar = Math.floor(progress / (NicoLiveHelper.musicinfo.length_ms/1000) * 100);
+		tmp = "0:00 <font color=\"#0000ff\">";
+		let j;
+		for(j=0;j<progressbar;j++){
+		    tmp += "|";
+		}
+		tmp += "</font>";
+		for(;j<100;j++){
+		    tmp += "|";
+		}
+		tmp += " " + NicoLiveHelper.musicinfo.length;
+		break;
 	    }
 	    return tmp;
 	};

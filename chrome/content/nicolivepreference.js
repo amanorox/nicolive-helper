@@ -259,6 +259,14 @@ var NicoLivePreference = {
 	}
     },
 
+    isProgressShowing:function(){
+	try{
+	    return this.getBranch().getBoolPref("_showprogress");
+	} catch (x) {
+	    return false;
+	}
+    },
+
     getBranch:function(){
 	var prefs = new PrefsWrapper1("extensions.nicolivehelper.");
 	return prefs;
