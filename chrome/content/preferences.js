@@ -283,6 +283,8 @@ var NLHPreference = {
 	$('pref-msg-requested').value = undefined;
 	$('pref-msg-accept').value    = undefined;
 	$('pref-msg-no-live-play').value = undefined;
+	$('pref-msg-within-livespace').value = undefined;
+
 	$('pref-msg-requestok').value = undefined;
 	$('pref-msg-requestng').value = undefined;
 	$('pref-msg-requestok-command').value = undefined;
@@ -298,7 +300,6 @@ var NLHPreference = {
 	$('pref-msg-requiredkeyword').value = undefined;
 	$('pref-msg-forbiddenkeyword').value = undefined;
 	$('pref-msg-limitnumberofrequests').value = undefined;
-	$('pref-msg-within-livespace').value = undefined;
     },
 
     // 視聴者コマンドの応答をリセットする.
