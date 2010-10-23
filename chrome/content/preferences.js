@@ -263,54 +263,55 @@ var NLHPreference = {
 	 * タグ/{tags}
 	 * ♪{id} {title}<br>投稿日/{date} 時間/{length}<br>{additional}
 	 */
-	$('pref-videoinfo1').value = undefined;
-	$('pref-videoinfo2').value = undefined;
-	$('pref-videoinfo3').value = undefined;
-	$('pref-videoinfo4').value = undefined;;
+
+	$('pref-videoinfo1').value = $('pref-videoinfo1').defaultValue;
+	$('pref-videoinfo2').value = $('pref-videoinfo2').defaultValue;
+	$('pref-videoinfo3').value = $('pref-videoinfo3').defaultValue;
+	$('pref-videoinfo4').value = $('pref-videoinfo4').defaultValue;
 	$('pref-typeofvideoinfo').value = 0;
 	$('pref-revert-videoinfo').value = 0;
-	$('pref-userdefined-uri').value = undefined;
+	$('pref-userdefined-uri').value = $('pref-userdefined-uri').defaultValue;
 
-	$('pref-videoinfo1-command').value = undefined;	
-	$('pref-videoinfo2-command').value = undefined;	
-	$('pref-videoinfo3-command').value = undefined;	
-	$('pref-videoinfo4-command').value = undefined;
+	$('pref-videoinfo1-command').value = $('pref-videoinfo1-command').defaultValue;
+	$('pref-videoinfo2-command').value = $('pref-videoinfo2-command').defaultValue;
+	$('pref-videoinfo3-command').value = $('pref-videoinfo3-command').defaultValue;
+	$('pref-videoinfo4-command').value = $('pref-videoinfo4-command').defaultValue;
 
-	$('pref-videoinfo-playfailed').value = undefined;
+	$('pref-videoinfo-playfailed').value = $('pref-videoinfo-playfailed').defaultValue;
     },
 
     // 運営コメントをデフォルトにする.
     resetAutoReply:function(){
-	$('pref-msg-deleted').value   = undefined;
-	$('pref-msg-notaccept').value = undefined;
-	$('pref-msg-newmovie').value  = undefined;
-	$('pref-msg-played').value    = undefined;
-	$('pref-msg-requested').value = undefined;
-	$('pref-msg-accept').value    = undefined;
-	$('pref-msg-no-live-play').value = undefined;
-	$('pref-msg-within-livespace').value = undefined;
+	$('pref-msg-deleted').value   = $('pref-msg-deleted').defaultValue;
+	$('pref-msg-notaccept').value = $('pref-msg-notaccept').defaultValue;
+	$('pref-msg-newmovie').value  = $('pref-msg-newmovie').defaultValue;
+	$('pref-msg-played').value    = $('pref-msg-played').defaultValue;
+	$('pref-msg-requested').value = $('pref-msg-requested').defaultValue;
+	$('pref-msg-accept').value    = $('pref-msg-accept').defaultValue;
+	$('pref-msg-no-live-play').value = $('pref-msg-no-live-play').defaultValue;
+	$('pref-msg-within-livespace').value = $('pref-msg-within-livespace').defaultValue;
 
-	$('pref-msg-requestok').value = undefined;
-	$('pref-msg-requestng').value = undefined;
-	$('pref-msg-requestok-command').value = undefined;
-	$('pref-msg-requestng-command').value = undefined;
-	$('pref-startup-comment').value = undefined;
+	$('pref-msg-requestok').value = $('pref-msg-requestok').defaultValue;
+	$('pref-msg-requestng').value = $('pref-msg-requestng').defaultValue;
+	$('pref-msg-requestok-command').value = $('pref-msg-requestok-command').defaultValue;
+	$('pref-msg-requestng-command').value = $('pref-msg-requestng-command').defaultValue;
+	$('pref-startup-comment').value = $('pref-startup-comment').defaultValue;
 
-	$('pref-msg-lessmylists').value = undefined;
-	$('pref-msg-greatermylists').value = undefined;
-	$('pref-msg-lessviews').value = undefined;
-	$('pref-msg-greaterviews').value = undefined;
-	$('pref-msg-longertime').value = undefined;
-	$('pref-msg-outofdaterange').value = undefined;
-	$('pref-msg-requiredkeyword').value = undefined;
-	$('pref-msg-forbiddenkeyword').value = undefined;
-	$('pref-msg-limitnumberofrequests').value = undefined;
+	$('pref-msg-lessmylists').value = $('pref-msg-lessmylists').defaultValue;
+	$('pref-msg-greatermylists').value = $('pref-msg-greatermylists').defaultValue;
+	$('pref-msg-lessviews').value = $('pref-msg-lessviews').defaultValue;
+	$('pref-msg-greaterviews').value = $('pref-msg-greaterviews').defaultValue;
+	$('pref-msg-longertime').value = $('pref-msg-longertime').defaultValue;
+	$('pref-msg-outofdaterange').value = $('pref-msg-outofdaterange').defaultValue;
+	$('pref-msg-requiredkeyword').value = $('pref-msg-requiredkeyword').defaultValue;
+	$('pref-msg-forbiddenkeyword').value = $('pref-msg-forbiddenkeyword').defaultValue;
+	$('pref-msg-limitnumberofrequests').value = $('pref-msg-limitnumberofrequests').defaultValue;
     },
 
     // 視聴者コマンドの応答をリセットする.
     resetListenerCommand:function(){
-	$('pref-cmd-s').value = undefined;
-	$('pref-cmd-del').value = undefined;
+	$('pref-cmd-s').value = $('pref-cmd-s').defaultValue;
+	$('pref-cmd-del').value = $('pref-cmd-del').defaultValue;
     },
 
     // コメントログの保存先を選択.
