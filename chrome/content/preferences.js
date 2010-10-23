@@ -72,6 +72,11 @@ var NLHPreference = {
 	$('pref-msg-requiredkeyword').value = data["requiredkeyword"];
 	$('pref-msg-forbiddenkeyword').value = data["forbiddenkeyword"];
 	$('pref-msg-limitnumberofrequests').value = data["limitnumberofrequests"];
+
+	if( !data["within-livespace"] ){ // 1.1.19
+	    let branch = opener.NicoLivePreference.getBranch();
+	    data["within-livespace"] = branch.getUnicharPref("msg-within-livespace");
+	}
 	$('pref-msg-within-livespace').value = data["within-livespace"];
     },
     addPresetComment:function(presetname){

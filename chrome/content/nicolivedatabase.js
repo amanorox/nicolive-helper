@@ -759,16 +759,22 @@ var NicoLiveDatabase = {
 	    return item;
 	}
 	//debugprint("ストレージからデータをロードします");
-	let st = this.dbconnect.createStatement('SELECT value FROM gpstorage where key=?1');
-	st.bindUTF8StringParameter(0,name);
-	let value = "";
-	while(st.step()){
-	    value=st.getString(0);
-	}
-	st.finalize();
-	if(value){
-	    item = JSON.parse(value);
-	}else{
+	try{
+	    let st = this.dbconnect.createStatement('SELECT value FROM gpstorage where key=?1');
+	    st.bindUTF8StringParameter(0,name);
+	    let value = "";
+	    while(st.step()){
+		value=st.getString(0);
+	    }
+	    st.finalize();
+	    if(value){
+		item = JSON.parse(value);
+	    }else{
+		item = defitem;
+	    }
+	} catch (x) {
+	    debugprint(x);
+	    debugprint("DBアクセスでエラーが発生したためデフォルト値になります");
 	    item = defitem;
 	}
 	return item;
