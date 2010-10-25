@@ -358,7 +358,7 @@
 		  <hbox align="center"><label value="&comment.user_id;"/></hbox>
 		  <hbox><textbox id="comment-user-id"/></hbox>
 		  <button type="menu" label="コマンド">
-		    <menupopup id="menupopup-from-mylist">
+		    <menupopup id="menupopup-comment-command">
 		      <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addNameFromId($('comment-user-id').value);"/>
 		      <menuitem label="&comment.menu_reflection;" oncommand="NicoLiveComment.showCommentReflectorDialog($('comment-user-id').value);"/>
 		      <menuitem label="&comment.del_nguser;" oncommand="NicoLiveComment.delNGUser($('comment-user-id').value);"/>
