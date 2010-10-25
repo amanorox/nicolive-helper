@@ -994,6 +994,15 @@ var NicoLiveHelper = {
 	if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
 	    NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" #"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
 	}
+
+	try{
+	    if( 0 && this.community=="co154" ){
+		let msg = this.community + " " + this.title + " " + this.request_id +" で紹介されました。";
+		NicoLiveMylist.addDeflist( this.musicinfo.video_id, msg );
+	    }
+	} catch (x) {
+	    debugprint(x);
+	}
     },
 
     // 動画情報を復元する.

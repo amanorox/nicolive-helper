@@ -254,6 +254,36 @@ var NicoLiveMylist = {
 	req.send('');
     },
 
+    // とりマイからDBに追加.
+    addToDatabaseFromDeflist:function(){
+	let url = 'http://www.nicovideo.jp/api/deflist/list';
+	debugprint("add to database from deflist.");
+
+	var req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let result = JSON.parse(req.responseText);
+		switch(result.status){
+		case 'ok':
+		    let videos = new Array();
+		    for(let i=0;i<result.mylistitem.length;i++){
+			videos.push(result.mylistitem[i].item_data.video_id);
+		    }
+		    NicoLiveDatabase.addVideos( videos.join(',') );
+		    break;
+		case 'fail':
+		    break;
+		default:
+		    break;
+		}
+	    }
+	};
+	req.open('GET', url );
+	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
+	req.send('');
+    },
+
     // とりマイからストックに追加.
     addToStockFromDeflist:function(){
 	let url = 'http://www.nicovideo.jp/api/deflist/list';

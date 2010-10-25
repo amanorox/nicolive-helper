@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NicoLive Helper 1.1.19">
+	title="NicoLive Helper 1.1.20">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
@@ -391,6 +391,7 @@
 		<button label="フォルダ" oncommand="$('db-deck').selectedIndex=1;"/>
 		<button type="menu" label="&db.add_from_mylist_to_db;">
 		  <menupopup id="menupopup-from-mylist-to-db">
+		    <menuitem label="&toriaezu_mylist;" oncommand="NicoLiveMylist.addToDatabaseFromDeflist();"/>
 		  </menupopup>
 		</button>
 		<textbox id="input-db" emptytext="&db.emptytext_input;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveDatabase.addVideos(this.value);"/>
