@@ -321,7 +321,7 @@ var NicoLiveHelper = {
 	NicoLiveComment.push(chat);
 	NicoLiveComment.addRow(chat);
 
-	if(chat.date<NicoLiveHelper.connecttime){ return; } // 過去ログ無視.
+	if(NicoLiveHelper.iscaster && chat.date<NicoLiveHelper.connecttime){ return; } // 生主のときは過去ログ無視.
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
