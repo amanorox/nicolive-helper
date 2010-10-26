@@ -38,6 +38,8 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivetweet.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverights.js" />
 
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivemenucontrol.js" />
+
   <script>
   <![CDATA[
   function OpenSettingsDialog(){
@@ -576,8 +578,10 @@
       <menuitem label="&comment.menu_delname;" oncommand="NicoLiveComment.deleteKotehanFromListbox();"/>
     </menupopup>
 
-    <!-- request tab -->
-    <menupopup id="popup-copyrequest">
+    <!-- for request tab -->
+    <menupopup id="popup-copyrequest" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
+      <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+
       <menu label="&classify.menu;">
 	<menupopup>
 	  <menu label="&classify.train;">
@@ -638,7 +642,9 @@
     </menupopup>
 
     <!-- for error tab -->
-    <menupopup id="popup-error-request">
+    <menupopup id="popup-error-request" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
+      <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,document.popupNode||$('popup-error-request').triggerNode);">
 	</menupopup>
@@ -672,7 +678,9 @@
     </menupopup>
 
     <!-- for stock -->
-    <menupopup id="popup-sort-stock">
+    <menupopup id="popup-sort-stock" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
+      <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+
       <menu label="&classify.menu;">
 	<menupopup>
 	  <menu label="&classify.train;">
@@ -732,7 +740,9 @@
     </menupopup>
 
     <!-- for playlist -->
-    <menupopup id="popup-playlist">
+    <menupopup id="popup-playlist" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
+      <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+
       <menu label="&classify.menu;">
 	<menupopup>
 	  <menu label="&classify.train;">

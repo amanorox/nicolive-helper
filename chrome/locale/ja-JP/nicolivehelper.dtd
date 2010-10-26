@@ -134,6 +134,8 @@
 <!ENTITY menu.db_delete_result "検索結果を全てコピー">
 <!ENTITY menu.db_delete_all "検索結果をDBから削除">
 
+<!ENTITY menu.copy_selection "選択範囲のテキストをコピー">
+
 <!ENTITY comment.menu_openprofile "プロフィールページを開く">
 <!ENTITY comment.menu_setname "コテハン設定">
 <!ENTITY comment.menu_delname "コテハン削除">
