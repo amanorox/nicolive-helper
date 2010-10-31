@@ -339,6 +339,7 @@ var NicoLiveHelper = {
 
 	switch(chat.premium){
 	case 3:
+	    if( chat.date < NicoLiveHelper.connecttime || this._timeshift ) return;
 	    // 主コメの処理.
 	    let dat;
 	    // /play smile:sm00000 main "title"
