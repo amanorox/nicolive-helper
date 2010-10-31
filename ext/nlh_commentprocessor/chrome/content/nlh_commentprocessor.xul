@@ -6,9 +6,18 @@
   <script type="application/javascript;version=1.7" src="chrome://nlh_commentprocessor/content/nlh_commentprocessor.js" />
 
   <vbox id="tab-comment">
-    <vbox insertafter="kotehan-list">
-      <hbox>
-	<checkbox persist="checked" id="auto-kotehan" label="自動コテハン登録" tooltiptext="「＠名前」でコテハンを自動登録します"/>
+    <vbox>
+      <hbox align="center">
+	<checkbox persist="checked" id="auto-kotehan" label="自動コテハン登録" tooltiptext="「＠名前」のコメント、もしくはプロフィールを参照し、コテハンを自動登録します。"/>
+	<checkbox persist="checked" id="nlhaddon-allowoverwrite" label="上書き登録" tooltiptext="「＠名前」で自動登録する場合、既存の設定を上書きします。"/>
+	<checkbox persist="checked" id="nlhaddon-ref-userprof" label="プロフィール参照登録" tooltiptext="コテハン設定が行われていないユーザの名前をプロフィールを参照して登録します。"/>
+	
+	<spacer flex="1"/>
+	<label id="nlhaddon-font-scale-value" value=""/>
+	<scale id="nlhaddon-comment-font-scale" value="9" min="5" max="36" persist="value" onchange="NicoLiveCommentProcessor.changeFontScale(this.value);"/>
+<!--
+	<toolbarbutton label="設定" oncommand="alert('not implemented.');"/>
+-->
       </hbox>
     </vbox>
   </vbox>

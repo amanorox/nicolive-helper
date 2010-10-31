@@ -3,16 +3,20 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>nlh_commentprocessor@miku39.jp</em:id>
     <em:type>2</em:type>
-    <em:name></em:name>
-    <em:version>0.1</em:version>
-    <em:description>Multi-purpose Comment Processor for NicoLive Helper.</em:description>
+    <em:name>NicoLiveHelper CommentViewer Extender</em:name>
+    <em:version>0.3.1</em:version>
+    <em:description>CommentViewer Extender for NicoLive Helper.</em:description>
     <em:creator>amano</em:creator>
     <em:homepageURL>http://miku39.jp</em:homepageURL>
+
+    <em:updateURL>http://miku39.jp/dists/software/firefox/nicolivehelper/update_commentprocessor.rdf</em:updateURL>
+    <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCyLtbkGDKhEOgl/ZI3cOTpq5Vso9DhRfe5YIYjXHAcUd0wFIWeyM7Tf9mgrtUFrJAjxI8W74H9til5RbRHUV8ZC1qszuUGbXofoHnSXUF4F40Z42mbLQ8CeADy0FdWIKarnongXT+6G+jiwkm6tDvDi81Q7OYBOJwNuniM/2/1gwIDAQAB</em:updateKey>
+
     <em:localized>
       <Description>
 	<em:locale>ja</em:locale>
-	<em:name>ニコニコ生放送ヘルパー用コメントプロセッサ</em:name>
-	<em:description>ニコニコ生放送ヘルパー(NicoLive Helper)にコメントを元に各種自動処理を行うための、実験的なアドオンです。</em:description>
+	<em:name>ニコニコ生放送ヘルパー用コメントビューア拡張</em:name>
+	<em:description>ニコニコ生放送ヘルパー(NicoLive Helper)のコメントビューア機能にいくつかの機能強化を行います。</em:description>
 	<em:creator>あまの</em:creator>
       </Description>
     </em:localized>
@@ -20,8 +24,18 @@
       <Description>
 	<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 	<em:minVersion>3.5</em:minVersion>
-	<em:maxVersion>3.6.*</em:maxVersion>
+	<em:maxVersion>4.0.*</em:maxVersion>
       </Description>
     </em:targetApplication>
+
+<!--
+    <em:targetApplication>
+      <Description>
+	<em:id>nicolivehelper@miku39.jp</em:id>
+	<em:minVersion>1.0.3</em:minVersion>
+      </Description>
+    </em:targetApplication>
+-->
+
   </Description>
 </RDF>
