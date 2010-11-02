@@ -591,17 +591,21 @@ var NicoLiveDatabase = {
     },
     getPName:function(video_id){
 	if( this.pnamecache["_"+video_id] ) return this.pnamecache["_"+video_id];
+	let pname = "";
 
-	let st = this.dbconnect.createStatement('SELECT pname FROM pname WHERE video_id = ?1');
-	let pname;
-	st.bindUTF8StringParameter(0,video_id);
-	while(st.step()){
-	    pname = st.getString(0);
-	}
-	st.finalize();
-	if(!pname) pname = "";
-	if(pname){
-	    this.pnamecache["_"+video_id] = pname;
+	try{
+	    let st = this.dbconnect.createStatement('SELECT pname FROM pname WHERE video_id = ?1');
+	    st.bindUTF8StringParameter(0,video_id);
+	    while(st.step()){
+		pname = st.getString(0);
+	    }
+	    st.finalize();
+	    if(!pname) pname = "";
+	    if(pname){
+		this.pnamecache["_"+video_id] = pname;
+	    }
+	} catch (x) {
+	    pname = "";
 	}
 	return pname;
     },
@@ -694,15 +698,19 @@ var NicoLiveDatabase = {
     getFavorite:function(video_id){
 	if( "undefined"!=typeof this.ratecache["_"+video_id] ) return this.ratecache["_"+video_id];
 
-	let st = this.dbconnect.createStatement('SELECT favorite FROM nicovideo WHERE video_id = ?1');
 	let rate = -1;
-	st.bindUTF8StringParameter(0,video_id);
-	while(st.step()){
-	    rate = st.getInt32(0);
+	try{
+	    let st = this.dbconnect.createStatement('SELECT favorite FROM nicovideo WHERE video_id = ?1');
+	    st.bindUTF8StringParameter(0,video_id);
+	    while(st.step()){
+		rate = st.getInt32(0);
+	    }
+	    st.finalize();
+	    if(!rate) rate = 0;
+	    this.ratecache["_"+video_id] = rate;
+	} catch (x) {
+	    rate = 0;
 	}
-	st.finalize();
-	if(!rate) rate = 0;
-	this.ratecache["_"+video_id] = rate;
 	return rate;
     },
 
