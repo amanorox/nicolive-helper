@@ -161,7 +161,7 @@
 	    </rows>
 	  </grid>
 	  </groupbox>
-	  <hbox><checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を主コメしない" tooltiptext="コメントタブの入力欄から動画IDを入力して動画を再生した場合、動画情報を送信しなくなります。"/></hbox>
+	  <hbox><checkbox preference="pref-nocomment-for-directplay" label="動画IDをコメント欄に直接入力して再生した場合、その動画情報を運営コメントしない" tooltiptext="コメントタブの入力欄から動画IDを入力して動画を再生した場合、動画情報を送信しなくなります。"/></hbox>
 	  <hbox><checkbox preference="pref-no-autopname" label="P名D名を自動認識しない" tooltiptext="タグの末尾にP,DがあるものをP名として自動認識しなくなり、P名ホワイトリストのみを頼りにP名を付けます。"/></hbox>
 	  <hbox align="center">
 	    <label control="userdefined-uri" value="JSONファイルのあるURI(URL)"/>
