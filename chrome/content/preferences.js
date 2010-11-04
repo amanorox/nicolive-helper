@@ -1,6 +1,6 @@
 var NLHPreference = {
     debugprint:function(txt){
-	//opener.debugprint(txt);
+//	opener.debugprint(txt);
     },
 
     previewVideoInfo:function(str){
@@ -546,6 +546,76 @@ var NLHPreference = {
 	}
 	catch (e) {
 	    this.debugprint(e);
+	}
+    },
+
+    exportMovieInfo:function(){
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "動画情報のエクスポート", nsIFilePicker.modeSave);
+	fp.appendFilters(nsIFilePicker.filterAll);
+	let rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    let file = fp.file;
+	    let path = fp.file.path;
+	    this.debugprint("「"+path+"」に動画情報を保存します");
+	    let os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+	    let flags = 0x02|0x08|0x20;// wronly|create|truncate
+	    os.init(file,flags,0664,0);
+	    let cos = GetUTF8ConverterOutputStream(os);
+	    let movieinfo = new Object();
+	    movieinfo.vinfo1 = $('pref-videoinfo1').value;
+	    movieinfo.vinfo2 = $('pref-videoinfo2').value;
+	    movieinfo.vinfo3 = $('pref-videoinfo3').value;
+	    movieinfo.vinfo4 = $('pref-videoinfo4').value;
+	    movieinfo.vcmd1 = $('pref-videoinfo1-command').value;
+	    movieinfo.vcmd2 = $('pref-videoinfo2-command').value;
+	    movieinfo.vcmd3 = $('pref-videoinfo3-command').value;
+	    movieinfo.vcmd4 = $('pref-videoinfo4-command').value;
+	    movieinfo.vinfo_failed = $('pref-videoinfo-playfailed').value;
+	    movieinfo.vinfo_type = $('pref-typeofvideoinfo').value;
+	    movieinfo.vinfo_revert_live = $('pref-revert-videoinfo').value;
+	    cos.writeString( JSON.stringify(movieinfo) );
+	    cos.close();
+	}
+    },
+    importMovieInfo:function(){
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "動画情報のインポート", nsIFilePicker.modeOpen);
+	fp.appendFilters(nsIFilePicker.filterAll);
+	let rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    let file = fp.file;
+	    let path = fp.file.path;
+	    this.debugprint("「"+path+"」から動画情報を読み込みします");
+
+	    let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	    istream.init(file, 0x01, 0444, 0);
+	    istream.QueryInterface(Components.interfaces.nsILineInputStream);
+	    let cis = GetUTF8ConverterInputStream(istream);
+
+	    // 行を配列に読み込む
+	    let line = {}, hasmore;
+	    let str = "";
+	    do {
+		hasmore = cis.readString(1024,line);
+		str += line.value;
+	    } while(hasmore);
+	    istream.close();
+
+	    let movieinfo = JSON.parse(str);
+	    $('pref-videoinfo1').value = movieinfo.vinfo1;
+	    $('pref-videoinfo2').value = movieinfo.vinfo2;
+	    $('pref-videoinfo3').value = movieinfo.vinfo3;
+	    $('pref-videoinfo4').value = movieinfo.vinfo4;
+	    $('pref-videoinfo1-command').value = movieinfo.vcmd1;
+	    $('pref-videoinfo2-command').value = movieinfo.vcmd2;
+	    $('pref-videoinfo3-command').value = movieinfo.vcmd3;
+	    $('pref-videoinfo4-command').value = movieinfo.vcmd4;
+	    $('pref-videoinfo-playfailed').value = movieinfo.vinfo_failed;
+	    $('pref-typeofvideoinfo').value = movieinfo.vinfo_type;
+	    $('pref-revert-videoinfo').value = movieinfo.vinfo_revert_live;
 	}
     },
 

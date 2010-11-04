@@ -169,6 +169,9 @@
 	  </hbox>
 	  <hbox>
 	    <button label="デフォルトに戻す" oncommand="NLHPreference.resetMovieInfo();" tooltiptext="動画情報を初期値に戻します。"/>
+	    <spacer flex="1"/>
+	    <button label="エクスポート..." tooltiptext="動画情報をファイルにエクスポートします" oncommand="NLHPreference.exportMovieInfo();"/>
+	    <button label="インポート..." tooltiptext="ファイルから動画情報をインポートします" oncommand="NLHPreference.importMovieInfo();"/>
 	  </hbox>
 
 	  <vbox style="height:80px;">
