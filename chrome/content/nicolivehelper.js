@@ -3595,6 +3595,7 @@ var NicoLiveHelper = {
 	debugprint('Initializing NicoLive Helper...');
 	this._useragent = 'NicoLiveHelper/'+GetAddonVersion();
 	debugprint(this._useragent);
+	document.title = "NicoLive Helper " + GetAddonVersion();
 	srand( GetCurrentTime() );
 
 	// リクエストのコメ番順シーケンシャル処理用.
