@@ -173,7 +173,7 @@ var NicoLiveRequest = {
 	let td;
 	td = tr.insertCell(tr.cells.length);
 	td.appendChild(document.createTextNode("#"+table.rows.length));
-	if(item.cno>0){
+	if(item.cno){
 	    td.appendChild(CreateHTMLElement('br'));
 	    td.appendChild(document.createTextNode("C#"+item.cno));
 	}
@@ -518,7 +518,7 @@ var NicoLiveRequest = {
 	let td;
 	td = tr.insertCell(tr.cells.length);
 	td.appendChild(document.createTextNode("#"+table.rows.length));
-	if(item.cno>0){
+	if(item.cno){
 	    td.appendChild(CreateHTMLElement('br'));
 	    td.appendChild(document.createTextNode("C#"+item.cno));
 	}
@@ -933,7 +933,9 @@ var NicoLiveRequest = {
 	    let tr = FindParentElement(node,'html:tr');
 	    let n = tr.getAttribute('request-index');
 	    let item = NicoLiveHelper.getRequestItem(n);
-	    NicoLiveComment.showCommentReflectorDialog(item.user_id,item.cno);
+	    if( item.cno ){
+		NicoLiveComment.showCommentReflectorDialog(item.user_id,item.cno);
+	    }
 	} catch (x) {
 	    debugprint(x);
 	}

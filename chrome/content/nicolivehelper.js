@@ -1997,8 +1997,8 @@ var NicoLiveHelper = {
 	// order:1だと昇順、order:-1だと降順.
 	let order = 1;
 	this.requestqueue.sort( function(a,b){
-				    if(b.cno==0) return -1;
-				    if(a.cno==0) return 1;
+				    if(b.cno==undefined) return -1;
+				    if(a.cno==undefined) return 1;
 				    return (a.cno - b.cno) * order;
 				});
 	NicoLiveRequest.update(this.requestqueue);
@@ -2030,7 +2030,14 @@ var NicoLiveHelper = {
     // エラーリクエストリストに追加
     addErrorRequestList:function(item){
 	if(!item || !item.video_id) return;
-	this.error_req["_"+item.video_id] = item;
+	let k = "_" + item.video_id;
+	if( this.error_req[k] && this.error_req[k].cno ){
+	    if( item.cno ){
+		this.error_req[k].cno += ","+item.cno;
+	    }
+	}else{
+	    this.error_req[k] = item;
+	}
 	NicoLiveRequest.updateErrorRequest(this.error_req);
     },
     removeErrorRequest:function(video_id){
@@ -2111,7 +2118,7 @@ var NicoLiveHelper = {
     xmlToMovieInfo: function(xml){
 	// ニコニコ動画のgetthumbinfoのXMLから情報抽出.
 	let info = {};
-	info.cno = 0;
+	info.cno = undefined;
 	info.tags = [];
 	info.no_live_play = 0;
 
