@@ -48,31 +48,32 @@ var NicoLiveBrowser = {
     parseSearchingPage:function(){
 	let tmp = $('live-page').contentDocument;
 	//let videos = evaluateXPath(tmp,"//*[@class='thumb_vinfo']/table/tbody/tr/td[1]/p/a/@href");
-	let videos = evaluateXPath(tmp,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/table/tbody/tr/td/p/a/@href");
+	this._videos = evaluateXPath(tmp,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/table/tbody/tr/td/p/a/@href");
 
-	let uads = evaluateXPath(tmp,"//*[@class='vinfo_uadp']");
+	this._uads = evaluateXPath(tmp,"//*[@class='vinfo_uadp']");
 
-	debugprint('check page '+this._page);
-	if(videos.length<=0){
-	    debugprint('crawling done.');
-	    debugprint('retry to crawl after 1min.');
-
-	    clearInterval(this._crawlingtimer);
-	    this._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 60*1000 );
-	    if( $('live-page').getAttribute('src')!='about:blank' ){
-		setTimeout(function(){ NicoLiveBrowser.close(); }, 10*1000 );
-		//this.close();
-	    }
-	    return;
-	}
-	for(let i=0,item; item=videos[i]; i++){
-	    let d = item.textContent.match(/.+\/(.*?)$/);
-	    let info = { "vid": d[1], "uadp": uads[i].textContent.replace(/,/g,'') };
-	    this.ostream.writeString(d[1]+"\t"+(uads[i].textContent.replace(/,/g,''))+"\r\n");
-	}
-	this._page++;
-	this._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 15*1000 );
-	NicoLiveDatabase.saveGPStorage("nico_mikusong_nextpage",this._page);
+	setTimeout( function(e){
+			debugprint('check page '+NicoLiveBrowser._page);
+			if(NicoLiveBrowser._videos.length<=0){
+			    debugprint('crawling done.');
+			    debugprint('retry to crawl after 1min.');
+			    // 検索失敗したみたいなので 1分待ってみる.
+			    clearInterval(NicoLiveBrowser._crawlingtimer);
+			    NicoLiveBrowser._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 60*1000 );
+			    if( $('live-page').getAttribute('src')!='about:blank' ){
+				setTimeout(function(){ NicoLiveBrowser.close(); }, 10*1000 );
+			    }
+			    return;
+			}
+			for(let i=0,item; item=NicoLiveBrowser._videos[i]; i++){
+			    let d = item.textContent.match(/.+\/(.*?)$/);
+			    let info = { "vid": d[1], "uadp": NicoLiveBrowser._uads[i].textContent.replace(/,/g,'') };
+			    NicoLiveBrowser.ostream.writeString(d[1]+"\t"+(NicoLiveBrowser._uads[i].textContent.replace(/,/g,''))+"\r\n");
+			}
+			NicoLiveBrowser._page++;
+			NicoLiveBrowser._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 5*1000 );
+			NicoLiveDatabase.saveGPStorage("nico_mikusong_nextpage",NicoLiveBrowser._page);
+		    }, 10*1000);
     },
 
     loadSearchingPage:function(){
