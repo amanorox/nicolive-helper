@@ -906,20 +906,28 @@ var NicoLiveDatabase = {
     },
 
     init1st:function(){
-        let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-        file.append("nicolivehelper_miku39jp.sqlite");
+	try{
+            let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+            file.append("nicolivehelper_miku39jp.sqlite");
+	    this._filename = file.path;
 
-        let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);
-        this.dbconnect = storageService.openDatabase(file);
-	this.createVideoDB();
-	this.createRequestCondDB();
-	this.createGPStorageDB();
-	this.createPnameDB();
-	this.createFolderDB(); // 1.1.1+
+            let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);
+            this.dbconnect = storageService.openDatabase(file);
+	    this.createVideoDB();
+	    this.createRequestCondDB();
+	    this.createGPStorageDB();
+	    this.createPnameDB();
+	    this.createFolderDB(); // 1.1.1+
+	} catch (x) {
+	    this._corrupt = true;
+	}
     },
 
     init:function(){
 	debugprint('NicoLiveDatabase init');
+	if( this._corrupt ){
+	    setTimeout( function(){ AlertPrompt("DBファイルが破損しているようです。\n「"+NicoLiveDatabase._filename+"」\nを修復するか、削除する必要があります。","DBファイルの破損"); } , 2000 );
+	}
 	this.pnamecache = new Object();
 	this.ratecache  = new Object();
 	this.addSearchLine();
@@ -933,7 +941,7 @@ var NicoLiveDatabase = {
     }
 };
 
-NicoLiveDatabase.init1st();
-
 window.addEventListener("load", function(e){ NicoLiveDatabase.init(); }, false);
 window.addEventListener("unload", function(e){ NicoLiveDatabase.destroy(); }, false);
+
+NicoLiveDatabase.init1st();
