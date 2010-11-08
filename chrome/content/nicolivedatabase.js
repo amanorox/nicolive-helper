@@ -928,6 +928,7 @@ var NicoLiveDatabase = {
 	if( this._corrupt ){
 	    setTimeout( function(){ AlertPrompt("DBファイルが破損しているようです。\n「"+NicoLiveDatabase._filename+"」\nを修復するか、削除する必要があります。","DBファイルの破損"); } , 2000 );
 	}
+	debugprint("DB file:"+this._filename);
 	this.pnamecache = new Object();
 	this.ratecache  = new Object();
 	this.addSearchLine();
