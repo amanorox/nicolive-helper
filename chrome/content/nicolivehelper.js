@@ -3576,7 +3576,7 @@ var NicoLiveHelper = {
 	    } while(hasmore);
 	    istream.close();
 	} catch (x) {
-	    debugprint("動画再生時間定義ファイル読み込みでエラーが発生しました");
+	    debugprint("動画再生時間定義ファイルはありませんでした");
 	    this._videolength = new Object();
 	}
     },
