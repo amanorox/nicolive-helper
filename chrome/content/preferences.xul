@@ -5,22 +5,25 @@
 <?xml-stylesheet href="chrome://nicolivehelper/content/preferences.css" type="text/css"?>
 <prefwindow id="nicolivehelper-advanced-settings" title="NicoLive Helper Settings" windowtype="prefwindow"
 	    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+
+  <!-- basic settings -->
   <prefpane id="nicolivehelper-prefpane-basic" label="基本設定" image="chrome://nicolivehelper/content/data/basicsetting.png">
     <preferences>
-      <preference id="pref-jingle" name="extensions.nicolivehelper.jingle" type="bool"/>
-      <preference id="pref-jingle-movie" name="extensions.nicolivehelper.jingle-movie" type="string"/>
-      <preference id="pref-limit30min" name="extensions.nicolivehelper.limit30min" type="bool"/>
-      <preference id="pref-carelosstime" name="extensions.nicolivehelper.carelosstime" type="bool"/>
-      <preference id="pref-nextplay-interval" name="extensions.nicolivehelper.nextplay-interval" type="int"/>
-      <preference id="pref-max-movieplay-time" name="extensions.nicolivehelper.max-movieplay-time" type="int"/>
-      <preference id="pref-autoreply" name="extensions.nicolivehelper.autoreply" type="bool"/>
-      <preference id="pref-show-autoreply" name="extensions.nicolivehelper.show-autoreply" type="bool"/>
-      <preference id="pref-limitnewmovie" name="extensions.nicolivehelper.limitnewmovie" type="bool"/>
-      <preference id="pref-accept-playedvideo" name="extensions.nicolivehelper.accept-playedvideo" type="bool"/>
-      <preference id="pref-accept-within-livespace" name="extensions.nicolivehelper.accept-within-livespace" type="bool"/>
-      <preference id="pref-accept-nreq" name="extensions.nicolivehelper.accept-nreq" type="int"/>
-      <preference id="pref-mikuonly" name="extensions.nicolivehelper.mikuonly" type="bool"/>
-      <preference id="pref-prepare" name="extensions.nicolivehelper.prepare" type="bool"/>
+      <preference id="pref-jingle" name="extensions.nicolivehelper.jingle" type="bool"/><!-- ジングル再生フラグ -->
+      <preference id="pref-jingle-movie" name="extensions.nicolivehelper.jingle-movie" type="string"/><!-- ジングル動画IDリスト -->
+      <preference id="pref-limit30min" name="extensions.nicolivehelper.limit30min" type="bool"/><!-- 再生動画を枠に収まるように決定 -->
+      <preference id="pref-carelosstime" name="extensions.nicolivehelper.carelosstime" type="bool"/><!-- ロスタイム含めて再生動画を決定 -->
+      <preference id="pref-nextplay-interval" name="extensions.nicolivehelper.nextplay-interval" type="int"/><!-- 再生インターバル -->
+      <preference id="pref-max-movieplay-time" name="extensions.nicolivehelper.max-movieplay-time" type="int"/><!-- 最大再生時間 -->
+      <preference id="pref-autoreply" name="extensions.nicolivehelper.autoreply" type="bool"/><!-- リクエスト受付応答メッセージフラグ -->
+      <preference id="pref-show-autoreply" name="extensions.nicolivehelper.show-autoreply" type="bool"/><!-- 運営コメント欄に表示させるフラグ -->
+      <preference id="pref-limitnewmovie" name="extensions.nicolivehelper.limitnewmovie" type="bool"/><!-- 新着規制 -->
+      <preference id="pref-accept-playedvideo" name="extensions.nicolivehelper.accept-playedvideo" type="bool"/><!-- 再生済み動画の受付 -->
+      <preference id="pref-allow-req-n-min-ago" name="extensions.nicolivehelper.allow-req-n-min-ago" type="int"/><!-- n分以上前の再生済みを受付 -->
+      <preference id="pref-accept-within-livespace" name="extensions.nicolivehelper.accept-within-livespace" type="bool"/><!-- 枠に収まる範囲でリク受付 -->
+      <preference id="pref-accept-nreq" name="extensions.nicolivehelper.accept-nreq" type="int"/><!-- 一人頭のリク受付数 -->
+      <preference id="pref-mikuonly" name="extensions.nicolivehelper.mikuonly" type="bool"/><!-- 初音ミクのライブモード -->
+      <preference id="pref-prepare" name="extensions.nicolivehelper.prepare" type="bool"/><!-- 先読み -->
     </preferences>
 
     <groupbox>
@@ -61,11 +64,15 @@
 	<checkbox preference="pref-show-autoreply" label="リクエストの応答を運営コメント欄に表示させる" tooltiptext="運営コメント欄に応答コメントを表示するように、必要に応じて/clsを行います。" style="margin-left:1em;"/>
       </hbox>
       <hbox><checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)規制を行う" tooltiptext="投稿して7日以内の動画のリクエストを受け付けなくなります。"/></hbox>
-      <hbox><checkbox preference="pref-accept-playedvideo" label="再生済み動画のリクエストを受け付ける" tooltiptext="再生履歴にある動画のリクエストを受け付けるようになります。"/></hbox>
+      <hbox align="center">
+	<checkbox preference="pref-accept-playedvideo" label="再生済み動画のリクエストを受け付ける" tooltiptext="再生履歴にある動画のリクエストを受け付けるようになります。"/>
+	<textbox preference="pref-allow-req-n-min-ago" type="number" min="0" size="3"/><label value="分以上前に再生された動画を受け付ける"/>
+      </hbox>
       <hbox><checkbox preference="pref-accept-within-livespace" label="枠に収まる範囲でリクエストを受け付ける" tooltiptext="生放送の枠に収まる範囲でリクエストを受け付けます。この際、枠の残り時間としてはロスタイムの分は含まれません。"/></hbox>
       <hbox align="center">
 	<label value="1枠1人あたりのリクエスト受付数(0-99件)" tooltiptext="1枠のうち、1人あたり最大いくつのリクエストを受け付けるかを指定します。0の場合は無制限です。"/>
 	<textbox preference="pref-accept-nreq" type="number" min="0" max="99" size="3"/>
+	<label value="件"/>
 	<button label="今までの受付数をリセット" oncommand="opener.NicoLiveHelper.resetRequestCount();"/>
       </hbox>
       <hbox><checkbox preference="pref-mikuonly" label="初音ミクのライブモード(開発主用)" tooltiptext="初音ミクのライブ向けにテキトーにリクエスト受付ルールを設定している開発主用のモードです。"/></hbox>

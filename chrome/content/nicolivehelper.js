@@ -75,7 +75,7 @@ var NicoLiveHelper = {
     twitterinfo: {},  // Twitter投稿API
 
     // リクを受け付けるかどうかチェック.
-    checkAcceptRequest: function(xml, comment_no, is_self_request){
+    checkToAcceptRequest: function(xml, comment_no, is_self_request){
 	if(xml.getElementsByTagName('error').length){ // 動画がない.
 	    return {code:-1,msg:NicoLivePreference.msg.deleted,movieinfo:{}};
 	}
@@ -126,14 +126,21 @@ var NicoLiveHelper = {
 	    }
 	}
 
-	// 再生済み.
-	if(!is_self_request && !NicoLivePreference.accept_playedvideo && this.isPlayedMusic(info.video_id)){
-	    return {code:-4,msg:NicoLivePreference.msg.played,movieinfo:info};
-	}
-
 	// リクエストキューに既にある動画.
 	if(this.isRequestedMusic(info.video_id)){
 	    return {code:-5,msg:NicoLivePreference.msg.requested,movieinfo:info};
+	}
+
+	if(!is_self_request && !NicoLivePreference.accept_playedvideo && this.isPlayedMusic(info.video_id)){
+	    // 再生済みを受け付けない(自貼り除く).
+	    return {code:-4,msg:NicoLivePreference.msg.played,movieinfo:info};
+	}
+	if(!is_self_request && NicoLivePreference.accept_playedvideo ){
+	    let n = NicoLivePreference.n_min_old_playedvideo_to_allow * 60; // n分以上前に再生したものは許可.
+	    let now = GetCurrentTime();
+	    if( this.playlist["_"+info.video_id] >= now-n ){
+		return {code:-4,msg:NicoLivePreference.msg.played,movieinfo:info};
+	    }
 	}
 
 	// リクエスト制限のチェック.
@@ -1462,9 +1469,10 @@ var NicoLiveHelper = {
 	    }
 	    item.classify = NicoLiveClassifier.classify(str);
 	}
-	item.playedtime = GetCurrentTime();
+	let now = GetCurrentTime();
+	item.playedtime = now;
 	this.playlist.push(item); // 再生済みリストに登録.
-	this.playlist["_"+item.video_id] = true;
+	this.playlist["_"+item.video_id] = now;
 	if( !notext ){
 	    elem.value += item.video_id+" "+item.title+"\n";
 	}
@@ -2236,7 +2244,7 @@ var NicoLiveHelper = {
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		// ストックでもリクエスト縛り要件を満たすかチェックする.
-		let ans = NicoLiveHelper.checkAcceptRequest(req.responseXML, 0);
+		let ans = NicoLiveHelper.checkToAcceptRequest(req.responseXML, 0);
 		//debugprint(sm+'/'+ans.msg);
 		switch(ans.code){
 		case 0:
@@ -2278,7 +2286,7 @@ var NicoLiveHelper = {
 	    cnt++;
 	    q = NicoLiveHelper.requestprocessingqueue.shift();
 
-	    let ans = NicoLiveHelper.checkAcceptRequest( q.xml, q.comment_no, q.is_self_request );
+	    let ans = NicoLiveHelper.checkToAcceptRequest( q.xml, q.comment_no, q.is_self_request );
 	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではなくて主セレ扱い.
 	    ans.movieinfo.selfrequest = q.is_self_request;
 
@@ -2443,7 +2451,7 @@ var NicoLiveHelper = {
 
     // ストックの再生済みステータスを解除する.
     offPlayedStatus:function(video_id){
-	this.playlist["_"+video_id] = false;
+	this.playlist["_"+video_id] = 0;
 	for(let i=0,item; item=this.stock[i];i++){
 	    if(item.video_id==video_id){
 		item.isplayed = false;
@@ -3492,7 +3500,7 @@ var NicoLiveHelper = {
 	// load playlist
 	this.playlist = JSON.parse(JSON.stringify(NicoLiveDatabase.loadGPStorage("nico_live_playlist",[])));
 	for(let i=0,item;item=this.playlist[i];i++){
-	    this.playlist["_"+item.video_id] = true;
+	    this.playlist["_"+item.video_id] = this.playlist[i].playedtime;
 	    NicoLiveHistory.addPlayList( item );
 	}
 	$('played-list-textbox').value = NicoLiveDatabase.loadGPStorage("nico_live_playlist_txt","");

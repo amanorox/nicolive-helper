@@ -196,6 +196,7 @@ var NicoLivePreference = {
 	this.show_autoreply = branch.getBoolPref("show-autoreply"); // リクエストの応答を運営コメ欄に表示する.
 	this.limitnewmovie = branch.getBoolPref("limitnewmovie");
 	this.accept_playedvideo = branch.getBoolPref("accept-playedvideo");
+	this.n_min_old_playedvideo_to_allow = branch.getIntPref("allow-req-n-min-ago");
 	this.accept_within_livespace = branch.getBoolPref("accept-within-livespace");
 	this.nreq_per_ppl = branch.getIntPref("accept-nreq");
 
