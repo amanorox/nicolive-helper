@@ -226,7 +226,7 @@ var NicoLiveWindow = {
 	NicoLiveHelper.stock = JSON.parse(JSON.stringify(data.stock));
 	NicoLiveHelper.playlist = JSON.parse(JSON.stringify(data.playlist));
 	for(let i=0,item;item=NicoLiveHelper.playlist[i];i++){
-	    NicoLiveHelper.playlist["_"+item.video_id] = true;
+	    NicoLiveHelper.playlist["_"+item.video_id] = item.playedtime;
 	}
 	NicoLiveRequest.update(NicoLiveHelper.requestqueue);
 	NicoLiveRequest.updateStockView(NicoLiveHelper.stock);
