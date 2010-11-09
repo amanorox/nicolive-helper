@@ -510,6 +510,7 @@ var NicoLiveComment = {
 
     updateCommentViewer:function(){
 	clearTable($('comment_table'));
+	this.prev_comment_no = 0;
 	for(let i=0,item;item=this.commentlog[i];i++){
 	    this.addRow(item,true);
 	}
