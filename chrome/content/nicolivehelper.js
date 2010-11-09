@@ -330,7 +330,7 @@ var NicoLiveHelper = {
 	
 	// 生主のときは過去ログ無視.
 	// タイムシフトも過去ログ無視.
-	if(NicoLiveHelper.iscaster && chat.date<NicoLiveHelper.connecttime || this._timeshift){ return; }
+	if(NicoLiveHelper.iscaster && chat.date<NicoLiveHelper.connecttime || NicoLiveHelper._timeshift){ return; }
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
