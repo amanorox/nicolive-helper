@@ -311,18 +311,6 @@ var NicoLiveHelper = {
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
 	if(chat.text.indexOf("/telop")==0) return;
 
-	if( NicoLivePreference.ngwordfiltering && chat.premium<2){
-	    // リスナーコメだけがNGワードフィルタの対象.
-	    let ngword = NicoLiveComment.isNGWord(chat.text);
-	    if( ngword!=undefined ){
-		chat.isNGWord = true;
-		if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
-		    let recomment = LoadFormattedString('STR_RECOMMENT_NGWORD',[chat.no, chat.text, ngword]);
-		    recomment = recomment.replace(/{=/g,'{-');
-		    NicoLiveHelper.postCasterComment(recomment,"");
-		}
-	    }
-	}
 	NicoLiveHelper.processCommentHook(chat);
 
 	NicoLiveComment.push(chat);

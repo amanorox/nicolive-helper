@@ -531,7 +531,7 @@
 	    <!-- comment -->
 	    <vbox flex="1">
 	      <hbox><checkbox preference="pref-ngwordfiltering" label="NGワード処理を行う" tooltiptext="NGワードを含むコメントのグレーアウト処理を行います。"/></hbox>
-	      <hbox><checkbox preference="pref-ngword-recomment" label="NGワードを含むコメントを運営コメントにて再コメントを行う" style="margin-left:2em;"/></hbox>
+	      <hbox><checkbox preference="pref-ngword-recomment" label="NGワードを含むコメントを運営コメントにて通知する" style="margin-left:2em;"/></hbox>
 	      <hbox><checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="184(匿名)でコメントします。ニコ生の仕様上、視聴者コメントでのみ有効です。"/></hbox>
 	      <hbox><checkbox preference="pref-pagetitle" label="コメントにURLが含まれている時に対象ページのタイトルを運営コメントする"/></hbox>
 	      <hbox><checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントをファイルに保存します。保存先は必ず指定してください。"/></hbox>

@@ -24,9 +24,41 @@ THE SOFTWARE.
  * コメントウィンドウ
  */
 var NicoLiveComment = {
+    prev_comment_no: 0,
+
     addRow:function(comment,disablereflection){
 	let table = $('comment_table');
 	if(!table){ return; }
+
+	if( this.prev_comment_no!=0 ){
+	    while( NicoLivePreference.ngwordfiltering && this.prev_comment_no+1!=comment.no ){
+		// コメ番がスキップしていたらそれはNGコメ.
+		let tmp = NicoLiveComment.prev_comment_no+1;
+		let com = {
+		    no: tmp,
+		    comment_no: tmp,
+		    user_id: "--------",
+		    text: "=== NGコメント ===",
+		    date: 0,
+		    premium: 0,
+		    anonimity: 0,
+		    mail: "",
+		    name: "",
+		    isNGWord: 1
+		};
+		this.addRow(com,disablereflection);
+
+		// リスナーコメだけがNGワードフィルタの対象.
+		if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
+		    if( !NicoLiveHelper._timeshift && comment.date>=NicoLiveHelper.connecttime ){
+			let recomment = ">>"+com.no+" NGワードが含まれています";
+			//LoadFormattedString('STR_RECOMMENT_NGWORD',[comment.no, comment.text, ngword]);
+			NicoLiveHelper.postCasterComment(recomment,"");
+		    }
+		}
+	    }
+	}
+	this.prev_comment_no = comment.no;
 
 	// 500行まで.
 	if(table.rows.length>=COMMENT_LOG){
