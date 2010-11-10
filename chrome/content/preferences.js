@@ -73,11 +73,11 @@ var NLHPreference = {
 	$('pref-msg-forbiddenkeyword').value = data["forbiddenkeyword"];
 	$('pref-msg-limitnumberofrequests').value = data["limitnumberofrequests"];
 
-	if( !data["within-livespace"] ){ // 1.1.19
-	    let branch = opener.NicoLivePreference.getBranch();
-	    data["within-livespace"] = branch.getUnicharPref("msg-within-livespace");
-	}
-	$('pref-msg-within-livespace').value = data["within-livespace"];
+	// 1.1.19+
+	$('pref-msg-within-livespace').value = data["within-livespace"] || $('pref-msg-within-livespace').defaultValue;
+	// 1.1.22+
+	$('pref-msg-requiredkeyword-title').value = data["requiredkeyword-title"] || $('pref-msg-requiredkeyword-title').defaultValue;
+	$('pref-msg-forbiddenkeyword-title').value = data["forbiddenkeyword-title"] || $('pref-msg-forbiddenkeyword-title').defaultValue;
     },
     addPresetComment:function(presetname){
 	let data = {
@@ -102,7 +102,9 @@ var NLHPreference = {
 	    "requiredkeyword":$('pref-msg-requiredkeyword').value,
 	    "forbiddenkeyword":$('pref-msg-forbiddenkeyword').value,
 	    "limitnumberofrequests":$('pref-msg-limitnumberofrequests').value,
-	    "within-livespace":$('pref-msg-within-livespace').value
+	    "within-livespace":$('pref-msg-within-livespace').value,
+	    "requiredkeyword-title":$('pref-msg-requiredkeyword-title').value,
+	    "forbiddenkeyword-title":$('pref-msg-forbiddenkeyword-title').value
 	};
 	this.presetcomment[presetname] = data;
 	opener.NicoLiveDatabase.saveGPStorage('nico_live_commentpreset',this.presetcomment);
@@ -190,6 +192,14 @@ var NLHPreference = {
 	    $('pref-restrict-videolength').value= item.videolength;
 	    $('pref-restrict-tag-include').value= item.tag_include;
 	    $('pref-restrict-tag-exclude').value= item.tag_exclude;
+	    if( item.title_include && item.title_exclude ){
+		// 1.1.22+
+		$('pref-restrict-title-include').value= item.title_include;
+		$('pref-restrict-title-exclude').value= item.title_exclude;
+	    }else{
+		$('pref-restrict-title-include').value= "";
+		$('pref-restrict-title-exclude').value= "";
+	    }
 	    $('pref-date-from').value = $('pref-restrict-date-from').value;
 	    $('pref-date-to').value = $('pref-restrict-date-to').value;
 	} catch (x) {}
@@ -208,6 +218,8 @@ var NLHPreference = {
 	item.videolength   = $('pref-restrict-videolength').value;
 	item.tag_include   = $('pref-restrict-tag-include').value;
 	item.tag_exclude   = $('pref-restrict-tag-exclude').value;
+	item.title_include   = $('pref-restrict-title-include').value;
+	item.title_exclude   = $('pref-restrict-title-exclude').value;
 	this.savePresetRequestCond(name,item);
 
 	let existmenu;
@@ -252,6 +264,8 @@ var NLHPreference = {
 	$('pref-restrict-videolength').value = 0;
 	$('pref-restrict-tag-include').value = "";
 	$('pref-restrict-tag-exclude').value = "";
+	$('pref-restrict-title-include').value = "";
+	$('pref-restrict-title-exclude').value = "";
 	$('pref-date-from').value = "2007-08-31";
 	$('pref-date-to').value = "2007-08-31";
     },
@@ -289,7 +303,7 @@ var NLHPreference = {
 	$('pref-msg-requested').value = $('pref-msg-requested').defaultValue;
 	$('pref-msg-accept').value    = $('pref-msg-accept').defaultValue;
 	$('pref-msg-no-live-play').value = $('pref-msg-no-live-play').defaultValue;
-	$('pref-msg-within-livespace').value = $('pref-msg-within-livespace').defaultValue;
+	$('pref-msg-within-livespace').value = $('pref-msg-within-livespace').defaultValue; // 1.1.19+
 
 	$('pref-msg-requestok').value = $('pref-msg-requestok').defaultValue;
 	$('pref-msg-requestng').value = $('pref-msg-requestng').defaultValue;
@@ -306,6 +320,10 @@ var NLHPreference = {
 	$('pref-msg-requiredkeyword').value = $('pref-msg-requiredkeyword').defaultValue;
 	$('pref-msg-forbiddenkeyword').value = $('pref-msg-forbiddenkeyword').defaultValue;
 	$('pref-msg-limitnumberofrequests').value = $('pref-msg-limitnumberofrequests').defaultValue;
+
+	// 1.1.22+
+	$('pref-msg-requiredkeyword-title').value = $('pref-msg-requiredkeyword-title').defaultValue;
+	$('pref-msg-forbiddenkeyword-title').value = $('pref-msg-forbiddenkeyword-title').defaultValue;
     },
 
     // 視聴者コマンドの応答をリセットする.

@@ -72,7 +72,9 @@ var NicoLivePreference = {
 	this.msg.requiredkeyword = branch.getUnicharPref("msg-requiredkeyword");
 	this.msg.forbiddenkeyword = branch.getUnicharPref("msg-forbiddenkeyword");
 	this.msg.limitnumberofrequests = branch.getUnicharPref("msg-limitnumberofrequests");
-	this.msg.within_livespace = branch.getUnicharPref("msg-within-livespace");
+	this.msg.within_livespace = branch.getUnicharPref("msg-within-livespace"); // 1.1.19+
+	this.msg.requiredkeyword_title = branch.getUnicharPref("msg-requiredkeyword-title");   // 1.1.22+
+	this.msg.forbiddenkeyword_title = branch.getUnicharPref("msg-forbiddenkeyword-title"); // 1.1.22+
 
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 
@@ -91,7 +93,25 @@ var NicoLivePreference = {
 
 	this.startup_comment = branch.getUnicharPref("startup-comment");
 
+	this.readRestrictionSetting();
+
+	NicoLiveComment.loadPresetAutocomplete();
+
+	this.ngwordfiltering = branch.getBoolPref("ngwordfiltering");
+	this.ngword_recomment = branch.getBoolPref("ngword-recomment");
+
+	this.do_customscript = branch.getBoolPref("custom-script");
+	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
+
+	this.readClasses();
+	this.readFont();
+
+	this.readTwitterSettings();
+    },
+
+    readRestrictionSetting:function(){
 	// リクエスト制限設定.
+	let branch = this.getBranch();
 	let restrict = {};
 	restrict.numberofrequests = this.nreq_per_ppl;
 	restrict.dorestrict = branch.getBoolPref("request.restrict");
@@ -112,20 +132,18 @@ var NicoLivePreference = {
 	restrict.videolength = branch.getIntPref("request.videolength");
 	restrict.view_from   = branch.getIntPref("request.view-from");
 	restrict.view_to     = branch.getIntPref("request.view-to");
+
+	exclude = branch.getUnicharPref("request.title-exclude");
+	restrict.title_exclude = new Array();
+	if(exclude.length>0){
+	    restrict.title_exclude = exclude.split(/\s+/);
+	}
+	include = branch.getUnicharPref("request.title-include");
+	restrict.title_include = new Array();
+	if(include.length>0){
+	    restrict.title_include = include.split(/\s+/);
+	}
 	this.restrict = restrict;
-
-	NicoLiveComment.loadPresetAutocomplete();
-
-	this.ngwordfiltering = branch.getBoolPref("ngwordfiltering");
-	this.ngword_recomment = branch.getBoolPref("ngword-recomment");
-
-	this.do_customscript = branch.getBoolPref("custom-script");
-	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
-
-	this.readClasses();
-	this.readFont();
-
-	this.readTwitterSettings();
     },
 
     readTwitterSettings:function(){

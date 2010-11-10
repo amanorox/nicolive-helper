@@ -298,6 +298,42 @@ var NicoLiveHelper = {
 		return NicoLivePreference.msg.forbiddenkeyword;
 	    }
 	}
+
+	// タイトルにキーワードが含まれていればOK
+	if(restrict.title_include.length>0){
+	    let tagstr = videoinfo.title;
+	    let flg = false;
+	    for(let i=0,tag;tag=restrict.title_include[i];i++){
+		let reg = new RegExp(tag,"i");
+		if( tagstr.match(reg) ){
+		    // 含まれている
+		    flg = true;
+		}
+	    }
+	    if( !flg ){
+		restrict.requiredkeyword = restrict.title_include.join(',');
+		return NicoLivePreference.msg.requiredkeyword_title;
+	    }
+	}
+
+	// タイトルにキーワードが含まれていなければOK
+	if(restrict.title_exclude.length>0){
+	    let tagstr = videoinfo.title;
+	    let flg = true;
+	    let tag;
+	    for(let i=0;tag=restrict.title_exclude[i];i++){
+		let reg = new RegExp(tag,"i");
+		if( tagstr.match(reg) ){
+		    // 含まれている
+		    flg = false;
+		    break;
+		}
+	    }
+	    if( !flg ){
+		restrict.forbiddenkeyword = tag;
+		return NicoLivePreference.msg.forbiddenkeyword_title;
+	    }
+	}
 	return null;
     },
 
