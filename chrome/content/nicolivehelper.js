@@ -1491,6 +1491,7 @@ var NicoLiveHelper = {
 	    }
 	}
 	elem.value += item.video_id+" "+item.title+"\n";
+	this.savePlaylist();
     },
 
     addPlayList:function(item,notext){
