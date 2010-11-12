@@ -133,6 +133,8 @@
     <!-- command menu -->
     <toolbarbutton label="&toolbar.command;" type="menu">
       <menupopup>
+	<menuitem label="放送ID(lvXXXXX)を入力して接続" oncommand="NicoLiveWindow.connectToBroadcasting();"/>
+
 	<menu label="&toolbar.backuprestore;" tooltiptext="&toolbar.backuprestore.help;"><!-- バックアップと復元 -->
 	  <menupopup>
 	    <menuitem label="&toolbar.backup;" oncommand="NicoLiveWindow.inputBackupName();"/>
@@ -171,7 +173,6 @@
 	<menuitem label="次枠へ" tooltiptext="次枠を開始するために、新規番組登録画面に移動します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
 	<menu label="その他">
 	  <menupopup>
-	    <menuitem label="放送ID(lvXXXXX)を入力して接続" oncommand="NicoLiveWindow.connectToBroadcasting();"/>
 	    <menuseparator/>
 	    <menuitem id="automatic-broadcasting" persist="checked" label="Automatic Broadcasting(Experimental)" type="checkbox" autocheck="true"/>
 	    <menuitem id="get-extratime" persist="checked" label="ロスタイム作成(Experimental)" tooltiptext="動画を視聴したままロスタイムに突入します。" type="checkbox" autocheck="true"/>
