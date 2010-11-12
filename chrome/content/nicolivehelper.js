@@ -396,6 +396,7 @@ var NicoLiveHelper = {
 			}
 			NicoLiveHelper.sendMusicInfo();
 			NicoLiveHelper.addPlayListText(NicoLiveHelper.musicinfo);
+			NicoLiveHelper.checkVideoDeletedAndPlayNext(NicoLiveHelper.musicinfo.video_id);
 		    }
 		}else{
 		    // リスナーの場合は動画情報を持っていないので取ってくる.
@@ -517,6 +518,26 @@ var NicoLiveHelper = {
 	    }
 	    break;
 	}
+    },
+
+    // 動画の存在をチェックして、削除されてるようなら次の再生を仕掛ける.
+    checkVideoDeletedAndPlayNext:function(video_id){
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
+		if( !music ){
+		    ShowNotice("動画情報を取得できなかったため15秒後にスキップします");
+		    NicoLiveHelper.setupPlayNextMusic(15*1000);
+		}
+	    }
+	};
+	//debugprint("checking "+video_id+" is not deleted...");
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
+	req.open('GET', url );
+	req.setRequestHeader('User-Agent',this._useragent);
+	req.send("");
     },
 
     // コメを処理する(各種追加機能の古いバージョンでのフック用).
@@ -698,22 +719,19 @@ var NicoLiveHelper = {
     // 指定のvideo_idの情報をmusicinfoにセット(プログレスバーのため)
     // this.musicstarttimeはあらかじめセットしておくこと.
     setCurrentVideoInfo:function(video_id,setinterval){
-	// setinterval=trueのときは次曲再生のタイマーをしかける.
+	// setinterval=trueのときは次曲再生のタイマーをしかける(生主用).
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		//debugprint(video_id+'のサムネイルを取得しました');
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
 		if( music ){
 		    if( NicoLiveHelper.current_video_id!=video_id ){
 			//debugprint(video_id+'は/playで指定された動画と異なるため無視します');
 			return;
 		    }
-
 		    NicoLiveHelper.musicinfo = music;
 		    NicoLiveHelper.musicinfo.mylist = NicoLiveMylist.isVideoExists(video_id);
-
 		    let du = Math.floor(NicoLiveHelper.musicinfo.length_ms/1000)+1;
 		    NicoLiveHelper.musicendtime   = NicoLiveHelper.musicstarttime+du;
 
@@ -727,6 +745,12 @@ var NicoLiveHelper = {
 			NicoLiveHelper.inplay = true;
 		    }
 		    NicoLiveHelper.addPlayList(music);
+		}else{
+		    if( setinterval ){
+			// 動画情報取れない(削除、非表示)みたいなのでスキップ.
+			ShowNotice("動画情報を取得できなかったため15秒後にスキップします");
+			NicoLiveHelper.setupPlayNextMusic(15*1000);
+		    }
 		}
 	    }
 	};
