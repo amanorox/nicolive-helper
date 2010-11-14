@@ -349,8 +349,8 @@ var NicoLiveHelper = {
 
 	NicoLiveHelper.processCommentHook(chat);
 
-	NicoLiveComment.push(chat);
-	NicoLiveComment.addRow(chat);
+	NicoLiveComment.push(chat);   // こちらはコメントログの記録部分.
+	NicoLiveComment.addRow(chat); // こちらはコメントタブの表示部分(コテハン設定等が変わるとリフレッシュ).
 	
 	// 生主のときは過去ログ無視.
 	// タイムシフトも過去ログ無視.
