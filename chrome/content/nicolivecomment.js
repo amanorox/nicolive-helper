@@ -24,7 +24,8 @@ THE SOFTWARE.
  * コメントウィンドウ
  */
 var NicoLiveComment = {
-    prev_comment_no: 0,
+    prev_comment_no: 0,    // 直前のコメ番(NGコメント検出・表示のためのコメ番記録).
+    current_comment_no: 0, // 現在のコメ番(単純増加のみで表示リフレッシュがあっても不変).
 
     addRow:function(comment,disablereflection){
 	let table = $('comment_table');
@@ -49,16 +50,19 @@ var NicoLiveComment = {
 		this.addRow(com,disablereflection);
 
 		// リスナーコメだけがNGワードフィルタの対象.
-		if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
-		    if( !NicoLiveHelper._timeshift && comment.date>=NicoLiveHelper.connecttime ){
-			let recomment = ">>"+com.no+" NGワードが含まれています";
-			//LoadFormattedString('STR_RECOMMENT_NGWORD',[comment.no, comment.text, ngword]);
-			NicoLiveHelper.postCasterComment(recomment,"");
+		if( this.current_comment_no <= com.no ){
+		    if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
+			if( !NicoLiveHelper._timeshift && comment.date>=NicoLiveHelper.connecttime ){
+			    let recomment = ">>"+com.no+" NGワードが含まれています";
+			    //LoadFormattedString('STR_RECOMMENT_NGWORD',[comment.no, comment.text, ngword]);
+			    NicoLiveHelper.postCasterComment(recomment,"");
+			}
 		    }
 		}
 	    }
 	}
 	this.prev_comment_no = comment.no;
+	if(this.current_comment_no<comment.no) this.current_comment_no = comment.no;
 
 	// 500行まで.
 	if(table.rows.length>=COMMENT_LOG){
