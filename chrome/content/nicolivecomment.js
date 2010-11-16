@@ -687,6 +687,7 @@ var NicoLiveComment = {
 	// コメントの表示部をクリア.
 	this.commentlog = new Array();
 	this.prev_comment_no = 0;
+	this.current_comment_no = 0;
 	clearTable($('comment_table'));
     },
 
