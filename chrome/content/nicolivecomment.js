@@ -684,7 +684,7 @@ var NicoLiveComment = {
     },
 
     initView:function(){
-	// コメントの表示部をクリア.
+	// ウィンドウ使いまわしで接続するときの初期化.
 	this.commentlog = new Array();
 	this.prev_comment_no = 0;
 	this.current_comment_no = 0;
