@@ -96,11 +96,17 @@ var NicoLiveWindow = {
 	}
     },
 
+    // 放送IDを入力して接続.
     connectToBroadcasting:function(){
-	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)を入力してください","放送ID(lvXXXX)を入力","");
-	lvid = lvid.match(/lv\d+/);
-	if(lvid){
-	    NicoLiveHelper.connectNewBroadcasting(lvid,"",true,"");
+	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルIDを入力してください","放送IDを入力","");
+	let request_id;
+	request_id = lvid.match(/lv\d+/);
+	if(request_id){
+	    NicoLiveHelper.connectNewBroadcasting(request_id,"",true,"");
+	}
+	request_id = lvid.match(/co\d+/) || lvid.match(/ch\d+/);
+	if(request_id){
+	    NicoLiveHelper.connectNewBroadcasting(request_id,"",true,request_id);
 	}
     },
 

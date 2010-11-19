@@ -2953,6 +2953,8 @@ var NicoLiveHelper = {
 		return;
 	    }
 	    try {
+		NicoLiveHelper.request_id = xml.getElementsByTagName('id')[0].textContent; // argument/req_idにコミュIDを使用した場合対策.
+
 		if( !NicoLiveHelper.title ){
 		    NicoLiveHelper.title  = xml.getElementsByTagName('title')[0].textContent;
 		}
