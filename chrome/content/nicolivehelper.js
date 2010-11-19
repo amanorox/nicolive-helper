@@ -75,6 +75,20 @@ var NicoLiveHelper = {
     twitterinfo: {},  // Twitter投稿API
 
     // リクを受け付けるかどうかチェック.
+    /**
+     * リクエスト受け付けチェック.
+     * @param xml getthumbinfoで取得したxml
+     * @param comment_no リク主のコメント番号(その他は0)
+     * @param is_self_request 自貼りのときに真
+     *
+     * -1 : xmlがおかしい、動画情報が取得できない、生放送で再生できない
+     * -2 : リクエストを受け付けていない
+     * -3 : 新着7日規制
+     * -4 : 再生済み
+     * -5 : リク済み
+     * -6 : リクエスト縛り条件満たしてない
+     * -7 : 枠内に収まらない
+     */
     checkToAcceptRequest: function(xml, comment_no, is_self_request){
 	if(xml.getElementsByTagName('error').length){ // 動画がない.
 	    return {code:-1,msg:NicoLivePreference.msg.deleted,movieinfo:{}};
@@ -2300,6 +2314,7 @@ var NicoLiveHelper = {
 		case -2: // リク受けつけてない.
 		case -4: // 再生済み.
 		case -5: // リク済み.
+		case -7: // 枠に収まらない.
 		    ans.movieinfo.iscasterselection = true; // ストックは主セレ扱い.
 		    ans.movieinfo.video_id = sm;
 		    if(NicoLiveHelper.isPlayedMusic(ans.movieinfo.video_id)){
