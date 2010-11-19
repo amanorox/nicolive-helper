@@ -63,6 +63,11 @@ var NicoLiveOverlay = {
 	Application.storage.set("nico_live_caster",iscaster);
 	Application.storage.set("nico_live_coid",community_id);
 
+	this.debugprint("request id:"+url);
+	this.debugprint("title:"+title);
+	this.debugprint("caster:"+iscaster);
+	this.debugprint("community:"+community_id);
+
 	if( this.isSingleWindowMode() ){
 	    let win = this.findWindow();
 	    if(win){
@@ -87,22 +92,26 @@ var NicoLiveOverlay = {
     // メニューからopenする.
     openNicoLiveWindow:function(){
 	let url = window.content.location.href;
-	url = url.match(/watch\/((lv|co)\d+)/);
-	if(!url) url="lv0";
-	else url = url[1];
+	let request_id;
+
+	// URLからrequest idを.
+	request_id = url.match(/watch\/((lv|co|ch)\d+)/);
+	if(!request_id) request_id="lv0";
+	else request_id = request_id[1];
 
 	let title;
 	let iscaster = true;
 	try{
+	    // 番組タイトルはタイトルタグを使用.
 	    title = window.content.document.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1];
 	} catch (x) {
 	    try{
 		title = window.content.document.getElementsByTagName('title')[0].textContent;
 	    } catch (x) {
-		title = "タイトルなし";
+		title = "";
 	    }
 	}
-	if(url!="lv0"){
+	if(request_id!="lv0"){
 	    if( !window.content.document.body.innerHTML.match(/console\.swf/) ){
 		// 生主コンソールがないならリスナ.
 		iscaster = false;
@@ -110,16 +119,15 @@ var NicoLiveOverlay = {
 	    if( window.content.document.getElementById("utility_container") ){
 		// 新バージョンではutility_containerがあれば生主.
 		iscaster = true;
-		this.debugprint("utility_container is found.");
 	    }
 	}
 	let community_id = "";
-	if( url.indexOf("co")!=-1 || url.indexOf("ch")!=-1){
-	    // co番号でアクセスした場合、lv番号を取得する.
-	    community_id = url;
-	    url = window.content.document.defaultView.wrappedJSObject.Video.id;
+	if( url.match(/(ch|co)\d+/) ){
+	    // co番号でアクセスした場合、コミュ番号を取得する.
+	    community_id = request_id;
+	    this.debugprint("to connect to broadcasting using community id:"+community_id);
 	}
-	this.open(url,title,iscaster,community_id);
+	this.open(request_id,title,iscaster,community_id);
     },
 
     onPageLoad:function(e){
@@ -128,19 +136,21 @@ var NicoLiveOverlay = {
 	    return;
 	}
 
+	let url = e.target.location.href;
+	let request_id;
+
+	// URLからrequest idを.
+	request_id = url.match(/nicovideo.jp\/watch\/((lv|co|ch)\d+)/);
+	if(!request_id) return; // 生放送のページではない.
+	else request_id = request_id[1];
+
 	let player;
 	try{
-	    // 生放送のページかどうか.
 	    player = e.target.getElementById("WatchPlayer");
 	} catch (x) {
 	}
 	let iscaster = false;
 	if( !player ) return;
-
-	let doc = e.target;
-	let unsafeWin = doc.defaultView.wrappedJSObject;
-	let video_id = unsafeWin.Video.id;
-	this.debugprint("live id="+video_id);
 
 	// innerHTMLを見るしかできないのです.
 	if(player.innerHTML.match(/console\.swf/)){
@@ -161,30 +171,22 @@ var NicoLiveOverlay = {
 	let prefs = this.getPref();
 	if( prefs.getBoolPref("autowindowopen") && iscaster ||
 	    prefs.getBoolPref("autowindowopen-listener") && !iscaster ){
-	    let url = video_id;
-	    if(url){
 		let title;
 		try{
-		    try{
-			title = e.target.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1];
-		    } catch (x) {
-			try{
-			    title = e.target.getElementsByTagName('title')[0].textContent;
-			} catch (x) {
-			    title = "タイトルなし";
-			}
-		    }
-		    let community_id;
-		    try{
-			community_id = e.target.location.href.match(/(co|ch)\d+$/)[0];
-		    } catch (x) {
-			this.debugprint(x);
-		    }
-		    this.open(url,title,iscaster,community_id);
+		    title = e.target.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1];
 		} catch (x) {
+		    try{
+			title = e.target.getElementsByTagName('title')[0].textContent;
+		    } catch (x) {
+			title = "";
+		    }
 		}
+		let community_id = "";
+		if( url.match(/(ch|co)\d+/) ){
+		    community_id = request_id;
+		}
+		this.open(request_id,title,iscaster,community_id);
 	    }
-	}
     },
 
     createExtraMylistItem:function(doc,item,id){

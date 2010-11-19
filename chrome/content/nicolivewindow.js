@@ -100,6 +100,7 @@ var NicoLiveWindow = {
     connectToBroadcasting:function(){
 	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルIDを入力してください","放送IDを入力","");
 	let request_id;
+	if( !lvid ) return;
 	request_id = lvid.match(/lv\d+/);
 	if(request_id){
 	    NicoLiveHelper.connectNewBroadcasting(request_id,"",true,"");
