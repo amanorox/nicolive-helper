@@ -637,6 +637,21 @@ var NLHPreference = {
 	}
     },
 
+    refSoundFileToNotice:function(){
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "通知に使用するサウンドファイル", nsIFilePicker.modeOpen);
+	fp.appendFilters(nsIFilePicker.filterAll);
+	let rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    let file = fp.file;
+	    let path = fp.file.path;
+	    this.debugprint("「"+path+"」を通知に使用します");
+
+	    $('pref-notice-soundfile').value = path;
+	}
+    },
+
     init:function(){
 	let data = opener.NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
 	if( data.requestchecker ){

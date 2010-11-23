@@ -520,7 +520,10 @@
       <preference id="pref-notice-area"    name="extensions.nicolivehelper.notice.area" type="bool"/>
       <preference id="pref-notice-dialog"  name="extensions.nicolivehelper.notice.dialog" type="bool"/>
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
+      <preference id="pref-notice-popup" name="extensions.nicolivehelper.notice.popup" type="bool"/>
+      <preference id="pref-notice-sound" name="extensions.nicolivehelper.notice.sound" type="bool"/>
       <preference id="pref-notice-message" name="extensions.nicolivehelper.notice.message" type="unichar"/>
+      <preference id="pref-notice-soundfile" name="extensions.nicolivehelper.notice.soundfile" type="unichar"/>
 
       <preference id="pref-ngwordfiltering" name="extensions.nicolivehelper.ngwordfiltering" type="bool"/>
       <preference id="pref-ngword-recomment" name="extensions.nicolivehelper.ngword-recomment" type="bool"/>
@@ -655,18 +658,27 @@
 	    <separator/>
 
 	    <vbox flex="1">
-	      <label value="放送終了前の通知:"/>
+	      <hbox align="center">
+		<label value="放送終了前の通知:"/>
+		<textbox preference="pref-notice-time" value="3" type="number" min="1" max="10" size="3"/>
+		<label value="分前"/>
+	      </hbox>
 	      <vbox style="margin-left: 1em;">
 		<hbox>
-		  <textbox preference="pref-notice-time" value="3" type="number" min="1" max="10" size="3"/>
-		  <hbox align="center"><label value="分前"/></hbox>
 		  <checkbox preference="pref-notice-area" label="通知領域" tooltiptext="ウインドウ下の通知領域を使用して警告します。" flex="0"/>
 		  <checkbox preference="pref-notice-dialog" label="ダイアログ" tooltiptext="ダイアログボックスを使用して警告します。"/>
 		  <checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コメントを使用して警告します。"/>
+		  <checkbox preference="pref-notice-popup" label="ポップアップ" tooltiptext="ポップアップする通知ウィンドウを使用して警告します。"/>
+		  <checkbox preference="pref-notice-sound" label="サウンド" tooltiptext="サウンド再生を使用して警告します。"/>
 		</hbox>
 		<hbox align="center">
 		  <label value="通知メッセージ"/>
 		  <textbox preference="pref-notice-message"/>
+		</hbox>
+		<hbox align="center">
+		  <label value="サウンドファイル"/>
+		  <textbox preference="pref-notice-soundfile" id="notice-soundfile"/>
+		  <button label="参照..." oncommand="NLHPreference.refSoundFileToNotice();"/>
 		</hbox>
 	      </vbox>
 	      <separator/>

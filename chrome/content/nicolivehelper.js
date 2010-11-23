@@ -2796,6 +2796,22 @@ var NicoLiveHelper = {
 	if( NicoLivePreference.notice.dialog ){
 	    AlertPrompt(str, this.request_id+":"+this.title);
 	}
+
+	if( NicoLivePreference.notice.popup ){
+	    ShowPopupNotification("http://icon.nimg.jp/community/"+this.community, this.title, str, this.request_id);
+	}
+	if( NicoLivePreference.notice.sound ){
+	    try{
+		var IOService = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
+		var localFile = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
+		var sound = Cc["@mozilla.org/sound;1"].createInstance(Ci.nsISound);
+		var url = NicoLivePreference.notice.soundfile;
+		localFile.initWithPath(url);
+		sound.play(IOService.newFileURI(localFile));
+	    } catch (x) {
+		debugprint("failed to play sound:"+x);
+	    }
+	}
     },
 
     // 現在の再生曲の再生時間と、生放送の経過時間をプログレスバーで表示.

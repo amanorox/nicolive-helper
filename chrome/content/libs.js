@@ -7,6 +7,9 @@ try{
 } catch (x) {
 } 
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const HTML_NS= "http://www.w3.org/1999/xhtml";
 const MYLIST_URL = "http://www.nicovideo.jp/mylistgroup_edit";
@@ -290,16 +293,33 @@ function ShowNotice(txt, dontclear){
 			    }, 15*1000 );
 }
 
-function ShowPopupNotification(title,text){
+function ShowPopupNotification(imageURL,title,text,request_id){
+    // request_id: lvXXXXXX
+    var listener = null;
+    /*
+    {
+	observe: function(subject, topic, data) {
+	    if(topic=='alertclickcallback'){
+		let url = 'http://live.nicovideo.jp/watch/'+data;
+		Application.console.log('open:'+url);
+		gBrowser.addTab(url);
+	    }
+	}
+    };
+     */
+
+    let clickable = false;
+    let cookie = request_id;
     try {
-	Components.classes['@mozilla.org/alerts-service;1'].getService(Components.interfaces.nsIAlertsService)
-	    .showAlertNotification(null, title, text, false, '', null);
+	let alertserv = Components.classes['@mozilla.org/alerts-service;1'].getService(Components.interfaces.nsIAlertsService);
+	//	    alertserv.showAlertNotification(imageURL, title, text, clickable, cookie, listener, 'NicoLiveAlertExtension');
+	alertserv.showAlertNotification(imageURL, title, text, clickable, cookie, listener);
     } catch(e) {
 	// prevents runtime error on platforms that don't implement nsIAlertsService
-	var image = null;
+	var image = imageURL;
 	var win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
 	    .openWindow(null, 'chrome://global/content/alerts/alert.xul','_blank', 'chrome,titlebar=no,popup=yes', null);
-	win.arguments = [image, title, text, false, ''];
+	win.arguments = [image, title, text, clickable, cookie, 0, listener];
     }
 }
 
