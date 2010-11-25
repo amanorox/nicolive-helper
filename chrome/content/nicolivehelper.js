@@ -2871,8 +2871,9 @@ var NicoLiveHelper = {
 
 	if( this.endtime==0 ){
 	    if( (now-this._enterlosstime) > 2*60 ){
-		if( NicoLivePreference.isAutoWindowClose(this.iscaster) ){
+		if( (playprogress.value>=99 || !this.inplay) && NicoLivePreference.isAutoWindowClose(this.iscaster) ){
 		    // ロスタイムに入って2分経ったら自動で終了にする.
+		    // ただし再生中は保留.
 		    this.finishBroadcasting();
 		}
 	    }
