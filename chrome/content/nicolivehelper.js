@@ -615,7 +615,9 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 放送が終了した時に呼ぶ.
+    /** 放送の終了処理.
+     * 接続を切ったり、タブを閉じたり、次枠の準備に飛ばしたり、etc.
+     */
     finishBroadcasting:function(){
 	let autolive = $('automatic-broadcasting').hasAttribute('checked');
 	if( autolive ){
@@ -624,8 +626,7 @@ var NicoLiveHelper = {
 
 	let prefs = NicoLivePreference.getBranch();
 	NicoLiveComment.releaseReflector();
-	if( (autolive || prefs.getBoolPref("autowindowclose")) && NicoLiveHelper.iscaster ||
-	    prefs.getBoolPref("autowindowclose-listener") && !NicoLiveHelper.iscaster ){
+	if( (autolive && this.iscaster) || NicoLivePreference.isAutoWindowClose(this.iscaster) ){
 	    if( prefs.getBoolPref("autotabclose") ){
 		NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
 	    }
@@ -2851,24 +2852,27 @@ var NicoLiveHelper = {
 	let nt = NicoLivePreference.notice.time;
 	if( (this.endtime && remaintime>0 && remaintime < nt*60) ||
 	    (!this.endtime && n>=0 && p > (30-nt)*60 + 30*60*n) ){
-		// 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
-		// 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
-		if(!this.isnotified[n]){
-		    this.showNotice3minleft();
-		    this.isnotified[n] = true;
-		}
+	    // 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
+	    // 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
+	    if(!this.isnotified[n]){
+		this.showNotice3minleft();
+		this.isnotified[n] = true;
 	    }
+	}
 	if( this.endtime && this.endtime<now ){
 	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
 	    this.endtime = 0;
 	    this.getpublishstatus(this.request_id);
+	    if( !this.iscaster ){
+		this.updateEndTime(this.request_id);
+	    }
 	    this._enterlosstime = now;
 	}
 
-	if( this.iscaster && this.endtime==0 ){
-	    if( $('automatic-broadcasting').hasAttribute('checked') ){
-		if( (now-this._enterlosstime) > 2*60 ){
-		    // 自動配信中に、ロスタイムに入って2分経ったら.
+	if( this.endtime==0 ){
+	    if( (now-this._enterlosstime) > 2*60 ){
+		if( NicoLivePreference.isAutoWindowClose(this.iscaster) ){
+		    // ロスタイムに入って2分経ったら自動で終了にする.
 		    this.finishBroadcasting();
 		}
 	    }
@@ -3001,15 +3005,15 @@ var NicoLiveHelper = {
 		NicoLiveHelper.port       = xml.getElementsByTagName('port')[0].textContent;
 		NicoLiveHelper.thread     = xml.getElementsByTagName('thread')[0].textContent;
 		NicoLiveHelper.iscaster   = xml.getElementsByTagName('is_owner')[0].textContent;
-		NicoLiveHelper.starttime  = parseInt(xml.getElementsByTagName('start_time')[0].textContent);// 開演時刻.
 		NicoLiveHelper.opentime   = parseInt(xml.getElementsByTagName('open_time')[0].textContent); // 開場時刻.
+		NicoLiveHelper.starttime  = parseInt(xml.getElementsByTagName('start_time')[0].textContent);// 開演時刻.
+		NicoLiveHelper.endtime   = parseInt(xml.getElementsByTagName('end_time')[0].textContent); // 閉場時刻.
 		NicoLiveHelper.community  = xml.getElementsByTagName('default_community')[0].textContent;
 		if( NicoLiveHelper.iscaster!="0" ){
 		    NicoLiveHelper.iscaster=true;
 		    debugprint('あなたは生放送主です');
 		    HttpObserver.init();
 		}else{
-		    NicoLiveHelper.endtime    = NicoLiveHelper.starttime + 60*30;
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('あなたは視聴者です');
 		}
@@ -3093,6 +3097,32 @@ var NicoLiveHelper = {
 	};
 	this._donotshowdisconnectalert = true;
 	this.close();
+
+	let url="http://watch.live.nicovideo.jp/api/getplayerstatus?v="+req_id;
+	req.open('GET', url );
+	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
+	req.send("");
+    },
+
+    /** getplayerstatusを使用して終了時刻を更新.
+     * 生主はgetpublishstatusにて更新しているので延長しても大丈夫だけど、
+     * リスナーは前述APIを使用できないのでgetplayerstatusを使用して終了時刻endtimeを更新する.
+     * @param req_id 放送ID(lvXXXXX)
+     */
+    updateEndTime:function(req_id){
+	debugprint("get getplayerstatus to obtain end_time.");
+	var req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState!=4 || req.status!=200 ) return;
+	    let xml = req.responseXML;
+	    try{
+		NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('end_time')[0].textContent); // 閉場時刻.
+	    } catch (x) {
+		NicoLiveHelper.endtime = 0;
+	    }
+	    debugprint("New endtime="+NicoLiveHelper.endtime);
+	};
 
 	let url="http://watch.live.nicovideo.jp/api/getplayerstatus?v="+req_id;
 	req.open('GET', url );
@@ -3265,8 +3295,10 @@ var NicoLiveHelper = {
 			       } );
     },
 
-    // getpublishstatusを行い、end_timeとtokenを得る.
-    // postfuncが指定されていた場合、通信終了時に指定の関数を呼び出す.
+    /** 放送主専用トークン(token)、開演時刻(start_time)、終了時刻(end_time)を取得する.
+     * getpublishstatusを行い、token,end_time,start_timeを得る.
+     * postfuncが指定されていた場合、通信終了時に指定の関数を呼び出す.
+     */
     getpublishstatus:function( request_id, postfunc ){
 	if( !this.iscaster || !request_id || request_id=="lv0" ){
 	    if( 'function'==typeof postfunc){

@@ -281,12 +281,13 @@ var NicoLivePreference = {
 	}
     },
 
-    isProgressShowing:function(){
-	try{
-	    return this.getBranch().getBoolPref("_showprogress");
-	} catch (x) {
-	    return false;
+    isAutoWindowClose:function(iscaster){
+	let prefs = this.getBranch();
+	if( (iscaster && prefs.getBoolPref("autowindowclose")) ||
+	    (!iscaster && prefs.getBoolPref("autowindowclose-listener")) ){
+	    return true;
 	}
+	return false;
     },
 
     getBranch:function(){
