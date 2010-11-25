@@ -673,11 +673,11 @@
 		</hbox>
 		<hbox align="center">
 		  <label value="通知メッセージ"/>
-		  <textbox preference="pref-notice-message"/>
+		  <textbox flex="1" preference="pref-notice-message"/>
 		</hbox>
 		<hbox align="center">
 		  <label value="サウンドファイル"/>
-		  <textbox preference="pref-notice-soundfile" id="notice-soundfile"/>
+		  <textbox flex="1" preference="pref-notice-soundfile" id="notice-soundfile"/>
 		  <button label="参照..." oncommand="NLHPreference.refSoundFileToNotice();"/>
 		</hbox>
 	      </vbox>
