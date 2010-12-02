@@ -2652,7 +2652,8 @@ var NicoLiveHelper = {
      * @param server サーバ.
      * @param port ポート.
      * @param thread スレッド番号.
-     * getplayerstatusでコメントサーバを調べたあとに呼ばれる.
+     * このメソッドはgetplayerstatusでコメントサーバを調べたあとに呼ばれる.
+     * コメントサーバに接続すると、コメント要求を行う.
      */
     connectCommentServer: function(server,port,thread){
 	//<thread thread="1005799549" res_from="-50" version="20061206"/>
@@ -2706,7 +2707,13 @@ var NicoLiveHelper = {
 	this.coStream = iostream.ostream;
 	this.ciStream = iostream.istream;
 
-	let str = "<thread thread=\""+thread+"\" res_from=\"-100\" version=\"20061206\"/>\0";
+	let lines;
+	try{
+	    lines = NicoLivePreference.getBranch().getIntPref("comment.log") * -1;
+	} catch (x) {
+	    lines = -100;
+	}
+	let str = "<thread thread=\""+thread+"\" res_from=\""+lines+"\" version=\"20061206\"/>\0";
 	if( 0 && this._timeshift ){
 	    // タイムシフトで時間軸で順次コメント取ってくるのは面倒.
 	    // <thread thread="1016805032" res_from="-1000" version="20061206" when="1268170184" waybackkey="1268236432.bWafikc3gow8SXZxrBHPyNYM0bk" user_id="21693"/>

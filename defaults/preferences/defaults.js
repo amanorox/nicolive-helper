@@ -98,3 +98,5 @@ pref("extensions.nicolivehelper.twitter.use-api","self");
 pref("extensions.nicolivehelper.twitter.when-beginlive",false);
 pref("extensions.nicolivehelper.twitter.when-playmovie",false);
 pref("extensions.nicolivehelper.twitter.when-addmylist",false);
+
+pref("extensions.nicolivehelper.comment.log",100);

@@ -503,6 +503,7 @@
 
   <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>
+      <preference id="pref-comment-log-num" name="extensions.nicolivehelper.comment.log" type="int"/>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>
       <preference id="pref-commentlogDir" name="extensions.nicolivehelper.commentlogDir" type="file"/>
       <preference id="pref-singlewindowmode" name="extensions.nicolivehelper.singlewindow" type="bool"/>
@@ -552,6 +553,7 @@
 	  <tabpanel orient="vertical">
 	    <!-- comment -->
 	    <vbox flex="1">
+	      <hbox align="center"><label value="接続時のログ取得行数:"/><textbox preference="pref-comment-log-num" type="number" min="1" max="500" size="5"/><label value="行"/></hbox>
 	      <hbox><checkbox preference="pref-ngwordfiltering" label="NGワード処理を行う" tooltiptext="NGワードを含むコメントのグレーアウト処理を行います。"/></hbox>
 	      <hbox><checkbox preference="pref-ngword-recomment" label="NGワードを含むコメントを運営コメントにて通知する" style="margin-left:2em;"/></hbox>
 	      <hbox><checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="184(匿名)でコメントします。ニコ生の仕様上、視聴者コメントでのみ有効です。"/></hbox>
