@@ -625,9 +625,9 @@ var NicoLiveRequest = {
 		    }
 		    let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
 		    if(!NicoLiveHelper.isautoplay) break;
-		    this.playlist_start++;
 		    if(nextmusic){
 			this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
+			if( !this.playlist_first ) this.playlist_start++;
 			this.playlist_first = 1;
 		    }
 		    break;

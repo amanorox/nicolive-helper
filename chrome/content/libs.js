@@ -131,6 +131,14 @@ function CreateLabel(label){
     return elem;
 }
 
+
+function CreateFolder(path){
+    var file = OpenFile(path);
+    if( !file.exists() || !file.isDirectory() ) {   // if it doesn't exist, create
+	file.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
+    }
+}
+
 function OpenFile(path){
     var localfileCID = '@mozilla.org/file/local;1';
     var localfileIID =Components.interfaces.nsILocalFile;

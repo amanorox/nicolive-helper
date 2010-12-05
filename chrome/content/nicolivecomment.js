@@ -614,9 +614,13 @@ var NicoLiveComment = {
 	this.writeFile(chat);
     },
 
-    openFile:function(request_id){
+    openFile:function(request_id,community){
 	let f = NicoLivePreference.getCommentDir();
 	if(!f) return;
+	if( community ){
+	    f.append(community);
+	    CreateFolder(f.path);
+	}
 	f.append(request_id+'.txt');
 	let file;
 	let os;
