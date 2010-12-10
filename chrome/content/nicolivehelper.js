@@ -2834,7 +2834,7 @@ var NicoLiveHelper = {
 	let n = Math.floor(p/(30*60)); // 30分単位に0,1,2,...
 	liveprogress.label = GetTimeString(p);
 
-	if( (p%60)==0 && this._exclude ){
+	if( this.iscaster && (p%60)==0 && this._exclude ){
 	    // 配信開始していない間は1分ごとにステータスチェック.
 	    this.getpublishstatus(this.request_id);
 	}
@@ -2843,15 +2843,17 @@ var NicoLiveHelper = {
 
 	let remaintime = this.endtime - now;
 
-	// 3分前になったら自動無料延長の実施.
-	if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
-	    // 連続して呼ばないように、残り3分以下かつ15秒ごとに.
-	    // モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
-	    if( $('auto-freeextend').hasAttribute('checked') ){
-		this._extendcnt++;
-		if( this._extendcnt<=4 ){
-		    debugprint("自動無料延長を行います");
-		    this.getsalelist( true );
+	if( this.iscaster ){
+	    // 3分前になったら自動無料延長の実施.
+	    if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
+		// 連続して呼ばないように、残り3分以下かつ15秒ごとに.
+		// モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
+		if( $('auto-freeextend').hasAttribute('checked') ){
+		    this._extendcnt++;
+		    if( this._extendcnt<=4 ){
+			debugprint("自動無料延長を行います");
+			this.getsalelist( true );
+		    }
 		}
 	    }
 	}
@@ -2866,22 +2868,24 @@ var NicoLiveHelper = {
 		this.isnotified[n] = true;
 	    }
 	}
-	if( this.endtime && this.endtime<now ){
-	    // 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
-	    this.endtime = 0;
-	    this.getpublishstatus(this.request_id);
-	    if( !this.iscaster ){
-		this.updateEndTime(this.request_id);
-	    }
-	    this._enterlosstime = now;
-	}
 
-	if( this.endtime==0 ){
-	    if( (now-this._enterlosstime) > 2*60 ){
-		if( (playprogress.value>=99 || !this.inplay) && NicoLivePreference.isAutoWindowClose(this.iscaster) ){
-		    // ロスタイムに入って2分経ったら自動で終了にする.
-		    // ただし再生中は保留.
-		    this.finishBroadcasting();
+	if( !this._timeshift ){
+	    if( this.endtime && this.endtime<now ){
+		// 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
+		this.endtime = 0;
+		this.getpublishstatus(this.request_id);
+		if( !this.iscaster ){
+		    this.updateEndTime(this.request_id);
+		}
+		this._enterlosstime = now;
+	    }
+	    if( this.endtime==0 ){
+		if( (now-this._enterlosstime) > 2*60 ){
+		    if( (playprogress.value>=99 || !this.inplay) && NicoLivePreference.isAutoWindowClose(this.iscaster) ){
+			// ロスタイムに入って2分経ったら自動で終了にする.
+			// ただし再生中は保留.
+			this.finishBroadcasting();
+		    }
 		}
 	    }
 	}
@@ -3127,6 +3131,9 @@ var NicoLiveHelper = {
 	    try{
 		NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('end_time')[0].textContent); // 閉場時刻.
 	    } catch (x) {
+		NicoLiveHelper.endtime = 0;
+	    }
+	    if( NicoLiveHelper.endtime < GetCurrentTime() ){
 		NicoLiveHelper.endtime = 0;
 	    }
 	    debugprint("New endtime="+NicoLiveHelper.endtime);
