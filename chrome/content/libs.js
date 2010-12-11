@@ -86,8 +86,6 @@ function evaluateXPath2(aNode, aExpr) {
     return found;
 }
 
-
-
 function CreateElement(part){
     var elem;
     elem = document.createElementNS(XUL_NS,part);
@@ -132,11 +130,16 @@ function CreateLabel(label){
 }
 
 
+/** ディレクトリを作成する.
+ * ディレクトリ掘ったらtrue、掘らなかったらfalseを返す.
+ */
 function CreateFolder(path){
     var file = OpenFile(path);
     if( !file.exists() || !file.isDirectory() ) {   // if it doesn't exist, create
 	file.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
+	return true;
     }
+    return false;
 }
 
 function OpenFile(path){
@@ -219,6 +222,59 @@ function InputPromptWithCheck(text,caption,input,checktext){
 	return null;
     }
 }
+
+/** Javascriptオブジェクトをファイルに保存する.
+ */
+function SaveObjectToFile(obj,caption)
+{
+    const nsIFilePicker = Components.interfaces.nsIFilePicker;
+    let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, caption, nsIFilePicker.modeSave);
+    fp.appendFilters(nsIFilePicker.filterAll);
+    let rv = fp.show();
+    if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	let file = fp.file;
+	let path = fp.file.path;
+	let os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+	let flags = 0x02|0x08|0x20;// wronly|create|truncate
+	os.init(file,flags,0664,0);
+	let cos = GetUTF8ConverterOutputStream(os);
+	cos.writeString( JSON.stringify(obj) );
+	cos.close();
+    }
+}
+
+/** ファイルからJavascriptオブジェクトを読み込む.
+ */
+function LoadObjectFromFile(caption)
+{
+    const nsIFilePicker = Components.interfaces.nsIFilePicker;
+    let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, caption, nsIFilePicker.modeOpen);
+    fp.appendFilters(nsIFilePicker.filterAll);
+    let rv = fp.show();
+    if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	let file = fp.file;
+	let path = fp.file.path;
+	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	istream.init(file, 0x01, 0444, 0);
+	istream.QueryInterface(Components.interfaces.nsILineInputStream);
+	let cis = GetUTF8ConverterInputStream(istream);
+	// 行を配列に読み込む
+	let line = {}, hasmore;
+	let str = "";
+	do {
+	    hasmore = cis.readString(1024,line);
+	    str += line.value;
+	} while(hasmore);
+	istream.close();
+
+	let obj = JSON.parse(str);
+	return obj;
+    }
+    return null;
+}
+
 
 function FindParentElement(elem,tag){
     //debugprint("Element:"+elem+" Tag:"+tag);

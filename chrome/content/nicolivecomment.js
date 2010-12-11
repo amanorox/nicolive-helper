@@ -736,6 +736,26 @@ var NicoLiveComment = {
 	}
     },
 
+    saveKotehanToFile:function(){
+	let obj = new Object();
+	obj.namemap = this.namemap;
+	obj.colormap = this.colormap;
+	SaveObjectToFile(obj,"コテハン設定をファイルに保存");
+    },
+    loadKotehanFromFile:function(){
+	let obj = LoadObjectFromFile("コテハン設定をファイルから読み込み");
+	if( obj ){
+	    this.namemap = obj.namemap;
+	    this.colormap = obj.colormap;
+
+	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
+	    NicoLiveDatabase.saveGPStorage("nico_live_colormap",this.colormap);
+
+	    this.createNameList();
+	    this.updateCommentViewer();
+	}
+    },
+
     init:function(){
 	// コメントリフレクターの登録用.
 	this.reflector = new Object();

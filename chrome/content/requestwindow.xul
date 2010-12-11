@@ -577,6 +577,9 @@
 
     <menupopup id="popup-comment-kotehan">
       <menuitem label="&comment.menu_delname;" oncommand="NicoLiveComment.deleteKotehanFromListbox();"/>
+      <menuseparator/>
+      <menuitem label="ファイルへ保存" oncommand="NicoLiveComment.saveKotehanToFile();"/>
+      <menuitem label="ファイルから読み込み" oncommand="NicoLiveComment.loadKotehanFromFile();"/>
     </menupopup>
 
     <!-- for request tab -->
