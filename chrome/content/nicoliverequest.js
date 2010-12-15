@@ -99,7 +99,7 @@ var NicoLiveRequest = {
 	str = item.description.split(/(mylist\/\d+|sm\d+|nm\d+)/);
 	for(i=0;i<str.length;i++){
 	    let s = str[i];
-	    if( s.indexOf('mylist/')!=-1 ){
+	    if( s.match(/mylist\/\d+/) ){
 		let a = CreateHTMLElement('a');
 		let mylist = s;
 		a.setAttribute("onclick","window.opener.getBrowser().addTab('http://www.nicovideo.jp/"+mylist+"');");
