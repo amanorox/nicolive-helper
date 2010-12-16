@@ -3397,7 +3397,16 @@ var NicoLiveHelper = {
 	    debugalert('延長するにはポイントが足りません。\n所持ポイント:'+this.remainpoint);
 	    return;
 	}
-	this.liveExtend(num,code,item);
+	let msg;
+	msg = "延長処理を行いますか？ (所持ポイント:"+this.remainpoint+")\n\n"
+	    + menu.label + "\n"
+	    + "使用するポイント:" + price + "\n";
+	if( ConfirmPrompt(msg,'延長処理') ){
+	    debugprint('延長処理を行います');
+	    this.liveExtend(num,code,item);
+	}else{
+	    debugprint("延長処理をキャンセルしました");
+	}
     },
 
     // getsalelistの内容でメニューを更新.
