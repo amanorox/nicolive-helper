@@ -57,7 +57,7 @@ var NicoLiveCommentProcessor = {
 		    let name = text.match(/<h2><strong>(.*)<\/strong>/)[1];
 		    if( name ){
 			NicoLiveComment.addKotehanDatabase(user_id,name);
-			NicoLiveCommentProcessor.updateView();
+			NicoLiveCommentProcessor.updateView(user_id,name);
 		    }
 		} catch (x) {
 		}
@@ -82,7 +82,7 @@ var NicoLiveCommentProcessor = {
 		    let name = text.match(/><strong>(.*)<\/strong>/)[1];
 		    if( name ){
 			NicoLiveComment.addKotehanDatabase(user_id,name);
-			NicoLiveCommentProcessor.updateView();
+			NicoLiveCommentProcessor.updateView(user_id,name);
 		    }else{
 			NicoLiveCommentProcessor.addRefProfileRegister2(user_id);
 		    }
