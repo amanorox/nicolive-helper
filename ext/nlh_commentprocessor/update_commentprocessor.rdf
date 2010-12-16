@@ -2,21 +2,21 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="urn:mozilla:extension:nlh_commentprocessor@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAIB7y6e3bbdYaXEMx1NTJbmXt8Z6+s3arCl3QvEqipr9MW0BpfPxmcmBWjuKL/5su8FHIKxIW+qzrn5FEcZcxWBPE7IpxrDuSfhkKq11aJRrQ1HWwOhqpNkmdjGIxdWk/x4fGHcr0ukRTQfqT9bxrGMDvt2Ywa0v6DLhcEGVUCPi">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$N3pNz">
-    <RDF:li RDF:resource="rdf:#$O3pNz"/>
-  </RDF:Seq>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
                    em:maxVersion="4.0.*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nlh_commentextender_0.3.1.xpi"
-                   em:updateHash="sha1:a646804c349ceafae2a113f81c9fdf07aeea5aaf" />
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nlh_commentextender_0.4.xpi"
+                   em:updateHash="sha1:1c650c88e19034bb99c91ffb9b7043894c0b46e7" />
   <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="0.3.1">
+                   em:version="0.4">
     <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$N3pNz">
+    <RDF:li RDF:resource="rdf:#$O3pNz"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:nlh_commentprocessor@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAAlXsD9UTD2jdKhFrLHJy+mNlme4jstuxPbJxlUuYlMdnW6TQv9i2zAJYAhpwKD3NbhJcID4mbeKqq5hXg66VEjB/OOy+DFI4VEyWprIVF9cmle8pg2c/SPQUMVxiJ+9q+XZ/qAJlL03C3nEdWHICCv1mjTMW86XrIyvagzPHyh6">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
   </RDF:Description>
 </RDF:RDF>
