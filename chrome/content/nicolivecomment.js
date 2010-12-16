@@ -27,6 +27,8 @@ var NicoLiveComment = {
     prev_comment_no: 0,    // 直前のコメ番(NGコメント検出・表示のためのコメ番記録).
     current_comment_no: 0, // 現在のコメ番(単純増加のみで表示リフレッシュがあっても不変).
 
+    /** コメント表示テーブルに一行追加したりコメントリフレクトしたり.
+     */
     addRow:function(comment,disablereflection){
 	let table = $('comment_table');
 	if(!table){ return; }
@@ -105,7 +107,7 @@ var NicoLiveComment = {
 	str = comment.name || this.namemap[comment.user_id] && this.namemap[comment.user_id].name || comment.user_id;
 
 	str = htmlspecialchars(str);
-	td.innerHTML = "<hbox class=\"selection\" tooltiptext=\""+(this.namemap[comment.user_id]?comment.user_id:"")+"\" context=\"popup-comment\" user_id=\""+comment.user_id+"\" comment_no=\""+comment.no+"\">"+str+"</hbox>";
+	td.innerHTML = "<hbox comment_by=\""+comment.user_id+"\" class=\"selection\" tooltiptext=\""+(comment.user_id)+"\" context=\"popup-comment\" user_id=\""+comment.user_id+"\" comment_no=\""+comment.no+"\">"+str+"</hbox>";
 
 	td = tr.insertCell(tr.cells.length);
 	if(comment.premium==3){
@@ -467,7 +469,7 @@ var NicoLiveComment = {
 				LoadString('STR_CAPTION_SET_KOTEHAN'), this.namemap[userid]?this.namemap[userid].name:userid);
 
 	this.addKotehanDatabase(userid,name);
-	this.updateCommentViewer();
+	this.updateCommentsName(userid,name);
 	this.createNameList();
     },
 
@@ -487,7 +489,7 @@ var NicoLiveComment = {
 	    $('kotehan-list').removeItemAt(n);
 	    delete this.namemap[userid];
 	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
-	    this.updateCommentViewer();
+	    this.updateCommentsName(userid,"");
 	}
     },
 
@@ -509,6 +511,18 @@ var NicoLiveComment = {
 	    elem.appendChild( CreateLabel(kotehan) );
 	    elem.appendChild( CreateLabel(this.namemap[kotehan].name) );
 	    list.appendChild(elem);
+	}
+    },
+
+    /** 名前部分のみ更新.
+     * @param user_id ユーザID
+     * @param name 名前(false扱いにあるデータの場合はユーザIDに戻す)
+     */
+    updateCommentsName:function(user_id,name){
+	let elems = evaluateXPath(document,"//*[@comment_by=\""+user_id+"\"]");
+	if( !name ) name = user_id;
+	for(let i=0,elem; elem=elems[i]; i++){
+	    elem.textContent = name;
 	}
     },
 
