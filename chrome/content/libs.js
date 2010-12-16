@@ -338,7 +338,7 @@ function debugconsole(txt){
 }
 
 function debugalert(txt){
-    AlertPrompt(txt);
+    AlertPrompt(txt,'');
 }
 
 

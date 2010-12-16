@@ -177,6 +177,13 @@
 	    <menuitem id="get-extratime" persist="checked" label="ロスタイム作成(Experimental)" tooltiptext="動画を視聴したままロスタイムに突入します。" type="checkbox" autocheck="true"/>
 	    <menuitem id="do-freeextend" label="無料延長を行う(Experimental)" tooltiptext="予約枠で無料延長を行います。" oncommand="NicoLiveHelper.getsalelist(true);"/>
 	    <menuitem id="auto-freeextend" persist="checked" label="自動無料延長(Experimental)" tooltiptext="チェックがあると、放送終了3分前に自動で無料延長を行います。" type="checkbox" autocheck="true"/>
+
+	    <menu label="放送時間延長(Experimental)">
+	      <menupopup id="menu-live-extend">
+		<menuitem label="更新" oncommand="NicoLiveHelper.updateExtendMenu();"/>
+	      </menupopup>
+	    </menu>
+
 	    <menuseparator/>
 	    <menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
 	    <menuitem label="&toolbar.clear.req.queue;" tooltiptext="&toolbar.clear.req.queue.help;" oncommand="NicoLiveHelper.clearRequestProcessingQueue();"/>

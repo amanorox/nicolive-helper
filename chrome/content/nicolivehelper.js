@@ -3357,17 +3357,22 @@ var NicoLiveHelper = {
     },
 
     getremainpoint:function(){
-	if( this.isOffline() ) return;
-	if( !this.iscaster ) return;
+	if( this.isOffline() || !this.iscaster ) return;
 
-	let url = "http://watch.live.nicovideo.jp/api/getremainpoint?v=" + this.request_id;
+	let url = "http://watch.live.nicovideo.jp/api/getremainpoint";
 	let req = new XMLHttpRequest();
 	if( !req ) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 ){
 		if( req.status==200 ){
 		    let remain = req.responseXML;
-		    debugprint("remain point="+remain.getElementsByTagName("remain")[0].textContent);
+		    try{
+			NicoLiveHelper.remainpoint = remain.getElementsByTagName("remain")[0].textContent;
+			debugprint("remain point="+NicoLiveHelper.remainpoint);
+			NicoLiveHelper.getsalelist();
+		    } catch (x) {
+			NicoLiveHelper.remainpoint = 0;
+		    }
 		}
 	    }
 	};
@@ -3375,10 +3380,54 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    // 延長メニューを更新.
+    // 自分の所持ポイントを取得して延長メニューを取得.
+    updateExtendMenu:function(){
+	this.getremainpoint();
+    },
+
+    // 延長メニューを選んだとき.
+    onLiveExtend:function(event){
+	let menu = event.target;
+	let price = menu.getAttribute("nico-price");
+	let num = menu.getAttribute("nico-num");
+	let code = menu.getAttribute("nico-code");
+	let item = menu.getAttribute("nico-item");
+	if( parseInt(this.remainpoint) < parseInt(price) ){
+	    debugalert('延長するにはポイントが足りません。\n所持ポイント:'+this.remainpoint);
+	    return;
+	}
+	this.liveExtend(num,code,item);
+    },
+
+    // getsalelistの内容でメニューを更新.
+    updateSaleListMenu:function(xml){
+	let menu = $('menu-live-extend');
+	let labels = evaluateXPath(xml,"/getsalelist/item/label");
+	let prices = evaluateXPath(xml,"/getsalelist/item/price");
+	let nums = evaluateXPath(xml,"/getsalelist/item/num");
+	let codes = evaluateXPath(xml,"/getsalelist/item/code");
+	let items = evaluateXPath(xml,"/getsalelist/item/item");
+
+	while(menu.childNodes[1]){
+	    menu.removeChild(menu.childNodes[1]);
+	}
+	menu.childNodes[0].setAttribute('label','更新(所持ポイント:'+(this.remainpoint?this.remainpoint:'不明')+')');
+
+	for(let i=0;i<labels.length;i++){
+	    let menuitem = CreateMenuItem(labels[i].textContent,'');
+	    menuitem.setAttribute("nico-price", prices[i].textContent);
+	    menuitem.setAttribute("nico-num", nums[i].textContent);
+	    menuitem.setAttribute("nico-code", codes[i].textContent);
+	    menuitem.setAttribute("nico-item", items[i].textContent);
+	    menuitem.setAttribute("oncommand","NicoLiveHelper.onLiveExtend(event);");
+	    menu.appendChild(menuitem);
+	}
+    },
+
     // 延長アイテムを取得し、延長を行います.
     getsalelist:function( do_freeextend ){
-	if(!this.iscaster) return;
-	if(this.isOffline()) return;
+	if( !this.iscaster || this.isOffline() ) return;
 
 	let url = "http://watch.live.nicovideo.jp/api/getsalelist?v=" + this.request_id;
 	let req = new XMLHttpRequest();
@@ -3400,8 +3449,9 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.freeExtend(num, code);
 			}
 		    }else{
-			ShowNotice("無料延長可能なアイテムがありませんでした");
+			ShowNotice("無料延長メニューはありませんでした");
 		    }
+		    NicoLiveHelper.updateSaleListMenu(req.responseXML);
 		}
 	    }
 	};
@@ -3409,10 +3459,59 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    // 生放送を延長する.
+    liveExtend:function(num, code, item){
+	if( this.isOffline() || !this.iscaster ) return;
+
+	let url = "http://watch.live.nicovideo.jp/api/usepoint";
+	let req = new XMLHttpRequest();
+	if(!req) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let xml = req.responseXML;
+		    try{
+			if( xml.getElementsByTagName('usepoint')[0].getAttribute('status')=='ok' ){
+			    NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('new_end_time')[0].textContent);
+			    debugprint("New endtime="+NicoLiveHelper.endtime);
+			    NicoLiveHelper._extendcnt = 0;
+			    let t = GetDateString( NicoLiveHelper.endtime * 1000 );
+			    let str = "延長を行いました。新しい終了時刻は "+t+" です";
+			    NicoLiveHelper.postCasterComment(str,"");
+			    ShowNotice(str);
+			}else{
+			    ShowNotice("延長に失敗しました");
+			}
+		    } catch (x) {
+			debugprint(x);
+			ShowNotice("延長に失敗しました");
+		    }
+		}else{
+		    ShowNotice("延長に失敗しました(HTTPエラー)");
+		}
+	    }
+	};
+	req.open('POST',url);
+	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	let data = new Array();
+	let now = GetCurrentTime();
+	let remain = this.endtime - now;
+	data.push("token="+this.token);
+	data.push("remain="+remain);  // 残り秒数
+	data.push("date="+now); // 現在日時
+	data.push("num="+num); // セールスリストの番号.
+	data.push("code="+code); // セールスリストのコード.
+	data.push("item="+item); // 延長.
+	data.push("v="+this.request_id);
+	debugprint('extend:'+data.join(','));
+	req.send(data.join('&'));
+    },
+
     // 無料延長.
+    // liveExtend関数で有料・無料延長一本化できるけど、
+    // 今までの無料延長処理の安全のために残しておく.
     freeExtend:function(num, code){
-	if( this.isOffline() ) return;
-	if( !this.iscaster ) return;
+	if( this.isOffline() || !this.iscaster ) return;
 
 	let url = "http://watch.live.nicovideo.jp/api/usepoint";
 	let req = new XMLHttpRequest();
