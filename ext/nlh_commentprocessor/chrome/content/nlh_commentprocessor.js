@@ -22,6 +22,16 @@ THE SOFTWARE.
 
 var NicoLiveCommentProcessor = {
 
+    updateView:function(userid,name){
+	if( 'function' == typeof NicoLiveComment.updateCommentsName ){
+	    // partial updateの関数が存在すれば.
+	    NicoLiveComment.updateCommentsName(userid,name);
+	}else{
+	    NicoLiveComment.updateCommentViewer();
+	}
+	NicoLiveComment.createNameList();
+    },
+
     addAutoKotehan:function(userid,name){
 	if( !$('nlhaddon-allowoverwrite').checked ){ // 上書きしない.
 	    if( NicoLiveComment.namemap[userid] ){ // すでに設定済み.
@@ -29,8 +39,7 @@ var NicoLiveCommentProcessor = {
 	    }
 	}
 	NicoLiveComment.addKotehanDatabase(userid,name);
-	NicoLiveComment.updateCommentViewer();
-	NicoLiveComment.createNameList();
+	this.updateView(userid,name);
     },
 
     // http://www.nicovideo.jp/user/... から登録(サムネから取れない時)
@@ -48,8 +57,7 @@ var NicoLiveCommentProcessor = {
 		    let name = text.match(/<h2><strong>(.*)<\/strong>/)[1];
 		    if( name ){
 			NicoLiveComment.addKotehanDatabase(user_id,name);
-			NicoLiveComment.updateCommentViewer();
-			NicoLiveComment.createNameList();
+			NicoLiveCommentProcessor.updateView();
 		    }
 		} catch (x) {
 		}
@@ -74,8 +82,7 @@ var NicoLiveCommentProcessor = {
 		    let name = text.match(/><strong>(.*)<\/strong>/)[1];
 		    if( name ){
 			NicoLiveComment.addKotehanDatabase(user_id,name);
-			NicoLiveComment.updateCommentViewer();
-			NicoLiveComment.createNameList();
+			NicoLiveCommentProcessor.updateView();
 		    }else{
 			NicoLiveCommentProcessor.addRefProfileRegister2(user_id);
 		    }
