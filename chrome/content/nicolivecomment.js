@@ -640,6 +640,15 @@ var NicoLiveComment = {
 	let os;
 	this.closeFile();
 
+	var cnt=2;
+	if( NicoLivePreference.getBool("new-logfile") ){
+	    while( f.exists() ){
+		debugprint("already exists comment log file:"+f.path);
+		f.leafName = request_id+"_"+cnt+".txt";
+		cnt++;
+	    }
+	}
+
 	file = OpenFile(f.path);
 	debugprint('open comment log:'+f.path);
 

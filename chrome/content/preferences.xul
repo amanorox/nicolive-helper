@@ -505,6 +505,7 @@
     <preferences>
       <preference id="pref-comment-log-num" name="extensions.nicolivehelper.comment.log" type="int"/>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>
+      <preference id="pref-new-logfile" name="extensions.nicolivehelper.new-logfile" type="bool"/>
       <preference id="pref-commentlogDir" name="extensions.nicolivehelper.commentlogDir" type="file"/>
       <preference id="pref-singlewindowmode" name="extensions.nicolivehelper.singlewindow" type="bool"/>
       <preference id="pref-auto-open" name="extensions.nicolivehelper.autowindowopen" type="bool"/>
@@ -560,9 +561,9 @@
 	      </hbox>
 	      <hbox><checkbox preference="pref-184comment" label="常に184(匿名)コメントにする" tooltiptext="184(匿名)でコメントします。ニコ生の仕様上、視聴者コメントでのみ有効です。"/></hbox>
 	      <hbox><checkbox preference="pref-pagetitle" label="コメントにURLが含まれている時に対象ページのタイトルを運営コメントする" tooltiptext="文字コードがUTF-8でないページの場合、文字化けします(既知の問題)。"/></hbox>
-	      <hbox><checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントをファイルに保存します。保存先は必ず指定してください。"/></hbox>
 	      <hbox>
-		<checkbox disabled="true" label="既に同名のファイルが存在した場合、別名で新規作成する" tooltiptext="新規作成するファイル名の末尾には2,3,4,...と数字を付加していきます。" style="margin-left:2em;"/>
+		<checkbox preference="pref-save-comment" label="コメントログをファイルに保存する" tooltiptext="コメントをファイルに保存します。保存先は必ず指定してください。"/>
+		<checkbox preference="pref-new-logfile" label="既に同名のファイルが存在した場合、別名で新規作成する" tooltiptext="新規作成するファイル名の末尾には2,3,4,...と数字を付加していきます。" style="margin-left:2em;"/>
 	      </hbox>
 	      <hbox align="center">
 		<label control="commentlog" value="コメントログ保存先:"/>

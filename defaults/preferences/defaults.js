@@ -59,6 +59,7 @@ pref("extensions.nicolivehelper.msg-requiredkeyword-title","タイトルにキ�
 pref("extensions.nicolivehelper.msg-forbiddenkeyword-title","タイトルに「{=info.restrict.forbiddenkeyword}」が含まれています");
 pref("extensions.nicolivehelper.msg-limitnumberofrequests","リクエストは1人{=info.restrict.numberofrequests.toString()}件までです");
 pref("extensions.nicolivehelper.savecomment",false);
+pref("extensions.nicolivehelper.new-logfile",false);
 pref("extensions.nicolivehelper.commentlogDir","");
 pref("extensions.nicolivehelper.184comment",true);
 pref("extensions.nicolivehelper.post_pagetitle",false);

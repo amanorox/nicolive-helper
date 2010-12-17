@@ -23,6 +23,17 @@ THE SOFTWARE.
  * 設定
  */
 var NicoLivePreference = {
+    getBool:function(path){
+	var branch = this.getBranch();
+	var b;
+	try{
+	    b = branch.getBoolPref(path);	    
+	} catch (x) {
+	    b = false;
+	}
+	return b;
+    },
+
     readAdvancedPrefs:function(fromobserver){
 	let branch = this.getBranch();
 	this.nocomment_for_directplay = branch.getBoolPref("nocomment-for-directplay");
