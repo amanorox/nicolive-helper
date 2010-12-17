@@ -180,7 +180,7 @@
 
 	    <menu label="放送時間延長(Experimental)">
 	      <menupopup id="menu-live-extend">
-		<menuitem label="更新" oncommand="NicoLiveHelper.updateExtendMenu();"/>
+		<menuitem label="更新" oncommand="NicoLiveHelper.updateExtendMenu();" tooltiptext="所持ポイント、延長アイテムを更新します。"/>
 	      </menupopup>
 	    </menu>
 

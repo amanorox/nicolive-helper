@@ -3099,7 +3099,7 @@ var NicoLiveHelper = {
 						   });
 		}
 
-		$('statusbar-live-progress').setAttribute("tooltiptext",'ロスタイム:'+NicoLiveHelper.calcLossTime()+'秒');
+		NicoLiveHelper.setLiveProgressBarTipText();
 		if( !NicoLiveHelper.iscaster ){
 		    $('textbox-comment').setAttribute('maxlength','64');
 		}
@@ -3114,6 +3114,25 @@ var NicoLiveHelper = {
 	req.open('GET', url );
 	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 	req.send("");
+    },
+
+    // 生放送の経過時間表示のツールチップテキストを設定する.
+    setLiveProgressBarTipText:function(){
+	var str;
+	str = 'ロスタイム:'+this.calcLossTime()+'秒';
+	if( this.endtime ){
+	    var date = new Date(this.endtime*1000);
+	    var y,m,d,h,min,sec;
+	    y = date.getFullYear();
+	    m = date.getMonth();
+	    d = date.getDate();
+	    h = date.getHours();
+	    min = date.getMinutes();
+	    sec = date.getSeconds();
+	    str += "\n" + "放送終了時刻:" + y + "/" + m + "/" + d;
+	    str += " " + h + ":" + (min<10?"0"+min:min) + ":" + (sec<10?"0"+sec:sec);
+	}
+	$('statusbar-live-progress').setAttribute("tooltiptext",str);
     },
 
     /** getplayerstatusを使用して終了時刻を更新.
@@ -3137,6 +3156,7 @@ var NicoLiveHelper = {
 		NicoLiveHelper.endtime = 0;
 	    }
 	    debugprint("New endtime="+NicoLiveHelper.endtime);
+	    NicoLiveHelper.setLiveProgressBarTipText();
 	};
 
 	let url="http://watch.live.nicovideo.jp/api/getplayerstatus?v="+req_id;
@@ -3344,11 +3364,11 @@ var NicoLiveHelper = {
 		    debugprint('starttime='+NicoLiveHelper.starttime);
 		    debugprint('endtime='+NicoLiveHelper.endtime);
 		    debugprint('exclude='+NicoLiveHelper._exclude);
-
 		    if( 'function'==typeof postfunc){
 			debugprint('calling post-function.');
 			postfunc();
 		    }
+		    NicoLiveHelper.setLiveProgressBarTipText();
 		}
 	    }
 	};
@@ -3491,6 +3511,7 @@ var NicoLiveHelper = {
 			}else{
 			    ShowNotice("延長に失敗しました");
 			}
+			NicoLiveHelper.setLiveProgressBarTipText();
 		    } catch (x) {
 			debugprint(x);
 			ShowNotice("延長に失敗しました");
@@ -3541,6 +3562,7 @@ var NicoLiveHelper = {
 			}else{
 			    ShowNotice("無料延長に失敗しました");
 			}
+			NicoLiveHelper.setLiveProgressBarTipText();
 		    } catch (x) {
 			debugprint(x);
 			ShowNotice("無料延長に失敗しました");

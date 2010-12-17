@@ -30,7 +30,7 @@ var NicoLiveComment = {
     /** コメント表示テーブルに一行追加したりコメントリフレクトしたり.
      */
     addRow:function(comment,disablereflection){
-	let table = $('comment_table');
+	var table = $('comment_table');
 	if(!table){ return; }
 
 	if( this.prev_comment_no!=0 ){
@@ -55,7 +55,7 @@ var NicoLiveComment = {
 		if( this.current_comment_no <= com.no ){
 		    if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
 			if( !NicoLiveHelper._timeshift && comment.date>=NicoLiveHelper.connecttime ){
-			    let recomment = ">>"+com.no+" NGワードが含まれています";
+			    var recomment = ">>"+com.no+" NGワードが含まれています";
 			    //LoadFormattedString('STR_RECOMMENT_NGWORD',[comment.no, comment.text, ngword]);
 			    NicoLiveHelper.postCasterComment(recomment,"");
 			}
@@ -72,15 +72,15 @@ var NicoLiveComment = {
 	}
 
 	//var tr = table.insertRow(table.rows.length);
-	let tr = table.insertRow(0);
+	var tr = table.insertRow(0);
 
 	if(!this.colormap[comment.user_id]){
-	    let sel = GetRandomInt(1,8);
-	    let col = 'color'+sel;
+	    var sel = GetRandomInt(1,8);
+	    var col = 'color'+sel;
 	    tr.className = col;
 	    this.colormap[comment.user_id] = {"color":col, "date":GetCurrentTime()};
 	}else{
-	    let col = this.colormap[comment.user_id].color;
+	    var col = this.colormap[comment.user_id].color;
 	    if( col.indexOf('color')==0 ){
 		tr.className = col;
 	    }else{
@@ -96,13 +96,13 @@ var NicoLiveComment = {
 	    }
 	}
 
-	let td;
+	var td;
 	td = tr.insertCell(tr.cells.length);
 	td.textContent = comment.no;
 
 	td = tr.insertCell(tr.cells.length);
 
-	let str;
+	var str;
 	// nameが指定されていればその名前を使用する.
 	str = comment.name || this.namemap[comment.user_id] && this.namemap[comment.user_id].name || comment.user_id;
 
@@ -117,8 +117,9 @@ var NicoLiveComment = {
 	}
 	str = htmlspecialchars(str);
 	    
-	let tmp = str.split(/(sm\d+|nm\d+|\d{10}|&\w+;)/);
-	for(let i=0;i<tmp.length;i++){
+	var tmp = str.split(/(sm\d+|nm\d+|\d{10}|&\w+;)/);
+	var i;
+	for(i=0;i<tmp.length;i++){
 	    if( !tmp[i].match(/(sm\d+|nm\d+|\d{10}|&\w+;)/) ){
 		tmp[i] = tmp[i].replace(/(.{35,}?)/g,"$1<html:wbr/>");
 	    }
@@ -142,8 +143,7 @@ var NicoLiveComment = {
 	}
 
 	td = tr.insertCell(tr.cells.length);
-	let datestr = GetDateString(comment.date*1000);
-	td.textContent = datestr;
+	td.textContent = GetDateString(comment.date*1000);
 
 	if(comment.premium<2 && !disablereflection){
 	    this.reflection(comment);
