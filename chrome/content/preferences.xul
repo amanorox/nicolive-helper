@@ -506,6 +506,7 @@
       <preference id="pref-comment-log-num" name="extensions.nicolivehelper.comment.log" type="int"/>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>
       <preference id="pref-new-logfile" name="extensions.nicolivehelper.new-logfile" type="bool"/>
+      <preference id="pref-logfile-name" name="extensions.nicolivehelper.logfile-name" type="unichar"/>
       <preference id="pref-commentlogDir" name="extensions.nicolivehelper.commentlogDir" type="file"/>
       <preference id="pref-singlewindowmode" name="extensions.nicolivehelper.singlewindow" type="bool"/>
       <preference id="pref-auto-open" name="extensions.nicolivehelper.autowindowopen" type="bool"/>
@@ -571,8 +572,9 @@
 		<button label="参照..." oncommand="NLHPreference.refDirectory();"/>
 	      </hbox>
 	      <hbox align="center">
-		<label disabled="true" control="comment-log-filename" value="ログファイル名:"/>
-		<textbox disabled="true" id="comment-log-filename" flex="1" />
+		<label control="comment-log-filename" value="ログファイル名:"/>
+		<textbox preference="pref-logfile-name" id="comment-log-filename" flex="1"/>
+		<label value=".txt"/>
 	      </hbox>
 	      <label value="コメント入力補完プリセット:"/>
 	      <vbox flex="1">

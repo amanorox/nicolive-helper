@@ -628,6 +628,55 @@ var NicoLiveComment = {
 	this.writeFile(chat);
     },
 
+    getLogfileName:function(str){
+	var date = new Date();
+	var y,m,d;
+	var h,min,sec;
+	y = date.getFullYear();
+	m = date.getMonth() + 1;
+	d = date.getDate();
+	h = date.getHours();
+	min = date.getMinutes();
+	sec = date.getSeconds();
+	m = (m<10)?"0"+m:m;
+	d = (d<10)?"0"+d:d;
+	h = (h<10)?"0"+h:h;
+	min = (min<10)?"0"+min:min;
+	sec = (sec<10)?"0"+sec:sec;
+
+	let replacefunc = function(s,p){
+	    var tmp = s;
+	    switch(p){
+	    case 'request_id':
+		tmp = NicoLiveHelper.request_id;
+		break;
+	    case 'title':
+		tmp = NicoLiveHelper.title;
+		break;
+	    case 'year':
+		tmp = y;
+		break;
+	    case 'month':
+		tmp = m;
+		break;
+	    case 'date':
+		tmp = d;
+		break;
+	    case 'hour':
+		tmp = h;
+		break;
+	    case 'min':
+		tmp = min;
+		break;
+	    case 'sec':
+		tmp = sec;
+		break;
+	    }
+	    return tmp;
+	};
+	return str.replace(/{(.*?)}/g,replacefunc);
+    },
+
     openFile:function(request_id,community){
 	let f = NicoLivePreference.getCommentDir();
 	if(!f) return;
@@ -635,7 +684,9 @@ var NicoLiveComment = {
 	    f.append(community);
 	    CreateFolder(f.path);
 	}
-	f.append(request_id+'.txt');
+	let fname = NicoLivePreference.getUnichar("logfile-name");
+	fname = this.getLogfileName(fname);
+	f.append(fname+'.txt');
 	let file;
 	let os;
 	this.closeFile();
@@ -644,7 +695,7 @@ var NicoLiveComment = {
 	if( NicoLivePreference.getBool("new-logfile") ){
 	    while( f.exists() ){
 		debugprint("already exists comment log file:"+f.path);
-		f.leafName = request_id+"_"+cnt+".txt";
+		f.leafName = fname+"_"+cnt+".txt";
 		cnt++;
 	    }
 	}

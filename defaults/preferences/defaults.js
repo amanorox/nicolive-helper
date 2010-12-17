@@ -60,6 +60,7 @@ pref("extensions.nicolivehelper.msg-forbiddenkeyword-title","タイトルに「{
 pref("extensions.nicolivehelper.msg-limitnumberofrequests","リクエストは1人{=info.restrict.numberofrequests.toString()}件までです");
 pref("extensions.nicolivehelper.savecomment",false);
 pref("extensions.nicolivehelper.new-logfile",false);
+pref("extensions.nicolivehelper.logfile-name","{request_id}");
 pref("extensions.nicolivehelper.commentlogDir","");
 pref("extensions.nicolivehelper.184comment",true);
 pref("extensions.nicolivehelper.post_pagetitle",false);

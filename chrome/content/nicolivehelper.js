@@ -3124,7 +3124,7 @@ var NicoLiveHelper = {
 	    var date = new Date(this.endtime*1000);
 	    var y,m,d,h,min,sec;
 	    y = date.getFullYear();
-	    m = date.getMonth();
+	    m = date.getMonth() + 1;
 	    d = date.getDate();
 	    h = date.getHours();
 	    min = date.getMinutes();

@@ -33,6 +33,16 @@ var NicoLivePreference = {
 	}
 	return b;
     },
+    getUnichar:function(path){
+	var branch = this.getBranch();
+	var b;
+	try{
+	    b = branch.getUnicharPref(path);	    
+	} catch (x) {
+	    b = "";
+	}
+	return b;
+    },
 
     readAdvancedPrefs:function(fromobserver){
 	let branch = this.getBranch();
