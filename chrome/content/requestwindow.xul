@@ -191,9 +191,6 @@
 	    </menupopup>
 	</menu>
 
-	<menuseparator/>
-	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
-
 <!--
 	<menuitem label="test" disabled="false" oncommand="NicoLiveHelper.test();"/>
 -->
@@ -204,6 +201,8 @@
     <spacer flex="1"/>
     <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu">
       <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">
+	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
+	<menuseparator/>
       </menupopup>
     </toolbarbutton>
   </toolbar>

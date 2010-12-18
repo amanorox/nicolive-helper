@@ -23,8 +23,9 @@ THE SOFTWARE.
 var NicoLiveWindow = {
     setWindowList:function(){
 	this.winlist = WindowEnumerator();
-	while($('popup-windowlist').firstChild){
-	    $('popup-windowlist').removeChild( $('popup-windowlist').firstChild );
+
+	while($('popup-windowlist').childNodes[2]){
+	    $('popup-windowlist').removeChild($('popup-windowlist').childNodes[2]);
 	}
 	for(let i=0,win;win=this.winlist[i];i++){
 	    let menuitem;

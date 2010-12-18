@@ -2903,7 +2903,8 @@ var NicoLiveHelper = {
 	}
 	currentmusic.setAttribute("tooltiptext",str);
 
-	let w = window.innerWidth - $('statusbar-remain').clientWidth - $('statusbar-n-of-listeners').clientWidth - $('statusbar-live-progress').clientWidth;
+	var w = window.innerWidth - $('statusbar-remain').clientWidth - $('statusbar-n-of-listeners').clientWidth - $('statusbar-live-progress').clientWidth;
+	w-=16;
 	musictime.style.maxWidth = w + "px";
 
 	progress = GetCurrentTime()-this.musicstarttime;
