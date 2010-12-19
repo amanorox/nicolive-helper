@@ -6,18 +6,18 @@
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
                    em:maxVersion="4.0.*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.24.xpi"
-                   em:updateHash="sha1:6357372a3c77d8862cbe7194e4d1cc71006e913e"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.25.xpi"
+                   em:updateHash="sha1:783c2901a3dea86d369c73b06fd2b7c3102bfac2"
                    em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
   <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBABZ+Aq8dogl3Q3ASNYhCnbhaCebqbgw4VqxKsF6li5RJOSTOSA2wbUS7I64PJImsS+HUbot6W0sxl60P27c7kzAMMCDmAz+QWzD9eF19q/ilz3Qa9BlM5F4Bvs0+tX3pmOWzF+ohaqCwyI/oLN9fybkVdycQBAgSW+z3FvXgH3IF">
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAK4GTWOEUBQtm0IRbHn1vanwUMAme8esFvdZHksftzkJS3bcb8sDuHaUp7HTpwB1RX+rRIByauYMkOp7bDuDW1yjv4N8My7sWf+DkOvW5zX7xHwVIsZ3XKDP/9y/9+TQsOMFoMIErIBBurbuUdThyWQW4EdOX5199dXDQItbT8w8">
     <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="1.1.24">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
   </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="1.1.25">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
 </RDF:RDF>
