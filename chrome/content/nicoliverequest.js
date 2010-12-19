@@ -335,15 +335,20 @@ var NicoLiveRequest = {
 	if(!NicoLiveHelper.isOffline()){
 	    NicoLiveHelper.playStock(n,true);
 	}else{
-	    let nextmusic = NicoLiveHelper.stock[ n-1 ];
-	    NicoLiveRequest.opentab = NicoLivePlaylist.newTab(nextmusic.video_id);
-
-	    NicoLiveRequest.playlist_start = n;
-	    clearInterval(NicoLiveRequest.playlist_timer);
-	    NicoLiveRequest.playlist_first = 1;
-
-	    NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",3000);
+	    this._offlinePlay(n-1);
 	}
+    },
+
+    // n=0,1,2,3,...
+    _offlinePlay:function(n){
+	let nextmusic = NicoLiveHelper.stock[ n ];
+	NicoLiveRequest.opentab = NicoLivePlaylist.newTab(nextmusic.video_id);
+
+	NicoLiveRequest.playlist_start = n;
+	clearInterval(NicoLiveRequest.playlist_timer);
+	NicoLiveRequest.playlist_first = 1;
+
+	NicoLiveRequest.playlist_timer = setInterval("NicoLiveRequest.test();",3000);
     },
 
     // ストックの削除ボタン.
@@ -603,8 +608,8 @@ var NicoLiveRequest = {
 		    let flvcontainer = this.opentab.contentDocument.getElementById('flvplayer_container').wrappedJSObject;
 		    this.opentab.contentWindow.scroll(0,flvcontainer.offsetTop-32);
 
-		    let vid = NicoLiveHelper.stock[this.playlist_start-1].video_id;
-		    let t = NicoLiveHelper.stock[this.playlist_start-1].length;
+		    let vid = NicoLiveHelper.stock[this.playlist_start].video_id;
+		    let t = NicoLiveHelper.stock[this.playlist_start].length;
 		    debugprint(vid+","+GetTimeString(flv.ext_getTotalTime()));
 		}
 		//debugprint(status);
@@ -613,23 +618,29 @@ var NicoLiveRequest = {
 		    let playprogress = $('statusbar-music-progressmeter');
 		    let progress = parseInt(flv.ext_getPlayheadTime()/flv.ext_getTotalTime()*100,10);
 		    playprogress.value = progress;
-		    $('statusbar-music-name').label = NicoLiveHelper.stock[this.playlist_start-1].title;
+		    $('statusbar-music-name').label = NicoLiveHelper.stock[this.playlist_start].title;
 		    //debugprint(flv.ext_getVideoSize());
 		    this._screensize = flv.ext_getVideoSize();
 		    break;
 
 		case "end":
+		    if(!NicoLiveHelper.isautoplay) break;
+
+		    this.playlist_start++;
 		    if(this.playlist_start>NicoLiveHelper.stock.length){
 			// 最初に戻る.
 			this.playlist_start = 0;
 		    }
+
+		    this._offlinePlay(this.playlist_start);
+		    /*
 		    let nextmusic = NicoLiveHelper.stock[ this.playlist_start ];
-		    if(!NicoLiveHelper.isautoplay) break;
 		    if(nextmusic){
 			this.opentab.contentDocument.wrappedJSObject.location.href = "http://www.nicovideo.jp/watch/"+nextmusic.video_id;
 			if( !this.playlist_first ) this.playlist_start++;
 			this.playlist_first = 1;
 		    }
+		     */
 		    break;
 		}
 	    } catch (x) {
