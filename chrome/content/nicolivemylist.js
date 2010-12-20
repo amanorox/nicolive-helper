@@ -55,7 +55,7 @@ var NicoLiveMylist = {
 	reqstr[1] = "description="+encodeURIComponent(additional_msg);
 	reqstr[2] = "token="+encodeURIComponent(token);
 
-	var xmlhttp = new XMLHttpRequest();
+	var xmlhttp = CreateXHR("POST",url);
 	if(!xmlhttp) return;
 
 	xmlhttp.onreadystatechange = function(){
@@ -73,8 +73,6 @@ var NicoLiveMylist = {
 		}
 	    }
 	};
-	xmlhttp.open('POST', url );
-	xmlhttp.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	xmlhttp.send(reqstr.join('&'));
     },
@@ -82,7 +80,7 @@ var NicoLiveMylist = {
 	// 一段階目はトークンを取得する.
 	if( !video_id ) return;
 	var url = "http://www.nicovideo.jp/watch/"+video_id;
-	var xmlhttp = new XMLHttpRequest();
+	var xmlhttp = CreateXHR("GET",url);
 	if( !xmlhttp ) return;
 	xmlhttp.onreadystatechange = function(){
 	    if(xmlhttp.readyState==4 && xmlhttp.status==200){
@@ -96,26 +94,24 @@ var NicoLiveMylist = {
 		}
 	    }
 	};
-	xmlhttp.open('GET', url );
-	xmlhttp.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	xmlhttp.send('');
     },
 
     addMyList2:function(item_id,mylist_id,token,video_id, additional_msg){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.
-	let url = "http://www.nicovideo.jp/api/mylist/add";
-	let reqstr = [];
+	var url = "http://www.nicovideo.jp/api/mylist/add";
+	var reqstr = [];
 	reqstr[0] = "group_id="+encodeURIComponent(mylist_id);
 	reqstr[1] = "item_type=0"; // 0 means video.
 	reqstr[2] = "item_id="+encodeURIComponent(item_id);
 	reqstr[3] = "description="+encodeURIComponent(additional_msg);
 	reqstr[4] = "token="+encodeURIComponent(token);
 
-	let req = new XMLHttpRequest();
+	var req = CreateXHR("POST",url);
 	if( !req ) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		let result = JSON.parse(req.responseText);
+		var result = JSON.parse(req.responseText);
 		switch(result.status){
 		case 'ok':
 		    NicoLiveMylist.tweet(video_id, additional_msg);
@@ -128,8 +124,6 @@ var NicoLiveMylist = {
 		}
 	    }
 	};
-	req.open('POST', url );
-	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 	req.send(reqstr.join('&'));
     },
@@ -149,14 +143,14 @@ var NicoLiveMylist = {
 		return;
 	    }
 	    // 一段階目はトークンを取得する.
-	    let url = "http://www.nicovideo.jp/mylist_add/video/"+video_id;
-	    let req = new XMLHttpRequest();
+	    var url = "http://www.nicovideo.jp/mylist_add/video/"+video_id;
+	    var req = CreateXHR("GET",url);
 	    if( !req ) return;
 	    req.onreadystatechange = function(){
 		if( req.readyState==4 && req.status==200 ){
 		    try{
-			let token = req.responseText.match(/NicoAPI\.token\s*=\s*\"(.*)\";/);
-			let item_id = req.responseText.match(/item_id\"\s*value=\"(.*)\">/);
+			var token = req.responseText.match(/NicoAPI\.token\s*=\s*\"(.*)\";/);
+			var item_id = req.responseText.match(/item_id\"\s*value=\"(.*)\">/);
 			debugprint('token='+token[1]);
 			debugprint('item_id='+item_id[1]);
 			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1],video_id, additional_msg);
@@ -165,8 +159,6 @@ var NicoLiveMylist = {
 		    }
 		}
 	    };
-	    req.open('GET', url );
-	    req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	    req.send('');
 	    debugprint('add to mylist:'+video_id+'->'+mylist_name);
 	} catch (x) {
@@ -181,18 +173,18 @@ var NicoLiveMylist = {
     },
 
     addStockFromMylistWithComment:function(mylist_id,mylist_name){
-	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	let req = new XMLHttpRequest();
+	var url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
+	var req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		let xml = req.responseXML;
-		let items = xml.getElementsByTagName('item');
-		let videos = new Array();
+		var xml = req.responseXML;
+		var items = xml.getElementsByTagName('item');
+		var videos = new Array();
 		debugprint('mylist rss items:'+items.length);
 		for(let i=0,item;item=items[i];i++){
-		    let video_id;
-		    let description;
+		    var video_id;
+		    var description;
 		    try{
 			video_id = item.getElementsByTagName('link')[0].textContent.match(/(sm|nm)\d+/);
 		    } catch (x) {
@@ -208,9 +200,9 @@ var NicoLiveMylist = {
 			    description = "";
 			}
 
-			let d = new Date(item.getElementsByTagName('pubDate')[0].textContent);
+			var d = new Date(item.getElementsByTagName('pubDate')[0].textContent);
 
-			let dat = {
+			var dat = {
 			    "pubDate": d.getTime()/1000,  // UNIX time
 			    "description": description
 			};
@@ -220,8 +212,6 @@ var NicoLiveMylist = {
 		NicoLiveRequest.addStock(videos.join(','));
 	    }
 	};
-	req.open('GET', url );
-	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.send('');
     },
 
@@ -231,16 +221,16 @@ var NicoLiveMylist = {
 
     // 似たようなコード整理したいなー.
     addDatabase:function(mylist_id,mylist_name){
-	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	let req = new XMLHttpRequest();
+	var url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
+	var req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		let xml = req.responseXML;
-		let link = xml.getElementsByTagName('link');
-		let videos = new Array();
+		var xml = req.responseXML;
+		var link = xml.getElementsByTagName('link');
+		var videos = new Array();
 		for(let i=0,item;item=link[i];i++){
-		    let video_id = item.textContent.match(/(sm|nm)\d+/);
+		    var video_id = item.textContent.match(/(sm|nm)\d+/);
 		    if(video_id){
 			//debugprint('mylist:'+video_id[0]);
 			videos.push(video_id[0]);
@@ -249,24 +239,22 @@ var NicoLiveMylist = {
 		NicoLiveDatabase.addVideos(videos.join(','));
 	    }
 	};
-	req.open('GET', url );
-	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.send('');
     },
 
     // とりマイからDBに追加.
     addToDatabaseFromDeflist:function(){
-	let url = 'http://www.nicovideo.jp/api/deflist/list';
+	var url = 'http://www.nicovideo.jp/api/deflist/list';
 	debugprint("add to database from deflist.");
 
-	var req = new XMLHttpRequest();
+	var req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		let result = JSON.parse(req.responseText);
+		var result = JSON.parse(req.responseText);
 		switch(result.status){
 		case 'ok':
-		    let videos = new Array();
+		    var videos = new Array();
 		    for(let i=0;i<result.mylistitem.length;i++){
 			videos.push(result.mylistitem[i].item_data.video_id);
 		    }
@@ -279,24 +267,22 @@ var NicoLiveMylist = {
 		}
 	    }
 	};
-	req.open('GET', url );
-	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.send('');
     },
 
     // とりマイからストックに追加.
     addToStockFromDeflist:function(){
-	let url = 'http://www.nicovideo.jp/api/deflist/list';
+	var url = 'http://www.nicovideo.jp/api/deflist/list';
 	debugprint("add to stock from deflist.");
 
-	var req = new XMLHttpRequest();
+	var req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		let result = JSON.parse(req.responseText);
+		var result = JSON.parse(req.responseText);
 		switch(result.status){
 		case 'ok':
-		    let videos = new Array();
+		    var videos = new Array();
 		    for(let i=0;i<result.mylistitem.length;i++){
 			videos.push(result.mylistitem[i].item_data.video_id);
 		    }
@@ -309,8 +295,6 @@ var NicoLiveMylist = {
 		}
 	    }
 	};
-	req.open('GET', url );
-	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.send('');
     },
 
@@ -384,7 +368,8 @@ var NicoLiveMylist = {
 	for(let i=0,item; item=mylists[i]; i++){
 	    mylists["_"+item.id] = item.name;
 	    debugprint('load mylist(id='+item.id+')');
-	    let req = new XMLHttpRequest();
+	    var url = "http://www.nicovideo.jp/api/mylist/list";
+	    var req = CreateXHR("POST",url);
 	    if( !req ) continue;
 	    req.mylist_id = item.id;
 	    req.onreadystatechange = function(){
@@ -392,11 +377,8 @@ var NicoLiveMylist = {
 		    NicoLiveMylist.parseMylist(req.mylist_id, req.responseText);
 		}
 	    };
-	    let url = "http://www.nicovideo.jp/api/mylist/list";
-	    req.open('POST',url );
-	    req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	    req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	    let data = "group_id="+item.id;
+	    var data = "group_id="+item.id;
 	    req.send(data);
 	}
     },
@@ -408,8 +390,9 @@ var NicoLiveMylist = {
 
 	this.mylist_itemdata = new Object(); // マイリスト動画個々のデータ.
 
-	let req = new XMLHttpRequest();
-	if(!req) return;
+	var req = CreateXHR("GET","http://www.nicovideo.jp/api/mylistgroup/list");
+	if( !req ) return;
+
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		NicoLiveMylist.mylists = JSON.parse(req.responseText);
@@ -449,9 +432,7 @@ var NicoLiveMylist = {
 		NicoLiveMylist.getAllMylists(mylists);
 	    }
 	};
-	let url = "http://www.nicovideo.jp/api/mylistgroup/list";
-	req.open('GET',url);
-	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
+
 	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 	req.send('');
     }

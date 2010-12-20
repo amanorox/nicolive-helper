@@ -290,17 +290,17 @@ var NicoLiveFolderDB = {
      * @param mylist_id マイリストID
      */
     appendVideosFromMylist:function(id,mylist_id){
-	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	let req = new XMLHttpRequest();
+	var url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
+	var req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		let xml = req.responseXML;
-		let items = xml.getElementsByTagName('item');
-		let videos = new Array();
+		var xml = req.responseXML;
+		var items = xml.getElementsByTagName('item');
+		var videos = new Array();
 		debugprint('mylist rss items:'+items.length);
 		for(let i=0,item;item=items[i];i++){
-		    let video_id;
+		    var video_id;
 		    try{
 			video_id = item.getElementsByTagName('link')[0].textContent.match(/(sm|nm)\d+/);
 		    } catch (x) {
@@ -313,8 +313,6 @@ var NicoLiveFolderDB = {
 		NicoLiveFolderDB._appendVideos(id, videos.join(','));
 	    }
 	};
-	req.open('GET', url );
-	req.setRequestHeader('User-Agent',NicoLiveHelper._useragent);
 	req.send('');
     },
 

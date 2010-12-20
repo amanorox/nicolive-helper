@@ -38,9 +38,24 @@ function $$(tag){
     return document.getElementsByTagName(tag);
 }
 
+function CreateXHR(method,uri)
+{
+    var req = new XMLHttpRequest();
+    if( !req ) return null;
+    req.open(method,uri);
+    if( NicoLiveHelper._useragent ){
+	req.setRequestHeader("User-Agent", NicoLiveHelper._useragent);
+    }
+    if( NicoLiveHelper._user_session ){
+	req.setRequestHeader("Cookie", "user_session="+NicoLiveHelper._user_session);
+    }
+
+    return req;
+}
+
 function GetAddonVersion()
 {
-    let version;
+    var version;
     try{
 	var em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
 	var addon = em.getItemForID("nicolivehelper@miku39.jp");
@@ -157,15 +172,15 @@ function OpenFile(path){
 
 // NicoLiveHelperのインストールパスを返す.
 function GetExtensionPath(){
-    let id = "nicolivehelper@miku39.jp";
-    let ext;
+    var id = "nicolivehelper@miku39.jp";
+    var ext;
     try{
 	ext = Components.classes["@mozilla.org/extensions/manager;1"]
             .getService(Components.interfaces.nsIExtensionManager)
             .getInstallLocation(id)
             .getItemLocation(id);
     } catch (x) {
-	let _addon;
+	var _addon;
 	AddonManager.getAddonByID("nicolivehelper@miku39.jp",
 				  function(addon) {
 				      _addon = addon;
@@ -228,17 +243,17 @@ function InputPromptWithCheck(text,caption,input,checktext){
 function SaveObjectToFile(obj,caption)
 {
     const nsIFilePicker = Components.interfaces.nsIFilePicker;
-    let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, caption, nsIFilePicker.modeSave);
     fp.appendFilters(nsIFilePicker.filterAll);
-    let rv = fp.show();
+    var rv = fp.show();
     if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
-	let file = fp.file;
-	let path = fp.file.path;
-	let os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
-	let flags = 0x02|0x08|0x20;// wronly|create|truncate
+	var file = fp.file;
+	var path = fp.file.path;
+	var os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+	var flags = 0x02|0x08|0x20;// wronly|create|truncate
 	os.init(file,flags,0664,0);
-	let cos = GetUTF8ConverterOutputStream(os);
+	var cos = GetUTF8ConverterOutputStream(os);
 	cos.writeString( JSON.stringify(obj) );
 	cos.close();
     }
@@ -249,27 +264,27 @@ function SaveObjectToFile(obj,caption)
 function LoadObjectFromFile(caption)
 {
     const nsIFilePicker = Components.interfaces.nsIFilePicker;
-    let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, caption, nsIFilePicker.modeOpen);
     fp.appendFilters(nsIFilePicker.filterAll);
-    let rv = fp.show();
+    var rv = fp.show();
     if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
-	let file = fp.file;
-	let path = fp.file.path;
-	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	var file = fp.file;
+	var path = fp.file.path;
+	var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
 	istream.init(file, 0x01, 0444, 0);
 	istream.QueryInterface(Components.interfaces.nsILineInputStream);
-	let cis = GetUTF8ConverterInputStream(istream);
+	var cis = GetUTF8ConverterInputStream(istream);
 	// 行を配列に読み込む
-	let line = {}, hasmore;
-	let str = "";
+	var line = {}, hasmore;
+	var str = "";
 	do {
 	    hasmore = cis.readString(1024,line);
 	    str += line.value;
 	} while(hasmore);
 	istream.close();
 
-	let obj = JSON.parse(str);
+	var obj = JSON.parse(str);
 	return obj;
     }
     return null;
@@ -432,10 +447,11 @@ function GetFormattedDateString(format,ms){
 
 // レート数値をスターの個数の文字列にする.
 function GetFavRateString(rate){
-    let tmp;
-    let str = "";
+    var tmp;
+    var str = "";
+    var i;
     tmp = rate / 10;
-    for(let i=0;i<tmp;i++){
+    for(i=0;i<tmp;i++){
 	str += "★";
     }
     if(!str) str="なし";
@@ -519,7 +535,7 @@ function LoadFormattedString(name,array){
 
 // min:sec の文字列を返す.
 function GetTimeString(sec){
-    let str = "";
+    var str = "";
     if(sec<0) str = "-";
     sec = Math.abs(sec);
     str += parseInt(sec/60) + ":";
@@ -547,7 +563,7 @@ function rand()
 // min以上、max以下の範囲で乱数を返す.
 function GetRandomIntLCG(min,max)
 {
-    let tmp = rand() >> 4;
+    var tmp = rand() >> 4;
     return (tmp % (max-min+1)) + min;
 }
 

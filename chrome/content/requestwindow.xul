@@ -20,6 +20,8 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/httpobserve.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecookie.js" />
+
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewhitelist.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivepreference.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivedatabase.js" />
