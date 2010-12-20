@@ -368,8 +368,8 @@ var NicoLiveMylist = {
 	for(let i=0,item; item=mylists[i]; i++){
 	    mylists["_"+item.id] = item.name;
 	    debugprint('load mylist(id='+item.id+')');
-	    var url = "http://www.nicovideo.jp/api/mylist/list";
-	    var req = CreateXHR("POST",url);
+	    let url = "http://www.nicovideo.jp/api/mylist/list";
+	    let req = CreateXHR("POST",url);
 	    if( !req ) continue;
 	    req.mylist_id = item.id;
 	    req.onreadystatechange = function(){
