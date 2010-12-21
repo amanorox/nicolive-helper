@@ -104,12 +104,12 @@ var NicoLiveDatabase = {
     addOneVideo:function(id){
 	// 動画IDで渡す.
 	if(id.length<3) return;
-	var url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
-	var req = CreateXHR("GET",url);
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
+	let req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		var music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
+		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
 		if( music ){
 		    NicoLiveDatabase.addDatabase(music);
 		}
@@ -121,8 +121,8 @@ var NicoLiveDatabase = {
     updateOneVideo:function(id){
 	// 動画IDで渡す.
 	if(id.length<3) return;
-	var url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
-	var req = CreateXHR("GET",url);
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
+	let req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
@@ -340,7 +340,7 @@ var NicoLiveDatabase = {
 	    case "gte":
 	    case "equal":
 	    case "lte":
-		var tmp;
+		let tmp;
 		if(this.searchtarget[parseInt(menulist[0].value)]=="first_retrieve"){
 		    let date;
 		    let d;
@@ -855,7 +855,7 @@ var NicoLiveDatabase = {
 	//this.dataTransfer = event.dataTransfer;
 
 	// ファイルをドロップしたとき.
-	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	let file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
 	if (file instanceof Components.interfaces.nsIFile){
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("file dropped:"+file.path);

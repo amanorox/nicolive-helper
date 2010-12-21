@@ -290,17 +290,17 @@ var NicoLiveFolderDB = {
      * @param mylist_id マイリストID
      */
     appendVideosFromMylist:function(id,mylist_id){
-	var url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	var req = CreateXHR("GET",url);
+	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
+	let req = CreateXHR("GET",url);
 	if(!req) return;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
-		var xml = req.responseXML;
-		var items = xml.getElementsByTagName('item');
-		var videos = new Array();
+		let xml = req.responseXML;
+		let items = xml.getElementsByTagName('item');
+		let videos = new Array();
 		debugprint('mylist rss items:'+items.length);
 		for(let i=0,item;item=items[i];i++){
-		    var video_id;
+		    let video_id;
 		    try{
 			video_id = item.getElementsByTagName('link')[0].textContent.match(/(sm|nm)\d+/);
 		    } catch (x) {
@@ -379,7 +379,7 @@ var NicoLiveFolderDB = {
 	let id = $('folder-listbox').selectedItem.value;
 
 	// ファイルをドロップしたとき.
-	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	let file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
 	if (file instanceof Components.interfaces.nsIFile){
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("file dropped:"+file.path);

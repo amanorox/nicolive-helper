@@ -40,7 +40,7 @@ function $$(tag){
 
 function CreateXHR(method,uri)
 {
-    var req = new XMLHttpRequest();
+    let req = new XMLHttpRequest();
     if( !req ) return null;
     req.open(method,uri);
     if( NicoLiveHelper._useragent ){
@@ -55,10 +55,10 @@ function CreateXHR(method,uri)
 
 function GetAddonVersion()
 {
-    var version;
+    let version;
     try{
-	var em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
-	var addon = em.getItemForID("nicolivehelper@miku39.jp");
+	let em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
+	let addon = em.getItemForID("nicolivehelper@miku39.jp");
 	version = addon.version;
     } catch (x) {
 	// Fx4
@@ -68,7 +68,7 @@ function GetAddonVersion()
 				      //alert("My extension's version is " + addon.version);
 				  });
 	// Piroさん(http://piro.sakura.ne.jp/)が値が設定されるまで待つことをやっていたので真似してしまう.
-	var thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
+	let thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
 	while (version === void(0)) {
 	    thread.processNextEvent(true);
 	}
@@ -80,34 +80,34 @@ function GetAddonVersion()
 // XPath 式 aExpression を評価し、その結果を配列として返す。
 // 最初の作業を行った wanderingstan at morethanwarm dot mail dot com に感謝します。
 function evaluateXPath(aNode, aExpr) {
-    var xpe = new XPathEvaluator();
-    var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
+    let xpe = new XPathEvaluator();
+    let nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
 					  aNode.documentElement : aNode.ownerDocument.documentElement);
-    var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
-    var found = [];
-    var res;
+    let result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+    let found = [];
+    let res;
     while (res = result.iterateNext())
 	found.push(res);
     return found;
 }
 function evaluateXPath2(aNode, aExpr) {
-    var xpe = new XPathEvaluator();
-    var nsResolver = function(){ return XUL_NS; };
-    var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
-    var found = [];
-    var res;
+    let xpe = new XPathEvaluator();
+    let nsResolver = function(){ return XUL_NS; };
+    let result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+    let found = [];
+    let res;
     while (res = result.iterateNext())
 	found.push(res);
     return found;
 }
 
 function CreateElement(part){
-    var elem;
+    let elem;
     elem = document.createElementNS(XUL_NS,part);
     return elem;
 }
 function CreateHTMLElement(part){
-    var elem;
+    let elem;
     elem = document.createElementNS(HTML_NS,part);
     return elem;
 }
@@ -123,7 +123,7 @@ function RemoveChildren(elem){
 }
 
 function CreateMenuItem(label,value){
-    var elem;
+    let elem;
     elem = document.createElementNS(XUL_NS,'menuitem');
     elem.setAttribute('label',label);
     elem.setAttribute('value',value);
@@ -131,14 +131,14 @@ function CreateMenuItem(label,value){
 };
 
 function CreateButton(label){
-    var elem;
+    let elem;
     elem = document.createElementNS(XUL_NS,'button');
     elem.setAttribute('label',label);
     return elem;
 }
 
 function CreateLabel(label){
-    var elem;
+    let elem;
     elem = document.createElementNS(XUL_NS,'label');
     elem.setAttribute('value',label);
     return elem;
@@ -149,7 +149,7 @@ function CreateLabel(label){
  * ディレクトリ掘ったらtrue、掘らなかったらfalseを返す.
  */
 function CreateFolder(path){
-    var file = OpenFile(path);
+    let file = OpenFile(path);
     if( !file.exists() || !file.isDirectory() ) {   // if it doesn't exist, create
 	file.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
 	return true;
@@ -158,10 +158,10 @@ function CreateFolder(path){
 }
 
 function OpenFile(path){
-    var localfileCID = '@mozilla.org/file/local;1';
-    var localfileIID =Components.interfaces.nsILocalFile;
+    let localfileCID = '@mozilla.org/file/local;1';
+    let localfileIID =Components.interfaces.nsILocalFile;
     try {
-	var file = Components.classes[localfileCID].createInstance(localfileIID);
+	let file = Components.classes[localfileCID].createInstance(localfileIID);
 	file.initWithPath(path);
 	return file;
     }
@@ -172,21 +172,21 @@ function OpenFile(path){
 
 // NicoLiveHelperのインストールパスを返す.
 function GetExtensionPath(){
-    var id = "nicolivehelper@miku39.jp";
-    var ext;
+    let id = "nicolivehelper@miku39.jp";
+    let ext;
     try{
 	ext = Components.classes["@mozilla.org/extensions/manager;1"]
             .getService(Components.interfaces.nsIExtensionManager)
             .getInstallLocation(id)
             .getItemLocation(id);
     } catch (x) {
-	var _addon;
+	let _addon;
 	AddonManager.getAddonByID("nicolivehelper@miku39.jp",
 				  function(addon) {
 				      _addon = addon;
 				  });
 	// Piroさん(http://piro.sakura.ne.jp/)が値が設定されるまで待つことをやっていたので真似してしまう.
-	var thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
+	let thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
 	while (_addon === void(0)) {
 	    thread.processNextEvent(true);
 	}
@@ -196,28 +196,28 @@ function GetExtensionPath(){
 }
 
 function PlayAlertSound(){
-    var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+    let sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
     sound.playSystemSound("_moz_alertdialog");
 }
 
 function AlertPrompt(text,caption){
-    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.alert(window, caption, text);
+    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    let result = prompts.alert(window, caption, text);
     return result;
 }
 
 function ConfirmPrompt(text,caption){
-    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.confirm(window, caption, text);
+    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    let result = prompts.confirm(window, caption, text);
     return result;
 }
 
 function InputPrompt(text,caption,input){
-    var check = {value: false};
-    var input_ = {value: input};
+    let check = {value: false};
+    let input_ = {value: input};
 
-    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.prompt(window, caption, text, input_, null, check);
+    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    let result = prompts.prompt(window, caption, text, input_, null, check);
     if( result ){
 	return input_.value;
     }else{
@@ -226,11 +226,11 @@ function InputPrompt(text,caption,input){
 }
 
 function InputPromptWithCheck(text,caption,input,checktext){
-    var check = {value: false};
-    var input_ = {value: input};
+    let check = {value: false};
+    let input_ = {value: input};
 
-    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-    var result = prompts.prompt(window, caption, text, input_, checktext, check);
+    let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    let result = prompts.prompt(window, caption, text, input_, checktext, check);
     if( result ){
 	return input_.value;
     }else{
@@ -243,17 +243,17 @@ function InputPromptWithCheck(text,caption,input,checktext){
 function SaveObjectToFile(obj,caption)
 {
     const nsIFilePicker = Components.interfaces.nsIFilePicker;
-    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, caption, nsIFilePicker.modeSave);
     fp.appendFilters(nsIFilePicker.filterAll);
-    var rv = fp.show();
+    let rv = fp.show();
     if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
-	var file = fp.file;
-	var path = fp.file.path;
-	var os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
-	var flags = 0x02|0x08|0x20;// wronly|create|truncate
+	let file = fp.file;
+	let path = fp.file.path;
+	let os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+	let flags = 0x02|0x08|0x20;// wronly|create|truncate
 	os.init(file,flags,0664,0);
-	var cos = GetUTF8ConverterOutputStream(os);
+	let cos = GetUTF8ConverterOutputStream(os);
 	cos.writeString( JSON.stringify(obj) );
 	cos.close();
     }
@@ -264,27 +264,27 @@ function SaveObjectToFile(obj,caption)
 function LoadObjectFromFile(caption)
 {
     const nsIFilePicker = Components.interfaces.nsIFilePicker;
-    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, caption, nsIFilePicker.modeOpen);
     fp.appendFilters(nsIFilePicker.filterAll);
-    var rv = fp.show();
+    let rv = fp.show();
     if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
-	var file = fp.file;
-	var path = fp.file.path;
-	var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	let file = fp.file;
+	let path = fp.file.path;
+	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
 	istream.init(file, 0x01, 0444, 0);
 	istream.QueryInterface(Components.interfaces.nsILineInputStream);
-	var cis = GetUTF8ConverterInputStream(istream);
+	let cis = GetUTF8ConverterInputStream(istream);
 	// 行を配列に読み込む
-	var line = {}, hasmore;
-	var str = "";
+	let line = {}, hasmore;
+	let str = "";
 	do {
 	    hasmore = cis.readString(1024,line);
 	    str += line.value;
 	} while(hasmore);
 	istream.close();
 
-	var obj = JSON.parse(str);
+	let obj = JSON.parse(str);
 	return obj;
     }
     return null;
@@ -302,11 +302,11 @@ function FindParentElement(elem,tag){
 
 // NicoLive Helperのウィンドウをリストアップする.
 function WindowEnumerator(){
-    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
-    var enumerator = wm.getEnumerator("");
-    var windowlist = new Array();
+    let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+    let enumerator = wm.getEnumerator("");
+    let windowlist = new Array();
     while(enumerator.hasMoreElements()) {
-	var win = enumerator.getNext();
+	let win = enumerator.getNext();
 	// win is [Object ChromeWindow] (just like window), do something with it
 	//debugprint("window:"+win.name);
 	if(win.name.match(/^NLH_lv\d+$/)){
@@ -318,7 +318,7 @@ function WindowEnumerator(){
 
 function CopyToClipboard(str){
     if(str.length<=0) return;
-    var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].  
+    let gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].  
 	getService(Components.interfaces.nsIClipboardHelper);  
     gClipboardHelper.copyString(str);
 }
@@ -357,7 +357,6 @@ function debugalert(txt){
 }
 
 
-
 var noticeid;
 function ShowNotice(txt, dontclear){
     debugprint(txt);
@@ -374,7 +373,7 @@ function ShowNotice(txt, dontclear){
 
 function ShowPopupNotification(imageURL,title,text,request_id){
     // request_id: lvXXXXXX
-    var listener = null;
+    let listener = null;
     /*
     {
 	observe: function(subject, topic, data) {
@@ -395,16 +394,16 @@ function ShowPopupNotification(imageURL,title,text,request_id){
 	alertserv.showAlertNotification(imageURL, title, text, clickable, cookie, listener);
     } catch(e) {
 	// prevents runtime error on platforms that don't implement nsIAlertsService
-	var image = imageURL;
-	var win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
+	let image = imageURL;
+	let win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].getService(Components.interfaces.nsIWindowWatcher)
 	    .openWindow(null, 'chrome://global/content/alerts/alert.xul','_blank', 'chrome,titlebar=no,popup=yes', null);
 	win.arguments = [image, title, text, clickable, cookie, 0, listener];
     }
 }
 
 function SetWindowTopMost(w,b){
-    var Ci = Components.interfaces;
-    var XULWindow = w
+    let Ci = Components.interfaces;
+    let XULWindow = w
 	.QueryInterface(Ci.nsIInterfaceRequestor)
 	.getInterface(Ci.nsIWebNavigation)
 	.QueryInterface(Ci.nsIDocShellTreeItem)
@@ -416,14 +415,14 @@ function SetWindowTopMost(w,b){
 
 function GetUTF8ConverterInputStream(istream)
 {
-    var cis = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
+    let cis = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
     cis.init(istream,"UTF-8",0,Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
     return cis;
 }
 
 function GetUTF8ConverterOutputStream(os)
 {
-    var cos = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+    let cos = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
     cos.init(os,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
     return cos;
 }
@@ -431,25 +430,25 @@ function GetUTF8ConverterOutputStream(os)
 
 // 現在時刻を秒で返す(UNIX時間).
 function GetCurrentTime(){
-    var d = new Date();
+    let d = new Date();
     return Math.floor(d.getTime()/1000);
 }
 
 function GetDateString(ms){
-    var d = new Date(ms);
+    let d = new Date(ms);
     return d.toLocaleFormat("%Y/%m/%d %H:%M:%S");
 }
 
 function GetFormattedDateString(format,ms){
-    var d = new Date(ms);
+    let d = new Date(ms);
     return d.toLocaleFormat(format);
 }
 
 // レート数値をスターの個数の文字列にする.
 function GetFavRateString(rate){
-    var tmp;
-    var str = "";
-    var i;
+    let tmp;
+    let str = "";
+    let i;
     tmp = rate / 10;
     for(i=0;i<tmp;i++){
 	str += "★";
@@ -535,7 +534,7 @@ function LoadFormattedString(name,array){
 
 // min:sec の文字列を返す.
 function GetTimeString(sec){
-    var str = "";
+    let str = "";
     if(sec<0) str = "-";
     sec = Math.abs(sec);
     str += parseInt(sec/60) + ":";
@@ -563,7 +562,7 @@ function rand()
 // min以上、max以下の範囲で乱数を返す.
 function GetRandomIntLCG(min,max)
 {
-    var tmp = rand() >> 4;
+    let tmp = rand() >> 4;
     return (tmp % (max-min+1)) + min;
 }
 
@@ -610,7 +609,7 @@ function clearTable(tbody)
 
 function IsWINNT()
 {
-    var osString = Components.classes["@mozilla.org/xre/app-info;1"]
+    let osString = Components.classes["@mozilla.org/xre/app-info;1"]
         .getService(Components.interfaces.nsIXULRuntime).OS;
     if(osString=="WINNT"){
 	return true;
