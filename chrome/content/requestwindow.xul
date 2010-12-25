@@ -714,6 +714,7 @@
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,1)"/>
 	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,1)"/>
+	  <menuitem label="広告ポイント" oncommand="NicoLiveHelper.sortStock(8,1)"/>
 	</menupopup>
       </menu>
       <menu label="&sort.descend_order;">
@@ -726,6 +727,7 @@
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,-1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,-1)"/>
 	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,-1)"/>
+	  <menuitem label="広告ポイント" oncommand="NicoLiveHelper.sortStock(8,-1)"/>
 	</menupopup>
       </menu>
       <menuitem label="&menu.stock_showdetail;" oncommand="NicoLiveRequest.showhideDetail();"/>

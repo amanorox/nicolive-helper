@@ -846,6 +846,19 @@ var NicoLiveRequest = {
 	    }
 
 	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
+
+	    let uadp = evaluateXPath(doc,"//*[@class='vinfo_uadp']");
+	    let vids = evaluateXPath(doc,"//*[@class='uad_thumbfrm' or @class='uad_thumbfrm_1' or @class='uad_thumbfrm_2']/table/tbody/tr/td/p/a/@href");
+	    for(let i=0,item; item=vids[i]; i++){
+		let d = item.textContent.match(/.+\/(.*?)$/);
+		let info = { "vid": d[1], "uadp": uadp[i].textContent.replace(/,/g,'') };
+		info.uadp = parseInt(info.uadp);
+		if( NicoLiveHelper._uadp==undefined ){
+		    NicoLiveHelper._uadp = new Object();
+		}
+		NicoLiveHelper._uadp[ "_"+info.vid ] = info.uadp;
+	    }
+
 	    this.addStock(str);
 	    return;
 	}

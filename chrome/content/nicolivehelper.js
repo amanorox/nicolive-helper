@@ -1326,6 +1326,10 @@ var NicoLiveHelper = {
 			    tmpa = a.registerDate;
 			    tmpb = b.registerDate;
 			    break;
+			case 8:// 宣伝ポイント.
+			    tmpa = a.uadp;
+			    tmpb = b.uadp;
+			    break;
 			}
 			return (tmpa - tmpb) * order;
 		    });
@@ -2282,6 +2286,10 @@ var NicoLiveHelper = {
 	} catch (x) {
 	    info.mylistcomment = "";
 	    info.registerDate = 0; // Unix time
+	}
+	try{
+	    info.uadp = this._uadp["_"+info.video_id];
+	} catch (x) {
 	}
 	return info;
     },
