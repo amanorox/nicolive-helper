@@ -47,7 +47,8 @@ function CreateXHR(method,uri)
 	req.setRequestHeader("User-Agent", NicoLiveHelper._useragent);
     }
     if( NicoLiveHelper._user_session ){
-	req.setRequestHeader("Cookie", "user_session="+NicoLiveHelper._user_session);
+	new CookieMonster(req);
+//	req.setRequestHeader("Cookie", "user_session="+NicoLiveHelper._user_session);
     }
 
     return req;

@@ -17,6 +17,7 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/oauth.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/sha1.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/cookiemonster.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/httpobserve.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
@@ -194,9 +195,9 @@
 	</menu>
 
 	<menuseparator/>
-	<menu label="使用ブラウザ" tooltiptext="クッキーを共有するブラウザにチェックしてください。">
+	<menu label="使用ブラウザ(Experimental)" tooltiptext="クッキーを共有するブラウザにチェックしてください。また、チェックを切り替えた後はウィンドウを開き直してください。">
 	  <menupopup>
-	    <menuitem id="use-google-chrome" persist="checked" label="Google Chrome" type="checkbox" autocheck="true"/>
+	    <menuitem id="use-google-chrome" persist="checked" label="Google Chrome(Windows)" type="checkbox" autocheck="true"/>
 	  </menupopup>
 	</menu>
 

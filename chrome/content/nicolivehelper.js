@@ -3854,7 +3854,9 @@ var NicoLiveHelper = {
 	    this._user_session = NicoLiveCookie.getCookie2("http://www.nicovideo.jp/","user_session");
 	    debugprint("user_session="+this._user_session);
 	}
-	this._user_session = NicoLiveCookie.getChromeCookie();
+	if( $('use-google-chrome').hasAttribute('checked') ){
+	    this._user_session = NicoLiveCookie.getChromeCookie();
+	}
     },
 
     init: function(){
