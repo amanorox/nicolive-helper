@@ -3847,13 +3847,18 @@ var NicoLiveHelper = {
 	this.nextBroadcasting();
     },
 
-    init: function(){
-	debugprint('Initializing NicoLive Helper...');
+    setupCookie:function(){
 	if( !NicoLiveCookie.getCookie("http://www.nicovideo.jp/") ){
 	    // getCookieで取れなければサードパーティクッキーの保存にチェックが入ってないので.
 	    this._user_session = NicoLiveCookie.getCookie2("http://www.nicovideo.jp/","user_session");
 	    debugprint("user_session="+this._user_session);
 	}
+	//this._user_session = NicoLiveCookie.getChromeCookie();
+    },
+
+    init: function(){
+	debugprint('Initializing NicoLive Helper...');
+	this.setupCookie();
 	this._useragent = 'NicoLiveHelper/'+GetAddonVersion();
 	debugprint(this._useragent);
 	document.title = "NicoLive Helper " + GetAddonVersion();

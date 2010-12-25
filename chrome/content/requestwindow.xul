@@ -194,9 +194,8 @@
 	</menu>
 
 <!--
-	<menuitem label="test" disabled="false" oncommand="NicoLiveHelper.test();"/>
+	<menuitem label="test" disabled="false" oncommand="NicoLiveCookie.getChromeCookie();"/>
 -->
-
       </menupopup>
     </toolbarbutton>
     <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>

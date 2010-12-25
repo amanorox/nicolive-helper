@@ -25,6 +25,40 @@ var NicoLiveCookie = {
 	    }
 	}
 	return null;
+    },
+
+    getChromeCookie:function(){
+	// C:\Users\amano\AppData\Local\Google\Chrome\User Data\Default\Cookies
+        let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("LocalAppData", Components.interfaces.nsIFile);
+        file.append("Google");
+        file.append("Chrome");
+        file.append("User Data");
+        file.append("Default");
+        file.append("Cookies");
+	debugprint(file.path);
+
+        let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);
+        let dbconnect = storageService.openDatabase(file);
+	let st = dbconnect.createStatement("SELECT * FROM cookies WHERE host_key like ?1 AND name = ?2");
+	st.bindUTF8StringParameter(0,"%.nicovideo.jp%");
+	st.bindUTF8StringParameter(1,"user_session");
+	let latest = 0;
+	let return_value = "";
+	while(st.step()){
+	    let host_key = st.row.host_key;
+	    let name = st.row.name;
+	    let value = st.row.value;
+	    let expires = parseInt(st.row.expires_utc);
+	    if( latest < expires ){
+		debugprint(host_key + "/" + value);
+		latest = expires;
+		return_value = value;
+	    }
+	}
+	st.finalize();
+	dbconnect.close();
+	return return_value;
     }
+
 };
 
