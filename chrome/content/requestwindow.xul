@@ -193,6 +193,13 @@
 	    </menupopup>
 	</menu>
 
+	<menuseparator/>
+	<menu label="使用ブラウザ" tooltiptext="クッキーを共有するブラウザにチェックしてください。">
+	  <menupopup>
+	    <menuitem id="use-google-chrome" persist="checked" label="Google Chrome" type="checkbox" autocheck="true"/>
+	  </menupopup>
+	</menu>
+
 <!--
 	<menuitem label="test" disabled="false" oncommand="NicoLiveCookie.getChromeCookie();"/>
 -->

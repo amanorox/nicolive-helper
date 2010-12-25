@@ -667,8 +667,9 @@ var NicoLiveHelper = {
 
     // URIをチェックする.
     checkURI:function(uri, comment_no){
-	let req = CreateXHR("GET",uri);
+	let req = new XMLHttpRequest();
 	if( !req ) return;
+	req.open("GET",uri);
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		let title;
@@ -3853,7 +3854,7 @@ var NicoLiveHelper = {
 	    this._user_session = NicoLiveCookie.getCookie2("http://www.nicovideo.jp/","user_session");
 	    debugprint("user_session="+this._user_session);
 	}
-	//this._user_session = NicoLiveCookie.getChromeCookie();
+	this._user_session = NicoLiveCookie.getChromeCookie();
     },
 
     init: function(){
