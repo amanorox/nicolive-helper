@@ -73,7 +73,7 @@ var NicoLiveBrowser = {
 			NicoLiveBrowser._page++;
 			NicoLiveBrowser._crawlingtimer = setInterval( "NicoLiveBrowser.loadSearchingPage();", 5*1000 );
 			NicoLiveDatabase.saveGPStorage("nico_mikusong_nextpage",NicoLiveBrowser._page);
-		    }, 10*1000);
+		    }, 15*1000);
     },
 
     loadSearchingPage:function(){
