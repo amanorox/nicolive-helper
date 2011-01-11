@@ -2448,28 +2448,39 @@ var NicoLiveHelper = {
      * @param cno コメント番号
      * @param userid リク主のユーザID
      * @param is_self_request 自貼りか否か.
+     * @param retry getthumbinfoをリトライ
      */
-    addRequest: function(vid,cno,userid, is_self_request){
+    addRequest: function(vid,cno,userid, is_self_request, retry){
 	if(vid.length<3) return;
 
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+vid;
 	let req = CreateXHR("GET",url);
 	if( !req ) return;
 
-	let request = new Object();
-	request.video_id = vid;
-	request.comment_no = cno;
-	request.user_id = userid;
-	request.is_self_request = is_self_request;
-	request.xml = null;
-	request.time = GetCurrentTime();
-	this.requestprocessingqueue.push(request);
+	if( !retry ){
+	    let request = new Object();
+	    request.video_id = vid;
+	    request.comment_no = cno;
+	    request.user_id = userid;
+	    request.is_self_request = is_self_request;
+	    request.xml = null;
+	    request.time = GetCurrentTime();
+	    this.requestprocessingqueue.push(request);
 
-	this.showRequestProgress();
+	    this.showRequestProgress();
+	}
 
 	req.onreadystatechange = function(){
 	    if( req.readyState!=4 ) return;
 	    let i,q;
+	    if( req.status!=200 && !retry ){
+		setTimeout( function(){
+				NicoLiveHelper.addRequest(vid,cno,userid,is_self_request,true);
+			    }, 2000 );
+		ShowNotice(vid+"の動画情報取得に失敗したため、リトライします(code="+req.status+")");
+		return;
+	    }
+
 	    for(i=0;q=NicoLiveHelper.requestprocessingqueue[i];i++){
 		if(q.video_id==vid && q.comment_no==cno && q.xml==null){
 		    if( req.status==200 ){
