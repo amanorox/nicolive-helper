@@ -76,6 +76,8 @@ pref("extensions.nicolivehelper.request.tag-include","");
 pref("extensions.nicolivehelper.request.tag-exclude","");
 pref("extensions.nicolivehelper.request.title-include","");
 pref("extensions.nicolivehelper.request.title-exclude","");
+pref("extensions.nicolivehelper.request.ng-video","");
+pref("extensions.nicolivehelper.request.ng-video-reply-message","その動画はNG動画です");
 pref("extensions.nicolivehelper.notice.time",3);
 pref("extensions.nicolivehelper.notice.area",true);
 pref("extensions.nicolivehelper.notice.dialog",false);

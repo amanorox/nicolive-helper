@@ -99,6 +99,10 @@ var NicoLiveHelper = {
 	    return {code:-1,msg:"",movieinfo:{}};
 	}
 
+	if( NicoLivePreference.ngvideos["_"+info.video_id] ){
+	    return {code:-2,msg:NicoLivePreference.msg.ngvideo,movieinfo:info};
+	}
+
 	if(NicoLivePreference.do_classify || NicoLivePreference.mikuonly){
 	    let str = new Array();
 	    // 半角小文字で正規化してトレーニングをしているので、分類するときもそのように.
@@ -2415,6 +2419,7 @@ var NicoLiveHelper = {
 	if( cnt ){
 	    NicoLiveHelper.saveRequest();
 	}
+	NicoLiveHelper.showRequestProgress();
     },
 
     // リクエストの処理状況を表示する.
@@ -2473,7 +2478,6 @@ var NicoLiveHelper = {
 		}
 	    }
 	    NicoLiveHelper.processRequest();
-	    NicoLiveHelper.showRequestProgress();
 	};
 	req.send("");
     },

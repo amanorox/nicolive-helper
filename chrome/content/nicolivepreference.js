@@ -96,6 +96,7 @@ var NicoLivePreference = {
 	this.msg.within_livespace = branch.getUnicharPref("msg-within-livespace"); // 1.1.19+
 	this.msg.requiredkeyword_title = branch.getUnicharPref("msg-requiredkeyword-title");   // 1.1.22+
 	this.msg.forbiddenkeyword_title = branch.getUnicharPref("msg-forbiddenkeyword-title"); // 1.1.22+
+	this.msg.ngvideo = branch.getUnicharPref("request.ng-video-reply-message"); // 1.1.26+
 
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
 
@@ -131,6 +132,7 @@ var NicoLivePreference = {
 	this.readFont();
 
 	this.readTwitterSettings();
+	this.readNGVideoSettings();
     },
 
     readRestrictionSetting:function(){
@@ -177,6 +179,16 @@ var NicoLivePreference = {
 	this.twitter.when_beginlive = branch.getBoolPref('twitter.when-beginlive');
 	this.twitter.when_playmovie = branch.getBoolPref('twitter.when-playmovie');
 	this.twitter.when_addmylist = branch.getBoolPref('twitter.when-addmylist');
+    },
+
+    readNGVideoSettings:function(){
+	let branch = this.getBranch();
+	let str = branch.getUnicharPref("request.ng-video");
+	let videos = str.match(/(sm|nm)\d+/g);
+	this.ngvideos = new Object();
+	for(let i=0,v; v=videos[i]; i++){
+	    this.ngvideos["_"+v] = true;
+	}
     },
 
     readFont:function(){
