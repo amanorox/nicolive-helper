@@ -1774,11 +1774,13 @@ var NicoLiveHelper = {
 	if(!comment) return;
 	if(comment.length<=0) return;
 	if(this.previouschat==comment){
-	    ShowNotice("同じコメの連投はできません");
+	    ShowNotice("同じコメントの連投はできません");
 	    return;
 	}
 	this._getpostkeycounter = 0;
-	this._postListenerComment(comment,mail);
+	setTimeout(function(){
+		       NicoLiveHelper._postListenerComment(comment,mail);
+		   }, 0);
     },
     _postListenerComment: function(comment,mail){
 	// <chat thread="1007128526" ticket="0x957fa28" vpos="17453" postkey="iFzMyJ74LVHI5tZ6tIY9eXijNKQ" mail=" 184" user_id="14369164" premium="0">一般ユーザーからのコメント発信てすと（主</chat>
@@ -1828,7 +1830,10 @@ var NicoLiveHelper = {
 		    debugprint('postkey='+NicoLiveHelper.postkey);
 		    if(NicoLiveHelper.postkey){
 			// 取得終わったら、コメ送信する.
-			NicoLiveHelper._postListenerComment(NicoLiveHelper.chatbuffer,NicoLiveHelper.mailbuffer);
+			setTimeout(function(){
+				       NicoLiveHelper._postListenerComment(NicoLiveHelper.chatbuffer,NicoLiveHelper.mailbuffer);
+				   }, 0);
+
 		    }
 		}else{
 		    NicoLiveHelper.postkey = "";
