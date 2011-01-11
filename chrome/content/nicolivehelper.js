@@ -284,6 +284,9 @@ var NicoLiveHelper = {
 	// タグにキーワードが含まれていればOK
 	if(restrict.tag_include.length>0){
 	    let tagstr = videoinfo.tags.join(' ');
+	    if( videoinfo.overseastags ){
+		tagstr += videoinfo.overseastags.join(' ');
+	    }
 	    let flg = false;
 	    for(let i=0,tag;tag=restrict.tag_include[i];i++){
 		let reg = new RegExp(tag,"i");
@@ -301,6 +304,9 @@ var NicoLiveHelper = {
 	// タグにキーワードが含まれていなければOK
 	if(restrict.tag_exclude.length>0){
 	    let tagstr = videoinfo.tags.join(' ');
+	    if( videoinfo.overseastags ){
+		tagstr += videoinfo.overseastags.join(' ');
+	    }
 	    let flg = true;
 	    let tag;
 	    for(let i=0;tag=restrict.tag_exclude[i];i++){
