@@ -134,7 +134,14 @@ var NicoLiveRequest = {
 	    label.appendChild(text);
 	}
 	label.className = "selection";
-	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')));
+	label.appendChild(document.createTextNode('タグ:'+item.tags.join(',')+" "));
+	let tiptext = "";
+	for(domain in item.overseastags2){
+	    label.appendChild( document.createTextNode("["+domain+"]") );
+	    tiptext += "["+domain+"]:"+item.overseastags2[domain].join(',');
+	    tiptext += "\n";
+	}
+	label.setAttribute("tooltiptext",tiptext);
 	vbox.appendChild(label);
 	return vbox;
     },

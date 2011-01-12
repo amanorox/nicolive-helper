@@ -2260,10 +2260,17 @@ var NicoLiveHelper = {
 			    info.tags[i] = restorehtmlspecialchars(ZenToHan(item.textContent)); // string
 			}
 		    }else{
+			let domain = elem.getAttribute('domain');
 			let tag = elem.getElementsByTagName('tag');
-			if( !info.overseastags ) info.overseastags = new Array();
+			if( !info.overseastags ){
+			    info.overseastags = new Array();
+			    info.overseastags2 = new Object();
+			}
+			info.overseastags2[domain] = new Array();
 			for(let i=0,item;item=tag[i];i++){
-			    info.overseastags.push( restorehtmlspecialchars(ZenToHan(item.textContent)) );
+			    let tag = restorehtmlspecialchars(ZenToHan(item.textContent));
+			    info.overseastags.push( tag );
+			    info.overseastags2[domain].push(tag);
 			}
 		    }
 		    break;
