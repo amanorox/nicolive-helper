@@ -3881,6 +3881,32 @@ var NicoLiveHelper = {
 	this.nextBroadcasting();
     },
 
+    checkClock:function(){
+	let urls = new Array();
+	urls.push( "http://ntp-a1.nict.go.jp/cgi-bin/jsont" );
+	urls.push( "http://ntp-b1.nict.go.jp/cgi-bin/jsont" );
+	let url = urls[ GetRandomInt(0, urls.length-1) ];
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.open("GET",url);
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let str;
+		let jsont = function(json){
+		    let tm = new Date( json["st"] * 1000 );
+		    let now = new Date();
+		    let str;
+		    str = tm.toLocaleString();
+		    str += "(STD Time)\n";
+		    str += (new Date).toLocaleString() + "(Your PC)";
+		    AlertPrompt(str,'Current Date');
+		};
+		eval(req.responseText);
+	    }
+	};
+	req.send("");
+    },
+
     setupCookie:function(){
 	if( !NicoLiveCookie.getCookie("http://www.nicovideo.jp/") ){
 	    // getCookieで取れなければサードパーティクッキーの保存にチェックが入ってないので.
