@@ -1,0 +1,19 @@
+#include "nsISupports.idl"
+
+//{3E6C402F-BB88-40e3-8383-F8EEE2F072DF}
+
+[scriptable, uuid(3E6C402F-BB88-40e3-8383-F8EEE2F072DF)]
+interface INLHGetCookie : nsISupports
+{
+    wstring getProtectedModeIECookie(in wstring path, in wstring name );
+    wstring getStandardModeIECookie(in wstring path, in wstring name );
+
+    wstring getMacSafariCookie(in wstring path, in wstring name );
+    wstring getWinSafariCookie(in wstring path, in wstring name );
+
+    wstring getWinChromeCookie(in wstring path, in wstring name );
+    wstring getMacChromeCookie(in wstring path, in wstring name );
+    wstring getLinuxChromeCookie(in wstring path, in wstring name );
+
+    wstring getOperaCookie(in wstring path, in wstring name );
+};

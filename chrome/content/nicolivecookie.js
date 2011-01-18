@@ -1,5 +1,31 @@
 var NicoLiveCookie = {
-    
+
+    getStandardIECookie:function(uri,name){
+	let c;
+	try{
+	    let obj = Components.classes["@miku39.jp/NLHGetCookie;1"].createInstance(Components.interfaces.INLHGetCookie);
+	    c = obj.getStandardModeIECookie(uri,name);
+	    c = c.split(";")[0].match(/^user_session=(.*)/)[1];
+	    debugprint(c);
+	} catch (x) {
+	    c = "";
+	}
+	return c;
+    },
+
+    getProtectedIECookie:function(uri,name){
+	let c;
+	try{
+	    let obj = Components.classes["@miku39.jp/NLHGetCookie;1"].createInstance(Components.interfaces.INLHGetCookie);
+	    c = obj.getProtectedModeIECookie(uri,name);
+	    c = c.split(";")[0].match(/^user_session=(.*)/)[1];
+	    debugprint(c);
+	} catch (x) {
+	    c = "";
+	}
+	return c;
+    },
+
     getCookie:function(uri_string){
 	var ios = Cc["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);  
 	var uri = ios.newURI(uri_string, null, null);  

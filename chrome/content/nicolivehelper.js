@@ -3915,6 +3915,15 @@ var NicoLiveHelper = {
 	}
 	if( $('use-google-chrome').hasAttribute('checked') ){
 	    this._user_session = NicoLiveCookie.getChromeCookie();
+	    debugprint("use google chrome");
+	}
+	if( $('use-protected-mode-ie').hasAttribute('checked') ){
+	    this._user_session = NicoLiveCookie.getProtectedIECookie("http://www.nicovideo.jp/","user_session");
+	    debugprint("use protected mode ie");
+	}
+	if( $('use-standard-mode-ie').hasAttribute('checked') ){
+	    this._user_session = NicoLiveCookie.getStandardIECookie("http://www.nicovideo.jp/","user_session");
+	    debugprint("use standard mode ie");
 	}
     },
 
