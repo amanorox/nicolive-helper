@@ -5,7 +5,14 @@ var NicoLiveCookie = {
 	try{
 	    let obj = Components.classes["@miku39.jp/NLHGetCookie;1"].createInstance(Components.interfaces.INLHGetCookie);
 	    c = obj.getStandardModeIECookie(uri,name);
-	    c = c.split(";")[0].match(/^user_session=(.*)/)[1];
+	    c = c.split(";");
+	    for(let i=0,item;item=c[i];i++){
+		try{
+		    c = item.match(/user_session=(.*)/)[1];
+		    break;
+		} catch (x) {
+		}
+	    }
 	    debugprint(c);
 	} catch (x) {
 	    c = "";
@@ -18,7 +25,7 @@ var NicoLiveCookie = {
 	try{
 	    let obj = Components.classes["@miku39.jp/NLHGetCookie;1"].createInstance(Components.interfaces.INLHGetCookie);
 	    c = obj.getProtectedModeIECookie(uri,name);
-	    c = c.split(";")[0].match(/^user_session=(.*)/)[1];
+	    c = c.split(";")[0].match(/user_session=(.*)/)[1];
 	    debugprint(c);
 	} catch (x) {
 	    c = "";
@@ -76,7 +83,7 @@ var NicoLiveCookie = {
 	    let value = st.row.value;
 	    let expires = parseInt(st.row.expires_utc);
 	    if( latest < expires ){
-		debugprint(host_key + "/" + value);
+		//debugprint(host_key + "/" + value);
 		latest = expires;
 		return_value = value;
 	    }
