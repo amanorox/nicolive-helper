@@ -3214,14 +3214,22 @@ var NicoLiveHelper = {
 	    // 自動再生のときだけ最大再生時間に合わせる.
 	    du = maxplay;
 	}
+
+	let next_time = du+interval;
 	this._playnext = setInterval(
 	    function(){
 		NicoLiveHelper.checkPlayNext();
-	    }, du+interval);
-	debugprint( parseInt((du+interval)/1000)+'秒後に次曲を再生します');
+	    }, next_time );
+	debugprint( parseInt((next_time)/1000)+'秒後に次曲を再生します');
 
-	// 30秒未満のときはやらない.
-	if(du<30*1000) return;
+	let prepare_time1 = parseInt((du+interval)/5*4);
+	let prepare_time2 = next_time - 40*1000;
+	// 40秒の先読み時間を取れないときは実行しない.
+	if( prepare_time2<0 ) return;
+
+	// 再生時間+インターバルの8割地点と、40秒前開始で、早い方を選択.
+	let prepare_time = prepare_time1 > prepare_time2 ? prepare_time2 : prepare_time1;
+
 	this._prepare = setInterval(
 	    function(){
 		clearInterval(NicoLiveHelper._prepare);
@@ -3247,7 +3255,7 @@ var NicoLiveHelper = {
 			return;
 		    }
 		}
-	    }, parseInt((du+interval)/5*4) );
+	    }, prepare_time );
     },
 
     // ロスタイムを秒で返す.
