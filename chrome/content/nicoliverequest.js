@@ -81,8 +81,8 @@ var NicoLiveRequest = {
 
 	let datestr = GetDateString(item.first_retrieve*1000);
 	div.appendChild(document.createTextNode("投稿日:" + datestr +" "
-		+ "再生数:"+item.view_counter+" コメント:"+item.comment_num
-		+ " マイリスト:"+item.mylist_counter+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
+		+ "再生数:"+FormatCommas(item.view_counter)+" コメント:"+FormatCommas(item.comment_num)
+		+ " マイリスト:"+FormatCommas(item.mylist_counter)+" 時間:"+item.length+(NicoLiveHelper.userdefinedvalue[item.video_id]?" 彡:"+NicoLiveHelper.userdefinedvalue[item.video_id]:'')));
 	
 	let hr = CreateHTMLElement('hr');
 	if(isstock) hr.className = 'detail';
