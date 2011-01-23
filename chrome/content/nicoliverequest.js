@@ -233,7 +233,7 @@ var NicoLiveRequest = {
 	button.setAttribute("oncommand","NicoLiveHelper.bottomToRequest("+n+");");
 	hbox.appendChild(button);
 
-	if( item.product ){
+	if( item.product_code ){
 	    let text = CreateElement('label');
 	    text.setAttribute("context","popup-search-product-code");
 	    text.appendChild( document.createTextNode("作品コード:"+item.product_code) );
