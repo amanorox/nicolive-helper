@@ -663,6 +663,11 @@
       <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
 
+    <!-- for request -->
+    <menupopup id="popup-search-product-code">
+      <menuitem label="J-WID検索" oncommand="NicoLiveRights.searchFromRequest(document.popupNode||$('popup-search-product-code').triggerNode);"/>
+    </menupopup>
+
     <!-- for error tab -->
     <menupopup id="popup-error-request" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>

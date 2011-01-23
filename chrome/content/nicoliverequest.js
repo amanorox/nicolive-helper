@@ -196,6 +196,7 @@ var NicoLiveRequest = {
 	this.addVideoInformation(vbox,item);
 
 	let hbox = CreateElement('hbox');
+	hbox.setAttribute("align","center");
 	let button = CreateElement('button');
 	button.setAttribute("label",'再生');
 	button.className = 'commandbtn';
@@ -231,6 +232,13 @@ var NicoLiveRequest = {
 	button.className = 'commandbtn';
 	button.setAttribute("oncommand","NicoLiveHelper.bottomToRequest("+n+");");
 	hbox.appendChild(button);
+
+	if( item.product ){
+	    let text = CreateElement('label');
+	    text.setAttribute("context","popup-search-product-code");
+	    text.appendChild( document.createTextNode("作品コード:"+item.product_code) );
+	    hbox.appendChild( text );
+	}
 
 	vbox.appendChild(hbox);
 	td.appendChild(vbox);

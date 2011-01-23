@@ -21,6 +21,11 @@ THE SOFTWARE.
  */
 
 var NicoLiveRights = {
+    searchFromRequest:function(node){
+	let code = node.textContent;
+	this.searchJWID(code);
+    },
+
     searchJWID:function(code){
 	// xxx-xxxx-x (JASRAC)
 	// xxxxx (elicense)

@@ -74,6 +74,8 @@ var NicoLiveHelper = {
 
     twitterinfo: {},  // Twitter投稿API
 
+    _product_code: {}, // 作品コード.
+
     // リクを受け付けるかどうかチェック.
     /**
      * リクエスト受け付けチェック.
@@ -366,7 +368,7 @@ var NicoLiveHelper = {
 	// chat.isNGWord に NG判定が入っている.
     },
 
-    // コメを処理する(新).
+    // コメントを処理する(新).
     processComment2: function(chat){
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
 	if(chat.text.indexOf("/telop")==0) return;
@@ -516,6 +518,14 @@ var NicoLiveHelper = {
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
 		    let selfreq = chat.text.match(/自(貼|張)/);
+		    
+		    try{
+			let code;
+			code = chat.text.match(/(...[-+=/]....[-+=/].)/)[1];
+			code = code.replace(/[-+=/]/g,"-"); // JWID用作品コード.
+			NicoLiveHelper._product_code["_"+sm[1]] = code;
+		    } catch (x) {
+		    }
 		    NicoLiveHelper.addRequest(sm[1], chat.no, chat.user_id, selfreq);
 		    return;
 		}
@@ -526,7 +536,6 @@ var NicoLiveHelper = {
 	    if( NicoLivePreference.post_pagetitle ){
 		let uri = chat.text.match(/(h?ttps?:\/\/[-_.!~*\'()a-zA-Z0-9;/\?:@&=+$,%#]+)/);
 		if( uri ){
-		    debugprint(uri[0]);
 		    NicoLiveHelper.checkURI(uri[0], chat.no);
 		}
 	    }
@@ -2312,8 +2321,11 @@ var NicoLiveHelper = {
 	}
 	try{
 	    info.uadp = this._uadp["_"+info.video_id];
-	} catch (x) {
-	}
+	} catch (x) {}
+
+	try{
+	    info.product_code = this._product_code["_"+info.video_id];
+	} catch (x) {}
 	return info;
     },
 
@@ -3222,7 +3234,7 @@ var NicoLiveHelper = {
 	    }, next_time );
 	debugprint( parseInt((next_time)/1000)+'秒後に次曲を再生します');
 
-	let prepare_time1 = parseInt((du+interval)/5*4);
+	let prepare_time1 = parseInt(next_time/5*4);
 	let prepare_time2 = next_time - 40*1000;
 	// 40秒の先読み時間を取れないときは実行しない.
 	if( prepare_time2<0 ) return;
