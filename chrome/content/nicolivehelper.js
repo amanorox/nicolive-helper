@@ -1981,8 +1981,9 @@ var NicoLiveHelper = {
      * リクエスト可否を切り替える.
      * @param flg 可否のフラグ
      * @param ev 押されているキーを取得するためのevent
+     * @param nomsg リクエスト可否切り替え時に運営コメントしない
      */
-    setAllowRequest:function(flg, ev){
+    setAllowRequest:function(flg, ev, nomsg){
 	this.allowrequest = flg;
 	let str = flg ? NicoLivePreference.msg.requestok : NicoLivePreference.msg.requestng;
 	let command = flg ? NicoLivePreference.msg.requestok_command : NicoLivePreference.msg.requestng_command;
@@ -1992,7 +1993,7 @@ var NicoLiveHelper = {
 	    let tmp = InputPrompt('リクエスト'+(flg?"許可":"不可")+'に切り替える時の運営コメントを入力してください','リクエスト可否切り替えコメントの入力',str);
 	    if( tmp ) str = tmp;
 	}
-	if(str){
+	if(str && !nomsg){
 	    this.postCasterComment(str,command);
 	}
 	if( !flg ) this.anchor = {};
@@ -2000,6 +2001,24 @@ var NicoLiveHelper = {
 	if(e.length){
 	    $('toolbar-allowrequest').label = e[0].label;
 	}
+    },
+
+    /**
+     * @param start_no 開始コメ番
+     * @param end_no 終了コメ番
+     * @param num 受け付け個数
+     * @param even trueのとき偶数のみ受け付け
+     * @param odd trueのとき奇数のみ受け付け
+     * @param comment アンカー指定するときに行うコメント
+     */
+    setAnchor:function(start_no,end_no,num,even,odd,comment){
+	this.setAllowRequest(false,false,true);
+	this.anchor = {};
+	this.anchor.start = parseInt(start_no);
+	this.anchor.end   = parseInt(end_no) || 99999;
+	this.anchor.num   = parseInt(num) || 999;
+	this.anchor.counter = 0;
+	debugprint("アンカー受付:コメ番"+this.anchor.start+"から"+this.anchor.end+"まで"+this.anchor.num+"個");
     },
 
     // リクエストを返す.

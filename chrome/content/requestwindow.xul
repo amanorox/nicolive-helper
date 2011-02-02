@@ -76,6 +76,17 @@
       SetWindowTopMost(w,NicoLivePreference.topmost);
       w.focus();
   }
+
+  function OpenAnchorWindow(){
+      var value = null;
+      var f = "chrome,dialog,centerscreen,modal";
+      if(NicoLivePreference.topmost){
+	  f += ',alwaysRaised=yes';
+      }
+      var w = window.openDialog("chrome://nicolivehelper/content/anchorwin.xul","vote",f,value);
+      SetWindowTopMost(w,NicoLivePreference.topmost);
+      w.focus();
+  }
   ]]>
   </script>
 
@@ -238,6 +249,11 @@
 	  <!-- command buttons -->
 	  <hbox align="center">
 	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleRequest();"/>
+	    <button type="menu" label="リク受付方式">
+	      <menupopup>
+		<menuitem label="アンカー指定" oncommand="OpenAnchorWindow();"/>
+	      </menupopup>
+	    </button>
 	    <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
 	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearRequest();"/>
 	    <label id="total-playtime"/>

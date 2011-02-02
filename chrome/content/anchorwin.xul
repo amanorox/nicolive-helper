@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<dialog id="anchorwin" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+	title="リクエストアンカー指定(NicoLive Helper)"
+	buttons="accept,cancel" ondialogaccept="SetAnchor();" ondialogcancel="return true;">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script>
+  <![CDATA[
+
+  function SetAnchor(){
+      var start_no = $('start-no').value;
+      var end_no = $('end-no').value;
+      var comment = $('comment').value;
+      var num = $('num').value;
+
+      window.opener.NicoLiveHelper.setAnchor(start_no, end_no, num, false, false, comment);
+  }
+
+  ]]>
+  </script>
+
+
+  <vbox flex="1">
+    <label value="アンカー指定"/>
+    <hbox align="center">
+      <label value="コメント番号"/><textbox id="start-no" size="6"/><label value="から"/><textbox id="end-no" size="6"/><label value="まで"/>
+      <!--
+      <checkbox id="odd-no" label="奇数"/>
+      <checkbox id="even-no" label="偶数"/>
+      -->
+    </hbox>
+    <hbox align="center">
+      <label value="最大"/><textbox id="num" size="6"/><label value="個まで"/>
+    </hbox>
+    <hbox align="center">
+      <label value="発言するコメント"/><textbox id="comment" flex="1" emptytext="e.g.安価100〜"/>
+    </hbox>
+    <description>
+      ※アンカー指定を行う場合は、自動的にリクエスト不可に切り替わります。<html:br/>
+      ※アンカー指定を中断したい場合は、現在の状態によらず「リクエスト不可」を選択してください。
+    </description>
+  </vbox>
+
+</dialog>
