@@ -6,7 +6,9 @@ function SendOneLine()
     str = document.getElementById('multiline-comment').value.split(/\n|\r|\r\n/);
     if(str.length){
 	let cmd = document.getElementById('multiline-command').value;
-	opener.NicoLiveHelper.postComment(str[0],cmd);
+	let comment = str[0];
+	comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
+	opener.NicoLiveComment.postCommentMain(comment,cmd,"");
 	str.splice(0,1);
 	document.getElementById('multiline-comment').value = str.join('\r\n');
     }

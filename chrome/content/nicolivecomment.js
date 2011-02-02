@@ -219,6 +219,33 @@ var NicoLiveComment = {
 	$('iframe-thumbnail').style.display = 'none';
     },
 
+    postCommentMain:function(str,mail,name){
+	if(NicoLiveHelper.iscaster){
+	    if( str.match(/^((sm|nm)\d+|\d{10})$/) ){
+		//debugprint(str+'を手動再生しようとしています');
+		NicoLiveHelper._comment_video_id = str;
+		NicoLiveHelper.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+	    }else{
+		if( $('overwrite-hidden-perm').checked ){
+		    if( str.indexOf('/')==0 ){
+			// コマンドだった場合/clsを送らない.
+			NicoLiveHelper.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+		    }else{
+			// 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
+			let func = function(){
+			    NicoLiveHelper.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+			};
+			NicoLiveHelper.clearCasterCommentAndRun(func);
+		    }
+		}else{
+		    NicoLiveHelper.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+		}
+	    }
+	}else{
+	    NicoLiveHelper.postListenerComment(str,mail);
+	}	    
+    },
+
     postComment:function(textbox,event){
 	let str = textbox.value;
 	if(event && event.keyCode != 13) return true;
@@ -242,30 +269,8 @@ var NicoLiveComment = {
 
 	let mail = $('textbox-mail').value;
 
-	if(NicoLiveHelper.iscaster){
-	    if( str.match(/^((sm|nm)\d+|\d{10})$/) ){
-		//debugprint(str+'を手動再生しようとしています');
-		NicoLiveHelper._comment_video_id = str;
-		NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
-	    }else{
-		if( $('overwrite-hidden-perm').checked ){
-		    if( str.indexOf('/')==0 ){
-			// コマンドだった場合/clsを送らない.
-			NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
-		    }else{
-			// 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
-			let func = function(){
-			    NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
-			};
-			NicoLiveHelper.clearCasterCommentAndRun(func);
-		    }
-		}else{
-		    NicoLiveHelper.postCasterComment(str,mail,"",COMMENT_MSG_TYPE_NORMAL);
-		}
-	    }
-	}else{
-	    NicoLiveHelper.postListenerComment(str,mail);
-	}
+	this.postCommentMain(str,mail,"");
+
 	$('textbox-comment').value = "";
 	return true;
     },
