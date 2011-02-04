@@ -1604,6 +1604,36 @@ var NicoLiveHelper = {
 	    }, 15*1000 );
     },
 
+    /**
+     * コメントタブからのコメント投稿ルールに基づくコメント投稿.
+     */
+    postCommentMain:function(str,mail,name){
+	if(this.iscaster){
+	    if( str.match(/^((sm|nm)\d+|\d{10})$/) ){
+		//debugprint(str+'を手動再生しようとしています');
+		this._comment_video_id = str;
+		this.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+	    }else{
+		if( $('overwrite-hidden-perm').checked ){
+		    if( str.indexOf('/')==0 ){
+			// コマンドだった場合/clsを送らない.
+			this.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+		    }else{
+			// 直前のコメがhidden+/permで、上コメ表示にチェックがされていたら、/clsを送ってから.
+			let func = function(){
+			    NicoLiveHelper.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+			};
+			this.clearCasterCommentAndRun(func);
+		    }
+		}else{
+		    this.postCasterComment(str,mail,name,COMMENT_MSG_TYPE_NORMAL);
+		}
+	    }
+	}else{
+	    this.postListenerComment(str,mail);
+	}
+    },
+
     // コメント(主と視聴者を識別してそれぞれのコメント).
     postComment: function(comment,mail){
 	comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
@@ -2014,11 +2044,14 @@ var NicoLiveHelper = {
     setAnchor:function(start_no,end_no,num,even,odd,comment){
 	this.setAllowRequest(false,false,true);
 	this.anchor = {};
-	this.anchor.start = parseInt(start_no);
+	this.anchor.start = parseInt(start_no) || 1;
 	this.anchor.end   = parseInt(end_no) || 99999;
 	this.anchor.num   = parseInt(num) || 999;
 	this.anchor.counter = 0;
 	debugprint("アンカー受付:コメ番"+this.anchor.start+"から"+this.anchor.end+"まで"+this.anchor.num+"個");
+	if( this.iscaster ){
+	    this.postCommentMain(comment,"","");
+	}
     },
 
     // リクエストを返す.
