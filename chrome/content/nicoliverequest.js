@@ -173,6 +173,7 @@ var NicoLiveRequest = {
 	if(item.iscasterselection){
 	    tr.className = "table_casterselection";
 	}
+
 	if(item.selfrequest){
 	    // green
 	    tr.className = "color6";
@@ -192,6 +193,13 @@ var NicoLiveRequest = {
 
 	let vbox = CreateElement('vbox');
 	vbox.setAttribute('context','popup-copyrequest');
+
+	if( NicoLiveHelper._playlog["_"+item.video_id] ){
+	    let t = NicoLiveHelper._playlog["_"+item.video_id];
+	    tr.className ="table_recently_play";
+	    let txt = document.createTextNode("※この動画は"+GetDateString(t*1000)+"に再生されています。");
+	    vbox.appendChild( txt );
+	}
 
 	this.addVideoInformation(vbox,item);
 

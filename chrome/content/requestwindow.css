@@ -56,6 +56,11 @@ tr.table_evenrow{
     background-color: #eeeeff;
 }
 
+/* co154で最近再生されたもの */
+tr.table_recently_play{
+    background-color: #ffcc99;
+}
+
 table#database-table tr:hover{
     background-color: #888888;
     color: white;

@@ -3093,8 +3093,7 @@ var NicoLiveHelper = {
 		return;
 	    }
 	    try {
-		NicoLiveHelper.request_id = xml.getElementsByTagName('id')[0].textContent; // argument/req_idにコミュIDを使用した場合対策.
-
+		NicoLiveHelper.request_id = xml.getElementsByTagName('id')[0].textContent;
 		if( !NicoLiveHelper.title ){
 		    NicoLiveHelper.title  = xml.getElementsByTagName('title')[0].textContent;
 		}
@@ -3196,6 +3195,8 @@ var NicoLiveHelper = {
 		if( !NicoLiveHelper.iscaster ){
 		    $('textbox-comment').setAttribute('maxlength','64');
 		}
+
+		NicoLiveHelper.getPlayLog();
 	    } catch (x) {
 		debugalert('コメントサーバに接続中、エラーが発生しました. '+x);
 	    }
@@ -3204,6 +3205,31 @@ var NicoLiveHelper = {
 	this.close();
 
 	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
+	req.send("");
+    },
+
+    // 初音ミクコミュのプレイログを取得する.
+    // 生主が変わったのをいいことに同じ曲を何度もリクするのがいるので.
+    getPlayLog:function(){
+	if( this.community!="co154" ) return;
+	let checking = $('mikulive-recently-played-check').hasAttribute('checked');
+	if( !checking ) return;
+
+	debugprint("downloading playlog of co154...");
+
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.open("GET","http://183.181.4.48/~amano/co154/playlog-json.pl");
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		NicoLiveHelper._playlog = new Object();
+
+		let log = JSON.parse(req.responseText);
+		for(let i=0,item; item=log[i]; i++){
+		    NicoLiveHelper._playlog["_"+item.video_id] = (new Date(item.date)).getTime()/1000;
+		}
+	    }
+	};
 	req.send("");
     },
 
@@ -4006,6 +4032,8 @@ var NicoLiveHelper = {
 	debugprint(this._useragent);
 	document.title = "NicoLive Helper " + GetAddonVersion();
 	srand( GetCurrentTime() );
+
+	this._playlog = new Object();
 
 	// リクエストのコメ番順シーケンシャル処理用.
 	this.requestprocessingqueue = new Array();
