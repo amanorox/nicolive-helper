@@ -319,11 +319,12 @@ var NicoLiveComment = {
     },
 
     // リフレクション登録ダイアログを表示して設定する.
-    showCommentReflectorDialog:function(userid, comment_no){
+    showCommentReflectorDialog:function(userid, comment_no, defstring){
 	if( !userid ) return;
+	if( !defstring ) defstring = "★";
 	let param = {
 	    "info": LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
-	    "default": "★",
+	    "default": defstring,
 	    "disptype": 0
 	};
 	let f = "chrome,dialog,centerscreen,modal";

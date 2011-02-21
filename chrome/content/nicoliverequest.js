@@ -981,7 +981,7 @@ var NicoLiveRequest = {
 	    let n = tr.getAttribute('request-index');
 	    let item = NicoLiveHelper.getRequestItem(n);
 	    if( item.cno ){
-		NicoLiveComment.showCommentReflectorDialog(item.user_id,item.cno);
+		NicoLiveComment.showCommentReflectorDialog(item.user_id,item.cno,item.pname);
 	    }
 	} catch (x) {
 	    debugprint(x);
