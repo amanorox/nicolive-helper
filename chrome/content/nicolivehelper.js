@@ -105,7 +105,7 @@ var NicoLiveHelper = {
 	    return {code:-2,msg:NicoLivePreference.msg.ngvideo,movieinfo:info};
 	}
 
-	if(NicoLivePreference.do_classify || NicoLivePreference.mikuonly){
+	if(NicoLivePreference.do_classify || NicoLivePreference.isMikuOnly() ){
 	    let str = new Array();
 	    // 半角小文字で正規化してトレーニングをしているので、分類するときもそのように.
 	    for(let i=0,tag; tag=info.tags[i];i++){
@@ -171,7 +171,7 @@ var NicoLiveHelper = {
 	    }
 	}
 
-	if(NicoLivePreference.mikuonly){
+	if(NicoLivePreference.isMikuOnly()){
 	    let ismiku = false;
 
 	    // タグにミクオリジナルがあればほぼ間違いない.
@@ -3174,6 +3174,13 @@ var NicoLiveHelper = {
 		if( tw.length ) NicoLiveHelper.twitterinfo.api_url = tw[0].textContent;
 		tw = evaluateXPath(xml,"/getplayerstatus/stream/twitter_tag");
 		if( tw.length ) NicoLiveHelper.twitterinfo.hashtag = tw[0].textContent;
+
+
+		try{
+		    NicoLiveHelper.user_id = evaluateXPath(xml,"/getplayerstatus/user/user_id")[0].textContent;
+		} catch (x) {
+		    NicoLiveHelper.user_id = "";
+		}
 
 		debugprint("addr:"+NicoLiveHelper.addr);
 		debugprint("port:"+NicoLiveHelper.port);

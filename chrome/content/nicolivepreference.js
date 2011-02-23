@@ -266,6 +266,10 @@ var NicoLivePreference = {
 	}
     },
 
+    isMikuOnly:function(){
+	return this.mikuonly && NicoLiveHelper.user_id=="21693";
+    },
+
     readUserDefinedValueURI:function(){
 	let branch = this.getBranch();
 	let uri;
