@@ -70,7 +70,7 @@ var NicoLiveHelper = {
     commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
 
     _playmusictime: 0,  // playMusicを呼び出した時刻.
-    _extendcnt: 0, // 延長処理を呼んだ回数.
+    _extendcnt: 0,      // 延長処理を呼んだ回数(延長すると0に戻る).
 
     twitterinfo: {},  // Twitter投稿API
 
@@ -2935,16 +2935,17 @@ var NicoLiveHelper = {
 
 	let remaintime = this.endtime - now;
 
-	if( this.iscaster ){
-	    // 3分前になったら自動無料延長の実施.
-	    if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
-		// 連続して呼ばないように、残り3分以下かつ15秒ごとに.
-		// モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
+	if( this.iscaster && this.endtime ){
+	    // 残り時間3分を切ると、15秒ごとに自動無料延長を試みる.
+	    if( remaintime>0 && remaintime<=180 ){
 		if( $('auto-freeextend').hasAttribute('checked') ){
-		    this._extendcnt++;
-		    if( this._extendcnt<=4 ){
-			debugprint("自動無料延長を行います");
-			this.getsalelist( true );
+		    if( 180-remaintime > this._extendcnt*15 ){
+			this._extendcnt = parseInt( (180-remaintime) / 15 + 1 );
+			//this._extendcnt++;
+			if( this._extendcnt<=4 ){
+			    this.getsalelist(true);
+			    debugprint("自動無料延長を行います");
+			}
 		    }
 		}
 	    }
@@ -3474,58 +3475,57 @@ var NicoLiveHelper = {
 	let req = CreateXHR("GET",url);
 	if( !req ) return;
 	req.onreadystatechange = function(){
-	    if( req.readyState==4 ){
-		if( req.status==200 ){
-		    let publishstatus = req.responseXML;
-		    NicoLiveHelper.token = publishstatus.getElementsByTagName('token')[0].textContent;
-		    NicoLiveHelper.starttime = parseInt(publishstatus.getElementsByTagName('start_time')[0].textContent);
-		    let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
-		    if( GetCurrentTime() <= tmp ){
-			// 取得した終了時刻がより現在より未来指していたら更新.
-			NicoLiveHelper.endtime = tmp;
-		    }else{
-			NicoLiveComment.releaseReflector(); // ロスタイム突入なので全解放する.
-		    }
-		    NicoLiveHelper._exclude = parseInt(publishstatus.getElementsByTagName('exclude')[0].textContent);
-		    debugprint('token='+NicoLiveHelper.token);
-		    debugprint('starttime='+NicoLiveHelper.starttime);
-		    debugprint('endtime='+NicoLiveHelper.endtime);
-		    debugprint('exclude='+NicoLiveHelper._exclude);
-		    if( 'function'==typeof postfunc){
-			debugprint('calling post-function.');
-			postfunc();
-		    }
-		    NicoLiveHelper.setLiveProgressBarTipText();
+	    if( req.readyState==4 && req.status==200 ){
+		let publishstatus = req.responseXML;
+		NicoLiveHelper.token = publishstatus.getElementsByTagName('token')[0].textContent;
+		NicoLiveHelper.starttime = parseInt(publishstatus.getElementsByTagName('start_time')[0].textContent);
+		let tmp = parseInt(publishstatus.getElementsByTagName('end_time')[0].textContent);
+		if( GetCurrentTime() <= tmp ){
+		    // 取得した終了時刻がより現在より未来指していたら更新.
+		    NicoLiveHelper.endtime = tmp;
+		}else{
+		    NicoLiveComment.releaseReflector(); // ロスタイム突入なので全解放する.
 		}
+		NicoLiveHelper._exclude = parseInt(publishstatus.getElementsByTagName('exclude')[0].textContent);
+		debugprint('token='+NicoLiveHelper.token);
+		debugprint('starttime='+NicoLiveHelper.starttime);
+		debugprint('endtime='+NicoLiveHelper.endtime);
+		debugprint('exclude='+NicoLiveHelper._exclude);
+		if( 'function'==typeof postfunc){
+		    debugprint('calling post-function.');
+		    postfunc();
+		}
+		NicoLiveHelper.setLiveProgressBarTipText();
 	    }
 	};
 	req.send("");
     },
 
+    /** 残りニコニコポイントを取得して、成功したら延長メニューを取得する.
+     */
     getremainpoint:function(){
 	if( this.isOffline() || !this.iscaster ) return;
 	let url = "http://watch.live.nicovideo.jp/api/getremainpoint";
 	let req = CreateXHR("GET",url);
 	if( !req ) return;
 	req.onreadystatechange = function(){
-	    if( req.readyState==4 ){
-		if( req.status==200 ){
-		    let remain = req.responseXML;
-		    try{
-			NicoLiveHelper.remainpoint = remain.getElementsByTagName("remain")[0].textContent;
-			debugprint("remain point="+NicoLiveHelper.remainpoint);
-			NicoLiveHelper.getsalelist();
-		    } catch (x) {
-			NicoLiveHelper.remainpoint = 0;
-		    }
+	    if( req.readyState==4 && req.status==200 ){
+		let remain = req.responseXML;
+		try{
+		    NicoLiveHelper.remainpoint = remain.getElementsByTagName("remain")[0].textContent;
+		    debugprint("remain point="+NicoLiveHelper.remainpoint);
+		    NicoLiveHelper.getsalelist();
+		} catch (x) {
+		    NicoLiveHelper.remainpoint = 0;
 		}
 	    }
 	};
 	req.send("");
     },
 
-    // 延長メニューを更新.
-    // 自分の所持ポイントを取得して延長メニューを取得.
+    /** 延長メニューを更新.
+     * 自分の所持ポイントを取得して延長メニューを取得.
+     */
     updateExtendMenu:function(){
 	this.getremainpoint();
     },
@@ -3578,7 +3578,9 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 延長アイテムを取得し、延長を行います.
+    /** 延長アイテムを取得し、必要があれば無料延長を行います.
+     * @param do_freeextend trueにすると無料延長を実行する.
+     */
     getsalelist:function( do_freeextend ){
 	if( !this.iscaster || this.isOffline() ) return;
 
