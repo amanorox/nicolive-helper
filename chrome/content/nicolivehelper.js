@@ -2452,6 +2452,7 @@ var NicoLiveHelper = {
 		NicoLiveHelper.request_per_ppl[q.user_id]--;
 		ans.msg = NicoLivePreference.msg.limitnumberofrequests;
 		ans.code = -1;
+		if(NicoLiveHelper.anchor.counter>0) NicoLiveHelper.anchor.counter--;
 	    }
 
 	    // 動画情報にはコメ番とリク主のユーザーIDを含む.
