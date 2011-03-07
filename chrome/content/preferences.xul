@@ -166,7 +166,7 @@
 		<label control="vinfo-playfailed" value="再生に失敗した時:" tooltiptext="生放送引用許可がない等で再生コマンド(/play)が失敗した時に送信されます。"/>
 		<textbox preference="pref-videoinfo-playfailed" id="vinfo-playfailed" flex="1"/>
 		<label control="vinfo-interval" value="送信間隔:"/>
-		<textbox preference="pref-videoinfo-interval" id="vinfo-interval" type="number" min="0" max="60" size="3"/>
+		<textbox preference="pref-videoinfo-interval" id="vinfo-interval" type="number" min="3" max="60" size="3"/>
 		<label value="秒"/>
 	      </hbox>
 	    </rows>
