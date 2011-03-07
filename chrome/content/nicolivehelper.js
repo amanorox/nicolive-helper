@@ -1074,7 +1074,7 @@ var NicoLiveHelper = {
 	    clearInterval(NicoLiveHelper._sendmusicid);
 	    clearInterval(NicoLiveHelper._revertcommentid); // 古い動画情報復帰は消しておこう.
 	    NicoLiveHelper._counter = 0;
-	    NicoLiveHelper._sendmusicid = setInterval( function(){ NicoLiveHelper._sendMusicInfo(); }, 8000);
+	    NicoLiveHelper._sendmusicid = setInterval( function(){ NicoLiveHelper._sendMusicInfo(); }, NicoLivePreference.videoinfo_interval*1000);
 	    NicoLiveHelper._sendMusicInfo();
 	};
 	this.clearCasterCommentAndRun(func);

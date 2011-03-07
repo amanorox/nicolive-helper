@@ -66,8 +66,8 @@ var NicoLivePreference = {
 	    this.videoinfo[i].comment = branch.getUnicharPref("videoinfo"+(i+1));
 	    this.videoinfo[i].command = branch.getUnicharPref("videoinfo"+(i+1)+"-command");
 	}
-	// 再生失敗したときのコメント.
-	this.videoinfo_playfailed = branch.getUnicharPref("videoinfo.playfailed");
+	this.videoinfo_playfailed = branch.getUnicharPref("videoinfo.playfailed");	// 再生失敗したときのコメント.
+	this.videoinfo_interval = branch.getIntPref("videoinfo.interval"); // 動画情報送信インターバル.
 
 	this.revert_videoinfo = branch.getIntPref("revert-videoinfo");
 

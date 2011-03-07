@@ -90,6 +90,7 @@
       <preference id="pref-videoinfo3-command" name="extensions.nicolivehelper.videoinfo3-command" type="unichar"/>
       <preference id="pref-videoinfo4-command" name="extensions.nicolivehelper.videoinfo4-command" type="unichar"/>
       <preference id="pref-videoinfo-playfailed" name="extensions.nicolivehelper.videoinfo.playfailed" type="unichar"/>
+      <preference id="pref-videoinfo-interval" name="extensions.nicolivehelper.videoinfo.interval" type="int"/>
       <preference id="pref-typeofvideoinfo" name="extensions.nicolivehelper.comment-type-of-videoinfo" type="int"/>
       <preference id="pref-revert-videoinfo" name="extensions.nicolivehelper.revert-videoinfo" type="int"/>
       <preference id="pref-userdefined-uri" name="extensions.nicolivehelper.userdefined-data-uri" type="string"/>
@@ -162,8 +163,11 @@
 		</hbox>
 	      </row>
 	      <hbox align="center">
-		<label control="vinfo-playfailed" value="動画の再生に失敗した時:" tooltiptext="生放送引用許可がない等で再生コマンド(/play)が失敗した時に送信されます。"/>
+		<label control="vinfo-playfailed" value="再生に失敗した時:" tooltiptext="生放送引用許可がない等で再生コマンド(/play)が失敗した時に送信されます。"/>
 		<textbox preference="pref-videoinfo-playfailed" id="vinfo-playfailed" flex="1"/>
+		<label control="vinfo-interval" value="送信間隔:"/>
+		<textbox preference="pref-videoinfo-interval" id="vinfo-interval" type="number" min="0" max="60" size="3"/>
+		<label value="秒"/>
 	      </hbox>
 	    </rows>
 	  </grid>
@@ -181,7 +185,7 @@
 	    <button label="インポート..." tooltiptext="ファイルから動画情報をインポートします" oncommand="NLHPreference.importMovieInfo();"/>
 	  </hbox>
 
-	  <vbox style="height:80px;">
+	  <vbox style="height:3em;">
 	    <html:div id="preview-videoinfo" style="font-family:Arial; font-weight: bold; font-size:11pt; background-color: black; color:white;">
 	    </html:div>
 	  </vbox>

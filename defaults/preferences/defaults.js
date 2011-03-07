@@ -34,6 +34,7 @@ pref("extensions.nicolivehelper.videoinfo2-command","");
 pref("extensions.nicolivehelper.videoinfo3-command","");
 pref("extensions.nicolivehelper.videoinfo4-command","");
 pref("extensions.nicolivehelper.videoinfo.playfailed","{id}の再生に失敗しました");
+pref("extensions.nicolivehelper.videoinfo.interval",8);
 pref("extensions.nicolivehelper.comment-type-of-videoinfo",0);
 pref("extensions.nicolivehelper.msg-deleted","その動画は削除されているか、見つかりません");
 pref("extensions.nicolivehelper.msg-notaccept","現在リクエストを受け付けていません");
