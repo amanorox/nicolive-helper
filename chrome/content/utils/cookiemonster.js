@@ -372,9 +372,10 @@
     ================================================================================
 
 */
-function CookieMonster(aXMLHttpRequest)
+function CookieMonster(aXMLHttpRequest,cookie)
 {
     this.channel_ = aXMLHttpRequest.channel;
+    this.cookie = cookie;
 
     // happens after the cookie data has been loaded into the request,
     // but before the request is sent
@@ -410,7 +411,7 @@ CookieMonster.prototype.observe = function(subject, topic, data)
 
     // lunch time!
     this.channel_.QueryInterface(Components.interfaces.nsIHttpChannel);
-    this.channel_.setRequestHeader("Cookie", 'user_session='+NicoLiveHelper._user_session, false); // aaah, cookies! scrunch, scrunch...
+    this.channel_.setRequestHeader("Cookie", 'user_session='+this.cookie, false); // aaah, cookies! scrunch, scrunch...
 
     // Cookies will only be included once to the HTTP channel, so whenever
     // we have been notified via topic "http-on-modify-request" and ate all
