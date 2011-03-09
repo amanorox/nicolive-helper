@@ -50,12 +50,30 @@ var NicoLiveOverlay = {
 	menu = null; elem = null; i = null; item = null;
     },
 
-    findWindow:function(request_id){
+    findWindow:function(){
 	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
 	let win = wm.getMostRecentWindow("NicoLiveHelperMainWindow");
 	return win;
     },
 
+    findSpecificWindow:function(request_id){
+	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	let enumerator = wm.getEnumerator("NicoLiveHelperMainWindow");
+	while(enumerator.hasMoreElements()) {
+	    let win = enumerator.getNext();
+	    if( win.name.indexOf(request_id)>=0 ){
+		return win;
+	    }
+	}
+	return null;
+    },
+
+    /** NicoLive Helperを開く
+     * @param url 放送ID
+     * @param title 番組名
+     * @param iscaster 生主かどうか
+     * @param community_id コミュニティID
+     */
     open:function(url,title,iscaster,community_id){
 	let feature="chrome,resizable=yes";
 	Application.storage.set("nico_request_id",url);
@@ -81,9 +99,14 @@ var NicoLiveOverlay = {
 		this.debugprint("Open NicoLive Helper Window.");
 	    }
 	}else{
-	    let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
-	    w.arguments = [ url, title, iscaster, community_id ];
-	    w.focus();
+	    let win = this.findSpecificWindow(url);
+	    if( win ){
+		win.focus();
+	    }else{
+		let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_"+url,feature);
+		w.arguments = [ url, title, iscaster, community_id ];
+		w.focus();
+	    }
 	}
 	this.insertHistory(url,title);
 	//Application.console.log(url+' '+title);

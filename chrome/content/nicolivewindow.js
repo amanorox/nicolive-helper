@@ -97,6 +97,18 @@ var NicoLiveWindow = {
 	}
     },
 
+    findSpecificWindow:function(request_id){
+	let wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	let enumerator = wm.getEnumerator("NicoLiveHelperMainWindow");
+	while(enumerator.hasMoreElements()) {
+	    let win = enumerator.getNext();
+	    if( win.name.indexOf(request_id)>=0 ){
+		return win;
+	    }
+	}
+	return null;
+    },
+
     // 放送IDを入力して接続.
     connectToBroadcasting:function(){
 	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルIDを入力してください","放送IDを入力","");

@@ -38,7 +38,7 @@ function $$(tag){
     return document.getElementsByTagName(tag);
 }
 
-function CreateXHR(method,uri)
+function CreateXHR(method,uri, substitution)
 {
     let req = new XMLHttpRequest();
     if( !req ) return null;
@@ -47,8 +47,12 @@ function CreateXHR(method,uri)
 	req.setRequestHeader("User-Agent", NicoLiveHelper._useragent);
     }
     if( NicoLiveHelper._user_session ){
-	new CookieMonster(req, NicoLiveHelper._user_session);
-//	req.setRequestHeader("Cookie", "user_session="+NicoLiveHelper._user_session);
+	if( substitution ){
+	    new CookieMonster(req, substitution);
+	}else{
+	    new CookieMonster(req, NicoLiveHelper._user_session);
+	}
+	//req.setRequestHeader("Cookie", "user_session="+NicoLiveHelper._user_session);
     }
 
     return req;
