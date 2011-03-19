@@ -33,6 +33,8 @@ SimpleAutoCompleteResult.prototype = {
   _results: [],
   _comments: [],
 
+    getLabelAt: function(index) { return this._results[index]; },
+
   /**
    * The original search string
    */
