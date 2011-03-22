@@ -2936,6 +2936,8 @@ var NicoLiveHelper = {
 
 	let remaintime = this.endtime - now;
 
+/*
+	// new
 	if( this.iscaster && this.endtime ){
 	    // 残り時間3分を切ると、15秒ごとに自動無料延長を試みる.
 	    if( remaintime>0 && remaintime<=180 ){
@@ -2947,6 +2949,22 @@ var NicoLiveHelper = {
 			    this.getsalelist(true);
 			    debugprint("自動無料延長を行います");
 			}
+		    }
+		}
+	    }
+	}
+*/
+	// old
+	if( this.iscaster ){
+	    // 3分前になったら自動無料延長の実施.
+	    if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
+		// 連続して呼ばないように、残り3分以下かつ15秒ごとに.
+		// モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
+		if( $('auto-freeextend').hasAttribute('checked') ){
+		    this._extendcnt++;
+		    if( this._extendcnt<=4 ){
+			debugprint("自動無料延長を行います");
+			this.getsalelist( true );
 		    }
 		}
 	    }
@@ -3232,8 +3250,10 @@ var NicoLiveHelper = {
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		NicoLiveHelper._playlog = new Object();
+		debugprint("playlog of co154 has downloaded.");
 
 		let log = JSON.parse(req.responseText);
+		debugprint("length="+log.length);
 		for(let i=0,item; item=log[i]; i++){
 		    NicoLiveHelper._playlog["_"+item.video_id] = (new Date(item.date)).getTime()/1000;
 		}
