@@ -867,6 +867,11 @@ var NicoLiveRequest = {
 		//debugprint(item.textContent);
 		str += item.textContent + " ";
 	    }
+	    items = evaluateXPath(doc,"//a[@class='def']/@href");
+	    for(let i=0,item; item=items[i]; i++){
+		//debugprint(item.textContent);
+		str += item.textContent + " ";
+	    }
 
 	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
 
