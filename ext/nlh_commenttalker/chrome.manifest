@@ -5,3 +5,4 @@ overlay chrome://nicolivehelper/content/requestwindow.xul chrome://nlh_commentta
 interfaces platform/WINNT_X86-msvc/components/ICommentTalker.xpt
 binary-component platform/WINNT_x86-msvc/components/NLHCommentTalker.dll ABI=WINNT_x86-msvc
 binary-component platform/Darwin_x86-gcc3/libxpcom_commenttalker-mac.dylib ABI=Darwin_x86-gcc3
+binary-component platform/Darwin_x86-gcc3/libxpcom_commenttalker-mac.dylib ABI=Darwin_x86_64-gcc3
