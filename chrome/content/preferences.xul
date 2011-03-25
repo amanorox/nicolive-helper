@@ -563,6 +563,7 @@
       <preference id="pref-do-classify" name="extensions.nicolivehelper.do-classify" type="bool"/>
       <preference id="pref-classes-value" name="extensions.nicolivehelper.classes-value" type="unichar"/>
       <preference id="e.n.font" name="extensions.nicolivehelper.font" type="unichar"/>
+      <preference id="e.n.font-color" name="extensions.nicolivehelper.font-color" type="unichar"/>
 
       <!-- to obtain font group from browser settings -->
       <preference id="font.language.group" name="font.language.group" type="wstring"/>
@@ -697,6 +698,7 @@
 	    <hbox align="center">
 	      <label value="フォント:"/>
 	      <menulist id="select-font" preference="e.n.font"/>
+	      <colorpicker id="select-font-color" type="button" preference="e.n.font-color"/>
 	    </hbox>
 	    <separator/>
 

@@ -130,6 +130,7 @@ var NicoLivePreference = {
 
 	this.readClasses();
 	this.readFont();
+	this.readFontColor();
 
 	this.readTwitterSettings();
 	this.readNGVideoSettings();
@@ -196,6 +197,14 @@ var NicoLivePreference = {
 	try{
 	    this.font = branch.getUnicharPref("font");
 	    $('requestwindow').style.fontFamily = this.font;
+	} catch (x) {
+	}
+    },
+    readFontColor:function(){
+	let branch = this.getBranch();
+	try{
+	    let col = branch.getUnicharPref("font-color");
+	    $('tabpanels').style.color = col;
 	} catch (x) {
 	}
     },
