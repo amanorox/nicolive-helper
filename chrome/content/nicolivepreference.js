@@ -187,8 +187,12 @@ var NicoLivePreference = {
 	let str = branch.getUnicharPref("request.ng-video");
 	let videos = str.match(/(sm|nm)\d+/g);
 	this.ngvideos = new Object();
-	for(let i=0,v; v=videos[i]; i++){
-	    this.ngvideos["_"+v] = true;
+	try{
+	    for(let i=0,v; v=videos[i]; i++){
+		this.ngvideos["_"+v] = true;
+	    }
+	} catch (x) {
+	    debugprint("No NG-video settings");
 	}
     },
 
