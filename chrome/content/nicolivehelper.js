@@ -3114,13 +3114,14 @@ var NicoLiveHelper = {
 	    }
 	    try {
 		NicoLiveHelper.request_id = xml.getElementsByTagName('id')[0].textContent;
+		NicoLiveHelper.owner_name = xml.getElementsByTagName('owner_name')[0].textContent;
 		if( !NicoLiveHelper.title ){
 		    NicoLiveHelper.title  = xml.getElementsByTagName('title')[0].textContent;
 		}
 		if( NicoLivePreference.isSingleWindowMode() ){
-		    document.title = NicoLiveHelper.request_id+":"+NicoLiveHelper.title+" (Single Window/NicoLive Helper)";
+		    document.title = NicoLiveHelper.request_id+":"+NicoLiveHelper.title+" ("+NicoLiveHelper.owner_name+"/Single Window)";
 		}else{
-		    document.title = NicoLiveHelper.request_id+":"+NicoLiveHelper.title+" (NicoLive Helper)";
+		    document.title = NicoLiveHelper.request_id+":"+NicoLiveHelper.title+" ("+NicoLiveHelper.owner_name+")";
 		}
 		NicoLiveHelper.user_id    = xml.getElementsByTagName('user_id')[0].textContent;
 		NicoLiveHelper.user_name  = xml.getElementsByTagName('nickname')[0].textContent;
