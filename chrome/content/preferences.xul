@@ -18,6 +18,7 @@
       <preference id="pref-autoreply" name="extensions.nicolivehelper.autoreply" type="bool"/><!-- リクエスト受付応答メッセージフラグ -->
       <preference id="pref-show-autoreply" name="extensions.nicolivehelper.show-autoreply" type="bool"/><!-- 運営コメント欄に表示させるフラグ -->
       <preference id="pref-limitnewmovie" name="extensions.nicolivehelper.limitnewmovie" type="bool"/><!-- 新着規制 -->
+      <preference id="pref-allow-duplicative" name="extensions.nicolivehelper.allow-duplicative" type="bool"/><!-- 重複許可 -->
       <preference id="pref-accept-playedvideo" name="extensions.nicolivehelper.accept-playedvideo" type="bool"/><!-- 再生済み動画の受付 -->
       <preference id="pref-allow-req-n-min-ago" name="extensions.nicolivehelper.allow-req-n-min-ago" type="int"/><!-- n分以上前の再生済みを受付 -->
       <preference id="pref-accept-within-livespace" name="extensions.nicolivehelper.accept-within-livespace" type="bool"/><!-- 枠に収まる範囲でリク受付 -->
@@ -63,7 +64,12 @@
 	<checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/>
 	<checkbox preference="pref-show-autoreply" label="リクエストの応答を運営コメント欄に表示させる" tooltiptext="運営コメント欄に応答コメントを表示するように、必要に応じて/clsを行います。" style="margin-left:1em;"/>
       </hbox>
-      <hbox><checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)規制を行う" tooltiptext="投稿して7日以内の動画のリクエストを受け付けなくなります。"/></hbox>
+      <hbox>
+	<checkbox preference="pref-allow-duplicative" label="リクエストの重複を許可する" tooltiptext="リクエストにある動画と同じ動画のリクエストを受け付けます。"/>
+      </hbox>
+      <hbox>
+	<checkbox preference="pref-limitnewmovie" label="リクエストの新着(7日)規制を行う" tooltiptext="投稿して7日以内の動画のリクエストを受け付けなくなります。"/>
+      </hbox>
       <hbox align="center">
 	<checkbox preference="pref-accept-playedvideo" label="再生済み動画のリクエストを受け付ける" tooltiptext="再生履歴にある動画のリクエストを受け付けるようになります。"/>
 	<textbox preference="pref-allow-req-n-min-ago" type="number" min="0" size="3"/><label value="分以上前に再生された動画を受け付ける"/>

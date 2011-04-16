@@ -18,6 +18,7 @@ pref("extensions.nicolivehelper.max-movieplay-time",0);
 pref("extensions.nicolivehelper.autoreply",true);
 pref("extensions.nicolivehelper.show-autoreply",false);
 pref("extensions.nicolivehelper.limitnewmovie",false);
+pref("extensions.nicolivehelper.allow-duplicative",false);
 pref("extensions.nicolivehelper.accept-playedvideo",false);
 pref("extensions.nicolivehelper.allow-req-n-min-ago",0);
 pref("extensions.nicolivehelper.accept-within-livespace",false);

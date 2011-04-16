@@ -102,6 +102,7 @@ var NicoLiveHelper = {
 	}
 
 	if( NicoLivePreference.ngvideos["_"+info.video_id] ){
+	    // NG動画のチェック.
 	    return {code:-2,msg:NicoLivePreference.msg.ngvideo,movieinfo:info};
 	}
 
@@ -2637,6 +2638,8 @@ var NicoLiveHelper = {
 
     // リクエスト済みチェック.
     isRequestedMusic:function(video_id){
+	if( NicoLivePreference.allow_duplicative ){ return false; } // リクエスト重複許可なので、リク済みは常にfalse
+
 	for(let i=0,item;item=this.requestqueue[i];i++){
 	    // リクエストキューに既にある動画.
 	    if(item.video_id==video_id){
