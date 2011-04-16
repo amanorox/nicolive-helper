@@ -24,6 +24,8 @@ THE SOFTWARE.
  */
 
 var NicoLiveRequest = {
+    _summation_time: 0,
+
     // 動画情報を表示しているvboxを作成して返す.
     createVideoInformation:function(item,isstock){
 	let vbox = CreateElement('vbox');
@@ -154,6 +156,8 @@ var NicoLiveRequest = {
 
     // リクエストを全更新.
     update:function(requestqueue){
+	this._summation_time = 0;
+
 	let table = $('request-table');
 	if(!table){ return; }
 
@@ -184,7 +188,13 @@ var NicoLiveRequest = {
 	if(item.cno){
 	    td.appendChild(CreateHTMLElement('br'));
 	    td.appendChild(document.createTextNode("C#"+item.cno));
+
 	}
+	let t;
+	t = GetTimeString(this._summation_time);
+	td.appendChild(CreateHTMLElement('br'));
+	td.appendChild(document.createTextNode("+"+t));
+	this._summation_time += NicoLivePreference.nextplay_interval + item.length_ms/1000;
 
 	let n = table.rows.length;
 	tr.setAttribute("request-index",n); // 1,2,3,...
