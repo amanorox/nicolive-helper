@@ -979,6 +979,23 @@ var NicoLiveRequest = {
 	}
     },
 
+    changeSelfRequestFlag:function(node){
+	try{
+	    let tr = FindParentElement(node,'html:tr');
+	    let n = tr.getAttribute('request-index');
+	    let item = NicoLiveHelper.getRequestItem(n);
+	    if( tr.className=="color6"){
+		tr.className = n%2?"table_oddrow":"table_evenrow";
+		item.selfrequest = false;
+	    }else{
+		tr.className = "color6";
+		item.selfrequest = true;
+	    }
+	} catch (x) {
+	    debugprint(x);
+	}
+    },
+
     // リク主をコメントリフレクタに登録する.
     addToCommentReflector:function(node){
 	try{

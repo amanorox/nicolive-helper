@@ -675,6 +675,7 @@
       <menuitem label="&menu.prepare_video;" tooltiptext="&menu.tooltip_prepare;"
 		oncommand="NicoLiveRequest.prepare(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuseparator/>
+      <menuitem label="自貼りON/OFF切り替え" tooltiptext="自貼りフラグのオン/オフを切り替えます" oncommand="NicoLiveRequest.changeSelfRequestFlag(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&menu.comment_reflection;" tooltiptext="&menu.tooltip_comment_reflection;" oncommand="NicoLiveRequest.addToCommentReflector(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem id="id-release-reflection-from-request" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
       <menuseparator/>
