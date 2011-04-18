@@ -2939,7 +2939,6 @@ var NicoLiveHelper = {
 
 	let remaintime = this.endtime - now;
 
-/*
 	// new
 	if( this.iscaster && this.endtime ){
 	    // 残り時間3分を切ると、15秒ごとに自動無料延長を試みる.
@@ -2956,7 +2955,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	}
-*/
+/*
 	// old
 	if( this.iscaster ){
 	    // 3分前になったら自動無料延長の実施.
@@ -2972,6 +2971,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	}
+*/
 
 	let nt = NicoLivePreference.notice.time;
 	if( (this.endtime && remaintime>0 && remaintime < nt*60) ||
