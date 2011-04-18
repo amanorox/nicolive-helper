@@ -178,9 +178,11 @@ var NicoLiveComment = {
 	    this.reflection(comment);
 	}
 
-	let y = this.getPosition();
-	if( y!=0 ){
-	    this.getScrollBox().scrollTo( 0, y+tr.clientHeight);
+	if( comment.date>=NicoLiveHelper.connecttime ){
+	    let y = this.getPosition();
+	    if( y!=0 ){
+		this.getScrollBox().scrollTo( 0, y+tr.clientHeight);
+	    }
 	}
     },
 
