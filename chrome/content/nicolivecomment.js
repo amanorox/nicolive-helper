@@ -27,10 +27,39 @@ var NicoLiveComment = {
     prev_comment_no: 0,    // 直前のコメ番(NGコメント検出・表示のためのコメ番記録).
     current_comment_no: 0, // 現在のコメ番(単純増加のみで表示リフレッシュがあっても不変).
 
+    getScrollBox:function(){
+	return $('comment-box').boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+    },
+    getPosition:function(){
+	let y = {};
+	this.getScrollBox().getPosition({},y);
+	return y.value;
+    },
+    getScrolledSize:function(){
+	let height = {};
+	this.getScrollBox().getScrolledSize({}, height);
+	return height.value;
+    },
+
+    onScroll:function(e){
+	let box = this.getScrollBox();
+	let y = {};
+	let height = {};
+	box.getPosition({},y);
+	box.getScrolledSize({}, height);
+	if( y.value==0 ){
+	    debugprint("top");
+	}else if( y.value+box.height >= height.value ){
+	    debugprint("bottom");
+	}else{
+	    //debugprint("inner");
+	}
+    },
+
     /** コメント表示テーブルに一行追加したりコメントリフレクトしたり.
      */
     addRow:function(comment,disablereflection){
-	var table = $('comment_table');
+	let table = $('comment_table');
 	if(!table){ return; }
 
 	if( this.prev_comment_no!=0 ){
@@ -55,7 +84,7 @@ var NicoLiveComment = {
 		if( this.current_comment_no <= com.no ){
 		    if( NicoLiveHelper.iscaster && NicoLivePreference.ngword_recomment ){
 			if( !NicoLiveHelper._timeshift && comment.date>=NicoLiveHelper.connecttime ){
-			    var recomment = ">>"+com.no+" NGワードが含まれています";
+			    let recomment = ">>"+com.no+" NGワードが含まれています";
 			    //LoadFormattedString('STR_RECOMMENT_NGWORD',[comment.no, comment.text, ngword]);
 			    NicoLiveHelper.postCasterComment(recomment,"");
 			}
@@ -71,16 +100,16 @@ var NicoLiveComment = {
 	    table.deleteRow(table.rows.length-1);
 	}
 
-	//var tr = table.insertRow(table.rows.length);
-	var tr = table.insertRow(0);
+	//let tr = table.insertRow(table.rows.length);
+	let tr = table.insertRow(0);
 
 	if(!this.colormap[comment.user_id]){
-	    var sel = GetRandomInt(1,8);
-	    var col = 'color'+sel;
+	    let sel = GetRandomInt(1,8);
+	    let col = 'color'+sel;
 	    tr.className = col;
 	    this.colormap[comment.user_id] = {"color":col, "date":GetCurrentTime()};
 	}else{
-	    var col = this.colormap[comment.user_id].color;
+	    let col = this.colormap[comment.user_id].color;
 	    if( col.indexOf('color')==0 ){
 		tr.className = col;
 	    }else{
@@ -96,13 +125,13 @@ var NicoLiveComment = {
 	    }
 	}
 
-	var td;
+	let td;
 	td = tr.insertCell(tr.cells.length);
 	td.textContent = comment.no;
 
 	td = tr.insertCell(tr.cells.length);
 
-	var str;
+	let str;
 	// nameが指定されていればその名前を使用する.
 	str = comment.name || this.namemap[comment.user_id] && this.namemap[comment.user_id].name || comment.user_id;
 
@@ -117,8 +146,8 @@ var NicoLiveComment = {
 	}
 	str = htmlspecialchars(str);
 	    
-	var tmp = str.split(/(sm\d+|nm\d+|\d{10}|&\w+;)/);
-	var i;
+	let tmp = str.split(/(sm\d+|nm\d+|\d{10}|&\w+;)/);
+	let i;
 	for(i=0;i<tmp.length;i++){
 	    if( !tmp[i].match(/(sm\d+|nm\d+|\d{10}|&\w+;)/) ){
 		tmp[i] = tmp[i].replace(/(.{35,}?)/g,"$1<html:wbr/>");
@@ -147,6 +176,11 @@ var NicoLiveComment = {
 
 	if(comment.premium<2 && !disablereflection){
 	    this.reflection(comment);
+	}
+
+	let y = this.getPosition();
+	if( y!=0 ){
+	    this.getScrollBox().scrollTo( 0, y+tr.clientHeight);
 	}
     },
 

@@ -147,6 +147,8 @@
     <!-- command menu -->
     <toolbarbutton label="&toolbar.command;" type="menu">
       <menupopup>
+	<!-- <menuitem label="test" oncommand="NicoLiveHelper.test();"/> -->
+
 	<menuitem label="放送ID(lvXXXXX)を入力して接続" oncommand="NicoLiveWindow.connectToBroadcasting();"/>
 
 	<menu label="&toolbar.backuprestore;" tooltiptext="&toolbar.backuprestore.help;"><!-- バックアップと復元 -->
@@ -375,9 +377,9 @@
 	    <checkbox persist="checked" id="overwrite-hidden-perm" label="&comment.write_upperarea;" tooltiptext="&comment.tooltip_write_upperarea;"/>
 	    <!-- <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/> -->
 	  </hbox>
-	  <vbox flex="1" style="overflow:auto;">
+	  <scrollbox id="comment-box" orient="vertical" flex="1" style="overflow:auto;">
 	    <html:table id="comment_table" style="width:100%"></html:table>
-	  </vbox>
+	  </scrollbox>
 	  <splitter collapse="after" state="collapsed"/>
 	  <vbox flex="1" style="overflow:auto;">
 	    <grid>
