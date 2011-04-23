@@ -21,6 +21,12 @@ THE SOFTWARE.
  */
 
 var NicoLiveWindow = {
+    // 左のタブから1,2,3,....,9,0 の番号としてタブを切り替える.
+    changeTab:function(n){
+	n = (n + 9) % 10;
+	$('maintabs').selectedIndex = n;
+    },
+
     setWindowList:function(){
 	this.winlist = WindowEnumerator();
 

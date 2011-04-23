@@ -92,21 +92,33 @@
 
   <keyset>
     <!-- F5: Redraw a stock and a request tab -->
-    <key id="redraw-stock" keycode="VK_F5" oncommand="NicoLiveRequest.redrawStock();"></key>
+    <key id="redraw-stock" keycode="VK_F5" oncommand="NicoLiveRequest.redrawStock();"/>
     <!-- F3: Find next -->
-    <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"></key>
+    <key id="findnext-stock" keycode="VK_F3" oncommand="NicoLiveRequest.findNextRequestStock();"/>
     <!-- CTRL+M: Add a currently playing movie to Toriaezu-mylist -->
-    <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id, NicoLiveMylist.getDefaultMylistComment());"></key>
+    <key id="addto-defaultmylist" key="m" modifiers="accel" oncommand="NicoLiveMylist.addDeflist(NicoLiveHelper.musicinfo.video_id, NicoLiveMylist.getDefaultMylistComment());"/>
     <!-- CTRL+F: Find a movie in a request or a stock tab -->
-    <key id="search-stock" key="f" modifiers="accel" oncommand="NicoLiveRequest.findRequestStock();"></key>
+    <key id="search-stock" key="f" modifiers="accel" oncommand="NicoLiveRequest.findRequestStock();"/>
     <!-- CTRL+T: Tweet by Twitter -->
-    <key id="tweeting" key="t" modifiers="accel" oncommand="NicoLiveTweet.inputTweet();"></key>
+    <key id="tweeting" key="t" modifiers="accel" oncommand="NicoLiveTweet.inputTweet();"/>
     <!-- CTRL+W: Close this window -->
-    <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"></key>
+    <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"/>
     <!-- CTRL+R: Reconnect -->
-    <key id="reconnect" key="r" modifiers="accel" oncommand="NicoLiveHelper.reconnect();"></key>
+    <key id="reconnect" key="r" modifiers="accel" oncommand="NicoLiveHelper.reconnect();"/>
     <!-- CTRL+B: Back stage pass comment(using only caster) -->
-    <key id="reconnect" key="b" modifiers="accel" oncommand="NicoLiveHelper.postBSPComment();"></key>
+    <key id="reconnect" key="b" modifiers="accel" oncommand="NicoLiveHelper.postBSPComment();"/>
+
+    <!-- CTRL+Num: Change the tab -->
+    <key id="tab-move-0" key="0" modifiers="accel" oncommand="NicoLiveWindow.changeTab(0);"/>
+    <key id="tab-move-1" key="1" modifiers="accel" oncommand="NicoLiveWindow.changeTab(1);"/>
+    <key id="tab-move-2" key="2" modifiers="accel" oncommand="NicoLiveWindow.changeTab(2);"/>
+    <key id="tab-move-3" key="3" modifiers="accel" oncommand="NicoLiveWindow.changeTab(3);"/>
+    <key id="tab-move-4" key="4" modifiers="accel" oncommand="NicoLiveWindow.changeTab(4);"/>
+    <key id="tab-move-5" key="5" modifiers="accel" oncommand="NicoLiveWindow.changeTab(5);"/>
+    <key id="tab-move-6" key="6" modifiers="accel" oncommand="NicoLiveWindow.changeTab(6);"/>
+    <key id="tab-move-7" key="7" modifiers="accel" oncommand="NicoLiveWindow.changeTab(7);"/>
+    <key id="tab-move-8" key="8" modifiers="accel" oncommand="NicoLiveWindow.changeTab(8);"/>
+    <key id="tab-move-9" key="9" modifiers="accel" oncommand="NicoLiveWindow.changeTab(9);"/>
   </keyset>
 
   <toolbar id="global-menu">
