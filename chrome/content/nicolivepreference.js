@@ -110,6 +110,7 @@ var NicoLivePreference = {
 	this.notice.comment = branch.getBoolPref("notice.comment");
 	this.notice.popup = branch.getBoolPref("notice.popup");
 	this.notice.sound = branch.getBoolPref("notice.sound");
+	this.notice.infobar = branch.getBoolPref("notice.infobar");
 	this.notice.soundfile = branch.getUnicharPref("notice.soundfile");
 	this.notice.time    = branch.getIntPref("notice.time");
 

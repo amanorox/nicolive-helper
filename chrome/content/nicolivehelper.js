@@ -2916,6 +2916,23 @@ var NicoLiveHelper = {
 		debugprint("failed to play sound:"+x);
 	    }
 	}
+	if( NicoLivePreference.notice.infobar ){
+	    this.addInformationBar(str);
+	}
+    },
+
+    // ニコニコ生放送の情報バーを用いて通知する.
+    addInformationBar:function(str){
+	try{
+	    let tab = NicoLiveWindow.findTab(this.request_id) || NicoLiveWindow.findTab(this.community);
+	    let Nicolive = tab.linkedBrowser._contentWindow.wrappedJSObject.Nicolive;
+	    Nicolive.Liveinfo.prototype._infoTypes[100] = "nlh";
+	    Nicolive.Liveinfo.prototype._infoTypesInverted["nlh"] = 100;
+	    Nicolive.Liveinfo.prototype._infoTypeHeaders["nlh"] = "【NicoLive Helper】";
+	    Nicolive.Liveinfo.liveinfoArea._defaultLiveinfoConf.infoTypeEnableFlags["nlh"] = true;
+	    Nicolive.Liveinfo.liveinfoArea.addInfo(100,str);
+	} catch (x) {
+	}
     },
 
     // 現在の再生曲の再生時間と、生放送の経過時間をプログレスバーで表示.

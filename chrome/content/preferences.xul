@@ -558,6 +558,7 @@
       <preference id="pref-notice-comment" name="extensions.nicolivehelper.notice.comment" type="bool"/>
       <preference id="pref-notice-popup" name="extensions.nicolivehelper.notice.popup" type="bool"/>
       <preference id="pref-notice-sound" name="extensions.nicolivehelper.notice.sound" type="bool"/>
+      <preference id="pref-notice-infobar" name="extensions.nicolivehelper.notice.infobar" type="bool"/>
       <preference id="pref-notice-message" name="extensions.nicolivehelper.notice.message" type="unichar"/>
       <preference id="pref-notice-soundfile" name="extensions.nicolivehelper.notice.soundfile" type="unichar"/>
 
@@ -721,6 +722,7 @@
 		  <checkbox preference="pref-notice-comment" label="運営コメント" tooltiptext="運営コメントを使用して警告します。"/>
 		  <checkbox preference="pref-notice-popup" label="ポップアップ" tooltiptext="ポップアップする通知ウィンドウを使用して警告します。"/>
 		  <checkbox preference="pref-notice-sound" label="サウンド" tooltiptext="サウンド再生を使用して警告します。"/>
+		  <checkbox preference="pref-notice-infobar" label="情報バー" tooltiptext="ニコニコ生放送の情報バーを使用して警告します。"/>
 		</hbox>
 		<hbox align="center">
 		  <label value="通知メッセージ"/>

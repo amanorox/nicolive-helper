@@ -86,6 +86,7 @@ pref("extensions.nicolivehelper.notice.dialog",false);
 pref("extensions.nicolivehelper.notice.comment",false);
 pref("extensions.nicolivehelper.notice.popup",false);
 pref("extensions.nicolivehelper.notice.sound",false);
+pref("extensions.nicolivehelper.notice.infobar",false);
 pref("extensions.nicolivehelper.notice.message","放送時間残り {pref:min-ago} 分になりました");
 pref("extensions.nicolivehelper.notice.soundfile","");
 pref("extensions.nicolivehelper.startup-comment","");
