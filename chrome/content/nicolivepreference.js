@@ -124,7 +124,7 @@ var NicoLivePreference = {
 	NicoLiveComment.loadPresetAutocomplete();
 
 	this.ngwordfiltering = branch.getBoolPref("ngwordfiltering");
-	this.ngword_recomment = branch.getBoolPref("ngword-recomment");
+	this.ngword_recomment = branch.getBoolPref("ngword-recomment"); // NGコメントの通知.
 
 	this.do_customscript = branch.getBoolPref("custom-script");
 	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
@@ -269,8 +269,10 @@ var NicoLivePreference = {
 	this.accept_within_livespace = branch.getBoolPref("accept-within-livespace");
 	this.nreq_per_ppl = branch.getIntPref("accept-nreq");
 
-	this.mikuonly = branch.getBoolPref("mikuonly");
 	this.doprepare = branch.getBoolPref("prepare");
+	this.prepare_timing = branch.getIntPref("prepare-timing");
+
+	this.mikuonly = branch.getBoolPref("mikuonly");
 
 	if(!fromobserver){
 	    // NicoLiveHelper側でNicoLivePreferenceを読むからここでセットする必要なし.

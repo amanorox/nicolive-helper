@@ -3362,13 +3362,12 @@ var NicoLiveHelper = {
 	    }, next_time );
 	debugprint( parseInt((next_time)/1000)+'秒後に次曲を再生します');
 
-	let prepare_time1 = parseInt(next_time/5*4);
+	let prepare_time1 = next_time - NicoLivePreference.prepare_timing*1000;
 	let prepare_time2 = next_time - 40*1000;
 	// 40秒の先読み時間を取れないときは実行しない.
 	if( prepare_time2<0 ) return;
-
-	// 再生時間+インターバルの8割地点と、40秒前開始で、早い方を選択.
-	let prepare_time = prepare_time1 > prepare_time2 ? prepare_time2 : prepare_time1;
+	if( prepare_time1<0 ) prepare_time1 = 1*1000;
+	let prepare_time = prepare_time1;
 
 	this._prepare = setInterval(
 	    function(){

@@ -672,6 +672,8 @@ var NLHPreference = {
 	this._login = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
 
 	this.getSavedTwitterToken();
+
+	$('prepare-timing-bar').value = $('pref-prepare-timing').value;
     },
     destroy:function(){
 	//Application.console.log('close advanced setting');
