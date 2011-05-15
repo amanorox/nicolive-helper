@@ -2177,7 +2177,7 @@ var NicoLiveHelper = {
 	let k = "_" + item.video_id;
 	if( this.error_req[k] && this.error_req[k].cno ){
 	    if( item.cno ){
-		this.error_req[k].cno += ","+item.cno;
+		this.error_req[k].cno += ", "+item.cno;
 	    }
 	}else{
 	    this.error_req[k] = item;
