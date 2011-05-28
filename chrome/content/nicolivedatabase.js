@@ -335,7 +335,16 @@ var NicoLiveDatabase = {
 	    switch(this.searchcond[parseInt(menulist[1].value)]){
 	    case "include":
 	    case "exclude":
-		st.bindUTF8StringParameter(cnt,"%"+textbox[0].value+"%");
+		if(this.searchtarget[parseInt(menulist[0].value)]=="video_id"){
+		    try{
+			let vid = textbox[0].value.match(/(sm|nm)\d+/g)[0];
+			st.bindUTF8StringParameter(cnt,"%"+vid+"%");
+		    } catch (x) {
+			st.bindUTF8StringParameter(cnt,"%"+textbox[0].value+"%");
+		    }
+		}else{
+		    st.bindUTF8StringParameter(cnt,"%"+textbox[0].value+"%");
+		}
 		break;
 	    case "gte":
 	    case "equal":
