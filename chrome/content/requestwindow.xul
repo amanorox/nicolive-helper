@@ -482,6 +482,7 @@
 		  <menupopup>
 		    <menuitem label="&sort.ascend_order;" value="asc"/>
 		    <menuitem label="&sort.descend_order;" value="desc"/>
+		    <menuitem label="ランダム" value="random"/>
 		  </menupopup>
 		</menulist>
 		<button label="&db.do_search;" oncommand="NicoLiveDatabase.search();"/>

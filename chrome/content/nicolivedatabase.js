@@ -320,8 +320,12 @@ var NicoLiveDatabase = {
 	if(cnt<=0) return;
 
 	sql += cond.join(' and '); // 条件は全部andで.
-	sql += " order by " + $('db-search-orderby').value;
-	sql += " " + $('db-search-order').value;
+	if( $('db-search-order').value == "random" ){
+	    sql += " order by random()";
+	}else{
+	    sql += " order by " + $('db-search-orderby').value;
+	    sql += " " + $('db-search-order').value;
+	}
 	sql += " limit 0," + parseInt($('db-search-max').value);
 	debugprint('sql='+sql);
 
