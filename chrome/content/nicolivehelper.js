@@ -2821,10 +2821,10 @@ var NicoLiveHelper = {
 	}
 	this.coStream.writeString(str);
 
-	// 30分に1回送ってればいいのかね.
+	// 3分に1回送ってればいいのかね.
 	this._keepconnection = setInterval( function(){
 						NicoLiveHelper.keepConnection();
-					    }, 1000*60*30);
+					    }, 1000*60*3);
 	this._updateprogressid = setInterval( function(){
 						  NicoLiveHelper.updateProgressBar();
 					      }, 1000);
@@ -2848,7 +2848,8 @@ var NicoLiveHelper = {
     },
 
     keepConnection:function(){
-	let str = "<thread thread=\""+this.thread+"\" res_from=\"-1\" version=\"20061206\"/>\0";
+	//let str = "<thread thread=\""+this.thread+"\" res_from=\"-1\" version=\"20061206\"/>\0";
+	let str = "<ping>PING</ping>";
 	this.coStream.writeString(str);
     },
 
