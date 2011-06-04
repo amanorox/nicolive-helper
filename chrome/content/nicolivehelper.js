@@ -1820,7 +1820,7 @@ var NicoLiveHelper = {
 	this._getpostkeycounter = 0;
 	setTimeout(function(){
 		       NicoLiveHelper._postListenerComment(comment,mail);
-		   }, 0);
+		   }, 10);
     },
     _postListenerComment: function(comment,mail){
 	// <chat thread="1007128526" ticket="0x957fa28" vpos="17453" postkey="iFzMyJ74LVHI5tZ6tIY9eXijNKQ" mail=" 184" user_id="14369164" premium="0">一般ユーザーからのコメント発信てすと（主</chat>
@@ -1872,7 +1872,7 @@ var NicoLiveHelper = {
 			// 取得終わったら、コメ送信する.
 			setTimeout(function(){
 				       NicoLiveHelper._postListenerComment(NicoLiveHelper.chatbuffer,NicoLiveHelper.mailbuffer);
-				   }, 0);
+				   }, 10);
 
 		    }
 		}else{
