@@ -1820,7 +1820,7 @@ var NicoLiveHelper = {
 	this._getpostkeycounter = 0;
 	setTimeout(function(){
 		       NicoLiveHelper._postListenerComment(comment,mail);
-		   }, 10);
+		   }, 0);
     },
     _postListenerComment: function(comment,mail){
 	// <chat thread="1007128526" ticket="0x957fa28" vpos="17453" postkey="iFzMyJ74LVHI5tZ6tIY9eXijNKQ" mail=" 184" user_id="14369164" premium="0">一般ユーザーからのコメント発信てすと（主</chat>
@@ -1840,7 +1840,7 @@ var NicoLiveHelper = {
 	    + " postkey=\""+this.postkey+"\""
 	    + " mail=\""+mail+(NicoLivePreference.comment184?" 184\"":"\"")
 	    + " user_id=\""+this.user_id+"\""
-	    + " premium=\""+this.is_premium+"\">"
+	    + " premium=\""+this.is_premium+"\" locale=\"jp\">"
 	    + htmlspecialchars(comment)
 	    + "</chat>\0";
 	//debugprint(str);
@@ -1872,7 +1872,7 @@ var NicoLiveHelper = {
 			// 取得終わったら、コメ送信する.
 			setTimeout(function(){
 				       NicoLiveHelper._postListenerComment(NicoLiveHelper.chatbuffer,NicoLiveHelper.mailbuffer);
-				   }, 10);
+				   }, 0);
 
 		    }
 		}else{
@@ -2705,11 +2705,18 @@ var NicoLiveHelper = {
 	    if( $('automatic-broadcasting').hasAttribute('checked') ){
 		NicoLiveHelper.configureStream0( NicoLiveHelper.token );
 	    }
+	    // <ping>EOT</ping>
+	    //this.coStream.writeString("<ping>EOT</ping>");
 	}
 	dat = line.match(/<thread.*last_res=\"([0-9a-fA-Fx]*)\".*\/>/);
 	if(dat){
 	    this.last_res = parseInt(dat[1]);
 	    debugprint('last_res='+this.last_res);
+	}
+
+	dat = line.match(/<ping>.*<\/ping>/i);
+	if(dat){
+	    //this.coStream.writeString("<ping>EOT</ping>");
 	}
     },
 
@@ -2848,8 +2855,8 @@ var NicoLiveHelper = {
     },
 
     keepConnection:function(){
-	//let str = "<thread thread=\""+this.thread+"\" res_from=\"-1\" version=\"20061206\"/>\0";
-	let str = "<ping>PING</ping>";
+	let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
+	//let str = "<ping>PING</ping>";
 	this.coStream.writeString(str);
     },
 
