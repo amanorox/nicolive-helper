@@ -1,5 +1,5 @@
 /*
- * DO NOT EDIT.  THIS FILE IS GENERATED FROM d:\sources\firefox\nicolivehelper\ext\xpcom_commenttalker\ICommentTalker.idl
+ * DO NOT EDIT.  THIS FILE IS GENERATED FROM d:\sources\firefox\xpcom_commenttalker\ICommentTalker.idl
  */
 
 #ifndef __gen_ICommentTalker_h__
