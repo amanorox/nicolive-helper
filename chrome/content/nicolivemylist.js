@@ -64,6 +64,7 @@ var NicoLiveMylist = {
 		switch(result.status){
 		case 'ok':
 		    NicoLiveMylist.tweet(video_id, additional_msg);
+		    ShowNotice(video_id+'をとりあえずマイリストしました');
 		    break;
 		case 'fail':
 		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
@@ -115,6 +116,7 @@ var NicoLiveMylist = {
 		switch(result.status){
 		case 'ok':
 		    NicoLiveMylist.tweet(video_id, additional_msg);
+		    ShowNotice(video_id+'をマイリストしました');
 		    break;
 		case 'fail':
 		    ShowNotice(LoadString('STR_ERR_MYLIST_HEADER')+result.error.description);
