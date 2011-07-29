@@ -26,7 +26,7 @@ var NicoLiveTweet = {
 
     requestTokenURL: "http://twitter.com/oauth/request_token",
     accessTokenURL: "https://api.twitter.com/oauth/access_token",
-    updateURL: "http://api.twitter.com/1/statuses/update.json",
+    updateURL: "https://api.twitter.com/1/statuses/update.json",
     authorizeURL: "http://api.twitter.com/oauth/authorize",
 
     oauth: {},
