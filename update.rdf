@@ -2,21 +2,21 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="1.1.33">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHqIjSfPi7HaBnM0jZ0Or0M1wWFlXB/NyeEBL2U4cHSVcEHfjPzWcwrAy+lfqceO2n6QN3Rq+01E+cOb05HLqRT2lO9+5C3xlP0oKlRsPr8shvfgreAlkdAmewwa4CdX1ZBwpOUvd3Cfewq7yhbDkI9ql9X3ZWC8GweybSS1m7u/">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
                    em:maxVersion="*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.32.xpi"
-                   em:updateHash="sha1:eb84fb53c51f7ce890f73e8bc27ae85bf2aae11b"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.33.xpi"
+                   em:updateHash="sha1:598fc0e1210b54c00fbf8d5a7ba4790f9715f0d0"
                    em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAJLSBTKXDW76+RoJ9DxqO1R8pofb4gXRN1GB6lTN45ZgKdOAt8yguAjw44yVl6mAttjyzItkhCFX+T0i4etDvB5utMnz2qCidw3mVHXIsB+U/2/5Zo3CeEnFKK4Z54btHkGNy6eXGOQP6Tp0YZmlBWaOxkIyT9N6ALnlqo+sv1eu">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="1.1.32">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
