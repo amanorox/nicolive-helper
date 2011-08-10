@@ -645,12 +645,7 @@ var NicoLiveHelper = {
 	let prefs = NicoLivePreference.getBranch();
 	NicoLiveComment.releaseReflector();
 	if( (autolive && this.iscaster) || NicoLivePreference.isAutoWindowClose(this.iscaster) ){
-	    if( prefs.getBoolPref("autotabclose") ){
-		NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
-	    }
-	    NicoLiveHelper._donotshowdisconnectalert = true;
-	    NicoLiveHelper.close();
-	    window.close();
+	    NicoLiveHelper.closeWindow();
 	}else{
 	    PlayAlertSound();
 	    let msg = NicoLiveHelper.request_id+':'+NicoLiveHelper.title+' は終了しました';
@@ -659,6 +654,25 @@ var NicoLiveHelper = {
 	    NicoLiveHelper._donotshowdisconnectalert = true;
 	    NicoLiveHelper.close();
 	}
+    },
+
+    closeWindow:function(){
+	let prefs = NicoLivePreference.getBranch();
+	let delay = 0;
+	try {
+	    delay = prefs.getIntPref("closing-delay");
+	    debugprint(delay);
+	} catch (x) {
+	    delay = 1;
+	}
+	setTimeout(function(){
+		       if( prefs.getBoolPref("autotabclose") ){
+			   NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
+		       }
+		       NicoLiveHelper._donotshowdisconnectalert = true;
+		       NicoLiveHelper.close();
+		       window.close();
+		   },delay);
     },
 
     // 生放送のページのタブを閉じる.
