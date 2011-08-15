@@ -736,16 +736,16 @@
 		  <textbox flex="1" preference="pref-notice-message"/>
 		</hbox>
 		<hbox align="center">
-		  <label value="延長時メッセージ"/>
-		  <textbox flex="1" preference="pref-notice-extend"/>
-		</hbox>
-		<hbox align="center">
 		  <label value="サウンドファイル"/>
 		  <textbox flex="1" preference="pref-notice-soundfile" id="notice-soundfile"/>
 		  <button label="参照..." oncommand="NLHPreference.refSoundFileToNotice();"/>
 		</hbox>
 	      </vbox>
 	      <separator/>
+		<hbox align="center">
+		  <label value="延長時メッセージ"/>
+		  <textbox flex="1" preference="pref-notice-extend"/>
+		</hbox>
 
 	    </vbox>
 	  </tabpanel>
