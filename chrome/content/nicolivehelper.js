@@ -993,6 +993,11 @@ var NicoLiveHelper = {
 		tmp = NicoLivePreference.notice.time;
 		break;
 
+	    case 'end-time':
+		// 放送の終了時刻.
+		tmp = GetDateString( NicoLiveHelper.endtime * 1000 );
+		break;
+
 	    case 'progress':
 		// 現在の動画の進行具合の棒グラフ.
 		let progress = GetCurrentTime()-NicoLiveHelper.musicstarttime;
@@ -3700,8 +3705,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('new_end_time')[0].textContent);
 			    debugprint("New endtime="+NicoLiveHelper.endtime);
 			    NicoLiveHelper._extendcnt = 0;
-			    let t = GetDateString( NicoLiveHelper.endtime * 1000 );
-			    let str = "延長を行いました。新しい終了時刻は "+t+" です";
+			    let str = NicoLivePreference.getBranch().getUnicharPref('notice.extend');
 			    NicoLiveHelper.postCasterComment(str,"");
 			    ShowNotice(str);
 			}else{
@@ -3750,8 +3754,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('new_end_time')[0].textContent);
 			    debugprint("New endtime="+NicoLiveHelper.endtime);
 			    NicoLiveHelper._extendcnt = 0;
-			    let t = GetDateString( NicoLiveHelper.endtime * 1000 );
-			    let str = "無料延長を行いました。新しい終了時刻は "+t+" です";
+			    let str = NicoLivePreference.getBranch().getUnicharPref('notice.extend');
 			    NicoLiveHelper.postCasterComment(str,"");
 			    ShowNotice(str);
 			}else{

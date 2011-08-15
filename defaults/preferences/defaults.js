@@ -89,6 +89,7 @@ pref("extensions.nicolivehelper.notice.popup",false);
 pref("extensions.nicolivehelper.notice.sound",false);
 pref("extensions.nicolivehelper.notice.infobar",false);
 pref("extensions.nicolivehelper.notice.message","放送時間残り {pref:min-ago} 分になりました");
+pref("extensions.nicolivehelper.notice.extend","延長を行いました。新しい終了時刻は {end-time} です");
 pref("extensions.nicolivehelper.notice.soundfile","");
 pref("extensions.nicolivehelper.startup-comment","");
 pref("extensions.nicolivehelper.listenercommand.enable",false);

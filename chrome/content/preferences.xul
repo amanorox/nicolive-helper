@@ -566,6 +566,7 @@
       <preference id="pref-notice-sound" name="extensions.nicolivehelper.notice.sound" type="bool"/>
       <preference id="pref-notice-infobar" name="extensions.nicolivehelper.notice.infobar" type="bool"/>
       <preference id="pref-notice-message" name="extensions.nicolivehelper.notice.message" type="unichar"/>
+      <preference id="pref-notice-extend" name="extensions.nicolivehelper.notice.extend" type="unichar"/>
       <preference id="pref-notice-soundfile" name="extensions.nicolivehelper.notice.soundfile" type="unichar"/>
 
       <preference id="pref-ngwordfiltering" name="extensions.nicolivehelper.ngwordfiltering" type="bool"/>
@@ -733,6 +734,10 @@
 		<hbox align="center">
 		  <label value="通知メッセージ"/>
 		  <textbox flex="1" preference="pref-notice-message"/>
+		</hbox>
+		<hbox align="center">
+		  <label value="延長時メッセージ"/>
+		  <textbox flex="1" preference="pref-notice-extend"/>
 		</hbox>
 		<hbox align="center">
 		  <label value="サウンドファイル"/>
