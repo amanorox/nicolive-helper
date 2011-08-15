@@ -2403,6 +2403,14 @@ var NicoLiveHelper = {
 	if(sm.length<3) return;
 	if(this.isStockedMusic(sm)) return;
 
+	let non_db = $('add-non-db-video').hasAttribute('checked');
+	if( non_db ){
+	    if( NicoLiveDatabase.isInDB(sm) ){
+		debugprint(sm+"は動画DBにあるため追加されませんでした");
+		return;
+	    }
+	}
+
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+sm;
 	let req = CreateXHR("GET",url);
 	if( !req ) return;

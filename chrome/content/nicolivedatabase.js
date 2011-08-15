@@ -215,15 +215,20 @@ var NicoLiveDatabase = {
     },
 
     // 動画IDから検索.
-    getVideoFromId:function(sm){
+    isInDB:function(sm){
 	let st = this.dbconnect.createStatement('SELECT * FROM nicovideo WHERE video_id = ?1');
-	let music = {};
-	st.bindUTF8StringParameter(0,id);
-	while(st.step()){
-	    music = rowToMusicInfo(st.row);
+	let isexist = false;
+	try{
+	    st.bindUTF8StringParameter(0,sm);
+	    while(st.step()){
+		isexist = true;
+	    }
+	    st.finalize();
+	} catch (x) {
+	    debugprint(x);
+	    isexist = false;
 	}
-	st.finalize();
-	return music;
+	return isexist;
     },
 
     removeSearchLine:function(e){
