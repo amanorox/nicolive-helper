@@ -8,6 +8,16 @@ function SendOneLine()
 	let cmd = document.getElementById('multiline-command').value;
 	let comment = str[0];
 	comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
+
+	if( comment.indexOf("/")==0 ){
+	    let tmp = comment.split("/");
+	    cmd += " " + tmp[1];
+	    tmp.splice(0,2);
+	    comment = tmp.join("/");
+	}
+	//Application.console.log("cmd:"+cmd);
+	//Application.console.log("comment:"+comment);
+
 	opener.NicoLiveHelper.postCommentMain(comment,cmd,"");
 	str.splice(0,1);
 	document.getElementById('multiline-comment').value = str.join('\r\n');
