@@ -2513,7 +2513,12 @@ var NicoLiveHelper = {
 		info.restrict = NicoLivePreference.restrict;
 		ans.msg = NicoLiveHelper.replaceMacros(ans.msg, info);
 		if( ans.msg ){
-		    let msg = ">>"+q.comment_no+" " + ans.msg;
+		    let msg;
+		    if( ans.msg.indexOf("/")!=0 ){
+			msg = ">>"+q.comment_no+" " + ans.msg;
+		    }else{
+			msg = ans.msg;
+		    }
 		    if( q.comment_no!=0 ){
 			if( NicoLivePreference.show_autoreply ){
 			    let func = function(){
