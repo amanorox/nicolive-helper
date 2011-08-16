@@ -2466,6 +2466,14 @@ var NicoLiveHelper = {
 	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではなくて主セレ扱い.
 	    ans.movieinfo.selfrequest = q.is_self_request;
 
+	    if(ans.code==0){
+		let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
+		if(checker!=null){
+		    ans.code = checker.code;
+		    ans.msg = checker.msg;
+		}
+	    }
+
 	    // リクエスト制限数をチェック.
 	    let nlim = NicoLivePreference.nreq_per_ppl;
 	    if(!NicoLiveHelper.request_per_ppl[q.user_id]){
@@ -2475,6 +2483,7 @@ var NicoLiveHelper = {
 		// 自貼りはカウントしなくてOK.
 		NicoLiveHelper.request_per_ppl[q.user_id]++;
 	    }
+
 	    let n = NicoLiveHelper.request_per_ppl[q.user_id];
 	    if(ans.code==0 && n>nlim && nlim>0){
 		NicoLiveHelper.request_per_ppl[q.user_id]--;
@@ -2488,13 +2497,6 @@ var NicoLiveHelper = {
 	    ans.movieinfo.user_id = q.user_id;
 	    ans.movieinfo.request_id = NicoLiveHelper.request_id;
 
-	    if(ans.code==0){
-		let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
-		if(checker!=null){
-		    ans.code = checker.code;
-		    ans.msg = checker.msg;
-		}
-	    }
 	    switch(ans.code){
 	    case 0:
 		ans.movieinfo.error = false;
