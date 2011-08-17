@@ -19,6 +19,7 @@
 	<em:name>ニコニコ生放送ヘルパー用コメント読み上げアドオン</em:name>
 	<em:description>ニコニコ生放送ヘルパー(NicoLive Helper)にコメント読み上げ機能を追加する、実験的なアドオンです。</em:description>
 	<em:creator>あまの</em:creator>
+	<em:contributor>なお</em:contributor>
       </Description>
     </em:localized>
     <em:targetApplication>
