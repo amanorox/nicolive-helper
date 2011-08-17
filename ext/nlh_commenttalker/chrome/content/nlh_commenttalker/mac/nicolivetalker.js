@@ -22,21 +22,27 @@ THE SOFTWARE.
 
 var NicoLiveTalker = {
     runProcess:function(exe,text){
-	let obj = Components.classes["@miku39.jp/NLHCommentTalker;1"].createInstance(Components.interfaces.INLHCommentTalker);
+	try{
+	    let obj = Components.classes["@miku39.jp/NLHCommentTalker;1"].createInstance(Components.interfaces.INLHCommentTalker);
 
-	if( $('use-bouyomichan').selected ){
-	    obj.sayBouyomichan( $('bouyomichan-server').value, text);
+	    if( $('use-bouyomichan').selected ){
+		obj.sayBouyomichan( $('bouyomichan-server').value, text);
+	    }
+	    if( $('use-saykotoeri').selected || $('use-saykotoeri2').selected){
+		// system()使うのでコマンドラインパラメータとして渡すのに危険なもの削除.
+		text = text.replace(/[;\"'&]/g,"");
+		this.talkqueue.push(text);
+		//obj.sayKotoeri(text);
+	    }
+	} catch (x) {
 	}
-	if( $('use-saykotoeri').selected || $('use-saykotoeri2').selected){
-	    // system()使うのでコマンドラインパラメータとして渡すのに危険なもの削除.
-	    text = text.replace(/[;\"'&]/g,"");
-	    this.talkqueue.push(text);
-	    //obj.sayKotoeri(text);
-	}
+
 	return;
     },
 
     talk_bysaykotoeri:function(){
+	try{
+	    
 	if( this.talkqueue.length==0 ){
 	    $('talker-left').value = this.talkqueue.length + "行";
 	    return;
@@ -66,6 +72,9 @@ var NicoLiveTalker = {
 	}
 
 	$('talker-left').value = this.talkqueue.length + "行";
+
+	} catch (x) {
+	}
     },
 
     test:function(){
