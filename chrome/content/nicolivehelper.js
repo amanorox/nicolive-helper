@@ -606,7 +606,6 @@ var NicoLiveHelper = {
 			resultstr.push(dice);
 			result += dice;
 		    }
-		    debugprint("result "+sign+" offset;");
 		    result = eval("result "+sign+" offset;");
 		    resultstr = "["+result + "] = (" + resultstr.join("+")+")" + sign + offset;
 		    this.postCasterComment(">>"+chat.no+" "+resultstr,"");
