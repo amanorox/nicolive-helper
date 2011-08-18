@@ -588,21 +588,27 @@ var NicoLiveHelper = {
 		break;
 
 	    case 'dice':
-		// 2d+3 とか 4D+2 とか.
-		tmp = command[2].match(/(\d+)[Dd](\+(\d+))*/);
+		// 2d+3 とか 4D+2 とか 3D10-2 とか.
+		tmp = command[2].match(/(\d+)[Dd](\d*)([+-])?(\d*)/);
 		if(tmp){
 		    n = parseInt(tmp[1]);
-		    if(!tmp[3]) tmp[3] = "0";
+		    let face = parseInt(tmp[2]);
+		    let sign = tmp[3];
+		    let offset = parseInt(tmp[4]);
+		    if( !face || face<0 ) face = 6;
+		    if( !sign ) sign = "+";
+		    if( !offset ) offset = 0;
+
 		    let result = 0;
 		    let resultstr = new Array();
-		    for(let i=0;i<n && i<30;i++){
-			let dice = GetRandomInt(1,6);
+		    for(let i=0; i<n && i<30; i++){
+			let dice = GetRandomInt(1,face);
 			resultstr.push(dice);
 			result += dice;
 		    }
-		    resultstr = resultstr.join(",");
-		    result += parseInt(tmp[3]);
-		    resultstr += " + "+tmp[3] +" = " + result;
+		    debugprint("result "+sign+" offset;");
+		    result = eval("result "+sign+" offset;");
+		    resultstr = "["+result + "] = (" + resultstr.join("+")+")" + sign + offset;
 		    this.postCasterComment(">>"+chat.no+" "+resultstr,"");
 		}
 		break;
