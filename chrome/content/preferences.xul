@@ -110,7 +110,7 @@
       <preference id="pref-no-autopname" name="extensions.nicolivehelper.no-auto-pname" type="bool"/>
     </preferences>
 
-    <tabbox>
+    <tabbox persist="selectedIndex" id="prefwindow-videoinfo">
       <tabs>
 	<tab label="動画情報"></tab>
 	<tab label="P名ホワイトリスト"></tab>
@@ -246,7 +246,7 @@
       <preference id="pref-continuousCommentDir" name="extensions.nicolivehelper.continuous-commentDir" type="file"/>
     </preferences>
 
-    <tabbox>
+    <tabbox persist="selectedIndex" id="prefwindow-autoreplies">
       <tabs>
 	<tab label="リクエストの応答"></tab>
 	<tab label="リクエスト制限の応答"></tab>
@@ -418,7 +418,7 @@
       <preference id="pref-ng-video-reply-message" name="extensions.nicolivehelper.request.ng-video-reply-message" type="unichar"/>
     </preferences>
     <vbox>
-      <tabbox flex="1">
+      <tabbox flex="1" persist="selectedIndex" id="prefwindow-restriction">
 	<tabs>
 	  <tab label="グローバル設定"/>
 	  <tab label="NG動画設定"/>
@@ -584,7 +584,7 @@
     </preferences>
     <vbox>
 
-      <tabbox flex="1">
+      <tabbox flex="1" persist="selectedIndex" id="prefwindow-others">
 	<tabs>
 	  <tab label="コメント"/>
 	  <tab label="動画分類"/>
