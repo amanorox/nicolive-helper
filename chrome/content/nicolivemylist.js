@@ -174,6 +174,7 @@ var NicoLiveMylist = {
 	this._addMyList(mylist_id,mylist_name,video_id, ev);
     },
 
+    // マイリストコメント付きでマイリストからストックを追加する。
     addStockFromMylistWithComment:function(mylist_id,mylist_name){
 	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
 	let req = CreateXHR("GET",url);

@@ -72,12 +72,13 @@ var NLHPreference = {
 	$('pref-msg-requiredkeyword').value = data["requiredkeyword"];
 	$('pref-msg-forbiddenkeyword').value = data["forbiddenkeyword"];
 	$('pref-msg-limitnumberofrequests').value = data["limitnumberofrequests"];
-
 	// 1.1.19+
 	$('pref-msg-within-livespace').value = data["within-livespace"] || $('pref-msg-within-livespace').defaultValue;
 	// 1.1.22+
 	$('pref-msg-requiredkeyword-title').value = data["requiredkeyword-title"] || $('pref-msg-requiredkeyword-title').defaultValue;
 	$('pref-msg-forbiddenkeyword-title').value = data["forbiddenkeyword-title"] || $('pref-msg-forbiddenkeyword-title').defaultValue;
+	// 1.1.35+
+	$('pref-msg-high-bitrate').value = data["high-bitrate"] || $('pref-msg-high-bitrate').defaultValue;
     },
     addPresetComment:function(presetname){
 	let data = {
@@ -102,9 +103,13 @@ var NLHPreference = {
 	    "requiredkeyword":$('pref-msg-requiredkeyword').value,
 	    "forbiddenkeyword":$('pref-msg-forbiddenkeyword').value,
 	    "limitnumberofrequests":$('pref-msg-limitnumberofrequests').value,
+	    // 1.1.19+
 	    "within-livespace":$('pref-msg-within-livespace').value,
+	    //1.1.22+
 	    "requiredkeyword-title":$('pref-msg-requiredkeyword-title').value,
-	    "forbiddenkeyword-title":$('pref-msg-forbiddenkeyword-title').value
+	    "forbiddenkeyword-title":$('pref-msg-forbiddenkeyword-title').value,
+	    // 1.1.35+
+	    "high-bitrate":$('pref-msg-high-bitrate').value
 	};
 	this.presetcomment[presetname] = data;
 	opener.NicoLiveDatabase.saveGPStorage('nico_live_commentpreset',this.presetcomment);
@@ -192,16 +197,13 @@ var NLHPreference = {
 	    $('pref-restrict-videolength').value= item.videolength;
 	    $('pref-restrict-tag-include').value= item.tag_include;
 	    $('pref-restrict-tag-exclude').value= item.tag_exclude;
-	    if( item.title_include && item.title_exclude ){
-		// 1.1.22+
-		$('pref-restrict-title-include').value= item.title_include;
-		$('pref-restrict-title-exclude').value= item.title_exclude;
-	    }else{
-		$('pref-restrict-title-include').value= "";
-		$('pref-restrict-title-exclude').value= "";
-	    }
 	    $('pref-date-from').value = $('pref-restrict-date-from').value;
 	    $('pref-date-to').value = $('pref-restrict-date-to').value;
+	    // 1.1.22+
+	    $('pref-restrict-title-include').value= item.title_include || "";
+	    $('pref-restrict-title-exclude').value= item.title_exclude || "";
+	    // 1.1.35+
+	    $('pref-restrict-bitrate').value = item.bitrate || 0;
 	} catch (x) {}
     },
 
@@ -218,8 +220,11 @@ var NLHPreference = {
 	item.videolength   = $('pref-restrict-videolength').value;
 	item.tag_include   = $('pref-restrict-tag-include').value;
 	item.tag_exclude   = $('pref-restrict-tag-exclude').value;
+	// 1.1.22+
 	item.title_include   = $('pref-restrict-title-include').value;
 	item.title_exclude   = $('pref-restrict-title-exclude').value;
+	// 1.1.35+
+	item.bitrate = $('pref-restrict-bitrate').value;
 	this.savePresetRequestCond(name,item);
 
 	let existmenu;
@@ -266,8 +271,10 @@ var NLHPreference = {
 	$('pref-restrict-tag-exclude').value = "";
 	$('pref-restrict-title-include').value = "";
 	$('pref-restrict-title-exclude').value = "";
+	$('pref-restrict-bitrate').value = 0;
 	$('pref-date-from').value = "2007-08-31";
 	$('pref-date-to').value = "2007-08-31";
+	$('pref-bitrate').value = 0;
     },
 
     // 動画情報をデフォルトにする.
@@ -277,7 +284,6 @@ var NLHPreference = {
 	 * タグ/{tags}
 	 * ♪{id} {title}<br>投稿日/{date} 時間/{length}<br>{additional}
 	 */
-
 	$('pref-videoinfo1').value = $('pref-videoinfo1').defaultValue;
 	$('pref-videoinfo2').value = $('pref-videoinfo2').defaultValue;
 	$('pref-videoinfo3').value = $('pref-videoinfo3').defaultValue;
@@ -320,10 +326,11 @@ var NLHPreference = {
 	$('pref-msg-requiredkeyword').value = $('pref-msg-requiredkeyword').defaultValue;
 	$('pref-msg-forbiddenkeyword').value = $('pref-msg-forbiddenkeyword').defaultValue;
 	$('pref-msg-limitnumberofrequests').value = $('pref-msg-limitnumberofrequests').defaultValue;
-
 	// 1.1.22+
 	$('pref-msg-requiredkeyword-title').value = $('pref-msg-requiredkeyword-title').defaultValue;
 	$('pref-msg-forbiddenkeyword-title').value = $('pref-msg-forbiddenkeyword-title').defaultValue;
+	// 1.1.35+
+	$('pref-msg-high-bitrate').value = $('pref-msg-high-bitrate').defaultValue;
     },
 
     // 視聴者コマンドの応答をリセットする.

@@ -96,6 +96,7 @@ var NicoLivePreference = {
 	this.msg.within_livespace = branch.getUnicharPref("msg-within-livespace"); // 1.1.19+
 	this.msg.requiredkeyword_title = branch.getUnicharPref("msg-requiredkeyword-title");   // 1.1.22+
 	this.msg.forbiddenkeyword_title = branch.getUnicharPref("msg-forbiddenkeyword-title"); // 1.1.22+
+	this.msg.highbitrate = branch.getUnicharPref("msg-high-bitrate"); // 1.1.35+
 	this.msg.ngvideo = branch.getUnicharPref("request.ng-video-reply-message"); // 1.1.26+
 
 	this.caster_comment_type = branch.getIntPref("comment-type-of-videoinfo");
@@ -137,11 +138,12 @@ var NicoLivePreference = {
 	this.readNGVideoSettings();
     },
 
+    // リクエスト制限設定を読み込む
     readRestrictionSetting:function(){
 	// リクエスト制限設定.
 	let branch = this.getBranch();
 	let restrict = {};
-	restrict.numberofrequests = this.nreq_per_ppl;
+	restrict.numberofrequests = this.nreq_per_ppl; // in basic setting
 	restrict.dorestrict = branch.getBoolPref("request.restrict");
 	restrict.date_from  = branch.getCharPref("request.date-from");
 	restrict.date_to    = branch.getCharPref("request.date-to");
@@ -160,7 +162,7 @@ var NicoLivePreference = {
 	restrict.videolength = branch.getIntPref("request.videolength");
 	restrict.view_from   = branch.getIntPref("request.view-from");
 	restrict.view_to     = branch.getIntPref("request.view-to");
-
+	// 1.1.22+
 	exclude = branch.getUnicharPref("request.title-exclude");
 	restrict.title_exclude = new Array();
 	if(exclude.length>0){
@@ -171,6 +173,8 @@ var NicoLivePreference = {
 	if(include.length>0){
 	    restrict.title_include = include.split(/\s+/);
 	}
+	// 1.1.35+
+	restrict.bitrate = branch.getIntPref("request.bitrate");
 	this.restrict = restrict;
     },
 

@@ -326,6 +326,14 @@ var NicoLiveHelper = {
 	    }
 	}
 
+	// 1.1.35+
+	if( restrict.bitrate ){
+	    if( videoinfo.highbitrate > restrict.bitrate ){
+		return NicoLivePreference.msg.highbitrate;
+	    }
+	}
+
+	// 1.1.22+
 	// タイトルにキーワードが含まれていればOK
 	if(restrict.title_include.length>0){
 	    let tagstr = videoinfo.title;

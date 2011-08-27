@@ -60,6 +60,7 @@ pref("extensions.nicolivehelper.msg-requiredkeyword","タグにキーワード�
 pref("extensions.nicolivehelper.msg-forbiddenkeyword","タグに「{=info.restrict.forbiddenkeyword}」が含まれています");
 pref("extensions.nicolivehelper.msg-requiredkeyword-title","タイトルにキーワードが含まれていません<br>{=info.restrict.requiredkeyword}");
 pref("extensions.nicolivehelper.msg-forbiddenkeyword-title","タイトルに「{=info.restrict.forbiddenkeyword}」が含まれています");
+pref("extensions.nicolivehelper.msg-high-bitrate","ビットレートが高いです");
 pref("extensions.nicolivehelper.msg-limitnumberofrequests","リクエストは1人{=info.restrict.numberofrequests.toString()}件までです");
 pref("extensions.nicolivehelper.savecomment",false);
 pref("extensions.nicolivehelper.new-logfile",false);
@@ -79,6 +80,7 @@ pref("extensions.nicolivehelper.request.tag-include","");
 pref("extensions.nicolivehelper.request.tag-exclude","");
 pref("extensions.nicolivehelper.request.title-include","");
 pref("extensions.nicolivehelper.request.title-exclude","");
+pref("extensions.nicolivehelper.request.bitrate",0);
 pref("extensions.nicolivehelper.request.ng-video","");
 pref("extensions.nicolivehelper.request.ng-video-reply-message","その動画はNG動画です");
 pref("extensions.nicolivehelper.notice.time",3);

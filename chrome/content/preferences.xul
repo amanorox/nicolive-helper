@@ -226,6 +226,7 @@
       <preference id="pref-msg-accept" name="extensions.nicolivehelper.msg-accept" type="unichar"/>
       <preference id="pref-msg-no-live-play" name="extensions.nicolivehelper.msg-no-live-play" type="unichar"/>
       <preference id="pref-msg-within-livespace" name="extensions.nicolivehelper.msg-within-livespace" type="unichar"/>
+      <preference id="pref-msg-limitnumberofrequests" name="extensions.nicolivehelper.msg-limitnumberofrequests" type="unichar"/>
 
       <preference id="pref-msg-requestok" name="extensions.nicolivehelper.msg-requestok" type="unichar"/>
       <preference id="pref-msg-requestng" name="extensions.nicolivehelper.msg-requestng" type="unichar"/>
@@ -242,7 +243,7 @@
       <preference id="pref-msg-forbiddenkeyword" name="extensions.nicolivehelper.msg-forbiddenkeyword" type="unichar"/>
       <preference id="pref-msg-requiredkeyword-title" name="extensions.nicolivehelper.msg-requiredkeyword-title" type="unichar"/>
       <preference id="pref-msg-forbiddenkeyword-title" name="extensions.nicolivehelper.msg-forbiddenkeyword-title" type="unichar"/>
-      <preference id="pref-msg-limitnumberofrequests" name="extensions.nicolivehelper.msg-limitnumberofrequests" type="unichar"/>
+      <preference id="pref-msg-high-bitrate" name="extensions.nicolivehelper.msg-high-bitrate" type="unichar"/>
 
       <preference id="pref-startup-comment" name="extensions.nicolivehelper.startup-comment" type="unichar"/>
 
@@ -296,6 +297,10 @@
 		<hbox align="center"><label control="msg-within-livespace" value="放送枠内に収まらない時"/></hbox>
 		<textbox preference="pref-msg-within-livespace" id="msg-within-livespace" flex="1"/>
 	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-limitnumberofrequests" value="リクエスト受付数上限を越えた時"/></hbox>
+		<textbox preference="pref-msg-limitnumberofrequests" id="msg-limitnumberofrequests" flex="1"/>
+	      </row>
 	    </rows>
 	  </grid>
 	</tabpanel>
@@ -306,10 +311,6 @@
 	      <column flex="1" />
 	    </columns>
 	    <rows>
-	      <row>
-		<hbox align="center"><label control="msg-limitnumberofrequests" value="リクエスト受付数上限を越えた時"/></hbox>
-		<textbox preference="pref-msg-limitnumberofrequests" id="msg-limitnumberofrequests" flex="1"/>
-	      </row>
 	      <row>
 		<hbox align="center"><label control="msg-lessviews" value="再生数が少ない時"/></hbox>
 		<textbox preference="pref-msg-lessviews" id="msg-lessviews" flex="1"/>
@@ -349,6 +350,10 @@
 	      <row>
 		<hbox align="center"><label control="msg-forbiddenkeyword-title" value="タイトルが指定キーワードを含む時"/></hbox>
 		<textbox preference="pref-msg-forbiddenkeyword-title" id="msg-forbiddenkeyword-title" flex="1"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label control="msg-forbiddenkeyword-title" value="ビットレートが高い時"/></hbox>
+		<textbox preference="pref-msg-high-bitrate" id="msg-high-bitrate" flex="1"/>
 	      </row>
 	    </rows>
 	  </grid>
@@ -418,6 +423,7 @@
       <preference id="pref-restrict-title-include" name="extensions.nicolivehelper.request.title-include" type="unichar"/>
       <preference id="pref-restrict-title-exclude" name="extensions.nicolivehelper.request.title-exclude" type="unichar"/>
       <preference id="pref-restrict-ng-video" name="extensions.nicolivehelper.request.ng-video" type="unichar"/>
+      <preference id="pref-restrict-bitrate" name="extensions.nicolivehelper.request.bitrate" type="int"/>
       <preference id="pref-ng-video-reply-message" name="extensions.nicolivehelper.request.ng-video-reply-message" type="unichar"/>
     </preferences>
     <vbox>
@@ -484,6 +490,11 @@
 		  <hbox align="center"><label value="を含む"/></hbox>
 		  <textbox id="restrict-title-exclude" size="6" flex="1" preference="pref-restrict-title-exclude"/>
 		  <hbox align="center"><label value="を含まない"/></hbox>
+		</row>
+		<row>
+		  <hbox aling="center"><label value="ビットレート"/></hbox>
+		  <textbox id="restrict-bitrate" type="number" min="0" size="6" preference="pref-restrict-bitrate"/>
+		  <hbox align="center"><label value="kbps以下"/></hbox>
 		</row>
 	      </rows>
 	    </grid>
