@@ -3378,7 +3378,7 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
-    // 次曲再生のタイマをしかける.
+    // duミリ秒後に次曲再生のタイマをしかける.
     setupPlayNextMusic:function(du){
 	// du(duration)にはミリ秒を渡す.
 	clearInterval(this._playnext);
