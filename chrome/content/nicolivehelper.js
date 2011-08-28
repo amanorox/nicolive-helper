@@ -1975,6 +1975,14 @@ var NicoLiveHelper = {
 	}
 	return -1;
     },
+    findRequestByVideoId:function(vid){
+	for(let i=0,item; item=this.requestqueue[i]; i++){
+	    if( item.video_id == vid ){
+		return i;
+	    }
+	}
+	return -1;
+    },
 
     setConsumptionRatePlay:function(b){
 	this.isconsumptionrateplay = b;	
@@ -2095,10 +2103,21 @@ var NicoLiveHelper = {
 
     // リクエストリストに追加する.
     addRequestQueue:function(item){
-	if( !item ) return;
-	if( !item.video_id ) return;
-	this.requestqueue.push(item);
-	NicoLiveRequest.add(item);
+	if( !item || !item.video_id ) return;
+	// 常にfindRequestByVideoIdをするよりはフラグ見て分岐した方がコストが安いと思うので.
+	if( NicoLivePreference.allow_duplicative ){
+	    let tmp = this.findRequestByVideoId(item.video_id);
+	    if( tmp<0 ){
+		this.requestqueue.push(item);
+		NicoLiveRequest.add(item);
+	    }else{
+		this.requestqueue[tmp].cno += ", "+item.cno;
+		NicoLiveRequest.update(NicoLiveHelper.requestqueue);
+	    }
+	}else{
+	    this.requestqueue.push(item);
+	    NicoLiveRequest.add(item);
+	}
 	this.updateRemainRequestsAndStocks();
     },
     // リクエストリストから削除する.
@@ -2175,7 +2194,13 @@ var NicoLiveHelper = {
 	this.requestqueue.sort( function(a,b){
 				    if(b.cno==undefined) return -1;
 				    if(a.cno==undefined) return 1;
-				    return (a.cno - b.cno) * order;
+				    try{
+					let a_cno = parseInt(a.cno.split(",")[0]);
+					let b_cno = parseInt(b.cno.split(",")[0]);
+					return (a_cno - b_cno) * order;
+				    } catch (x) {
+					return 1;
+				    }
 				});
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
@@ -2436,7 +2461,6 @@ var NicoLiveHelper = {
 	    if( req.readyState==4 && req.status==200 ){
 		// ストックでもリクエスト縛り要件を満たすかチェックする.
 		let ans = NicoLiveHelper.checkToAcceptRequest(req.responseXML, 0);
-		//debugprint(sm+'/'+ans.msg);
 		switch(ans.code){
 		case 0:
 		case -2: // リク受けつけてない.
@@ -2452,6 +2476,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.addStockQueue(ans.movieinfo);
 		    break;
 		default:
+		    //debugprint(sm+'/'+ans.msg);
 		    ans.movieinfo.error = true;
 		    NicoLiveHelper.addErrorRequestList(ans.movieinfo);
 		    break;

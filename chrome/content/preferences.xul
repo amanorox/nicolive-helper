@@ -492,7 +492,7 @@
 		  <hbox align="center"><label value="を含まない"/></hbox>
 		</row>
 		<row>
-		  <hbox aling="center"><label value="ビットレート"/></hbox>
+		  <hbox align="center"><label value="ビットレート"/></hbox>
 		  <textbox id="restrict-bitrate" type="number" min="0" size="6" preference="pref-restrict-bitrate"/>
 		  <hbox align="center"><label value="kbps以下"/></hbox>
 		</row>
