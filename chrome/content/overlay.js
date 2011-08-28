@@ -773,15 +773,35 @@ var NicoLiveOverlay = {
 	}
     },
 
+    GetAddonVersion:function(){
+	let version;
+	try{
+	    let em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
+	    let addon = em.getItemForID("nicolivehelper@miku39.jp");
+	    version = addon.version;
+	} catch (x) {
+	    // Fx4
+	    AddonManager.getAddonByID("nicolivehelper@miku39.jp",
+				      function(addon) {
+					  version = addon.version;
+					  //alert("My extension's version is " + addon.version);
+				      });
+	    // Piroさん(http://piro.sakura.ne.jp/)が値が設定されるまで待つことをやっていたので真似してしまう.
+	    let thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
+	    while (version === void(0)) {
+		thread.processNextEvent(true);
+	    }
+	}
+	return version;
+    },
+
     checkFirstRun:function(){
 	var Prefs = Components.classes["@mozilla.org/preferences-service;1"]
 	    .getService(Components.interfaces.nsIPrefService);
 	Prefs = Prefs.getBranch("extensions.nicolivehelper.");
 
 	var ver = -1, firstrun = true;
-	var gExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"]
-            .getService(Components.interfaces.nsIExtensionManager);
-	var current = gExtensionManager.getItemForID("nicolivehelper@miku39.jp").version;
+	var current = this.GetAddonVersion();
 	//バージョン番号の取得
 	try{
 	    ver = Prefs.getCharPref("version");

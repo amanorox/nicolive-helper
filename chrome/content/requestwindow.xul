@@ -161,7 +161,7 @@
       <menupopup>
 	<!-- <menuitem label="test" oncommand="NicoLiveHelper.test();"/> -->
 
-	<menuitem label="放送ID(lvXXXXX)を入力して接続" oncommand="NicoLiveWindow.connectToBroadcasting();"/>
+	<menuitem label="&toolbar.connect;" oncommand="NicoLiveWindow.connectToBroadcasting();"/>
 
 	<menu label="&toolbar.backuprestore;" tooltiptext="&toolbar.backuprestore.help;"><!-- バックアップと復元 -->
 	  <menupopup>
@@ -185,8 +185,8 @@
 	<menuitem label="&toolbar.voteshowresult;" tooltiptext="&toolbar.tooltip_voteshowresult;" oncommand="NicoLiveHelper.postCasterComment('/vote showresult','');"/>
 	<menuitem label="&toolbar.votestop;" tooltiptext="&toolbar.tooltip_votestop;" oncommand="NicoLiveHelper.postCasterComment('/vote stop','');"/>
 	<menuseparator/>
-	<menuitem label="サウンドオンリー(メイン)" tooltiptext="/soundonly on" class="menuitem-iconic" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.postCasterComment('/soundonly on','');"/>
-	<menuitem label="サウンドオンリー(サブ)" tooltiptext="/soundonly on sub" oncommand="NicoLiveHelper.postCasterComment('/soundonly on sub','');"/>
+	<menuitem label="&toolbar.do_soundonly_main;" tooltiptext="/soundonly on" class="menuitem-iconic" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.postCasterComment('/soundonly on','');"/>
+	<menuitem label="&toolbar.do_soundonly_sub;" tooltiptext="/soundonly on sub" oncommand="NicoLiveHelper.postCasterComment('/soundonly on sub','');"/>
 	<!-- サウンドオンリーの解除 -->
 	<menuitem label="&toolbar.soundonly;" tooltiptext="&toolbar.tooltip_soundonly;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off','');"/>
 	<menuitem label="&toolbar.soundonlysub;" tooltiptext="&toolbar.tooltip_soundonlysub;" oncommand="NicoLiveHelper.postCasterComment('/soundonly off sub','');"/>
@@ -201,7 +201,6 @@
 	<menuitem label="次枠へ" tooltiptext="次枠を開始するために、新規番組登録画面に移動します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
 	<menu label="その他">
 	  <menupopup>
-	    <menuitem id="automatic-broadcasting" persist="checked" label="Automatic Broadcasting(Experimental)" type="checkbox" autocheck="true"/>
 	    <menuitem id="get-extratime" persist="checked" label="ロスタイム作成" tooltiptext="動画を視聴したままロスタイムに突入します。" type="checkbox" autocheck="true"/>
 	    <menuitem id="do-freeextend" label="無料延長を行う" tooltiptext="予約枠で無料延長を行います。" oncommand="NicoLiveHelper.getsalelist(true);"/>
 	    <menuitem id="auto-freeextend" persist="checked" label="自動無料延長" tooltiptext="チェックがあると、放送終了3分前に自動で無料延長を行います。" type="checkbox" autocheck="true"/>
@@ -213,13 +212,19 @@
 	    </menu>
 
 	    <menuseparator/>
-	    <menuitem id="mikulive-recently-played-check" persist="checked" label="プレイログチェック(co154専用)" tooltiptext="チェックがあると、co154で直近に再生された動画100件のチェックを行い、リクエストに前回の再生日時を提示します。" type="checkbox" autocheck="true"/>
+	    <menuitem id="mikulive-recently-played-check" persist="checked" label="プレイログチェック(co154用)" tooltiptext="チェックがあると、co154で直近に再生された動画100件のチェックを行い、リクエストに前回の再生日時を提示します。" type="checkbox" autocheck="true"/>
 
-	    <menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
-	    <menuitem label="&toolbar.clear.req.queue;" tooltiptext="&toolbar.clear.req.queue.help;" oncommand="NicoLiveHelper.clearRequestProcessingQueue();"/>
-	    <menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.forget();"/>
-	    <menuitem id="add-non-db-video" persist="checked" label="動画DBにない動画のみストックに追加" type="checkbox" autocheck="true"/>
 	    <menuitem label="時刻確認" oncommand="NicoLiveHelper.checkClock();"/>
+
+	    <menu label="Aux.">
+	      <menupopup>
+		<menuitem id="automatic-broadcasting" persist="checked" label="自動放送(Experimental)" type="checkbox" autocheck="true"/>
+		<menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
+		<menuitem label="&toolbar.clear.req.queue;" tooltiptext="&toolbar.clear.req.queue.help;" oncommand="NicoLiveHelper.clearRequestProcessingQueue();"/>
+		<menuitem label="&toolbar.forget_learning;" oncommand="NicoLiveClassifier.forget();"/>
+		<menuitem id="add-non-db-video" persist="checked" label="動画DBにない動画のみストックに追加" type="checkbox" autocheck="true"/>
+	      </menupopup>
+	    </menu>
 	  </menupopup>
 	</menu>
 
@@ -410,7 +415,7 @@
 		<row>
 		  <hbox align="center"><label value="&comment.user_id;"/></hbox>
 		  <hbox><textbox id="comment-user-id"/></hbox>
-		  <button type="menu" label="コマンド">
+		  <button type="menu" label="&general.command;">
 		    <menupopup id="menupopup-comment-command">
 		      <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addNameFromId($('comment-user-id').value);"/>
 		      <menuitem label="&comment.menu_reflection;" oncommand="NicoLiveComment.showCommentReflectorDialog($('comment-user-id').value);"/>
@@ -441,7 +446,7 @@
 	  <deck id="db-deck" flex="1" persist="selectedIndex">
 	    <vbox>
 	      <hbox align="center">
-		<button label="フォルダ" oncommand="$('db-deck').selectedIndex=1;"/>
+		<button label="&general.folder;" oncommand="$('db-deck').selectedIndex=1;"/>
 		<button type="menu" label="&db.add_from_mylist_to_db;">
 		  <menupopup id="menupopup-from-mylist-to-db">
 		    <menuitem label="&toriaezu_mylist;" oncommand="NicoLiveMylist.addToDatabaseFromDeflist();"/>
@@ -483,7 +488,7 @@
 		  <menupopup>
 		    <menuitem label="&sort.ascend_order;" value="asc"/>
 		    <menuitem label="&sort.descend_order;" value="desc"/>
-		    <menuitem label="ランダム" value="random"/>
+		    <menuitem label="&general.random;" value="random"/>
 		  </menupopup>
 		</menulist>
 		<button label="&db.do_search;" oncommand="NicoLiveDatabase.search();"/>
@@ -630,8 +635,8 @@
     <menupopup id="popup-comment-kotehan">
       <menuitem label="&comment.menu_delname;" oncommand="NicoLiveComment.deleteKotehanFromListbox();"/>
       <menuseparator/>
-      <menuitem label="ファイルへ保存" oncommand="NicoLiveComment.saveKotehanToFile();"/>
-      <menuitem label="ファイルから読み込み" oncommand="NicoLiveComment.loadKotehanFromFile();"/>
+      <menuitem label="&general.savefile;" oncommand="NicoLiveComment.saveKotehanToFile();"/>
+      <menuitem label="&general.loadfile;" oncommand="NicoLiveComment.loadKotehanFromFile();"/>
     </menupopup>
 
     <!-- for request tab -->
@@ -764,7 +769,7 @@
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,1)"/>
 	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,1)"/>
-	  <menuitem label="広告ポイント" oncommand="NicoLiveHelper.sortStock(8,1)"/>
+	  <menuitem label="&sort.ad_point;" oncommand="NicoLiveHelper.sortStock(8,1)"/>
 	</menupopup>
       </menu>
       <menu label="&sort.descend_order;">
@@ -777,7 +782,7 @@
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortStock(5,-1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,-1)"/>
 	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,-1)"/>
-	  <menuitem label="広告ポイント" oncommand="NicoLiveHelper.sortStock(8,-1)"/>
+	  <menuitem label="&sort.ad_point;" oncommand="NicoLiveHelper.sortStock(8,-1)"/>
 	</menupopup>
       </menu>
       <menuitem label="&menu.stock_showdetail;" oncommand="NicoLiveRequest.showhideDetail();"/>

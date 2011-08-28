@@ -1,3 +1,9 @@
+<!ENTITY general.savefile "ファイルへ保存">
+<!ENTITY general.loadfile "ファイルから読み込み">
+<!ENTITY general.random "ランダム">
+<!ENTITY general.folder "フォルダ">
+<!ENTITY general.command "コマンド">
+
 <!ENTITY playstyle.manual_sequential "手動(順次)">
 <!ENTITY playstyle.manual_random "手動(ランダム)">
 <!ENTITY playstyle.manual_consumption "手動(消化数順)">
@@ -40,10 +46,14 @@
 <!ENTITY toolbar.tooltip_soundonlysub "/soundonly off sub">
 <!ENTITY toolbar.playcamera "カメラ映像に切り替え">
 <!ENTITY toolbar.tooltip_playcamera "/play メイン画面をカメラ映像に切り替えます。">
+<!ENTITY toolbar.do_soundonly_main "サウンドオンリー(メイン)">
+<!ENTITY toolbar.do_soundonly_sub "サウンドオンリー(サブ)">
+
 <!ENTITY toolbar.clearcomment "運営コメントを消す">
 <!ENTITY toolbar.tooltip_clearcomment "/cls 運営コメント欄に表示されているコメントを消去します。">
 <!ENTITY toolbar.downloadjson "JSONファイルダウンロード">
-<!ENTITY toolbar.beginbroadcasting "配信開始">
+<!ENTITY toolbar.connect "放送ID(lvXXXXX)を入力して接続">
+<!ENTITY toolbar.beginbroadcasting "放送開始">
 <!ENTITY toolbar.tooltip_beginbroadcasting "配信開始します。ニコ生アラート等で配信開始されたことを確認してください。">
 <!ENTITY toolbar.forcecastermode "強制生主モード">
 <!ENTITY toolbar.tooltip_forcecastermode "Helperが生主として動作しない場合、最終手段として使用してください。">
@@ -162,6 +172,7 @@
 <!ENTITY sort.mylist_rate "マイリスト率">
 <!ENTITY sort.title "タイトル">
 <!ENTITY sort.registered_date "マイリスト登録日">
+<!ENTITY sort.ad_point "広告ポイント">
 
 <!ENTITY rate.name "レート">
 <!ENTITY rate.none "なし">
