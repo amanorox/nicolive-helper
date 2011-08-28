@@ -150,10 +150,9 @@
     <toolbarbutton label="&play.stop;" tooltiptext="&play.tooltip_stop;" image="chrome://nicolivehelper/content/data/stop.png" oncommand="NicoLiveHelper.stopPlay();"/>
     <!-- do soundonly -->
 <!--    <toolbarbutton tooltiptext="&play.tooltip_soundonly;" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly();"/> -->
-    <toolbarbutton persist="checked" id="menuid-soundonly" type="checkbox" autoCheck="true" label="" tooltiptext="&play.tooltip_soundonly;" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly(this.checked)"/>
-
+    <toolbarbutton persist="checked" id="menuid-soundonly" type="checkbox" autoCheck="true" label="" tooltiptext="&play.tooltip_soundonly;" image="chrome://nicolivehelper/content/data/soundonly.png" oncommand="NicoLiveHelper.dosoundonly(this.checked)" style="padding-left:5px; padding-right:5px;"/>
     <!-- swap main and sub screen -->
-    <toolbarbutton tooltiptext="&play.tooltip_swap;" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');"/>
+    <toolbarbutton tooltiptext="&play.tooltip_swap;" image="chrome://nicolivehelper/content/data/swap.png" oncommand="NicoLiveHelper.postCasterComment('/swap','');" style="padding-left:5px; padding-right:5px;"/>
     <!-- play in subscreen -->
     <toolbarbutton persist="checked" label="&play.subdisplay;" id="do-subdisplay" autoCheck="true" type="checkbox" tooltiptext="&play.tooltip_subdisplay;"/>
     <!-- command menu -->
