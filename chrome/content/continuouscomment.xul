@@ -20,13 +20,31 @@
       </menupopup>
     </menulist>
 
-    <hbox align="center"><label value="コマンド:"/><textbox flex="1" id="multiline-command" emptytext="se1,hidden,shitaなど"/></hbox>
+    <hbox align="center">
+      <label id="label-1" value="コマンド:"/>
+      <textbox flex="1" id="multiline-command" emptytext="se1,hidden,shitaなど"/>
+      <menulist id="bsp-name-color" style="display:none;">
+	<menupopup>
+	  <menuitem value="green" label="green"/>
+	  <menuitem value="niconicowhite" label="niconicowhite"/>
+	  <menuitem value="white" label="white"/>
+	  <menuitem value="red" label="red"/>
+	  <menuitem value="blue" label="blue"/>
+	  <menuitem value="cyan" label="cyan"/>
+	  <menuitem value="yellow" label="yellow"/>
+	  <menuitem value="purple" label="purple"/>
+	  <menuitem value="pink" label="pink"/>
+	  <menuitem value="orange" label="orange"/>
+	</menupopup>
+      </menulist>
+      <checkbox id="using-bsp" label="BSPを使用" oncommand="ChangeUsingBSP();"/>
+    </hbox>
 
     <textbox flex="1" id="multiline-comment" multiline="true" rows="10"
 	     ondragenter="event.preventDefault();"
 	     ondragover="event.preventDefault();"
 	     ondrop="FileDropped(event);"
-	     >      
+	     >
     </textbox>
   </vbox>
 

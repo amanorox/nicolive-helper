@@ -7,18 +7,21 @@ function SendOneLine()
     if(str.length){
 	let cmd = document.getElementById('multiline-command').value;
 	let comment = str[0];
-	comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
-
-	if( comment.indexOf("/")==0 ){
-	    let tmp = comment.split("/");
-	    cmd += " " + tmp[1];
-	    tmp.splice(0,2);
-	    comment = tmp.join("/");
+	if( !document.getElementById('using-bsp').checked ){
+	    comment = comment.replace(/\\([\\n])/g,function(s,p){switch(p){case "n": return "\n"; case "\\": return "\\"; default: return s;}});
+	    if( comment.indexOf("/")==0 ){
+		let tmp = comment.split("/");
+		cmd += " " + tmp[1];
+		tmp.splice(0,2);
+		comment = tmp.join("/");
+	    }
+	    //Application.console.log("cmd:"+cmd);
+	    //Application.console.log("comment:"+comment);
+	    opener.NicoLiveHelper.postCommentMain(comment,cmd,"");
+	}else{
+	    let color = document.getElementById('bsp-name-color').selectedItem.value;
+	    opener.NicoLiveHelper.postUserPress(cmd,comment,color);
 	}
-	//Application.console.log("cmd:"+cmd);
-	//Application.console.log("comment:"+comment);
-
-	opener.NicoLiveHelper.postCommentMain(comment,cmd,"");
 	str.splice(0,1);
 	document.getElementById('multiline-comment').value = str.join('\r\n');
     }
@@ -43,11 +46,19 @@ function ReadTextFile(file){
     document.getElementById('multiline-comment').value = str;
 }
 
+function ChangeUsingBSP(){
+    let cbox = document.getElementById('label-1');
+    let b = document.getElementById('using-bsp').checked;
+    cbox.setAttribute("value", b ? "名前:" : "コマンド:");
+    
+    document.getElementById('bsp-name-color').style.display = b ? "block":"none";
+}
+
 function FileDropped(event){
     var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
     if (file instanceof Components.interfaces.nsIFile){
 	if( !file.leafName.match(/\.txt$/) ) return;
-	//	    Application.console.log("file dropped:"+file.path);
+	//Application.console.log("file dropped:"+file.path);
 	ReadTextFile(file);
 	return;
     }

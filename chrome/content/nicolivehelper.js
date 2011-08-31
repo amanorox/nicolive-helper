@@ -1916,6 +1916,42 @@ var NicoLiveHelper = {
 	return;
     },
 
+    postUserPress:function(name,comment,color){
+	let url = "http://live.nicovideo.jp/api/presscast";
+	let data = new Array();
+	if( !comment ) return;
+	if( !name ) name = this.user_name;
+	if( !color ) color = "#45bc38";
+	if( !this.user_press_token ){
+	    let tab = NicoLiveWindow.findTab(this.request_id) || NicoLiveWindow.findTab(this.community);
+	    if( tab ){
+		this.user_press_token = tab.linkedBrowser._contentWindow.window.document.getElementById('presscast_token').value;
+	    }else{
+		ShowNotice("生放送のページを開いていないため、BSPコメント用トークンを取得できませんでした");
+	    }
+	}
+
+	data.push("v="+this.request_id);
+	data.push("body="+encodeURIComponent(comment));
+	data.push("name="+encodeURIComponent(name));
+	data.push("token="+encodeURIComponent(this.user_press_token));
+	data.push("color="+encodeURIComponent(color));
+	data.push("mode=json");
+
+	let req = CreateXHR("POST", url);
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ) {
+		let result = JSON.parse(req.responseText);
+		if(result.status=="error"){
+		    ShowNotice("投稿エラーです");
+		}
+	    }
+	};
+	req.setRequestHeader('Content-type','application/x-www-form-urlencoded; charset=UTF-8');
+	req.send(data.join('&'));
+    },
+
     // Twitterにtweetする(ニコ生API経由).
     postTweet:function(tweet){
 	if( !this.twitterinfo.status || !this.twitterinfo.live_enabled ) return;
