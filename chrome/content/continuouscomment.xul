@@ -22,7 +22,7 @@
 
     <hbox align="center">
       <label id="label-1" value="コマンド:"/>
-      <textbox flex="1" id="multiline-command" emptytext="se1,hidden,shitaなど"/>
+      <textbox flex="1" id="multiline-command" emptytext="se1,hidden,shita,BSPコメの名前など"/>
       <menulist id="bsp-name-color" style="display:none;">
 	<menupopup>
 	  <menuitem value="green" label="green"/>
