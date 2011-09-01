@@ -699,7 +699,7 @@
       <menuitem label="&menu.comment_reflection;" tooltiptext="&menu.tooltip_comment_reflection;" oncommand="NicoLiveRequest.addToCommentReflector(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem id="id-release-reflection-from-request" label="&comment.menu_release_reflection_all;" oncommand="NicoLiveComment.releaseReflector();"/>
       <menuseparator/>
-      <menuitem label="コンパクション" oncommand="NicoLiveRequest.compactRequest(document.popupNode||$('popup-copyrequest').triggerNode);"/>
+      <menuitem label="コンパクション" tooltiptext="この動画を基準に重複したリクエストを圧縮します" oncommand="NicoLiveRequest.compactRequest(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
     </menupopup>
 
