@@ -2131,7 +2131,9 @@ var NicoLiveHelper = {
 	}
     },
 
-    // リクエストを返す.
+    /** リクエストを返す.
+     * @param idx 1,2,3,...,n
+     */
     getRequestItem:function(idx){
 	idx--;
 	return this.requestqueue[idx];
@@ -2140,20 +2142,8 @@ var NicoLiveHelper = {
     // リクエストリストに追加する.
     addRequestQueue:function(item){
 	if( !item || !item.video_id ) return;
-	// 常にfindRequestByVideoIdをするよりはフラグ見て分岐した方がコストが安いと思うので.
-	if( NicoLivePreference.allow_duplicative ){
-	    let tmp = this.findRequestByVideoId(item.video_id);
-	    if( tmp<0 ){
-		this.requestqueue.push(item);
-		NicoLiveRequest.add(item);
-	    }else{
-		this.requestqueue[tmp].cno += ", "+item.cno;
-		NicoLiveRequest.update(NicoLiveHelper.requestqueue);
-	    }
-	}else{
-	    this.requestqueue.push(item);
-	    NicoLiveRequest.add(item);
-	}
+	this.requestqueue.push(item);
+	NicoLiveRequest.add(item);
 	this.updateRemainRequestsAndStocks();
     },
     // リクエストリストから削除する.
@@ -2231,15 +2221,38 @@ var NicoLiveHelper = {
 				    if(b.cno==undefined) return -1;
 				    if(a.cno==undefined) return 1;
 				    try{
-					let a_cno = parseInt(a.cno.split(",")[0]);
-					let b_cno = parseInt(b.cno.split(",")[0]);
+					let a_cno = parseInt((""+a.cno).split(",")[0]);
+					let b_cno = parseInt((""+b.cno).split(",")[0]);
 					return (a_cno - b_cno) * order;
 				    } catch (x) {
-					return 1;
+					debugprint(x);
+					return 0;
 				    }
 				});
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
+    },
+
+    /** リクエストのコンパクションを行う.
+     * @param idx 1,2,3,...,n
+     */
+    compactRequest:function(idx){
+	idx--;
+	let newarray = new Array();
+	let indexlist = new Object();
+	let len = this.requestqueue.length;
+
+	for(let i=idx; i<idx+len; i++){
+	    let n = i % len;
+	    let vinfo = this.requestqueue[n];
+	    if( indexlist["_"+vinfo.video_id]!=undefined ){
+		newarray[ indexlist["_"+vinfo.video_id] ].cno += ", "+vinfo.cno;
+	    }else{
+		indexlist["_"+vinfo.video_id] = newarray.length;
+		newarray.push( vinfo );
+	    }
+	}
+	this.requestqueue = newarray;
     },
 
     // ストックリストに追加.

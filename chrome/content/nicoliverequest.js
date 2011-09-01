@@ -989,6 +989,19 @@ var NicoLiveRequest = {
 	}
     },
 
+    // リクエストのコンパクションを行う.
+    compactRequest:function(node){
+	try{
+	    let tr = FindParentElement(node,'html:tr');
+	    let n = tr.getAttribute('request-index');
+	    NicoLiveWindow.backupCurrent();
+	    NicoLiveHelper.compactRequest(n);
+	    this.update(NicoLiveHelper.requestqueue);
+	} catch (x) {
+	    debugprint(x);
+	}
+    },
+
     changeSelfRequestFlag:function(node){
 	try{
 	    let tr = FindParentElement(node,'html:tr');
