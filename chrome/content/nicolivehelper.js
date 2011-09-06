@@ -3707,6 +3707,7 @@ var NicoLiveHelper = {
 	let num = menu.getAttribute("nico-num");
 	let code = menu.getAttribute("nico-code");
 	let item = menu.getAttribute("nico-item");
+	let coupon = menu.getAttribute("nico-coupon_id");
 	if( parseInt(this.remainpoint) < parseInt(price) ){
 	    debugalert('延長するにはポイントが足りません。\n所持ポイント:'+this.remainpoint);
 	    return;
@@ -3717,7 +3718,7 @@ var NicoLiveHelper = {
 	    + "使用するポイント:" + price + "\n";
 	if( ConfirmPrompt(msg,'延長処理') ){
 	    debugprint('延長処理を行います');
-	    this.liveExtend(num,code,item);
+	    this.liveExtend(num,code,item,coupon);
 	}else{
 	    debugprint("延長処理をキャンセルしました");
 	}
@@ -3726,11 +3727,13 @@ var NicoLiveHelper = {
     // getsalelistの内容でメニューを更新.
     updateSaleListMenu:function(xml){
 	let menu = $('menu-live-extend');
-	let labels = evaluateXPath(xml,"/getsalelist/item/label");
-	let prices = evaluateXPath(xml,"/getsalelist/item/price");
-	let nums = evaluateXPath(xml,"/getsalelist/item/num");
-	let codes = evaluateXPath(xml,"/getsalelist/item/code");
-	let items = evaluateXPath(xml,"/getsalelist/item/item");
+	let parentitems = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']");
+	let labels = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/label");
+	let prices = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/price");
+	let nums = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/num");
+	let codes = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/code");
+	let items = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/item");
+	let coupon_id = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/coupon_id");
 
 	while(menu.childNodes[1]){
 	    menu.removeChild(menu.childNodes[1]);
@@ -3743,6 +3746,12 @@ var NicoLiveHelper = {
 	    menuitem.setAttribute("nico-num", nums[i].textContent);
 	    menuitem.setAttribute("nico-code", codes[i].textContent);
 	    menuitem.setAttribute("nico-item", items[i].textContent);
+	    try{
+		coupon_id = evaluateXPath(parentitems[i],"coupon_id");
+		menuitem.setAttribute("nico-coupon_id", coupon_id[0].textContent);
+		debugprint(i+":coupon_id="+coupon_id[0].textContent);
+	    } catch (x) {
+	    }
 	    menuitem.setAttribute("oncommand","NicoLiveHelper.onLiveExtend(event);");
 	    menu.appendChild(menuitem);
 	}
@@ -3784,7 +3793,7 @@ var NicoLiveHelper = {
     },
 
     // 生放送を延長する.
-    liveExtend:function(num, code, item){
+    liveExtend:function(num, code, item, coupon){
 	if( this.isOffline() || !this.iscaster ) return;
 
 	let url = "http://watch.live.nicovideo.jp/api/usepoint";
@@ -3826,6 +3835,9 @@ var NicoLiveHelper = {
 	data.push("code="+code); // セールスリストのコード.
 	data.push("item="+item); // 延長.
 	data.push("v="+this.request_id);
+	if( coupon ){
+	    data.push("coupon_id="+coupon);
+	}
 	debugprint('extend:'+data.join(','));
 	req.send(data.join('&'));
     },
