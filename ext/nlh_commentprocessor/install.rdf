@@ -4,7 +4,7 @@
     <em:id>nlh_commentprocessor@miku39.jp</em:id>
     <em:type>2</em:type>
     <em:name>NicoLiveHelper CommentViewer Extender</em:name>
-    <em:version>0.4.1</em:version>
+    <em:version>0.4.2</em:version>
     <em:description>CommentViewer Extender for NicoLive Helper.</em:description>
     <em:creator>amano</em:creator>
     <em:homepageURL>http://miku39.jp</em:homepageURL>
@@ -24,7 +24,7 @@
       <Description>
 	<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 	<em:minVersion>3.5</em:minVersion>
-	<em:maxVersion>4.0.*</em:maxVersion>
+	<em:maxVersion>*</em:maxVersion>
       </Description>
     </em:targetApplication>
 
