@@ -5,19 +5,19 @@
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.5"
-                   em:maxVersion="*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nlh_commenttalker_0.5.6.xpi"
-                   em:updateHash="sha1:5f851fd79e92f9f81ed51b976c71da7168fe5802"
+                   em:maxVersion="7.*"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nlh_commenttalker_0.5.7.xpi"
+                   em:updateHash="sha1:01a6ca959ee8c27c7a8d4fe379f27ce835198425"
                    em:updateInfoURL="http://ch.nicovideo.jp/community/co105163" />
-  <RDF:Description RDF:about="urn:mozilla:extension:nlh_commenttalker@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAH6KHKE+ArA1PAk4P2k70w7+ws1NJhlpzhOOsU5F+8E1jqVLCe/+YlCp+xZ7pGKO9xsoPdZm7U4wUJtT00ZdVllZ+iXN+6Sp00HzRSWmLUwKeyWyo5QdE9+4ofg0t7MuKAdNStlQexhWKFd7xXwlfsTDiLDLgRUfj7FyuI4CxY9l">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="0.5.6">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:nlh_commenttalker@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHsoa4hUeOsh41A8yvwMHI03RMBLdx9pro7kbyow11ngwdGnv5QMDt/I7mGXaJL69vS5FBAQaJ/uWQea/FpI0Go1chh1I1mEXxuixTSAvB8FWT3RkAX2ySndBxj2Rf6wcSjPcS+RyVL+7DM1/s7VPvxiqHqriP3mtApM/2Ct4ifU">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="0.5.7">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
 </RDF:RDF>
