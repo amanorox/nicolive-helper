@@ -20,10 +20,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+Components.utils.import("resource://gre/modules/ctypes.jsm");
+
 var NicoLiveTalker = {
+    GetExtensionPath:function(){
+	let id = "nlh_commenttalker@miku39.jp";
+	let ext;
+	try{
+	    ext = Components.classes["@mozilla.org/extensions/manager;1"]
+		.getService(Components.interfaces.nsIExtensionManager)
+		.getInstallLocation(id)
+		.getItemLocation(id);
+	} catch (x) {
+	    let _addon;
+	    AddonManager.getAddonByID("nlh_commenttalker@miku39.jp",
+				      function(addon) {
+					  _addon = addon;
+				      });
+	    // Piroさん(http://piro.sakura.ne.jp/)が値が設定されるまで待つことをやっていたので真似してしまう.
+	    let thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
+	    while (_addon === void(0)) {
+		thread.processNextEvent(true);
+	    }
+	    ext = _addon.getResourceURI('/').QueryInterface(Components.interfaces.nsIFileURL).file.clone();
+	}
+	return ext;
+    },
+
     runProcess:function(exe,text){
-	let obj = Components.classes["@miku39.jp/NLHCommentTalker;1"].createInstance(Components.interfaces.INLHCommentTalker);
-	obj.callTalkerProgram(exe,text);
+	this.talk(exe,text);
 	return;
     },
 
@@ -82,6 +107,17 @@ var NicoLiveTalker = {
     init:function(){
 	debugprint('CommentTalker init.');
 
+	try{
+	    var path = this.GetExtensionPath();
+	    path.append("libs");
+	    path.append("commenttalker_dll.dll");
+	    debugprint(path.path);
+	    this.lib = ctypes.open(path.path);
+	    this.talk = this.lib.declare("bouyomichan", ctypes.default_abi, ctypes.int32_t, ctypes.jschar.ptr, ctypes.jschar.ptr);
+	} catch (x) {
+	    debugprint(x);
+	}
+
 	this.oldprocesscomment = NicoLiveHelper.processComment;
 	NicoLiveHelper.processComment = function(xmlchat){
 	    NicoLiveTalker.newProcessComment(xmlchat);
@@ -96,6 +132,12 @@ var NicoLiveTalker = {
 	}
     },
     destroy:function(){
+	try{
+	    this.lib.close();
+	} catch (x) {
+	    debugprint(x);
+	}
+
 	let prefs = NicoLivePreference.getBranch();
 	prefs.setBoolPref("ext.comment-talker.enable", $('enable-comment-talker').checked);
 	prefs.setIntPref("ext.comment-talker.length", $('nlhaddon-restrictlength').value);

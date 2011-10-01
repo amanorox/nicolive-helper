@@ -112,7 +112,7 @@ echo "Generating $APP_NAME.xpi..."
 zip -r ../$APP_NAME.xpi *
 
 cd "$ROOT_DIR"
-
+#exit;
 echo "Cleanup..."
 if [ $CLEAN_UP = 0 ]; then
   # save the jar file

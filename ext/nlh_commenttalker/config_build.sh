@@ -6,6 +6,6 @@ APP_NAME=nlh_commenttalker
 CHROME_PROVIDERS="chrome"
 CLEAN_UP=1
 ROOT_FILES=""
-ROOT_DIRS="platform"
+ROOT_DIRS="platform libs"
 BEFORE_BUILD=
 AFTER_BUILD=

@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="3.5"
+                   em:minVersion="5.0"
                    em:maxVersion="7.*"
                    em:updateLink="http://miku39.jp/dists/software/firefox/nlh_commenttalker_0.5.7.xpi"
                    em:updateHash="sha1:01a6ca959ee8c27c7a8d4fe379f27ce835198425"
