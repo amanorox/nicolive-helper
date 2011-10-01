@@ -20,13 +20,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
 
+Components.utils.import("resource://gre/modules/ctypes.jsm");
+
 var NicoLiveTalker = {
+    GetExtensionPath:function(){
+	let id = "nlh_commenttalker@miku39.jp";
+	let ext;
+	try{
+	    ext = Components.classes["@mozilla.org/extensions/manager;1"]
+		.getService(Components.interfaces.nsIExtensionManager)
+		.getInstallLocation(id)
+		.getItemLocation(id);
+	} catch (x) {
+	    let _addon;
+	    AddonManager.getAddonByID("nlh_commenttalker@miku39.jp",
+				      function(addon) {
+					  _addon = addon;
+				      });
+	    // Piroさん(http://piro.sakura.ne.jp/)が値が設定されるまで待つことをやっていたので真似してしまう.
+	    let thread = Components.classes['@mozilla.org/thread-manager;1'].getService().mainThread;
+	    while (_addon === void(0)) {
+		thread.processNextEvent(true);
+	    }
+	    ext = _addon.getResourceURI('/').QueryInterface(Components.interfaces.nsIFileURL).file.clone();
+	}
+	return ext;
+    },
+
     runProcess:function(exe,text){
 	try{
-	    let obj = Components.classes["@miku39.jp/NLHCommentTalker;1"].createInstance(Components.interfaces.INLHCommentTalker);
-
 	    if( $('use-bouyomichan').selected ){
-		obj.sayBouyomichan( $('bouyomichan-server').value, text);
+		this.bouyomichan( $('bouyomichan-server').value, text);
 	    }
 	    if( $('use-saykotoeri').selected || $('use-saykotoeri2').selected){
 		// system()使うのでコマンドラインパラメータとして渡すのに危険なもの削除.
@@ -51,24 +75,23 @@ var NicoLiveTalker = {
 	if( $('use-saykotoeri').selected ) saykotoeri = 1;
 	if( $('use-saykotoeri2').selected ) saykotoeri = 2;
 
-	let obj = Components.classes["@miku39.jp/NLHCommentTalker;1"].createInstance(Components.interfaces.INLHCommentTalker);
 	let text = this.talkqueue.shift();
 	switch(saykotoeri){
 	case 1:
-	    if( !obj.sayKotoeri(text) ){
+	    if( !this.saykotoeri(text) ){
 		this.talkqueue.unshift(text);
 	    }
 	    break;
 	case 2:
 	    let speed = "-s "+ $('nlhaddon-talk-speed').value;
 	    let volume = "-b " + $('nlhaddon-talk-volume').value;
-	    if( !obj.callTalkerProgram(speed+" "+volume,text) ){
+	    if( !this.saykotoeri2(speed+" "+volume,text) ){
 		this.talkqueue.unshift(text);
 	    }
 	    break;
 
 	default:
-	    break;	    
+	    break;
 	}
 
 	$('talker-left').value = this.talkqueue.length + "行";
@@ -136,6 +159,20 @@ var NicoLiveTalker = {
 
     init:function(){
 	debugprint('CommentTalker init.');
+
+	try{
+	    var path = this.GetExtensionPath();
+	    path.append("libs");
+	    path.append("libxpcom_commenttalker-mac.dylib");
+	    debugprint(path.path);
+	    this.lib = ctypes.open(path.path);
+	    this.bouyomichan = this.lib.declare("bouyomichan", ctypes.default_abi, ctypes.int32_t, ctypes.jschar.ptr, ctypes.jschar.ptr);
+	    this.saykotoeri = this.lib.declare("saykotoeri", ctypes.default_abi, ctypes.int32_t, ctypes.jschar.ptr);
+	    this.saykotoeri2 = this.lib.declare("saykotoeri2", ctypes.default_abi, ctypes.int32_t, ctypes.jschar.ptr, ctypes.jschar.ptr);
+	} catch (x) {
+	    debugprint(x);
+	}
+
 	this.talkqueue = new Array();
 	setInterval(function(){
 			NicoLiveTalker.talk_bysaykotoeri();
@@ -158,7 +195,14 @@ var NicoLiveTalker = {
 	} catch (x) {
 	}
     },
+
     destroy:function(){
+	try{
+	    this.lib.close();
+	} catch (x) {
+	    debugprint(x);
+	}
+
 	let prefs = NicoLivePreference.getBranch();
 	prefs.setBoolPref("ext.comment-talker.enable", $('enable-comment-talker').checked);
 	prefs.setIntPref("ext.comment-talker.program", $('use-what-talker-program').selectedIndex);
