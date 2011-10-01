@@ -94,7 +94,14 @@
 			isa = PBXProject;
 			buildConfigurationList = E7115D1611273454009A3BAE /* Build configuration list for PBXProject "xpcom_commenttalker-mac" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = E7115D1111273454009A3BAE;
 			productRefGroup = E7115D2311273495009A3BAE /* Products */;
 			projectDirPath = "";
@@ -140,13 +147,7 @@
 					"$(OTHER_CFLAGS)",
 					"-fshort-wchar",
 				);
-				OTHER_LDFLAGS = (
-					"-lnspr4",
-					"-lxpcomglue_s_nomozalloc",
-					"-lxpcomglue",
-					"-lxpcom",
-					"-lmozalloc",
-				);
+				OTHER_LDFLAGS = "";
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";
 			};
@@ -174,13 +175,7 @@
 					"$(OTHER_CFLAGS)",
 					"-fshort-wchar",
 				);
-				OTHER_LDFLAGS = (
-					"-lnspr4",
-					"-lxpcomglue_s_nomozalloc",
-					"-lxpcomglue",
-					"-lxpcom",
-					"-lmozalloc",
-				);
+				OTHER_LDFLAGS = "";
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";
 			};

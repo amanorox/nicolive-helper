@@ -5,16 +5,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-#include <mozilla-config.h>
-#include <nsEmbedString.h>
 #include "ICommentTalker.h"
 
 #include "callVoiceUnder.h"
-
-#define MY_COMPONENT_CONTRACTID	"@miku39.jp/NLHCommentTalker;1"
-#define MY_COMPONENT_CLASSNAME	"NLH CommentTalker XPCOM"
-#define MY_COMPONENT_CID		{ 0x205b68cf, 0xac75, 0x49f7, { 0x8b, 0x2a, 0x39, 0x9d, 0xd6, 0xd5, 0x69, 0x2 } }
-
 
 
 int PRUnicharLen(const PRUnichar*uni)
@@ -159,102 +152,3 @@ int saykotoeri2(const PRUnichar*option, const PRUnichar *text)
 	(free)(opt);
 	return 1;
 }
-
-
-
-/* Use the code below as a template for the implementation class for this interface. */
-
-/* Header file */
-class NLHCommentTalker : public INLHCommentTalker
-{
-public:
-  NS_DECL_ISUPPORTS
-  NS_DECL_INLHCOMMENTTALKER
-
-  NLHCommentTalker();
-
-private:
-  ~NLHCommentTalker();
-
-protected:
-  /* additional members */
-};
-
-/* Implementation file */
-NS_IMPL_ISUPPORTS1(NLHCommentTalker, INLHCommentTalker)
-
-NLHCommentTalker::NLHCommentTalker()
-{
-  /* member initializers and constructor code */
-}
-
-NLHCommentTalker::~NLHCommentTalker()
-{
-  /* destructor code */
-}
-
-/* long Add (in long nData1, in long nData2); */
-NS_IMETHODIMP NLHCommentTalker::Add(PRInt32 nData1, PRInt32 nData2, PRInt32 *_retval NS_OUTPARAM)
-{
-	*_retval = nData1 + nData2;
-    return NS_OK;
-}
-
-/* long callTalkerProgram (in wstring execPath, in wstring strData); */
-NS_IMETHODIMP NLHCommentTalker::CallTalkerProgram(const PRUnichar *execPath, const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM)
-{
-	// IDLを再構築するのは面倒なので、空いている関数をSayKotoeri2に流用.
-	*_retval = saykotoeri2(execPath,strData);
-    return NS_OK;
-}
-
-/* long sayBouyomichan (in wstring server, in wstring strData); */
-NS_IMETHODIMP NLHCommentTalker::SayBouyomichan(const PRUnichar *server, const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM)
-{
-	bouyomichan(server,strData);
-	*_retval = 0;	
-    return NS_OK;
-}
-
-/* long sayKotoeri (in wstring strData); */
-NS_IMETHODIMP NLHCommentTalker::SayKotoeri(const PRUnichar *strData, PRInt32 *_retval NS_OUTPARAM)
-{
-	*_retval = saykotoeri(strData);
-    return NS_OK;
-}
-
-/* End of implementation class template. */
-
-
-#include "mozilla/ModuleUtils.h"
-#include "nsIClassInfoImpl.h"
-
-
-NS_GENERIC_FACTORY_CONSTRUCTOR(NLHCommentTalker)
-
-NS_DEFINE_NAMED_CID(MY_COMPONENT_CID);
-
-static const mozilla::Module::CIDEntry kNLHCommentTalkerCIDs[] = {
-    { &kMY_COMPONENT_CID, false, NULL, NLHCommentTalkerConstructor },
-    { NULL }
-};
-
-static const mozilla::Module::ContractIDEntry kNLHCommentTalkerContracts[] = {
-    { MY_COMPONENT_CONTRACTID, &kMY_COMPONENT_CID },
-    { NULL }
-};
-
-static const mozilla::Module::CategoryEntry kNLHCommentTalkerCategories[] = {
-    { "my-nlh-category", "my-nlh-key", MY_COMPONENT_CONTRACTID },
-    { NULL }
-};
-
-static const mozilla::Module kNLHCommentTalkerModule = {
-    mozilla::Module::kVersion,
-    kNLHCommentTalkerCIDs,
-    kNLHCommentTalkerContracts,
-    kNLHCommentTalkerCategories
-};
-
-NSMODULE_DEFN(NLHCommentTalkerModule) = &kNLHCommentTalkerModule;
-NS_IMPL_MOZILLA192_NSGETMODULE(&kNLHCommentTalkerModule)
