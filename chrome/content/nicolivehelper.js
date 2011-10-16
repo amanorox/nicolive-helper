@@ -2553,6 +2553,10 @@ var NicoLiveHelper = {
 	    ans.movieinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではなくて主セレ扱い.
 	    ans.movieinfo.selfrequest = q.is_self_request;
 
+	    // 動画情報にはコメ番とリク主のユーザーIDを含む.
+	    ans.movieinfo.cno = q.comment_no;
+	    ans.movieinfo.user_id = q.user_id;
+
 	    if(ans.code==0){
 		let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
 		if(checker!=null){
@@ -2579,9 +2583,6 @@ var NicoLiveHelper = {
 		if(NicoLiveHelper.anchor.counter>0) NicoLiveHelper.anchor.counter--;
 	    }
 
-	    // 動画情報にはコメ番とリク主のユーザーIDを含む.
-	    ans.movieinfo.cno = q.comment_no;
-	    ans.movieinfo.user_id = q.user_id;
 	    ans.movieinfo.request_id = NicoLiveHelper.request_id;
 
 	    switch(ans.code){
