@@ -614,7 +614,7 @@ var NicoLiveRequest = {
     // 動画ID(複数OK)でリクエストに追加.
     addRequest:function(sm){
 	if(sm.length<3) return;
-	let l = sm.match(/(sm|nm)\d+/g);
+	let l = sm.match(/(sm|nm|so)\d+|\d{10}/g);
 	for(let i=0,id;id=l[i];i++){
 	    NicoLiveHelper.addRequest(id,0,"1");
 	}

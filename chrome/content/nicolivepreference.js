@@ -276,6 +276,8 @@ var NicoLivePreference = {
 	this.doprepare = branch.getBoolPref("prepare");
 	this.prepare_timing = branch.getIntPref("prepare-timing");
 
+	this.allow_10digit = branch.getBoolPref("10digit");
+
 	this.mikuonly = branch.getBoolPref("mikuonly");
 
 	if(!fromobserver){

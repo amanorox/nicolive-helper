@@ -1,6 +1,7 @@
 pref("extensions.nicolivehelper.mikuonly",false);
 pref("extensions.nicolivehelper.prepare",true);
 pref("extensions.nicolivehelper.prepare-timing",60);
+pref("extensions.nicolivehelper.10digit",false);
 pref("extensions.nicolivehelper.autoscroll",false);
 pref("extensions.nicolivehelper.playstyle",0);
 pref("extensions.nicolivehelper.allowrequest",true);

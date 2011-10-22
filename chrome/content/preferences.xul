@@ -26,6 +26,7 @@
       <preference id="pref-mikuonly" name="extensions.nicolivehelper.mikuonly" type="bool"/><!-- 初音ミクのライブモード -->
       <preference id="pref-prepare" name="extensions.nicolivehelper.prepare" type="bool"/><!-- 先読み -->
       <preference id="pref-prepare-timing" name="extensions.nicolivehelper.prepare-timing" type="int"/><!-- ジングル動画IDリスト -->
+      <preference id="pref-10digit-request" name="extensions.nicolivehelper.10digit" type="bool"/><!-- 10桁コードを許可 -->
     </preferences>
 
     <tabbox persist="selectedIndex" id="prefwindow-basicsettings">
@@ -71,6 +72,9 @@
 	<tabpanel orient="vertical">
 	  <checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/>
 	  <checkbox preference="pref-show-autoreply" label="リクエストの応答を運営コメント欄に表示させる" tooltiptext="運営コメント欄に応答コメントを表示するように、必要に応じて/clsを行います。" style="margin-left:2em;"/>
+	  <hbox>
+	    <checkbox preference="pref-10digit-request" label="10桁数字コードでのリクエストを許可する" tooltiptext="チャンネル動画の10桁コードをリクエスト対象として受け付けます。"/>
+	  </hbox>
 	  <hbox>
 	    <checkbox preference="pref-allow-duplicative" label="リクエストの重複を許可する" tooltiptext="リクエストにある動画と同じ動画のリクエストを受け付けます。"/>
 	  </hbox>

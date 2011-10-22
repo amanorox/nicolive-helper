@@ -527,7 +527,6 @@ var NicoLiveHelper = {
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
 		    let selfreq = chat.text.match(/自(貼|張)/);
-		    
 		    try{
 			let code;
 			code = chat.text.match(/(...[-+=/]....[-+=/].)/)[1];
@@ -537,6 +536,16 @@ var NicoLiveHelper = {
 		    }
 		    NicoLiveHelper.addRequest(sm[1], chat.no, chat.user_id, selfreq);
 		    return;
+		}
+		if( NicoLivePreference.allow_10digit ){
+		    let sm = chat.text.match(/(\d{10})/);
+		    if(sm){
+			let selfreq = chat.text.match(/自(貼|張)/);
+			if( sm[1]!=8888888888 ){
+			    NicoLiveHelper.addRequest(sm[1], chat.no, chat.user_id, selfreq);
+			    return;
+			}
+		    }
 		}
 	    }
 
@@ -2556,6 +2565,8 @@ var NicoLiveHelper = {
 	    // 動画情報にはコメ番とリク主のユーザーIDを含む.
 	    ans.movieinfo.cno = q.comment_no;
 	    ans.movieinfo.user_id = q.user_id;
+
+	    ans.movieinfo.video_id = q.video_id;
 
 	    if(ans.code==0){
 		let checker = NicoLiveHelper.runRequestCheckerScript(ans.movieinfo);
