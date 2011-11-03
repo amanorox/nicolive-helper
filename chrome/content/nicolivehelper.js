@@ -855,12 +855,14 @@ var NicoLiveHelper = {
 	if(!pname){
 	    pname = new Array();
 	    let i,j,tag;
-	    // まずはP名候補をリストアップ.
-	    for(i=0;tag=item.tags[i];i++){
-		if( this.isPName(tag) ){
-		    pname.push(tag);
+	    try{
+		// まずはP名候補をリストアップ.
+		for(i=0;tag=item.tags[i];i++){
+		    if( this.isPName(tag) ){
+			pname.push(tag);
+		    }
 		}
-	    }
+	    } catch (x) { }
 	    if(pname.length){
 		/* ラマーズP,嫁に囲まれて本気出すラマーズP
 		 * とあるときに、後者だけを出すようにフィルタ.

@@ -219,7 +219,7 @@ var NicoLiveComment = {
 	    NicoLiveHelper.postCasterComment(str,"",name);
 	}else{
 	    let func = function(){
-		NicoLiveHelper.postCasterComment(str,"",name,COMMENT_MSG_TYPE_NORMAL);
+		NicoLiveHelper.postCasterComment(str, comment.mail, name, COMMENT_MSG_TYPE_NORMAL);
 	    };
 	    NicoLiveHelper.clearCasterCommentAndRun(func);
 	}
