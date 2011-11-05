@@ -200,9 +200,9 @@
 	<menuitem label="次枠へ" tooltiptext="次枠を開始するために、新規番組登録画面に移動します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
 	<menu label="その他">
 	  <menupopup>
-	    <menuitem id="get-extratime" persist="checked" label="ロスタイム作成" tooltiptext="動画を視聴したままロスタイムに突入します。" type="checkbox" autocheck="true"/>
+	    <menuitem id="get-extratime" oncommand="ShowNotice(this.hasAttribute('checked')?'ロスタイムを有効にしました':'ロスタイムを無効にしました');" persist="checked" label="ロスタイム作成" tooltiptext="動画を視聴したままロスタイムに突入します。" type="checkbox" autocheck="true"/>
 	    <menuitem id="do-freeextend" label="無料延長を行う" tooltiptext="予約枠で無料延長を行います。" oncommand="NicoLiveHelper.getsalelist(true);"/>
-	    <menuitem id="auto-freeextend" persist="checked" label="自動無料延長" tooltiptext="チェックがあると、放送終了3分前に自動で無料延長を行います。" type="checkbox" autocheck="true"/>
+	    <menuitem id="auto-freeextend" oncommand="ShowNotice(this.hasAttribute('checked')?'自動無料延長を有効にしました':'自動無料延長を無効にしました');" persist="checked" label="自動無料延長" tooltiptext="チェックがあると、放送終了3分前に自動で無料延長を行います。" type="checkbox" autocheck="true"/>
 
 	    <menu label="放送時間延長">
 	      <menupopup id="menu-live-extend">
