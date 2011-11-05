@@ -1895,7 +1895,13 @@ var NicoLiveHelper = {
 	if( this.isOffline() ) return;
 	let thread = this.thread;
 	if( !thread ) return;
-	let block_no = parseInt(this.last_res/100);// + this._getpostkeycounter;
+	let block_no;
+	if( this._getpostkeycounter<=0 ){
+	    block_no = parseInt(this.last_res/100) + this._getpostkeycounter;
+	    this._bk_block_no = block_no;
+	}else{
+	    block_no = this._bk_block_no + this._getpostkeycounter;
+	}
 	this._getpostkeycounter++;
 	if( this._getpostkeycounter > 3){
 	    // リトライは最大3回まで.
@@ -1913,10 +1919,7 @@ var NicoLiveHelper = {
 		    debugprint('postkey='+NicoLiveHelper.postkey);
 		    if(NicoLiveHelper.postkey){
 			// 取得終わったら、コメ送信する.
-			setTimeout(function(){
-				       NicoLiveHelper._postListenerComment(NicoLiveHelper.chatbuffer,NicoLiveHelper.mailbuffer);
-				   }, 0);
-
+			NicoLiveHelper._postListenerComment(NicoLiveHelper.chatbuffer,NicoLiveHelper.mailbuffer);
 		    }
 		}else{
 		    NicoLiveHelper.postkey = "";
