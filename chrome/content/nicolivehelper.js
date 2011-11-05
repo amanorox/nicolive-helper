@@ -1895,7 +1895,7 @@ var NicoLiveHelper = {
 	if( this.isOffline() ) return;
 	let thread = this.thread;
 	if( !thread ) return;
-	let block_no = parseInt(this.last_res/100) + this._getpostkeycounter;
+	let block_no = parseInt(this.last_res/100);// + this._getpostkeycounter;
 	this._getpostkeycounter++;
 	if( this._getpostkeycounter > 3){
 	    // リトライは最大3回まで.

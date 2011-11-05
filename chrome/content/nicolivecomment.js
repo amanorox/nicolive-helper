@@ -62,7 +62,7 @@ var NicoLiveComment = {
 	let table = $('comment_table');
 	if(!table){ return; }
 
-	if( this.prev_comment_no!=0 ){
+	if( this.prev_comment_no!=0 && comment.no!=0 ){
 	    while( NicoLivePreference.ngwordfiltering && this.prev_comment_no+1!=comment.no ){
 		// コメ番がスキップしていたらそれはNGコメ.
 		let tmp = NicoLiveComment.prev_comment_no+1;
