@@ -83,13 +83,14 @@ var NicoLiveHelper = {
      * @param comment_no リク主のコメント番号(その他は0)
      * @param is_self_request 自貼りのときに真
      *
-     * -1 : xmlがおかしい、動画情報が取得できない、生放送で再生できない
+     * -1 : xmlがおかしい、動画情報が取得できない
      * -2 : リクエストを受け付けていない
      * -3 : 新着7日規制
      * -4 : 再生済み
      * -5 : リク済み
      * -6 : リクエスト縛り条件満たしてない
      * -7 : 枠内に収まらない
+     * -8 : 生放送で再生できない
      */
     checkToAcceptRequest: function(xml, comment_no, is_self_request){
 	if(xml.getElementsByTagName('error').length){ // 動画がない.
@@ -133,7 +134,7 @@ var NicoLiveHelper = {
 	}
 	// 生放送での引用拒否チェック.
 	if( info.no_live_play ){
-	    return {code:-1,msg:NicoLivePreference.msg.no_live_play,movieinfo:info};
+	    return {code:-8,msg:NicoLivePreference.msg.no_live_play,movieinfo:info};
 	}
 
 	if(NicoLivePreference.limitnewmovie && !is_self_request){
@@ -2538,6 +2539,8 @@ var NicoLiveHelper = {
 		    ans.movieinfo.user_id = "1";
 		    NicoLiveHelper.addStockQueue(ans.movieinfo);
 		    break;
+		case -1:
+		    break;
 		default:
 		    //debugprint(sm+'/'+ans.msg);
 		    ans.movieinfo.error = true;
@@ -2605,6 +2608,9 @@ var NicoLiveHelper = {
 	    case 0:
 		ans.movieinfo.error = false;
 		NicoLiveHelper.addRequestQueue(ans.movieinfo);
+		break;
+	    case -1:
+		ans.movieinfo.error = true;
 		break;
 	    default:
 		ans.movieinfo.error = true;
