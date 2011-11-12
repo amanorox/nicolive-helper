@@ -1857,11 +1857,15 @@ var NicoLiveHelper = {
 	if(this.isOffline()) return;
 	if(!comment) return;
 	if(comment.length<=0) return;
+
+	comment = comment.replace(/((...)[-](....)[-](.))/g,"$2=$3=$4");
+
 	if(this.previouschat==comment){
 	    ShowNotice("同じコメントの連投はできません");
 	    return;
 	}
 	this._getpostkeycounter = 0;
+
 	setTimeout(function(){
 		       NicoLiveHelper._postListenerComment(comment,mail);
 		   }, 0);
