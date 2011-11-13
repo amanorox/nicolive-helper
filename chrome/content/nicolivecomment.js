@@ -24,6 +24,8 @@ THE SOFTWARE.
  * コメントウィンドウ
  */
 var NicoLiveComment = {
+    commentlog: [],
+
     prev_comment_no: 0,    // 直前のコメ番(NGコメント検出・表示のためのコメ番記録).
     current_comment_no: 0, // 現在のコメ番(単純増加のみで表示リフレッシュがあっても不変).
 
