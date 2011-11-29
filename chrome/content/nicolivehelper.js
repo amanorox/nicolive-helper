@@ -2740,7 +2740,7 @@ var NicoLiveHelper = {
 		r = null;
 	    }
 	    if('string'==typeof r){
-		return {"code":-1,"msg":r};
+		return {"code":-2,"msg":r};
 	    }
 	}
 	return null;
