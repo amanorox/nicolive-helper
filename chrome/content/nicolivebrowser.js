@@ -78,7 +78,22 @@ var NicoLiveBrowser = {
 
     loadSearchingPage:function(){
 	let url;
-	url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a"; // ミクオリジナル曲
+	// ミクオリジナル曲
+	url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a";
+	//url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f";
+
+	// VOCALOID民族調
+	//url = "http://www.nicovideo.jp/search/VOCALOID%E6%B0%91%E6%97%8F%E8%AA%BF?page="+this._page+"&sort=f&order=a";
+
+	// VOCALOID和風曲
+	//url = "http://www.nicovideo.jp/search/VOCALOID%E5%92%8C%E9%A2%A8%E6%9B%B2?page="+this._page+"&sort=f&order=a";
+
+	// UTAU民族調曲
+	//url = "http://www.nicovideo.jp/search/UTAU%E6%B0%91%E6%97%8F%E8%AA%BF%E6%9B%B2?page="+this._page+"&sort=f&order=a";
+
+	// UTAU和風曲
+	//url = "http://www.nicovideo.jp/search/UTAU%E5%92%8C%E9%A2%A8%E6%9B%B2?page="+this._page+"&sort=f&order=a";
+
 	//url = "http://www.nicovideo.jp/tag/VOCALOID?page="+this._page+"&sort=f&order=a"; // VOCALOID
 	//url = "http://www.nicovideo.jp/tag/JOYSOUND%E9%85%8D%E4%BF%A1%E6%B1%BA%E5%AE%9A?page="+this._page+"&sort=f&order=a"; // JOYSOUND配信決定
 	//url = "http://www.nicovideo.jp/tag/JOYSOUND%E9%85%8D%E4%BF%A1%E4%B8%AD?page="+this._page+"&sort=f&order=a"; // JOYSOUND配信中

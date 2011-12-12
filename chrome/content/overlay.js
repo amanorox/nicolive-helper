@@ -169,7 +169,7 @@ var NicoLiveOverlay = {
 
 	let player;
 	try{
-	    player = e.target.getElementById("WatchPlayer");
+	    player = e.target.getElementById("WatchPlayer") || e.target.getElementById("flvplayer_container");
 	} catch (x) {
 	}
 	let iscaster = false;
@@ -821,7 +821,7 @@ var NicoLiveOverlay = {
 		Prefs.setCharPref("version",current);
 		// バージョンが異なるとき、すなわちアップグレードしたときに実行するコードを挿入します。
 		window.setTimeout(function(){
-				      gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#1.1.39");
+				      gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#1.1.40");
 				  }, 1500);
 	    }
 	}

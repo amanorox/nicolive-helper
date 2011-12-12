@@ -2401,6 +2401,9 @@ var NicoLiveHelper = {
 	try{
 	    for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
 		switch( elem.tagName ){
+		case "user_id":
+		    break;
+
 		case "video_id":
 		    info.video_id = elem.textContent;
 		    break;
