@@ -86,7 +86,7 @@ var NicoLiveHelper = {
      * @param is_self_request 自貼りのときに真
      *
      * -1 : xmlがおかしい、動画情報が取得できない
-     * -2 : リクエストを受け付けていない
+     * -2 : リクエストを受け付けていない(NG含む)
      * -3 : 新着7日規制
      * -4 : 再生済み
      * -5 : リク済み
@@ -2497,7 +2497,11 @@ var NicoLiveHelper = {
 	// video_id がないときはエラーとしておこう、念のため.
 	if( !info.video_id ) return null;
 
-	info.pname = this.getPName(info);
+	try{
+	    info.pname = this.getPName(info);
+	} catch (x) {
+	    info.pname = "";
+	}
 
 	try{
 	    info.mylistcomment = NicoLiveMylist.mylist_itemdata["_"+info.video_id].description;
