@@ -1,5 +1,75 @@
+try{
+    Components.utils.import("resource://gre/modules/ctypes.jsm");
+} catch (x) {
+    Application.console.log(x);
+}
+
+
 var NicoLiveCookie = {
 
+    init:function(){
+    },
+    destroy:function(){
+	try{
+	    if( this.lib ){
+		this.lib.close();
+	    }
+	} catch (x) {
+	    Application.console.log(x);
+	}
+    },
+
+    // IE(非保護モード)のクッキーを取得(js-ctypes)
+    getStdIECookie:function(uri,name){
+	// HRESULT GetIECookie(LPCWSTR url,LPCWSTR name,LPWSTR cookie,DWORD len)
+	if( !this.iestandard ){
+	    if( !this.lib ){
+		let path = GetExtensionPath();
+		path.append("libs");
+		path.append("cookiereader_dll.dll");
+		this.lib = ctypes.open(path.path);
+	    }
+	    this.iestandard = this.lib.declare("GetIECookie", ctypes.default_abi, ctypes.long, ctypes.jschar.ptr, ctypes.jschar.ptr, ctypes.jschar.ptr, ctypes.uint32_t );
+	    //debugprint(this.iestandard);
+	}
+	var myUTF16String = ctypes.jschar.array()(1024);
+	this.iestandard(uri,name,myUTF16String, 1024);
+	//debugprint(myUTF16String.readString());
+
+	var c = myUTF16String.readString();
+	c = c.split(";");
+	for(let i=0,item;item=c[i];i++){
+	    try{
+		c = item.match(/user_session=(.*)/)[1];
+		break;
+	    } catch (x) {
+	    }
+	}
+	return c;
+    },
+    // IE(保護モード)のクッキーを取得(js-ctypes)
+    getIECookie:function(uri,name){
+	// HRESULT GetProtectedModeIECookie(LPCWSTR url,LPCWSTR name,LPWSTR cookie,DWORD len)
+	if( !this.ieprotected ){
+	    if( !this.lib ){
+		let path = GetExtensionPath();
+		path.append("libs");
+		path.append("cookiereader_dll.dll");
+		this.lib = ctypes.open(path.path);
+	    }
+	    this.ieprotected = this.lib.declare("GetProtectedModeIECookie", ctypes.default_abi, ctypes.long, ctypes.jschar.ptr, ctypes.jschar.ptr, ctypes.jschar.ptr, ctypes.uint32_t );
+	    //debugprint(this.ieprotected);
+	}
+	var myUTF16String = ctypes.jschar.array()(1024);
+	this.ieprotected(uri,name,myUTF16String, 1024);
+	//debugprint("IEProCookie:"+myUTF16String.readString());
+
+	var c = myUTF16String.readString();
+	c = c.split(";")[0].match(/user_session=(.*)/)[1];
+	return c;
+    },
+
+    // IE(非保護モード)のクッキーを取得(XPCOM)
     getStandardIECookie:function(uri,name){
 	let c;
 	try{
@@ -19,7 +89,7 @@ var NicoLiveCookie = {
 	}
 	return c;
     },
-
+    // IE(保護モード)のクッキーを取得(XPCOM)
     getProtectedIECookie:function(uri,name){
 	let c;
 	try{
@@ -95,3 +165,5 @@ var NicoLiveCookie = {
 
 };
 
+window.addEventListener("load", function(e){ NicoLiveCookie.init(); }, false);
+window.addEventListener("unload", function(e){ NicoLiveCookie.destroy(); }, false);
