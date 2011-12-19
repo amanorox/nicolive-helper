@@ -15,6 +15,8 @@
       <preference id="pref-carelosstime" name="extensions.nicolivehelper.carelosstime" type="bool"/><!-- ロスタイム含めて再生動画を決定 -->
       <preference id="pref-nextplay-interval" name="extensions.nicolivehelper.nextplay-interval" type="int"/><!-- 再生インターバル -->
       <preference id="pref-max-movieplay-time" name="extensions.nicolivehelper.max-movieplay-time" type="int"/><!-- 最大再生時間 -->
+      <preference id="pref-check-delete" name="extensions.nicolivehelper.check_delete" type="bool"/><!-- 削除をチェック -->
+
       <preference id="pref-autoreply" name="extensions.nicolivehelper.autoreply" type="bool"/><!-- リクエスト受付応答メッセージフラグ -->
       <preference id="pref-show-autoreply" name="extensions.nicolivehelper.show-autoreply" type="bool"/><!-- 運営コメント欄に表示させるフラグ -->
       <preference id="pref-limitnewmovie" name="extensions.nicolivehelper.limitnewmovie" type="bool"/><!-- 新着規制 -->
@@ -68,6 +70,7 @@
 	      </row>
 	    </rows>
 	  </grid>
+	  <checkbox preference="pref-check-delete" label="再生時にすでに削除されている動画かどうかをチェックする" tooltiptext="削除されていた場合、スキップして次の動画を再生します。"/>
 	</tabpanel>
 	<tabpanel orient="vertical">
 	  <checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/>

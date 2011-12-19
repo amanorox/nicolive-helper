@@ -280,6 +280,8 @@ var NicoLivePreference = {
 
 	this.mikuonly = branch.getBoolPref("mikuonly");
 
+	this.check_delete = branch.getBoolPref("check_delete");
+
 	if(!fromobserver){
 	    // NicoLiveHelper側でNicoLivePreferenceを読むからここでセットする必要なし.
 	    //NicoLiveHelper.setPlayStyle(this.playstyle);

@@ -35,6 +35,8 @@ THE SOFTWARE.
  */
 
 var NicoLiveHelper = {
+    domain: "live.niconico.com",
+
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
     port: 0,
@@ -574,6 +576,8 @@ var NicoLiveHelper = {
 
     // 動画の存在をチェックして、削除されてるようなら次の再生を仕掛ける.
     checkVideoDeletedAndPlayNext:function(video_id){
+	if( !NicoLivePreference.check_delete ) return;
+
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
 	let req = CreateXHR("GET", url );
 	if( !req ) return;
@@ -774,6 +778,8 @@ var NicoLiveHelper = {
 	chat.anonymity = xmlchat.getAttribute('anonymity');
 	chat.mail      = xmlchat.getAttribute('mail') || "";
 	chat.name      = xmlchat.getAttribute('name') || "";
+	chat.locale    = xmlchat.getAttribute('locale') || "";
+	chat.origin    = xmlchat.getAttribute('origin') || "";
 
 	chat.date      = chat.date && parseInt(chat.date) || 0;
 	chat.premium   = chat.premium && parseInt(chat.premium) || 0;
