@@ -191,10 +191,11 @@ var NicoLiveComment = {
     // コメントリフレクションを行う.
     reflection:function(comment){
 	if( !NicoLiveHelper.iscaster ) return;
-	let name,disptype;
+	let name,disptype,color;
 	if(this.reflector[comment.user_id]){
 	    name = this.reflector[comment.user_id].name;
 	    disptype = this.reflector[comment.user_id].disptype;
+	    color = this.reflector[comment.user_id].color;
 	}else{
 	    return;
 	}
@@ -211,14 +212,14 @@ var NicoLiveComment = {
 	    break;
 	case 2:
 	    // BSP
-	    str = "/press show green \""+comment.text+"\" \""+name+"さん\"";
+	    str = "/press show "+color+" \""+comment.text+"\" \""+name+"さん\"";
 	    name = null;
 	    break;
 	}
 	str = str.replace(/{=/g,'{-');
 	if( disptype==2 ){
 	    // BSPコメ
-	    NicoLiveHelper.postCasterComment(str,"",name);
+	    NicoLiveHelper.postCasterComment(str, "", name);
 	}else{
 	    let func = function(){
 		NicoLiveHelper.postCasterComment(str, comment.mail, name, COMMENT_MSG_TYPE_NORMAL);
@@ -330,10 +331,10 @@ var NicoLiveComment = {
 	NicoLiveHelper.postCasterComment(str,"");
     },
 
-    addCommentReflectorCore:function(userid,name,disptype,addnguser){
+    addCommentReflectorCore:function(userid,name,disptype,addnguser,color){
 	if(name && name.length){
 	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-	    this.reflector[userid] = {"name":name, "disptype":disptype };
+	    this.reflector[userid] = {"name":name, "disptype":disptype, "color":color };
 	    if(user.length==0){
 		// ここからリフレクション解除メニューの追加.
 		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
@@ -363,7 +364,8 @@ var NicoLiveComment = {
 	let param = {
 	    "info": LoadFormattedString("STR_TEXT_REGISTER_REFLECTION",[userid]),
 	    "default": defstring,
-	    "disptype": 0
+	    "disptype": 0,
+	    "color": "white"
 	};
 	let f = "chrome,dialog,centerscreen,modal";
 	if(NicoLivePreference.topmost){ f += ',alwaysRaised=yes'; }
@@ -373,8 +375,9 @@ var NicoLiveComment = {
 	window.openDialog("chrome://nicolivehelper/content/commentdialog.xul","reflector",f,param);
 	let name = param['default'];
 	let disptype = param['disptype'];
+	let color = param['color'];
 
-	if(this.addCommentReflectorCore(userid,name,disptype, param.addnguser )){
+	if(this.addCommentReflectorCore(userid, name, disptype, param.addnguser, color )){
 	    // >>%S %Sさん　運営コメント:ON
 	    let str;
 	    if( !comment_no ) comment_no = "";

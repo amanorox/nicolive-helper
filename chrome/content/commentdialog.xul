@@ -27,12 +27,13 @@ function retval()
     window.arguments[0].default = document.getElementById('input-name').value;
     window.arguments[0].disptype = document.getElementById('name-select-radio').selectedIndex;
     window.arguments[0].addnguser = document.getElementById('add-nglist').checked;
+    window.arguments[0].color = document.getElementById('bsp-name-color').selectedItem.value;
     return true;
 }
   ]]>
   </script>
 
-  <grid>
+  <grid style="margin-bottom: 1em;">
     <columns>
       <column/>
       <column flex="1"/>
@@ -58,10 +59,32 @@ function retval()
 	  <radio id="name-bsp" persist="selected" label="バックステージパスコメントを使用して表示"/>
 	</radiogroup>
       </row>
+      <row column="3">
+	<label value=""/>
+	<hbox align="center">
+	  <label value="BSPコメント使用時の背景色"/>
+	  <menulist id="bsp-name-color">
+	    <menupopup>
+	      <menuitem value="green" label="green"/>
+	      <menuitem value="white" label="white"/>
+	      <menuitem value="niconicowhite" label="niconicowhite"/>
+	      <menuitem value="red" label="red"/>
+	      <menuitem value="blue" label="blue"/>
+	      <menuitem value="cyan" label="cyan"/>
+	      <menuitem value="yellow" label="yellow"/>
+	      <menuitem value="purple" label="purple"/>
+	      <menuitem value="pink" label="pink"/>
+	      <menuitem value="orange" label="orange"/>
+	    </menupopup>
+	  </menulist>
+	</hbox>
+      </row>
+
       <row>
 	<label value=""/>
 	<checkbox persist="checked" id="add-nglist" label="NGユーザ登録を行う(現在はチェックしてもNG登録されません)"/>
       </row>
+
     </rows>
 
   </grid>
