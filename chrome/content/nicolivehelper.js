@@ -3005,7 +3005,11 @@ var NicoLiveHelper = {
 
 	let prefs = NicoLivePreference.getBranch();
 	if(prefs.getBoolPref("savecomment")){
-	    NicoLiveComment.openFile(this.request_id, this.community);
+	    try{
+		NicoLiveComment.openFile(this.request_id, this.community);
+	    } catch (x) {
+		debugprint(x);
+	    }
 	}
 	NicoLiveComment.getNGWords();// obtain NG words list.
 

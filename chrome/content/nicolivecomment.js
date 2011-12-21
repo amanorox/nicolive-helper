@@ -720,7 +720,17 @@ var NicoLiveComment = {
 	    }
 	}
 
-	file = OpenFile(f.path);
+	try{
+	    file = OpenFile(f.path);
+	} catch (x) {
+	    f = NicoLivePreference.getCommentDir();
+	    if( community ){
+		f.append(community);
+		CreateFolder(f.path);
+	    }
+	    f.append(request_id+".txt");
+	    file = OpenFile(f.path);
+	}
 	debugprint('open comment log:'+f.path);
 
 	os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
