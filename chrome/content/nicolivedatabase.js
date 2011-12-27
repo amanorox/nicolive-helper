@@ -491,7 +491,7 @@ var NicoLiveDatabase = {
 	let str;
 	str = "<vbox context=\"popup-db-result\" nicovideo_id=\""+item.video_id+"\" tooltiptext=\""+tooltip+"\">"
 	    + "<html:div>"
-	    + "<label crop=\"end\"><html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'"+item.video_id+"');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+item.video_id+"');\">"+item.video_id+"</html:a>/"+item.title+" ("+tooltip+")</label><html:br/>";
+	    + "<label crop=\"end\"><html:a onmouseover=\"NicoLiveComment.showThumbnail(event,'"+item.video_id+"');\" onmouseout=\"NicoLiveComment.hideThumbnail();\" onclick=\"NicoLiveWindow.openDefaultBrowser('http://www.nicovideo.jp/watch/"+item.video_id+"');\">"+item.video_id+"</html:a>/"+item.title+" ("+tooltip+")</label><html:br/>";
 
 	let datestr = GetDateString(item.first_retrieve*1000);
 	str+= "<label value=\"投稿日:" + datestr +" "

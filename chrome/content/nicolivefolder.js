@@ -246,7 +246,7 @@ var NicoLiveFolderDB = {
 	if( !item ) return;
 	let vid = item.getAttribute('vid');
 	//NicoLivePlaylist.newTab(vid);
-	window.opener.getBrowser().addTab("http://www.nicovideo.jp/watch/"+vid);
+	NicoLiveWindow.openDefaultBrowser("http://www.nicovideo.jp/watch/"+vid);
     },
 
     /**

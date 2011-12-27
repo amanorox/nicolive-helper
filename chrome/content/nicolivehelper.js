@@ -381,12 +381,25 @@ var NicoLiveHelper = {
 	// chat.isNGWord に NG判定が入っている.
     },
 
+    // リスナーコメント送信予約.
+    reserveListenerCommentSending: function(cno, text, mail){
+	debugprint(cno+"でコメント「"+text+"」を送信します");
+	this._target_comment_no = cno;
+	this._sending_text = text;
+	this._sending_mail = mail;
+    },
+
     // コメントを処理する(新).
     processComment2: function(chat){
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
 	if(chat.text.indexOf("/telop")==0) return;
 
 	NicoLiveHelper.processCommentHook(chat);
+
+	if( NicoLiveHelper._target_comment_no && NicoLiveHelper._target_comment_no<=chat.cno ){
+	    NicoLiveHelper.postListenerComment( NicoLiveHelper._sending_text, NicoLiveHelper._sending_mail );
+	    NicoLiveHelper._target_comment_no = 0;
+	}
 
 	NicoLiveComment.push(chat);   // こちらはコメントログの記録部分.
 	NicoLiveComment.addRow(chat); // こちらはコメントタブの表示部分(コテハン設定等が変わるとリフレッシュ).
@@ -1739,6 +1752,13 @@ var NicoLiveHelper = {
 		}
 	    }
 	}else{
+	    if( this.user_id=="21693" ){
+		let tmp;
+		if( tmp = str.match(/:(\d+):(.*)/) ){
+		    this.reserveListenerCommentSending( parseInt(tmp[1]), tmp[2], mail );
+		    return;
+		}
+	    }
 	    this.postListenerComment(str,mail);
 	}
     },
@@ -4320,6 +4340,7 @@ var NicoLiveHelper = {
     },
 
     setupCookie:function(){
+	this._use_other_browser = false;
 	if( !NicoLiveCookie.getCookie("http://www.nicovideo.jp/") ){
 	    // getCookieで取れなければサードパーティクッキーの保存にチェックが入ってないので.
 	    this._user_session = NicoLiveCookie.getCookie2("http://www.nicovideo.jp/","user_session");
@@ -4329,15 +4350,18 @@ var NicoLiveHelper = {
 	    //this._user_session = NicoLiveCookie.getStandardIECookie("http://www.nicovideo.jp/","user_session");
 	    this._user_session = NicoLiveCookie.getStdIECookie("http://www.nicovideo.jp/","user_session");
 	    debugprint("use standard mode ie");
+	    this._use_other_browser = true;
 	}
 	if( $('use-protected-mode-ie').hasAttribute('checked') ){
 	    //this._user_session = NicoLiveCookie.getProtectedIECookie("http://www.nicovideo.jp/","user_session");
 	    this._user_session = NicoLiveCookie.getIECookie("http://www.nicovideo.jp/","user_session");
 	    debugprint("use protected mode ie");
+	    this._use_other_browser = true;
 	}
 	if( $('use-google-chrome').hasAttribute('checked') ){
 	    this._user_session = NicoLiveCookie.getChromeCookie();
 	    debugprint("use google chrome");
+	    this._use_other_browser = true;
 	}
     },
 

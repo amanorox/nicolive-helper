@@ -21,6 +21,25 @@ THE SOFTWARE.
  */
 
 var NicoLiveWindow = {
+
+    openDefaultBrowser:function(url){
+	if( NicoLiveHelper._use_other_browser ){
+	    // まず ioservice を用いて nsIURI オブジェクトを作る
+	    var ioservice = Components.classes["@mozilla.org/network/io-service;1"]
+		.getService(Components.interfaces.nsIIOService);
+	
+	    var uriToOpen = ioservice.newURI(url, null, null);
+	
+	    var extps = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
+		.getService(Components.interfaces.nsIExternalProtocolService);
+	
+	    // そしてそれを開く
+	    extps.loadURI(uriToOpen, null);
+	}else{
+	    window.opener.getBrowser().addTab( url );
+	}
+    },
+
     // 左のタブから1,2,3,....,9,0 の番号としてタブを切り替える.
     changeTab:function(n){
 	n = (n + 9) % 10;

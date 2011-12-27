@@ -42,7 +42,7 @@ var NicoLiveRequest = {
 	div.className ="selection";
 	let a = CreateHTMLElement('a');
 	a.className = "";
-	a.setAttribute("onclick","window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+item.video_id+"');");
+	a.setAttribute("onclick","NicoLiveWindow.openDefaultBrowser('http://www.nicovideo.jp/watch/"+item.video_id+"');");
 
 	let img = CreateHTMLElement('img');
 	img.src = item.thumbnail_url;
@@ -104,13 +104,13 @@ var NicoLiveRequest = {
 	    if( s.match(/mylist\/\d+/) ){
 		let a = CreateHTMLElement('a');
 		let mylist = s;
-		a.setAttribute("onclick","window.opener.getBrowser().addTab('http://www.nicovideo.jp/"+mylist+"');");
+		a.setAttribute("onclick","NicoLiveWindow.openDefaultBrowser('http://www.nicovideo.jp/"+mylist+"');");
 		a.appendChild(document.createTextNode(s));
 		div2.appendChild(a);
 	    }else if( s.match(/(sm|nm)\d+/) ){
 		let a = CreateHTMLElement('a');
 		let vid = s;
-		a.setAttribute("onclick","window.opener.getBrowser().addTab('http://www.nicovideo.jp/watch/"+vid+"');");
+		a.setAttribute("onclick","NicoLiveWindow.openDefaultBrowser('http://www.nicovideo.jp/watch/"+vid+"');");
 		a.setAttribute("onmouseover","NicoLiveComment.showThumbnail(event,'"+vid+"');");
 		a.setAttribute("onmouseout","NicoLiveComment.hideThumbnail();");
 		a.appendChild(document.createTextNode(s));
@@ -618,6 +618,8 @@ var NicoLiveRequest = {
 	for(let i=0,id;id=l[i];i++){
 	    NicoLiveHelper.addRequest(id,0,"1");
 	}
+	// http://t.co/oNAyZmZ3
+	//l = sm.match(/(http:\/\/t.co\/\w+)/);
 	$('input-request').value="";
     },
 
