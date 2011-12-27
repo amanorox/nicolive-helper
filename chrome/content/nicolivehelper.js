@@ -396,7 +396,7 @@ var NicoLiveHelper = {
 
 	NicoLiveHelper.processCommentHook(chat);
 
-	if( NicoLiveHelper._target_comment_no && NicoLiveHelper._target_comment_no<=chat.cno ){
+	if( NicoLiveHelper._target_comment_no && NicoLiveHelper._target_comment_no<=chat.no ){
 	    NicoLiveHelper.postListenerComment( NicoLiveHelper._sending_text, NicoLiveHelper._sending_mail );
 	    NicoLiveHelper._target_comment_no = 0;
 	}
