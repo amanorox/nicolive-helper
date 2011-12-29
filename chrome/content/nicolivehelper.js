@@ -1423,6 +1423,10 @@ var NicoLiveHelper = {
 			    tmpa = a.uadp;
 			    tmpb = b.uadp;
 			    break;
+			case 9:
+			    tmpa = a.highbitrate;
+			    tmpb = b.highbitrate;
+			    break;
 			}
 			return (tmpa - tmpb) * order;
 		    });

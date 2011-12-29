@@ -79,8 +79,8 @@ var NicoLiveBrowser = {
     loadSearchingPage:function(){
 	let url;
 	// ミクオリジナル曲
-	url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a";
-	//url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f";
+	//url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f&order=a";
+	url = "http://www.nicovideo.jp/tag/%E3%83%9F%E3%82%AF%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E6%9B%B2?page="+this._page+"&sort=f";
 
 	// VOCALOID民族調
 	//url = "http://www.nicovideo.jp/search/VOCALOID%E6%B0%91%E6%97%8F%E8%AA%BF?page="+this._page+"&sort=f&order=a";
@@ -301,7 +301,7 @@ var NicoLiveBrowser = {
 	    this._counter = 0;
 	    debugprint("begin obtain videoinfos.");
 	    this.obtainVideoInfos();
-	    this._timer = setInterval("NicoLiveBrowser.obtainVideoInfos();",30*1000);
+	    this._timer = setInterval("NicoLiveBrowser.obtainVideoInfos();",20*1000);
 	}
     },
 
