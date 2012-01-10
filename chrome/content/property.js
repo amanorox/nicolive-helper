@@ -2,6 +2,20 @@
 var Property = {
     vinfo: {},
 
+    checkSelection:function(){
+	let str = window.getSelection().toString();
+	if( str ){
+	    $('menu-copy').disabled = false;
+	}else{
+	    $('menu-copy').disabled = true;
+	}
+    },
+
+    copyToClipboard:function(){
+	let str = window.getSelection().toString();
+	CopyToClipboard(str);
+    },
+
     init: function(){
 	this.vinfo = window.arguments[0].vinfo;
 	document.title = this.vinfo.video_id + "'s Property";
@@ -9,13 +23,13 @@ var Property = {
 	$('video_thumbnail').src = this.vinfo.thumbnail_url;
 	$('video_id').value = this.vinfo.video_id;
 	$('video_type').value = this.vinfo.movie_type;
-	$('video_title').value = this.vinfo.title;
+	$('video_title').innerHTML = htmlspecialchars(this.vinfo.title);
 	$('video_date').value = GetDateString(this.vinfo.first_retrieve*1000);
 	$('video_views').value = FormatCommas(this.vinfo.view_counter);
 	$('video_comments').value = FormatCommas(this.vinfo.comment_num);
 	$('video_mylist_counter').value = FormatCommas(this.vinfo.mylist_counter);
 	$('video_length').value = this.vinfo.length;
-	$('video_highbitrate').value = this.vinfo.highbitrate + " kbps";
+	$('video_highbitrate').innerHTML = this.vinfo.highbitrate + " kbps";
 	$('video_description').innerHTML = htmlspecialchars(this.vinfo.description);
 
 	let text = "";

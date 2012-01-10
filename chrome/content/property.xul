@@ -32,9 +32,9 @@
 	  <label value="タイプ"/>
 	  <label id="video_type" value="flv"/>
 	</row>
-	<row>
+	<row context="popup-copy">
 	  <label value="タイトル"/>
-	  <label id="video_title" value=""/>
+	  <html:div id="video_title" value="" style="-moz-user-select:text;"/>
 	</row>
 	<row>
       	  <label value="投稿日"/>
@@ -56,15 +56,15 @@
 	  <label value="長さ"/>
 	  <label id="video_length" value=""/>
 	</row>
-	<row>
+	<row context="popup-copy">
 	  <label value="ビットレート"/>
-	  <label id="video_highbitrate" value=""/>
+	  <html:div id="video_highbitrate" value="" style="-moz-user-select:text;"/>
 	</row>
-	<row>
+	<row context="popup-copy">
 	  <label value="説明"/>
 	  <html:div style="-moz-user-select:text; width:40em;" id="video_description" value="" />
 	</row>
-	<row>
+	<row context="popup-copy">
 	  <label value="タグ"/>
 	  <html:div style="-moz-user-select:text; width:40em;" id="video_tags" value=""/>
 	</row>
@@ -72,5 +72,9 @@
     </grid>
 
   </vbox>
+
+    <menupopup id="popup-copy" onpopupshowing="Property.checkSelection();">
+      <menuitem id="menu-copy" label="&comment.menu_copy;" oncommand="Property.copyToClipboard();"/>
+    </menupopup>
 
 </dialog>
