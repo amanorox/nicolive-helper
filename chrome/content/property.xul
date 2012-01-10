@@ -29,7 +29,7 @@
 	  <label id="video_id" value="sm1340413"/>
 	</row>
 	<row>
-	  <label value="コーデック"/>
+	  <label value="タイプ"/>
 	  <label id="video_type" value="flv"/>
 	</row>
 	<row>
