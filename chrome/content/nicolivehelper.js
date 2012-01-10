@@ -1580,7 +1580,7 @@ var NicoLiveHelper = {
 
 	if( this.endtime ){
 	    // ロスタイムじゃないときだけ次を再生できる.
-	    if( this.playFromPrepared() ){
+	    if( this.israndomplay && this.playFromPrepared() ){
 		return;
 	    }
 	    if(this.requestqueue.length){

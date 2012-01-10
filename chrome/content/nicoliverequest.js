@@ -1079,6 +1079,17 @@ var NicoLiveRequest = {
 	AlertPrompt('分類:'+NicoLiveClassifier.classify(str)['class'],"分類チェック");
     },
 
+    showProperty:function(node){
+	let elem = FindParentElement(node,'vbox');
+	let vid = elem.getAttribute('nicovideo_id');
+	let vinfo = NicoLiveHelper.findVideoInfo( vid );
+	let param = { "vinfo": vinfo };
+	let f = "chrome,centerscreen,dependent,resizable=yes";
+	if(NicoLivePreference.topmost){ f += ',alwaysRaised=yes'; }
+	window.openDialog("chrome://nicolivehelper/content/property.xul",vid,f,param);
+
+    },
+
     init:function(){
 	debugprint("NicoLiveRequest.init");
 	this.visibleDetail = true;

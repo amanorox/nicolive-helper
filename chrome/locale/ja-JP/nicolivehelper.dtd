@@ -3,6 +3,8 @@
 <!ENTITY general.random "ランダム">
 <!ENTITY general.folder "フォルダ">
 <!ENTITY general.command "コマンド">
+<!ENTITY general.property "プロパティ">
+<!ENTITY general.bitrate "ビットレート">
 
 <!ENTITY playstyle.manual_sequential "手動(順次)">
 <!ENTITY playstyle.manual_random "手動(ランダム)">

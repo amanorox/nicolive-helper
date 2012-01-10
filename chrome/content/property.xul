@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://global/content/commonDialog.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/commonDialog.css" type="text/css"?>
+
+
+<!DOCTYPE dialog SYSTEM "chrome://nicolivehelper/locale/nicolivehelper.dtd">
+
+<dialog id="video_property"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	title="&general.property;"
+	buttons="accept"
+	onload=""
+	ondialogaccept="return true;">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/property.js" />
+
+  <vbox>
+    <grid>
+      <columns>
+	<column/>
+	<column/>
+      </columns>
+      <rows>
+	<row>
+	  <hbox><html:img id="video_thumbnail" src=""/></hbox>
+	  <label id="video_id" value="sm1340413"/>
+	</row>
+	<row>
+	  <label value="コーデック"/>
+	  <label id="video_type" value="flv"/>
+	</row>
+	<row>
+	  <label value="タイトル"/>
+	  <label id="video_title" value=""/>
+	</row>
+	<row>
+      	  <label value="投稿日"/>
+	  <label id="video_date" value=""/>
+	</row>
+	<row>
+	  <label value="再生数"/>
+	  <label id="video_views" value=""/>
+	</row>
+	<row>
+	  <label value="コメント数"/>
+	  <label id="video_comments" value=""/>
+	</row>
+	<row>
+	  <label value="マイリスト数"/>
+	  <label id="video_mylist_counter" value=""/>
+	</row>
+	<row>
+	  <label value="長さ"/>
+	  <label id="video_length" value=""/>
+	</row>
+	<row>
+	  <label value="ビットレート"/>
+	  <label id="video_highbitrate" value=""/>
+	</row>
+	<row>
+	  <label value="説明"/>
+	  <html:div style="-moz-user-select:text; width:40em;" id="video_description" value="" />
+	</row>
+	<row>
+	  <label value="タグ"/>
+	  <html:div style="-moz-user-select:text; width:40em;" id="video_tags" value=""/>
+	</row>
+      </rows>
+    </grid>
+
+  </vbox>
+
+</dialog>

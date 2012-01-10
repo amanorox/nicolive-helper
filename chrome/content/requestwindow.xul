@@ -663,7 +663,7 @@
 	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortRequest(4,1)"/>
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortRequest(5,1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortRequest(6,1)"/>
-	  <menuitem label="ビットレート" oncommand="NicoLiveHelper.sortStock(9,1)"/>
+	  <menuitem label="&general.bitrate;" oncommand="NicoLiveHelper.sortStock(9,1)"/>
 	</menupopup>
       </menu>
       <menu label="&sort.descend_order;">
@@ -675,7 +675,7 @@
 	  <menuitem label="&sort.posteddate;" oncommand="NicoLiveHelper.sortRequest(4,-1)"/>
 	  <menuitem label="&sort.mylist_rate;" oncommand="NicoLiveHelper.sortRequest(5,-1)"/>
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortRequest(6,-1)"/>
-	  <menuitem label="ビットレート" oncommand="NicoLiveHelper.sortStock(9,-1)"/>
+	  <menuitem label="&general.bitrate;" oncommand="NicoLiveHelper.sortStock(9,-1)"/>
 	</menupopup>
       </menu>
 
@@ -703,6 +703,8 @@
       <menuseparator/>
       <menuitem label="コンパクション" tooltiptext="この動画を基準に重複したリクエストを圧縮します" oncommand="NicoLiveRequest.compactRequest(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
+      <menuseparator/>
+      <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
     <!-- for request -->
@@ -719,6 +721,8 @@
 	</menupopup>
       </menu>
       <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event,document.popupNode||$('popup-error-request').triggerNode);"/>
+      <menuseparator/>
+      <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
     <!-- for database -->
@@ -772,7 +776,7 @@
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,1)"/>
 	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,1)"/>
 	  <menuitem label="&sort.ad_point;" oncommand="NicoLiveHelper.sortStock(8,1)"/>
-	  <menuitem label="ビットレート" oncommand="NicoLiveHelper.sortStock(9,1)"/>
+	  <menuitem label="&general.bitrate;" oncommand="NicoLiveHelper.sortStock(9,1)"/>
 	</menupopup>
       </menu>
       <menu label="&sort.descend_order;">
@@ -786,7 +790,7 @@
 	  <menuitem label="&sort.title;" oncommand="NicoLiveHelper.sortStock(6,-1)"/>
 	  <menuitem label="&sort.registered_date;" oncommand="NicoLiveHelper.sortStock(7,-1)"/>
 	  <menuitem label="&sort.ad_point;" oncommand="NicoLiveHelper.sortStock(8,-1)"/>
-	  <menuitem label="ビットレート" oncommand="NicoLiveHelper.sortStock(9,-1)"/>
+	  <menuitem label="&general.bitrate;" oncommand="NicoLiveHelper.sortStock(9,-1)"/>
 	</menupopup>
       </menu>
       <menuitem label="&menu.stock_showdetail;" oncommand="NicoLiveRequest.showhideDetail();"/>
@@ -810,6 +814,8 @@
       <menuitem label="&menu.turnoff_playedflag;" oncommand="NicoLiveRequest.offPlayedStatus(document.popupNode||$('popup-sort-stock').triggerNode);"/>
       <menuseparator/>
       <menuitem label="&menu.stock_savefile;" oncommand="NicoLiveRequest.saveStockToFile();"/>
+      <menuseparator/>
+      <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
     <!-- for playlist -->
@@ -841,6 +847,8 @@
 	  <menuitem label="&rate.5;" value="50" type="checkbox"/>
 	</menupopup>
       </menu>
+      <menuseparator/>
+      <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
     <!-- for folder -->
