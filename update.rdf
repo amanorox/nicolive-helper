@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$R3pNz"
-                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="3.5"
-                   em:maxVersion="*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.42.xpi"
-                   em:updateHash="sha1:9770ff35e64018659a7af23cd33748d74acbf794"
-                   em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
   <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAC7a6eQw100QlgLm9D+vZq5YEwKnIJqCpfS9MlcZNf2gqc9OntKwkj4PWscKdY2HOA6x24GP9pyo7kS0Eoy+ax7H53gOQMMuKI0t5oj17GWqhULnGtm/3vAGMih5wJHK5fVZY2r/Ws3a/xGnUFJrsY94S/RSY4yElJBRqXn3sboo">
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAKW7uVroS9UNTaVks8zhqTmPn8KhC/QtInP9Psk95oqCxu4dD/8uQKmPHc1GEhg3jLRamU3RENVVRx/CDlfqraJxboSS+2ioc79c3kR7AWsLMMBFgsnLb4DqOe3L6RhX39c604nUVsM8Uhhvo9uED6tHwXMa0rkfwwneOoL1qRSe">
     <em:updates RDF:resource="rdf:#$N3pNz"/>
   </RDF:Description>
   <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="1.1.42">
+                   em:version="1.1.43">
     <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
   </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
+  <RDF:Description RDF:about="rdf:#$R3pNz"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="3.5"
+                   em:maxVersion="*"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_1.1.43.xpi"
+                   em:updateHash="sha1:f7dab73d567e40ebf4b1f935190fe08456027686"
+                   em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
 </RDF:RDF>
