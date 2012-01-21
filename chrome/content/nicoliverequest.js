@@ -863,6 +863,7 @@ var NicoLiveRequest = {
 	}
 	// タブをドロップしたとき.
 	if( event.dataTransfer.types.contains("application/x-moz-tabbrowser-tab") ){
+	    //this._debug = event;
 	    debugprint("tab dropped");
 	    let str = "";
 	    let tab = event.dataTransfer.mozGetDataAt("application/x-moz-tabbrowser-tab",0);
@@ -879,10 +880,19 @@ var NicoLiveRequest = {
 		//debugprint(item.textContent);
 		str += item.textContent + " ";
 	    }
+	    // コミュニティ動画
 	    items = evaluateXPath(doc,"//a[@class='def']/@href");
 	    for(let i=0,item; item=items[i]; i++){
 		//debugprint(item.textContent);
 		str += item.textContent + " ";
+	    }
+	    // ユーザーページの投稿動画
+	    if( doc.location.href.match(/user\/\d+\/video$/) ){
+		items = evaluateXPath(doc,"//*[@class='mylistVideo']/h4/a/@href");
+		for(let i=0,item; item=items[i]; i++){
+		    //debugprint(item.textContent);
+		    str += item.textContent + " ";
+		}
 	    }
 
 	    str += event.dataTransfer.mozGetDataAt("text/x-moz-text-internal",0);
