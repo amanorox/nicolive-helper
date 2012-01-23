@@ -1151,7 +1151,7 @@ var NicoLiveHelper = {
 	try{
 	    if( 0 && this.community=="co154" ){
 		let msg = this.community + " " + this.title + " " + this.request_id +" で紹介されました。";
-		NicoLiveMylist.addDeflist( this.musicinfo.video_id, msg );
+		NicoLiveMylist.addDeflist1( this.musicinfo.video_id, msg );
 	    }
 	} catch (x) {
 	    debugprint(x);

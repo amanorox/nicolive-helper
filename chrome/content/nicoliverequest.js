@@ -923,7 +923,7 @@ var NicoLiveRequest = {
     addMylist:function(mylist_id,mylist_name,ev,node){
 	let elem = FindParentElement(node,'vbox');
 	let video_id = elem.getAttribute('nicovideo_id'); // 動画IDを取れる.
-	NicoLiveMylist._addMyList(mylist_id,mylist_name,video_id, ev);
+	NicoLiveMylist.addMyList1(mylist_id,mylist_name,video_id, ev);
     },
 
     // リク、ストックタブ用のマイリス追加メニューを作る.

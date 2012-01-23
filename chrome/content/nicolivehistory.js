@@ -89,7 +89,7 @@ var NicoLiveHistory = {
 	substring = notes.value.substr(notes.selectionStart,notes.selectionEnd-notes.selectionStart);
 
 	if(substring.length>=3){
-	    NicoLiveMylist._addMyList(mylist_id,mylist_name,substring, ev);
+	    NicoLiveMylist.addMyList1(mylist_id,mylist_name,substring, ev);
 	}
     },
 
