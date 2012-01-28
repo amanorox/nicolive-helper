@@ -22,7 +22,12 @@ THE SOFTWARE.
 
 var NicoLiveWindow = {
 
-    openDefaultBrowser:function(url){
+    /**
+     * 指定のURLを開く.
+     * @param url URL
+     * @param hasfocus 開いたタブがフォーカスを得るか
+     */
+    openDefaultBrowser:function(url, hasfocus){
 	if( NicoLiveHelper._use_other_browser ){
 	    // まず ioservice を用いて nsIURI オブジェクトを作る
 	    var ioservice = Components.classes["@mozilla.org/network/io-service;1"]
@@ -36,7 +41,10 @@ var NicoLiveWindow = {
 	    // そしてそれを開く
 	    extps.loadURI(uriToOpen, null);
 	}else{
-	    window.opener.getBrowser().addTab( url );
+	    let tab = window.opener.getBrowser().addTab( url );
+	    if( hasfocus ){
+		window.opener.getBrowser().selectedTab = tab;
+	    }
 	}
     },
 

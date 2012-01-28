@@ -1133,8 +1133,11 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 動画情報を送信開始する.
-    sendMusicInfo:function(){
+    /**
+     * 動画情報を送信開始する.
+     * @param resend 動画情報の再送信時に指定するフラグ
+     */
+    sendMusicInfo:function(resend){
 	let func = function(){
 	    clearInterval(NicoLiveHelper._sendmusicid);
 	    clearInterval(NicoLiveHelper._revertcommentid); // 古い動画情報復帰は消しておこう.
@@ -1144,17 +1147,19 @@ var NicoLiveHelper = {
 	};
 	this.clearCasterCommentAndRun(func);
 
-	if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
-	    NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" #"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
-	}
-
-	try{
-	    if( 0 && this.community=="co154" ){
-		let msg = this.community + " " + this.title + " " + this.request_id +" で紹介されました。";
-		NicoLiveMylist.addDeflist1( this.musicinfo.video_id, msg );
+	if( !resend ){
+	    if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
+		NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" #"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
 	    }
-	} catch (x) {
-	    debugprint(x);
+
+	    try{
+		if( 0 && this.community=="co154" ){
+		    let msg = this.community + " " + this.title + " " + this.request_id +" で紹介されました。";
+		    NicoLiveMylist.addDeflist1( this.musicinfo.video_id, msg );
+		}
+	    } catch (x) {
+		debugprint(x);
+	    }
 	}
     },
 
@@ -3246,23 +3251,6 @@ var NicoLiveHelper = {
 		}
 	    }
 	}
-/*
-	// old
-	if( this.iscaster ){
-	    // 3分前になったら自動無料延長の実施.
-	    if( this.endtime && remaintime>0 && remaintime <= 3*60 && (remaintime%15)==0 ){
-		// 連続して呼ばないように、残り3分以下かつ15秒ごとに.
-		// モーダルダイアログなどで時間が進行してなく、再開時に時間がスキップした場合は今のところ無視.
-		if( $('auto-freeextend').hasAttribute('checked') ){
-		    this._extendcnt++;
-		    if( this._extendcnt<=4 ){
-			debugprint("自動無料延長を行います");
-			this.getsalelist( true );
-		    }
-		}
-	    }
-	}
-*/
 
 	let nt = NicoLivePreference.notice.time;
 	if( (this.endtime && remaintime>0 && remaintime < nt*60) ||
@@ -3833,6 +3821,7 @@ var NicoLiveHelper = {
 		try{
 		    NicoLiveHelper.remainpoint = remain.getElementsByTagName("remain")[0].textContent;
 		    debugprint("remain point="+NicoLiveHelper.remainpoint);
+		    $('controlpanel-remain-point').value = "所持ニコニコポイント:"+NicoLiveHelper.remainpoint;
 		    NicoLiveHelper.getsalelist();
 		} catch (x) {
 		    NicoLiveHelper.remainpoint = 0;
@@ -3847,6 +3836,27 @@ var NicoLiveHelper = {
      */
     updateExtendMenu:function(){
 	this.getremainpoint();
+    },
+
+    /**
+     * 自動無料延長の有無を指定する.
+     */
+    setAutoFreeExtend:function(flg){
+	if( flg ){
+	    $('controlpanel-auto-free-extend').setAttribute('checked',true);
+	    $('auto-freeextend').setAttribute('checked',true);
+	}else{
+	    $('controlpanel-auto-free-extend').removeAttribute('checked');
+	    $('auto-freeextend').removeAttribute('checked');
+	}
+	ShowNotice(flg?'自動無料延長を有効にしました':'自動無料延長を無効にしました');
+    },
+
+    // コントロールパネルの延長ボタンを押した.
+    pressExtendButtonOfControlPanel:function(){
+	let event = new Object();
+	event.target = $('controlpanel-menu-live-extend-menulist').selectedItem;
+	this.onLiveExtend(event);
     },
 
     // 延長メニューを選んだとき.
@@ -3876,6 +3886,7 @@ var NicoLiveHelper = {
     // getsalelistの内容でメニューを更新.
     updateSaleListMenu:function(xml){
 	let menu = $('menu-live-extend');
+	let controlpanel_menu = $('controlpanel-menu-live-extend');
 	let parentitems = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']");
 	let labels = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/label");
 	let prices = evaluateXPath(xml,"/getsalelist/item[item!='freeextend_guide']/price");
@@ -3888,6 +3899,10 @@ var NicoLiveHelper = {
 	    menu.removeChild(menu.childNodes[1]);
 	}
 	menu.childNodes[0].setAttribute('label','更新(所持ポイント:'+(this.remainpoint?this.remainpoint:'不明')+')');
+
+	while(controlpanel_menu.childNodes[0]){
+	    controlpanel_menu.removeChild(controlpanel_menu.childNodes[0]);
+	}
 
 	for(let i=0;i<labels.length;i++){
 	    let menuitem = CreateMenuItem(labels[i].textContent,'');
@@ -3903,6 +3918,10 @@ var NicoLiveHelper = {
 	    }
 	    menuitem.setAttribute("oncommand","NicoLiveHelper.onLiveExtend(event);");
 	    menu.appendChild(menuitem);
+
+	    menuitem = menuitem.cloneNode(true);
+	    menuitem.removeAttribute('oncommand');
+	    controlpanel_menu.appendChild(menuitem);
 	}
     },
 
