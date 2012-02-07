@@ -808,7 +808,7 @@ var NicoLiveHelper = {
 
     // 指定のvideo_idの情報をmusicinfoにセット(プログレスバーのため)
     // this.musicstarttimeはあらかじめセットしておくこと.
-    setCurrentVideoInfo:function(video_id,setinterval){
+    setCurrentVideoInfo:function(video_id,setinterval, is_retry){
 	// setinterval=trueのときは次曲再生のタイマーをしかける(生主用).
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
 	//debugprint(video_id+'のサムネイルを取得中...');
@@ -846,7 +846,10 @@ var NicoLiveHelper = {
 			}
 		    }
 		}else{
-		    debugprint('動画情報を取得できませんでした:'+req.status);
+		    if( !is_retry ){
+			setTimeout( function(){ NicoLiveHelper.setCurrentVideoInfo(video_id,setinterval,true); }, 5*1000 );
+			debugprint('動画情報を取得できませんでした:'+req.status);
+		    }
 		}
 	    }
 	};
@@ -4366,6 +4369,38 @@ var NicoLiveHelper = {
 	req.send("");
     },
 
+    /**
+     * どのブラウザのクッキーを共有しているか.
+     */
+    whichBrowser:function(){
+	let r = 0;
+	if( $('use-standard-mode-ie').hasAttribute('checked') ){
+	    r = 3;
+	}	
+	if( $('use-protected-mode-ie').hasAttribute('checked') ){
+	    r = 2;
+	}
+	if( $('use-google-chrome').hasAttribute('checked') ){
+	    r = 1;
+	}
+	return r;
+    },
+    addBrowserNameToWindowTitle:function(){
+	switch( this.whichBrowser() ){
+	case 1:
+	    document.title += "[Google Chrome]";
+	    break;
+	case 2:
+	    document.title += "[IE Protected]";
+	    break;
+	case 3:
+	    document.title += "[IE Standard]";
+	    break;
+	default:
+	    break;
+	}
+    },
+
     setupCookie:function(){
 	this._use_other_browser = false;
 	if( !NicoLiveCookie.getCookie("http://www.nicovideo.jp/") ){
@@ -4456,9 +4491,11 @@ var NicoLiveHelper = {
 	    if( NicoLivePreference.isSingleWindowMode() ){
 		document.title += " (Single Window)";
 	    }
+	    this.addBrowserNameToWindowTitle();
 	    this.request_id = "lv0";
 	    this.loadRequestAndHistory();
 	}
+
 	this.updateRemainRequestsAndStocks();
 
 	if( !this.isOffline() && iscaster ){

@@ -65,7 +65,11 @@ var NicoLiveCookie = {
 	//debugprint("IEProCookie:"+myUTF16String.readString());
 
 	var c = myUTF16String.readString();
-	c = c.split(";")[0].match(/user_session=(.*)/)[1];
+	try{
+	    c = c.split(";")[0].match(/user_session=(.*)/)[1];
+	} catch (x) {
+	    c = "";
+	}
 	return c;
     },
 
