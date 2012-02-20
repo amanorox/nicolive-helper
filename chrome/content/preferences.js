@@ -493,9 +493,39 @@ var NLHPreference = {
 	}
     },
 
+    // カスタムスクリプトのドロップダウンメニューを切り替えたとき.
+    changeScriptMenu:function(elem){
+	let data = this.script;
+	switch( elem.selectedIndex ){
+	case 0:
+	    // リクエストチェック
+	    if( data.requestchecker ){
+		$('custom-script').value = data.requestchecker;
+	    }
+	    break;
+	case 1:
+	    // コメントフィルタ
+	    if( data.commentfilter ){
+		$('custom-script').value = data.commentfilter;
+	    }else{
+		$('custom-script').value = '';
+	    }
+	    break;
+	}
+    },
+
     saveScript:function(){
-	let data = new Object();
-	data.requestchecker = $('custom-script').value;
+	let data = this.script;
+	switch( $('id-custom-script-menu').selectedIndex ){
+	case 0:
+	    // リクエストチェック
+	    data.requestchecker = $('custom-script').value;
+	    break;
+	case 1:
+	    // コメントフィルタ
+	    data.commentfilter = $('custom-script').value;
+	    break;
+	}
 	opener.NicoLiveDatabase.saveGPStorage('nico_live_customscript',data);
     },
 
@@ -661,9 +691,11 @@ var NLHPreference = {
 
     init:function(){
 	let data = opener.NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
+	this.script = data;
 	if( data.requestchecker ){
 	    $('custom-script').value = data.requestchecker;
 	}
+
 	try{
 	    this.classes = eval( $('pref-classes-value').value );
 	} catch (x) {

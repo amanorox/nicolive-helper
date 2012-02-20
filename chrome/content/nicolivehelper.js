@@ -389,6 +389,16 @@ var NicoLiveHelper = {
 	this._sending_mail = mail;
     },
 
+    // ユーザーカスタムコメントフィルタを実行する
+    filterComment:function(chat){
+	if( NicoLivePreference.do_customscript && NicoLivePreference.customscript.commentfilter ){
+	    try{
+		eval( NicoLivePreference.customscript.commentfilter );
+	    } catch (x) {
+	    }
+	}
+    },
+
     // コメントを処理する(新).
     processComment2: function(chat){
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
@@ -407,6 +417,11 @@ var NicoLiveHelper = {
 	// 生主のときは過去ログ無視.
 	// タイムシフトも過去ログ無視.
 	if(NicoLiveHelper.iscaster && chat.date<NicoLiveHelper.connecttime || NicoLiveHelper._timeshift){ return; }
+
+	if( chat.date >= NicoLiveHelper.connecttime ){
+	    // コメントフィルタは接続時以降のコメントのみ対象
+	    NicoLiveHelper.filterComment(chat);
+	}
 
 	if((chat.premium==3||chat.premium==2) && chat.text=="/disconnect"){
 	    // 放送終了時.
@@ -2857,7 +2872,7 @@ var NicoLiveHelper = {
      * @return リクエスト拒否メッセージを返す. 何も返さないとチェックはパスしたものとする.
      */
     runRequestCheckerScript:function(info){
-	if(NicoLivePreference.do_customscript){
+	if( NicoLivePreference.do_customscript && NicoLivePreference.customscript.requestchecker ){
 	    let r;
 	    try{
 		r = eval( NicoLivePreference.customscript.requestchecker );

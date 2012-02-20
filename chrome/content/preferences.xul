@@ -674,9 +674,10 @@
 	  <tabpanel orient="vertical">
 	    <!-- custom script -->
 	    <hbox>
-	      <menulist id="id-custom-script-menu" value="RequestChecker">
+	      <menulist id="id-custom-script-menu" oncommand="NLHPreference.changeScriptMenu(this);">
 		<menupopup>
 		  <menuitem label="リクエストチェック" tooltiptext="リクエスト受付のチェックを行うJavascriptコードを記述します。" value="RequestChecker"/>
+		  <menuitem label="コメントフィルタ" tooltiptext="コメントを処理するJavascriptコードを記述します。" value="CommentFilter"/>
 		</menupopup>
 	      </menulist>
 	      <checkbox label="スクリプトを実行する" preference="pref-do-custom-script" tooltiptext=""/>
