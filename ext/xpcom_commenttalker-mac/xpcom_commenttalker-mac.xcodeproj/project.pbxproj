@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E70198D914FBBFC9003348BA /* YukkuroidRPCClinet.m in Sources */ = {isa = PBXBuildFile; fileRef = E70198D814FBBFC9003348BA /* YukkuroidRPCClinet.m */; };
+		E70198DB14FBBFD5003348BA /* YukkuroidRPCClinet.h in Headers */ = {isa = PBXBuildFile; fileRef = E70198DA14FBBFD5003348BA /* YukkuroidRPCClinet.h */; };
+		E70198F014FBC11B003348BA /* IYukkuroid.h in Headers */ = {isa = PBXBuildFile; fileRef = E70198EE14FBC11B003348BA /* IYukkuroid.h */; };
+		E70198F114FBC11B003348BA /* IYukkuroid.m in Sources */ = {isa = PBXBuildFile; fileRef = E70198EF14FBC11B003348BA /* IYukkuroid.m */; };
 		E7115D29112734F2009A3BAE /* ICommentTalker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7115D27112734F2009A3BAE /* ICommentTalker.cpp */; };
 		E7115D2A112734F2009A3BAE /* ICommentTalker.h in Headers */ = {isa = PBXBuildFile; fileRef = E7115D28112734F2009A3BAE /* ICommentTalker.h */; };
 		E7587F38117AE44600E6B167 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7587F37117AE44600E6B167 /* Foundation.framework */; };
@@ -15,6 +19,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E70198D814FBBFC9003348BA /* YukkuroidRPCClinet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YukkuroidRPCClinet.m; path = "/Volumes/yukkuroid_0_41/開発者向けファイル/開発者向けAPIクラス/YukkuroidRPCClinet.m"; sourceTree = "<absolute>"; };
+		E70198DA14FBBFD5003348BA /* YukkuroidRPCClinet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YukkuroidRPCClinet.h; path = "/Volumes/yukkuroid_0_41/開発者向けファイル/開発者向けAPIクラス/YukkuroidRPCClinet.h"; sourceTree = "<absolute>"; };
+		E70198EE14FBC11B003348BA /* IYukkuroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IYukkuroid.h; sourceTree = "<group>"; };
+		E70198EF14FBC11B003348BA /* IYukkuroid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IYukkuroid.m; sourceTree = "<group>"; };
 		E7115D2211273495009A3BAE /* libxpcom_commenttalker-mac.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libxpcom_commenttalker-mac.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7115D27112734F2009A3BAE /* ICommentTalker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ICommentTalker.cpp; sourceTree = "<group>"; };
 		E7115D28112734F2009A3BAE /* ICommentTalker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICommentTalker.h; sourceTree = "<group>"; };
@@ -38,12 +46,16 @@
 		E7115D1111273454009A3BAE = {
 			isa = PBXGroup;
 			children = (
+				E70198DA14FBBFD5003348BA /* YukkuroidRPCClinet.h */,
+				E70198D814FBBFC9003348BA /* YukkuroidRPCClinet.m */,
 				E7115D27112734F2009A3BAE /* ICommentTalker.cpp */,
 				E7115D28112734F2009A3BAE /* ICommentTalker.h */,
 				E7115D2311273495009A3BAE /* Products */,
 				E7587F37117AE44600E6B167 /* Foundation.framework */,
 				E7587F3B117AE50E00E6B167 /* callvoiceunder.m */,
 				E7587F3E117AE8C000E6B167 /* callVoiceUnder.h */,
+				E70198EE14FBC11B003348BA /* IYukkuroid.h */,
+				E70198EF14FBC11B003348BA /* IYukkuroid.m */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +76,8 @@
 			files = (
 				E7115D2A112734F2009A3BAE /* ICommentTalker.h in Headers */,
 				E7587F3F117AE8C000E6B167 /* callVoiceUnder.h in Headers */,
+				E70198DB14FBBFD5003348BA /* YukkuroidRPCClinet.h in Headers */,
+				E70198F014FBC11B003348BA /* IYukkuroid.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +133,8 @@
 			files = (
 				E7115D29112734F2009A3BAE /* ICommentTalker.cpp in Sources */,
 				E7587F3C117AE50E00E6B167 /* callvoiceunder.m in Sources */,
+				E70198D914FBBFC9003348BA /* YukkuroidRPCClinet.m in Sources */,
+				E70198F114FBC11B003348BA /* IYukkuroid.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
