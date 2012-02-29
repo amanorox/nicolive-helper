@@ -3,18 +3,19 @@
 
 void yukkuroidSetText(char*utf8)
 {
-	[YukkuroidRPCClinet setKanjiText:utf8];
+	NSString *myNSString  = [NSString stringWithUTF8String:utf8];
+	[YukkuroidRPCClinet setKanjiText:myNSString];
+	[myNSString release];
 	return;
 }
 
-int isYukkuroidSaying()
+int32_t isYukkuroidSaying(int32_t n)
 {
-	[YukkuroidRPCClinet isStillPlaying:(int)0];
-	return 0;
+	return [YukkuroidRPCClinet isStillPlaying:(int)n];
 }
 
-int yukkuroidPlay()
+int32_t yukkuroidPlay()
 {
-	[YukkuroidRPCClinet playSync:(int)0];
+	[YukkuroidRPCClinet pushPlayButton:(int)0];
 	return 0;
 }

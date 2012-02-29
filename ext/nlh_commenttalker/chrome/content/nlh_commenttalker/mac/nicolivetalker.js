@@ -58,6 +58,10 @@ var NicoLiveTalker = {
 		this.talkqueue.push(text);
 		//obj.sayKotoeri(text);
 	    }
+	    if( $('use-yukkuroid').selected ){
+		text = text.replace(/[;\"'&]/g,"");
+		this.talkqueue.push(text);
+	    }
 	} catch (x) {
 	}
 
@@ -74,6 +78,7 @@ var NicoLiveTalker = {
 	let saykotoeri = 0;
 	if( $('use-saykotoeri').selected ) saykotoeri = 1;
 	if( $('use-saykotoeri2').selected ) saykotoeri = 2;
+	if( $('use-yukkuroid').selected ) saykotoeri = 3;
 
 	let text = this.talkqueue.shift();
 	switch(saykotoeri){
@@ -86,6 +91,17 @@ var NicoLiveTalker = {
 	    let speed = "-s "+ $('nlhaddon-talk-speed').value;
 	    let volume = "-b " + $('nlhaddon-talk-volume').value;
 	    if( !this.saykotoeri2(speed+" "+volume,text) ){
+		this.talkqueue.unshift(text);
+	    }
+	    break;
+
+	case 3:
+	    //debugprint( this.isYukkuroidSaying(0) );
+	    if( !this.isYukkuroidSaying(0) ){
+		let utf8 = ctypes.char.array()(text);
+		this.yukkuroidSetText(utf8);
+		this.yukkuroidPlay();
+	    }else{
 		this.talkqueue.unshift(text);
 	    }
 	    break;
@@ -157,9 +173,7 @@ var NicoLiveTalker = {
 	this.runProcess('',str);
     },
 
-    init:function(){
-	debugprint('CommentTalker init.');
-
+    init_jsctypes:function(){
 	try{
 	    var path = this.GetExtensionPath();
 	    path.append("libs");
@@ -169,9 +183,20 @@ var NicoLiveTalker = {
 	    this.bouyomichan = this.lib.declare("bouyomichan", ctypes.default_abi, ctypes.int32_t, ctypes.jschar.ptr, ctypes.jschar.ptr);
 	    this.saykotoeri = this.lib.declare("saykotoeri", ctypes.default_abi, ctypes.int32_t, ctypes.jschar.ptr);
 	    this.saykotoeri2 = this.lib.declare("saykotoeri2", ctypes.default_abi, ctypes.int32_t, ctypes.jschar.ptr, ctypes.jschar.ptr);
+
+	    this.yukkuroidSetText = this.lib.declare("yukkuroidSetText", ctypes.default_abi, ctypes.int32_t, ctypes.char.ptr);
+	    this.isYukkuroidSaying = this.lib.declare("isYukkuroidSaying", ctypes.default_abi, ctypes.int32_t, ctypes.int32_t);
+	    this.yukkuroidPlay = this.lib.declare("yukkuroidPlay", ctypes.default_abi, ctypes.int32_t);
+
 	} catch (x) {
 	    debugprint(x);
 	}
+    },
+
+    init:function(){
+	debugprint('CommentTalker init.');
+
+	this.init_jsctypes();
 
 	this.talkqueue = new Array();
 	setInterval(function(){

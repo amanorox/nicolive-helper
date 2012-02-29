@@ -27,6 +27,7 @@
 	  <radio id="use-saykotoeri" label="SayKotoeriを使用する"/>
 <!--	  <radio id="use-saykotoeri2" label="SayKotoeri2を使用する"/> -->
 	  <radio id="use-saykotoeri2" label="Voiceunderを使用する"/>
+	  <radio id="use-yukkuroid" label="ゆっくろいどを使用する"/>
 	</radiogroup>
 	<spacer flex="1"/>
 	<vbox>
@@ -38,6 +39,9 @@
 	  </hbox>
 	  <hbox>
 	    <html:a onclick="window.opener.getBrowser().selectedTab = window.opener.getBrowser().addTab('http://sites.google.com/site/nicohemus/home/saykotoeri2');">SayKotoeri2</html:a>
+	  </hbox>
+	  <hbox>
+	    <html:a onclick="window.opener.getBrowser().selectedTab = window.opener.getBrowser().addTab('http://www.yukkuroid.com/');">ゆっくろいど</html:a>
 	  </hbox>
 	</vbox>
       </hbox>
