@@ -3122,7 +3122,7 @@ var NicoLiveHelper = {
 						NicoLiveHelper.keepConnection();
 					    }, 1000*60*3);
 	this._updateprogressid = setInterval( function(){
-						  NicoLiveHelper.updateProgressBar();
+						  NicoLiveHelper.update();
 					      }, 1000);
 	//this.heartbeat();
 	this._heartbeat = setInterval( function(){
@@ -3236,8 +3236,8 @@ var NicoLiveHelper = {
 	}
     },
 
-    // 現在の再生曲の再生時間と、生放送の経過時間をプログレスバーで表示.
-    updateProgressBar:function(){
+    // ステータスバーの表示を更新.
+    updateStatusBar:function(){
 	let currentmusic = $('statusbar-currentmusic');
 	let playprogress = $('statusbar-music-progressmeter');
 	let musictime = $('statusbar-music-name');
@@ -3246,68 +3246,27 @@ var NicoLiveHelper = {
 	let now = GetCurrentTime();
 	let p = now - this.starttime;  // Progress
 	let n = Math.floor(p/(30*60)); // 30分単位に0,1,2,...
-	liveprogress.label = GetTimeString(p);
-
-	if( this.iscaster && (p%60)==0 && this._exclude ){
-	    // 配信開始していない間は1分ごとにステータスチェック.
-	    this.getpublishstatus(this.request_id);
-	}
-
-	if(p<0) p = 0;
-
 	let remaintime = this.endtime - now;
-
-	// new
-	if( this.iscaster && this.endtime ){
-	    // 残り時間3分を切ると、15秒ごとに自動無料延長を試みる.
-	    if( remaintime>0 && remaintime<=180 ){
-		if( $('auto-freeextend').hasAttribute('checked') ){
-		    if( 180-remaintime > this._extendcnt*15 ){
-			this._extendcnt = parseInt( (180-remaintime) / 15 + 1 );
-			//this._extendcnt++;
-			if( this._extendcnt<=4 ){
-			    this.getsalelist(true);
-			    debugprint("自動無料延長を行います");
-			}
-		    }
-		}
+	
+	switch( this.type_of_live_time_format ){
+	case 0:
+	    liveprogress.label = GetTimeString(p);
+	    break;
+	case 1:
+	    if( remaintime<0 ){
+		liveprogress.label = GetTimeString( -1*remaintime );
+	    }else{
+		liveprogress.label = "-"+GetTimeString(remaintime);
 	    }
-	}
-
-	let nt = NicoLivePreference.notice.time;
-	if( (this.endtime && remaintime>0 && remaintime < nt*60) ||
-	    (!this.endtime && n>=0 && p > (30-nt)*60 + 30*60*n) ){
-	    // 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
-	    // 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
-	    if(!this.isnotified[n]){
-		this.showNotice3minleft();
-		this.isnotified[n] = true;
-	    }
-	}
-
-	if( !this._timeshift ){
-	    if( this.endtime && this.endtime<now ){
-		// 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
-		this.endtime = 0;
-		this.getpublishstatus(this.request_id);
-		if( !this.iscaster ){
-		    this.updateEndTime(this.request_id);
-		}
-		this._enterlosstime = now;
-	    }
-	    if( this.endtime==0 ){
-		if( (now-this._enterlosstime) > 2*60 ){
-		    if( (playprogress.value>=99 || !this.inplay) && NicoLivePreference.isAutoWindowClose(this.iscaster) ){
-			// ロスタイムに入って2分経ったら自動で終了にする.
-			// ただし再生中は保留.
-			this.finishBroadcasting();
-		    }
-		}
-	    }
+	    break;
+	default:
+	    liveprogress.label = GetTimeString(p);
+	    break;
 	}
 
 	if(!this.musicinfo.length_ms){ currentmusic.setAttribute("tooltiptext",""); return; }
 
+	// 再生中動画の更新
 	let str;
 	str = "投稿日/"+GetDateString(this.musicinfo.first_retrieve*1000)
 	    + " 再生数/"+this.musicinfo.view_counter
@@ -3342,8 +3301,80 @@ var NicoLiveHelper = {
 	}
     },
 
+    /**
+     * 現在の再生曲の再生時間と、生放送の経過時間をプログレスバーで表示するために、
+     * 1秒間隔で呼び出し
+     */
+    update:function(){
+	let now = GetCurrentTime();
+	let p = now - this.starttime;  // Progress
+	let n = Math.floor(p/(30*60)); // 30分単位に0,1,2,...
+	let remaintime = this.endtime - now;
+
+	this.updateStatusBar();
+
+	if( this.iscaster && (p%60)==0 && this._exclude ){
+	    // 配信開始していない間は1分ごとにステータスチェック.
+	    this.getpublishstatus(this.request_id);
+	}
+
+	if(p<0) p = 0;
+
+	// 自動無料延長処理
+	if( this.iscaster && this.endtime ){
+	    // 残り時間3分を切ると、15秒ごとに自動無料延長を試みる.
+	    if( remaintime>0 && remaintime<=180 ){
+		if( $('auto-freeextend').hasAttribute('checked') ){
+		    if( 180-remaintime > this._extendcnt*15 ){
+			this._extendcnt = parseInt( (180-remaintime) / 15 + 1 );
+			//this._extendcnt++;
+			if( this._extendcnt<=4 ){
+			    this.getsalelist(true);
+			    debugprint("自動無料延長を行います");
+			}
+		    }
+		}
+	    }
+	}
+
+	// 残り時間の通知
+	let nt = NicoLivePreference.notice.time;
+	if( (this.endtime && remaintime>0 && remaintime < nt*60) ||
+	    (!this.endtime && n>=0 && p > (30-nt)*60 + 30*60*n) ){
+	    // 終了時刻が分かっているのであれば終了時刻から残り3分未満を見る.
+	    // 分からないときは 27分+30分*n(n=0,1,2,...)越えたら.
+	    if(!this.isnotified[n]){
+		this.showNotice3minleft();
+		this.isnotified[n] = true;
+	    }
+	}
+
+	// 終了時刻の更新
+	if( !this._timeshift ){
+	    if( this.endtime && this.endtime<now ){
+		// 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
+		this.endtime = 0;
+		this.getpublishstatus(this.request_id);
+		if( !this.iscaster ){
+		    this.updateEndTime(this.request_id);
+		}
+		this._enterlosstime = now;
+	    }
+	    if( this.endtime==0 ){
+		if( (now-this._enterlosstime) > 2*60 ){
+		    if( (playprogress.value>=99 || !this.inplay) && NicoLivePreference.isAutoWindowClose(this.iscaster) ){
+			// ロスタイムに入って2分経ったら自動で終了にする.
+			// ただし再生中は保留.
+			this.finishBroadcasting();
+		    }
+		}
+	    }
+	}
+
+    },
+
     // プログレスバーの現在の動画の再生時間表示で、progressとremainの表示を切り替え.
-    toggleDisplayProgressTime:function(event){
+    changeDisplayProgressTime:function(event){
 	event = event || window.event;
 	let btnCode;
 	if ('object' == typeof event){
@@ -3358,6 +3389,28 @@ var NicoLiveHelper = {
 	    }
 	}
 	this.flg_displayprogresstime = !this.flg_displayprogresstime;
+	this.updateStatusBar();
+    },
+
+    // 生放送時間表示の変更
+    changeLiveTimeFormat:function(event){
+	event = event || window.event;
+	let btnCode;
+	if ('object' == typeof event){
+	    btnCode = event.button;
+	    switch (btnCode){
+	    case 0: // left
+                break;
+	    case 1: // middle
+	    case 2: // right
+	    default: // unknown
+		return;
+	    }
+	}
+	if( this.type_of_live_time_format==undefined ) this.type_of_live_time_format = 0;
+	this.type_of_live_time_format++;
+	this.type_of_live_time_format %= 2;
+	this.updateStatusBar();
     },
 
     // タイムシフト用.

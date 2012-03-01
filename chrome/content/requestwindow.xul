@@ -608,14 +608,14 @@
   
   <!-- statusbar -->
   <statusbar id="statusbar">
-    <stack id="statusbar-currentmusic" context="popup-add-mylist" onclick="NicoLiveHelper.toggleDisplayProgressTime(event);">
+    <stack id="statusbar-currentmusic" context="popup-add-mylist" onclick="NicoLiveHelper.changeDisplayProgressTime(event);">
       <progressmeter id="statusbar-music-progressmeter" mode="determined" value="0" flex="1" />
       <statusbarpanel id="statusbar-music-name" label="" flex="1" crop="start"/>
     </stack>
     <spacer flex="1"/>
     <statusbarpanel id="statusbar-remain" label="R/0 S/0"/>
     <statusbarpanel id="statusbar-n-of-listeners" label="&live.watcher;"/>
-    <statusbarpanel id="statusbar-live-progress" label="0:00"/>
+    <statusbarpanel id="statusbar-live-progress" label="0:00" onclick="NicoLiveHelper.changeLiveTimeFormat(event);"/>
   </statusbar>
 
   <popupset>
