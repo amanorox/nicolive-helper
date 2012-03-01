@@ -120,6 +120,7 @@ var NicoLiveTalker = {
 	//this.runProcess("","人付");
 	//this.runProcess("","工エエェェ(´д｀)ェェエエ工");
 	this.runProcess("","コメント読み上げのテストです");
+	this.runProcess("","sm683164");
     },
 
     newProcessComment:function(xmlchat){

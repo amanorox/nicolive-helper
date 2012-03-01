@@ -5,7 +5,7 @@ void yukkuroidSetText(char*utf8)
 {
 	NSString *myNSString  = [NSString stringWithUTF8String:utf8];
 	[YukkuroidRPCClinet setKanjiText:myNSString];
-	[myNSString release];
+	//[myNSString release];
 	return;
 }
 
