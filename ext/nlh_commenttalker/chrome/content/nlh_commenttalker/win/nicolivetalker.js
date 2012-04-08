@@ -47,9 +47,46 @@ var NicoLiveTalker = {
 	return ext;
     },
 
-    runProcess:function(exe,text){
-	this.talk(exe,text);
+    runProcess:function(exe,text, type){
+	type = $('nlhaddon-use-external').checked ? 1 : 0;
+	switch(type){
+	case 0:
+	    this.talk(exe,text);
+	    break;
+	case 1:
+	    this.runExternalProcess(exe,text,type);
+	    break;
+	}
 	return;
+    },
+
+    runExternalProcess:function(exe,text, type){
+	var file = Components.classes["@mozilla.org/file/local;1"]
+                     .createInstance(Components.interfaces.nsILocalFile);
+	var path = $('nlhaddon-external-program').value;
+	file.initWithPath(path);
+	var process = Components.classes["@mozilla.org/process/util;1"]
+            .createInstance(Components.interfaces.nsIProcess);
+	process.init(file);
+
+	var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+            .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	unicodeConverter.charset = "Shift_JIS";
+	text = unicodeConverter.ConvertFromUnicode( text ) + unicodeConverter.Finish();
+	var args = [text];
+	process.run(false, args, args.length);
+    },
+
+    selectExternalProgram:function(){
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "外部プログラムを指定してください", nsIFilePicker.modeOpen);
+	var rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    var file = fp.file;
+	    var path = fp.file.path;
+	    $('nlhaddon-external-program').value = path;
+	}
     },
 
     test:function(){
@@ -124,12 +161,10 @@ var NicoLiveTalker = {
 	};
 
 	let prefs = NicoLivePreference.getBranch();
-	try{
-	    $('enable-comment-talker').checked = prefs.getBoolPref("ext.comment-talker.enable");
-	    $('nlhaddon-restrictlength').value = prefs.getIntPref("ext.comment-talker.length");
-	    $('nlhaddon-format').value = prefs.getUnicharPref("ext.comment-talker.format");
-	} catch (x) {
-	}
+	try{ $('enable-comment-talker').checked = prefs.getBoolPref("ext.comment-talker.enable"); }catch(x){}
+	try{ $('nlhaddon-restrictlength').value = prefs.getIntPref("ext.comment-talker.length"); }catch (x){}
+	try{ $('nlhaddon-format').value = prefs.getUnicharPref("ext.comment-talker.format"); }catch (x){}
+	try{ $('nlhaddon-external-program').value = prefs.getUnicharPref("ext.comment-talker.ext-program"); }catch (x){}
     },
     destroy:function(){
 	try{
@@ -142,6 +177,7 @@ var NicoLiveTalker = {
 	prefs.setBoolPref("ext.comment-talker.enable", $('enable-comment-talker').checked);
 	prefs.setIntPref("ext.comment-talker.length", $('nlhaddon-restrictlength').value);
 	prefs.setUnicharPref("ext.comment-talker.format",$('nlhaddon-format').value);
+	prefs.setUnicharPref("ext.comment-talker.ext-program",$('nlhaddon-external-program').value);
     }
 };
 

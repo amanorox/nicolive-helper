@@ -30,6 +30,12 @@
       <hbox align="center">
 	<label value="読み上げフォーマット:"/><textbox flex="1" id="nlhaddon-format" value="{comment} {name}"/>
       </hbox>
+
+      <hbox><checkbox persist="checked" id="nlhaddon-use-external" label="外部プログラムを使用する(棒読みちゃんを使用しない)"/></hbox>
+      <hbox align="center">
+	<label value="外部プログラム:"/><textbox flex="1" id="nlhaddon-external-program" value="vrx.exe"/>
+	<button label="選択..." oncommand="NicoLiveTalker.selectExternalProgram();"/>
+      </hbox>
       </groupbox>
 
       <hbox>
