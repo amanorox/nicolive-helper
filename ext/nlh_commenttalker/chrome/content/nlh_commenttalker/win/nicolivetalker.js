@@ -69,6 +69,16 @@ var NicoLiveTalker = {
             .createInstance(Components.interfaces.nsIProcess);
 	process.init(file);
 
+	text = text.replace(/[!！]+/g,'！');
+	text = text.replace(/[?？]+/g,'？');
+	text = text.replace(/。+/g,'。　');
+	text = text.replace(/！？/g,'？');
+	text = text.replace(/／/g,'');
+	text = text.replace(/([！？])/g,'$1　');
+	text = text.replace(/\s*$/,'');
+	if( text.match(/^[！？]$/,'') ){
+	    return;
+	}
 	var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
             .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
 	unicodeConverter.charset = "Shift_JIS";
@@ -90,7 +100,7 @@ var NicoLiveTalker = {
     },
 
     test:function(){
-	this.runProcess("","コメント読み上げのテストです");
+	this.runProcess("", $('nlhaddon-testbox').value);
     },
 
     newProcessComment:function(xmlchat){

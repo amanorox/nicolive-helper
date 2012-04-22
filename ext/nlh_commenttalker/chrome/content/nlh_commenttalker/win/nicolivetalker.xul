@@ -39,6 +39,7 @@
       </groupbox>
 
       <hbox>
+	<textbox flex="1" id="nlhaddon-testbox"/>
 	<button label="test" oncommand="NicoLiveTalker.test();"/>
       </hbox>
 

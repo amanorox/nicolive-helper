@@ -285,6 +285,67 @@ var NicoLiveWindow = {
 	NicoLiveRequest.updateStockView(NicoLiveHelper.stock);
 	NicoLiveHistory.update(NicoLiveHelper.playlist);
 	NicoLiveHelper.updateRemainRequestsAndStocks();
+    },
+
+    find:function(){
+	let tr;
+	let tabindex = $('tabpanels').selectedIndex;
+	switch( tabindex ){
+	case 0:// request
+	case 1:// stock
+	    NicoLiveRequest.findRequestStock();
+	    return;
+
+	case 4:// comment
+	    tr = $('comment_table').getElementsByTagName('html:tr');
+	    break;
+	default:
+	    return;
+	}
+
+	let searchword = InputPrompt(LoadString('STR_FIND_STRING'),LoadString('STR_FIND'),'');
+	if(searchword==null) return;
+
+	this.searchword = searchword;
+	this.searchfoundidx = 0;
+	this.searchtab = tabindex;
+
+	for(let i=0,row;row=tr[i];i++){
+	    if(row.innerHTML.match(searchword)){
+		row.scrollIntoView(true);
+		this.searchfoundidx = i;
+		break;
+	    }
+	}
+    },
+    findNext:function(){
+	let tr;
+	let tabindex = $('tabpanels').selectedIndex;
+
+	switch( tabindex ){
+	case 0:// request
+	case 1:// stock
+	    NicoLiveRequest.findNextRequestStock();
+	    return;
+
+	case 4:// comment
+	    tr = $('comment_table').getElementsByTagName('html:tr');
+	    break;
+	default:
+	    return;
+	}
+
+	if( this.searchtab!=tabindex ) return;
+	let searchword = this.searchword;
+
+	for(let i=this.searchfoundidx+1,row;row=tr[i];i++){
+	    if(row.innerHTML.match(searchword)){
+		row.scrollIntoView(true);
+		this.searchfoundidx = i;
+		break;
+	    }
+	}
+
     }
 };
 
