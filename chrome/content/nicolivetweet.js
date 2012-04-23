@@ -24,7 +24,8 @@ var NicoLiveTweet = {
     consumer: "s7oBmLr1QbvyMkwNojgMVw",
     consumerSecret: "jGgsV5nKfchguFWcfmVtil1Dz77vCykiTznhzdwcV0",
 
-    requestTokenURL: "http://twitter.com/oauth/request_token",
+    requestTokenURL: "https://twitter.com/oauth/request_token",
+    authenticateURL: "https://api.twitter.com/oauth/authenticate", // ?oauth_token=hoge
     accessTokenURL: "https://api.twitter.com/oauth/access_token",
     updateURL: "https://api.twitter.com/1/statuses/update.json",
     authorizeURL: "http://api.twitter.com/oauth/authorize",
@@ -46,6 +47,10 @@ var NicoLiveTweet = {
 	}
     },
 
+    getRequestTokenOfNLH:function(){
+	this.getRequestToken(this.consumer, this.consumerSecret);
+    },
+
     getRequestToken:function(consumer,consumerSecret){
 	// Desktop clientで7-digit PINコードを使うときにまずはrequest token URLにアクセスしoauth_tokenを取得して、
 	// authorize URLにoauth_tokenをGETパラメタで渡すと、7-digit PINコードを取得できる.
@@ -63,6 +68,7 @@ var NicoLiveTweet = {
 	message.parameters.push(["oauth_timestamp",""]);
 	message.parameters.push(["oauth_nonce",""]);
 	message.parameters.push(["oauth_signature",""]);
+	message.parameters.push(["oauth_callback","oob"]);
 	OAuth.setTimestampAndNonce(message);
 	OAuth.SignatureMethod.sign(message,accessor);
 
@@ -77,6 +83,8 @@ var NicoLiveTweet = {
 		    let val = item.split('=');
 		    NicoLiveTweet.oauth[val[0]] = val[1];
 		}
+		let url = NicoLiveTweet.authenticateURL + "?oauth_token=" + NicoLiveTweet.oauth['oauth_token'];
+		NicoLiveWindow.openDefaultBrowser(url,true);
 	    }
 	    debugprint('request token:'+req.responseText);
 	};
@@ -91,7 +99,11 @@ var NicoLiveTweet = {
 	req.send(str.join('&'));
     },
 
-    getAccessToken:function(consumer,consumerSecret,pin){
+    getAccessTokenOfNLH:function(pin, callback){
+	this.getAccessToken(this.consumer, this.consumerSecret,pin,callback);
+    },
+
+    getAccessToken:function(consumer,consumerSecret,pin, callback){
 	// 7-digit PINを使ったアクセストークンの取得.
 	let accessor = {
 	    consumerSecret: consumerSecret,
@@ -127,6 +139,7 @@ var NicoLiveTweet = {
 		    NicoLiveTweet.oauth[val[0]] = val[1];
 		}
 	    }
+	    if('function'==typeof callback) callback(req.status, NicoLiveTweet.oauth);
 	    debugprint('status='+req.status);
 	    debugprint(req.responseText);
 	};

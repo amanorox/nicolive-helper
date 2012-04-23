@@ -604,6 +604,31 @@ var NLHPreference = {
 	}
     },
 
+    // PINを取得する.
+    getTwitterPin:function(){
+	opener.NicoLiveTweet.getRequestTokenOfNLH();
+    },
+    // PINの認証する
+    authTwitterPin:function(){
+	let pin = $('twitter-pin').value;
+	if( pin ){
+	    let func = function(statuscode,oauthobj){
+		if(statuscode!=200){
+		    $('twitter-authorization-result').value = "失敗";
+		}else{
+		    //$('twitter-authorization-result').value = oauthobj["screen_name"];
+		    $('twitter-authorized-username').value = oauthobj["screen_name"];
+		    NLHPreference.removeAllTwitterToken();
+		    NLHPreference.saveTwitterToken(oauthobj);
+		    NLHPreference.saveTwitterScreenName(oauthobj["screen_name"]);
+		}
+		$('twitter-authorization-button').disabled = false;
+	    };
+	    $('twitter-authorization-button').disabled = true;
+	    opener.NicoLiveTweet.getAccessTokenOfNLH(pin,func);
+	}
+    },
+
     exportMovieInfo:function(){
 	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);

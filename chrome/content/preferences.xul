@@ -801,9 +801,17 @@
 	<radio label="ニコニコ生放送を経由してつぶやく(事前にニコニコ生放送にて認証を行っておく必要があります)" value="nicolive"/>
       </radiogroup>
 
+      <!--
       <hbox align="center"><label value="ユーザー名"/><textbox id="twitter-user" /></hbox>
       <hbox align="center"><label value="パスワード"/><textbox id="twitter-password" type="password"/></hbox>
-      <hbox align="center"><button id="twitter-authorization-button" label="認証" oncommand="NLHPreference.authorizeTwitterUser();"/><label value="認証済み:"/><textbox readonly="true" value="なし" id="twitter-authorization-result" preference="twitter-authorized-username"/></hbox>
+      -->
+
+      <hbox align="center">
+	<button id="twitter-get-pin" label="PINを取得" oncommand="NLHPreference.getTwitterPin();"/>
+	<label value="PIN"/><textbox id="twitter-pin" />
+	<button id="twitter-authorization-button" label="認証" oncommand="NLHPreference.authTwitterPin();"/>
+      </hbox>
+      <hbox align="center"><!-- <button id="twitter-authorization-button" label="認証" oncommand="NLHPreference.authorizeTwitterUser();"/> --><label value="認証済み:"/><textbox readonly="true" value="なし" id="twitter-authorization-result" preference="twitter-authorized-username"/></hbox>
 
       <html:hr/>
 
