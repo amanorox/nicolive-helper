@@ -9,10 +9,15 @@ var Application = {
 	}
     },
     storage:{
+	data:{},
 	get: function(k,defvalue){
+	    if( this.data[k] ){
+		return this.data[k];
+	    }
 	    return defvalue;
 	},
 	set: function(k,v){
+	    this.data[k] = v;
 	}
     }
 };

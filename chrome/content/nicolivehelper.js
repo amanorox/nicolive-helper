@@ -4397,12 +4397,13 @@ var NicoLiveHelper = {
     nextBroadcasting:function(){
 	let id = this.request_id.match(/lv(\d+)/)[1];
 	let tab;
+	let url;
 	if( id==0 ){
-	    tab = window.opener.getBrowser().addTab('http://live.nicovideo.jp/editstream');
+	    url = 'http://live.nicovideo.jp/editstream';
 	}else{
-	    tab = window.opener.getBrowser().addTab('http://live.nicovideo.jp/editstream?reuseid='+id);
+	    url = 'http://live.nicovideo.jp/editstream?reuseid='+id;
 	}
-	window.opener.getBrowser().selectedTab = tab;
+	NicoLiveWindow.openDefaultBrowser(url, true);
     },
     autoNextBroadcasting:function(){
 	if( !this.iscaster ) return;
