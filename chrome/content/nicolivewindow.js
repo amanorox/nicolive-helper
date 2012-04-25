@@ -48,6 +48,15 @@ var NicoLiveWindow = {
 	}
     },
 
+    openInAppBrowser:function(url, hasfocus){
+	let feature="chrome,resizable=yes";
+	let win = window.openDialog("chrome://nicolivehelper/content/browser.xul","inappbrowser",feature, url);
+	if( hasfocus ){
+	    win.focus();
+	}
+	return win;
+    },
+
     // 左のタブから1,2,3,....,9,0 の番号としてタブを切り替える.
     changeTab:function(n){
 	n = (n + 9) % 10;
