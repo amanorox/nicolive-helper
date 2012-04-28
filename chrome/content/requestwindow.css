@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+iframe {
+    -moz-transition: height 0.25s, opacity 0.25s;
+}
+
 .tabpanel{
 /*    background-color: #f0f0f0;*/
 }
@@ -13,7 +17,14 @@ table.requestview{
 
 /* リクエスト、ストックの枠線 */
 table.requestview tr {
-    border-bottom: 2px solid black;
+/*    border-bottom: 2px solid black; */
+}
+
+table.requestview tr{
+    margin: 4px;
+    border-radius: 8px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    display: block;
 }
 
 /* テキスト範囲選択できるクラス */
@@ -47,6 +58,10 @@ button.commandbtn {
     min-width: 70px;
 }
 
+tr {
+    -moz-transition: background-color 0.25s, color 0.25s;
+}
+
 /* 奇数行 */
 tr.table_oddrow{
     background-color: #ffffee;
@@ -63,8 +78,10 @@ tr.table_recently_play{
 }
 
 table#database-table tr:hover{
-    background-color: #888888;
-    color: white;
+/*    background-color: #888888; */
+/*    color: white; */
+    border: 1px solid #888;
+    box-shadow: inset 1px 1px 1px 1px #ccc;
 }
 
 /* コメントの枠線 */

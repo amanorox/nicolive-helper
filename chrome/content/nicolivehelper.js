@@ -1171,7 +1171,7 @@ var NicoLiveHelper = {
 
 	if( !resend ){
 	    if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
-		NicoLiveTweet.tweet("【ニコ生】再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" #"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+		NicoLiveTweet.tweet("再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" #"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag+" http://nico.ms/"+NicoLiveHelper.request_id);
 	    }
 
 	    try{
