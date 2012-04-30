@@ -29,13 +29,22 @@ var NicoLiveMenuControl = {
 	let str = window.getSelection().toString() || "";
 	if( str ){
 	    elem.firstChild.hidden = false;
+	    elem.firstChild.nextSibling.hidden = false;
 	}else{
 	    elem.firstChild.hidden = true;
+	    elem.firstChild.nextSibling.hidden = true;
 	}
     },
 
     copyToClipboard:function(){
 	let str = window.getSelection().toString() || "";
 	CopyToClipboard(str);
+    },
+
+    searchByGoogle:function(){
+	let str = window.getSelection().toString() || "";
+	debugprint("search:"+str);
+	let url = "http://www.google.com/search?q="+encodeURIComponent(str);
+	NicoLiveWindow.openDefaultBrowser(url,true);
     }
 };

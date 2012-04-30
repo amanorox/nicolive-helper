@@ -202,6 +202,7 @@ var NicoLiveRequest = {
 	td = tr.insertCell(tr.cells.length);
 
 	let vbox = CreateElement('vbox');
+	vbox.setAttribute('class','vinfo');
 	vbox.setAttribute('context','popup-copyrequest');
 
 	if( NicoLiveHelper._playlog["_"+item.video_id] ){
@@ -214,6 +215,7 @@ var NicoLiveRequest = {
 	this.addVideoInformation(vbox,item);
 
 	let hbox = CreateElement('hbox');
+	hbox.setAttribute("class","btn_command");
 	hbox.setAttribute("align","center");
 	let button = CreateElement('button');
 	button.setAttribute("label",'再生');
@@ -438,6 +440,7 @@ var NicoLiveRequest = {
 	td = tr.insertCell(tr.cells.length);
 
 	let vbox = CreateElement('vbox');
+	vbox.setAttribute('class','vinfo');
 	vbox.setAttribute('context','popup-sort-stock');
 
 	this.addVideoInformation(vbox,item,true);
@@ -566,6 +569,7 @@ var NicoLiveRequest = {
 	td = tr.insertCell(tr.cells.length);
 
 	let vbox = CreateElement('vbox');
+	vbox.setAttribute('class','vinfo');
 	vbox.setAttribute('context','popup-error-request');
 
 	this.addVideoInformation(vbox,item);

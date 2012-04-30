@@ -602,7 +602,7 @@
       </hbox>
     </vbox>
 
-    <html:iframe id="iframe-thumbnail" width="312" height="0" src="about:blank" scrolling="no" style="border:solid 1px #CCC;float:left;position:fixed;bottom:30px;left:25px;" frameborder="0"></html:iframe>
+    <html:iframe id="iframe-thumbnail" width="312" height="0" src="about:blank" scrolling="no" style="display:none; opacity:0; border:solid 1px #CCC;float:left;position:fixed;bottom:30px;left:25px;" frameborder="0"></html:iframe>
 
   </hbox>
   
@@ -677,6 +677,7 @@
     <!-- for request tab -->
     <menupopup id="popup-copyrequest" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -751,6 +752,7 @@
     <!-- for error tab -->
     <menupopup id="popup-error-request" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,document.popupNode||$('popup-error-request').triggerNode);">
@@ -789,6 +791,7 @@
     <!-- for stock -->
     <menupopup id="popup-sort-stock" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -857,6 +860,7 @@
     <!-- for playlist -->
     <menupopup id="popup-playlist" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
+      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
