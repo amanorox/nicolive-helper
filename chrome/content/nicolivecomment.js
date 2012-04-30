@@ -830,7 +830,7 @@ var NicoLiveComment = {
     },
 
     // コメント用ポップアップメニュー表示処理.
-    showPopupMenuForComment:function(){
+    showPopupMenuForComment:function(elem){
 	let str = window.getSelection().toString();
 	if( str.match(/...[-+=/]....[-+=/]./) ){
 	    $('comment-search-jasrac').hidden = false;
@@ -841,6 +841,11 @@ var NicoLiveComment = {
 	}else{
 	    $('comment-search-jasrac').hidden = true;
 	    $('comment-search-elicense').hidden = true;
+	}
+	if( str ){
+	    elem.firstChild.hidden = false;
+	}else{
+	    elem.firstChild.hidden = true;
 	}
     },
 

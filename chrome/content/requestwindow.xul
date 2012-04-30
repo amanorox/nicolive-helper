@@ -656,7 +656,8 @@
     </menupopup>
 
     <!-- for comment body -->
-    <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(event);">
+    <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(this);">
+      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
       <menuitem label="&comment.menu.jasracsearch;" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
       <menuitem label="&comment.menu.elicensesearch;" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment(document.popupNode||$('popup-copycomment').triggerNode);"/>
