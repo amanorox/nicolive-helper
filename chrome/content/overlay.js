@@ -178,7 +178,7 @@ var NicoLiveOverlay = {
 		let doc = e.target;
 		let unsafeWin = doc.defaultView.wrappedJSObject;
 		request_id = unsafeWin.Video.id;
-		if( !request_id ) return;
+		if( !request_id || request_id.indexOf("lv")!=0 ) return;
 	    } catch (x) {
 		Application.console.log(x);
 		return;

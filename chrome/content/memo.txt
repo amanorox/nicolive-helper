@@ -1,4 +1,26 @@
-﻿voteの仕様
+﻿Nsenリクエストの仕様
+
+http://live.nicovideo.jp/api/nsenrequest?v=lv91182194&id=sm17638999
+http://live.nicovideo.jp/api/nsenrequest?v=lv91182194&id=sm13097498
+
+<nsenrequest status="fail">
+<error>
+<code>nsen_nolive</code>
+</error>
+</nsenrequest>
+
+<nsenrequest status="ok">
+<request>
+<id>sm13097498</id>
+<url>http://www.nicovideo.jp/watch/sm13097498</url>
+<title>Theory【初音ミクオリジナル】</title>
+<thumbnail_url>http://tn-skr3.smilevideo.jp/smile?i=13097498</thumbnail_url>
+<timestamp>1335869837</timestamp>
+</request>
+</nsenrequest>
+
+
+voteの仕様
 
 投票は0オリジンで0〜3
 GET http://watch.live.nicovideo.jp/api/vote?v=lv000000&id=3
