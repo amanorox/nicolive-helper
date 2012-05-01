@@ -402,7 +402,8 @@ var NicoLiveHelper = {
     // コメントを処理する(新).
     processComment2: function(chat){
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
-	if(chat.text.indexOf("/telop")==0) return;
+	if(chat.text.indexOf("/telop")==0 ||
+	   chat.text.indexOf("/nspanel")==0 ) return;
 
 	NicoLiveHelper.processCommentHook(chat);
 

@@ -4,17 +4,21 @@ iframe {
     -moz-transition: height 0.25s, opacity 0.25s;
 }
 
-vbox.vinfo {
+textbox#textbox-comment {
+    -moz-transition: width 0.25s;
 }
 
-hbox.btn_command{
-/*    opacity: 0; */
-    -moz-transition: opacity 1s;
-}
-hbox.btn_command:hover{
-/*    opacity: 1; */
+/*
+checkbox#overwrite-hidden-perm {
+    -moz-transition: width 0.25s;
+    overflow: hidden;
+    width: 100px;
 }
 
+checkbox#overwrite-hidden-perm:hover {
+    width: 100%;
+}
+*/
 
 .tabpanel{
 /*    background-color: #f0f0f0;*/
@@ -99,9 +103,7 @@ table#database-table tr:hover{
 /* コメントの枠線 */
 #comment_table tr{
     border-bottom: 1px solid #cccccc;
-}
-#comment_table tr:hover{
-/*    background-color: #eeeeee; */
+    -moz-transition: height 0.25s, opacity 0.25s;
 }
 
 tr.no_live_play:hover{

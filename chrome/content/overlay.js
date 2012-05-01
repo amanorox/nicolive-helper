@@ -119,8 +119,17 @@ var NicoLiveOverlay = {
 
 	// URLからrequest idを.
 	request_id = url.match(/watch\/((lv|co|ch)\d+)/);
-	if(!request_id) request_id="lv0";
-	else request_id = request_id[1];
+	if(!request_id){
+	    try{
+		let unsafeWin = window.content.wrappedJSObject;
+		request_id = unsafeWin.Video.id;
+	    } catch (x) {
+		Application.console.log(x);
+		request_id="lv0";
+	    }
+	}else{
+	    request_id = request_id[1];
+	}
 
 	let title;
 	let iscaster = true;
@@ -164,8 +173,19 @@ var NicoLiveOverlay = {
 
 	// URLからrequest idを.
 	request_id = url.match(/nicovideo.jp\/watch\/((lv|co|ch)\d+)/);
-	if(!request_id) return; // 生放送のページではない.
-	else request_id = request_id[1];
+	if(!request_id){
+	    try{
+		let doc = e.target;
+		let unsafeWin = doc.defaultView.wrappedJSObject;
+		request_id = unsafeWin.Video.id;
+		if( !request_id ) return;
+	    } catch (x) {
+		Application.console.log(x);
+		return;
+	    }
+	}else{
+	    request_id = request_id[1];
+	}
 
 	let player;
 	try{
@@ -821,7 +841,7 @@ var NicoLiveOverlay = {
 		Prefs.setCharPref("version",current);
 		// バージョンが異なるとき、すなわちアップグレードしたときに実行するコードを挿入します。
 		window.setTimeout(function(){
-				      gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#1.1.46");
+				      gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#1.1.47");
 				  }, 1500);
 	    }
 	}
