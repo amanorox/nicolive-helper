@@ -20,7 +20,7 @@
 
   <!-- live pane (want 600px) -->
   <vbox flex="1" style="overflow:auto;">
-    <browser id="page" src="about:blank" type="content" flex="1"/>
+    <browser id="page" src="about:blank" type="content-primary" flex="1"/>
   </vbox>
 
 <script>
