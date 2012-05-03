@@ -151,9 +151,27 @@ var NicoLiveWindow = {
 	return null;
     },
 
+    getNsenId:function(ch){
+	let url = "http://live.nicovideo.jp/nsen/"+ch+"?mode=getvid";
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.open("GET", url);
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let xml = req.responseXML;
+		try{
+		    let request_id = xml.getElementsByTagName("video_id")[0].textContent;
+		    NicoLiveHelper.connectNewBroadcasting(request_id,"",false,"");
+		} catch (x) {
+		}
+	    }
+	};
+	req.send("");
+    },
+
     // 放送IDを入力して接続.
     connectToBroadcasting:function(){
-	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルIDを入力してください","放送IDを入力","");
+	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルID、もしくは、URLを入力してください。","放送IDを入力","");
 	let request_id;
 	if( !lvid ) return;
 	request_id = lvid.match(/lv\d+/);
@@ -163,6 +181,11 @@ var NicoLiveWindow = {
 	request_id = lvid.match(/co\d+/) || lvid.match(/ch\d+/);
 	if(request_id){
 	    NicoLiveHelper.connectNewBroadcasting(request_id,"",true,request_id);
+	}
+
+	request_id = lvid.match(/nsen\/(.*)$/);
+	if( request_id[1] ){
+	    this.getNsenId(request_id[1]);
 	}
     },
 

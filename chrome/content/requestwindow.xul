@@ -121,6 +121,7 @@
     <key id="tab-move-9" key="9" modifiers="accel" oncommand="NicoLiveWindow.changeTab(9);"/>
   </keyset>
 
+  <arrowscrollbox allowevents="true" orient="horizontal">
   <toolbar id="global-menu">
     <!-- auto/manual sequential/random playstyle -->
     <toolbarbutton label="&playstyle.manual_sequential;" type="menu" id="toolbar-playstyle">
@@ -250,21 +251,24 @@
       </menupopup>
     </toolbarbutton>
   </toolbar>
-
+  </arrowscrollbox>
 
   <hbox flex="1" style="margin-top: 5px;">
 
     <tabbox flex="1" persist="selectedIndex" id="mainwindow-tab">
-      <tabs id="maintabs">
-	<tab id="tabs-request" label="&tab.request;"/>
-	<tab id="tabs-stock" label="&tab.stock;"/>
-	<tab id="tabs-error" label="&tab.error;"/>
-	<tab id="tabs-playlist" label="&tab.playlist;"/>
-	<tab id="tabs-comment" label="&tab.comment;"/>
-	<tab id="tabs-db" label="&tab.database;"/>
-	<tab id="tabs-controlpanel" label="コントロールパネル"/>
-	<tab id="tabs-debug" label="&tab.debug;"/>
-      </tabs>
+      <arrowscrollbox allowevents="true" class="tabbrowser-arrowscrollbox" orient="horizontal">
+	<tabs id="maintabs">
+	  <tab id="tabs-request" label="&tab.request;"/>
+	  <tab id="tabs-stock" label="&tab.stock;"/>
+	  <tab id="tabs-error" label="&tab.error;"/>
+	  <tab id="tabs-playlist" label="&tab.playlist;"/>
+	  <tab id="tabs-comment" label="&tab.comment;"/>
+	  <tab id="tabs-db" label="&tab.database;"/>
+	  <tab id="tabs-controlpanel" label="コントロールパネル"/>
+	  <tab id="tabs-debug" label="&tab.debug;"/>
+	</tabs>
+      </arrowscrollbox>
+
       <tabpanels flex="1" id="tabpanels">
 	<!-- request tab -->
 	<vbox class="tabpanel" id="tab-request">
@@ -297,7 +301,7 @@
 	      ondragover="return NicoLiveRequest.checkDrag(event)"
 	      ondrop="NicoLiveRequest.dropToStock(event)">
 
-	  <hbox align="center">
+	  <hbox align="center" style="width:100%;">
 	    <menulist id="stock-playstyle" persist="value" tooltiptext="&stock.playstyle.tooltiptext;">
 	      <menupopup>
 		<menuitem label="&stock.playstyle.none;" value="0"/>
@@ -317,6 +321,7 @@
 	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
 	    <label id="stock-playtime"/>
 	  </hbox>
+
 	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
 	    <html:table id="stock-table" class="requestview">
 	    </html:table>
@@ -460,6 +465,8 @@
 		<vbox id="search-condition" flex="1" style="overflow:auto;">
 		</vbox>
 	      </groupbox>
+
+	      <arrowscrollbox orient="horizontal">
 	      <hbox>
 		<menulist id="db-search-max" value="100" oncommand="NicoLiveDatabase.search();">
 		  <menupopup>
@@ -496,6 +503,8 @@
 		<spacer flex="1"/>
 		<button label="&db.update;" tooltiptext="&db.tooltip_update;" oncommand="NicoLiveDatabase.updateDatabase(NicoLiveDatabase._searchresult);"/>
 	      </hbox>
+	      </arrowscrollbox>
+
 	      <!-- 検索結果表示 -->
 	      <vbox flex="1" style="overflow:auto">
 		<html:table id="database-table" class="requestview">
@@ -587,6 +596,7 @@
 	</vbox>
 
       </tabpanels>
+
       <notificationbox id="noticewin">
       </notificationbox>
     </tabbox>

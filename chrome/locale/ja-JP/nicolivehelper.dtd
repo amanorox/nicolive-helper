@@ -75,7 +75,7 @@
 
 <!ENTITY button.shuffle "シャッフル">
 <!ENTITY button.clearall "全消去">
-<!ENTITY button.load_mylist "マイリスト読み込み">
+<!ENTITY button.load_mylist "マイリスト">
 
 <!ENTITY request.emptytext_add_from_mylist "動画IDを入力するとリクエストに追加されます">
 <!ENTITY stock.emptytext_add_from_mylist "動画IDまたはマイリストのURLを入力するとストックに追加されます">

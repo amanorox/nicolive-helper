@@ -7,6 +7,7 @@
 
   <vbox id="tab-comment">
     <vbox>
+      <arrowscrollbox orient="horizontal">
       <hbox align="center">
 	<checkbox persist="checked" id="auto-kotehan" label="自動コテハン登録" tooltiptext="「＠名前」のコメント、もしくはプロフィールを参照し、コテハンを自動登録します。"/>
 	<checkbox persist="checked" id="nlhaddon-allowoverwrite" label="上書き登録" tooltiptext="「＠名前」で自動登録する場合、既存の設定を上書きします。"/>
@@ -19,6 +20,7 @@
 	<toolbarbutton label="設定" oncommand="alert('not implemented.');"/>
 -->
       </hbox>
+      </arrowscrollbox>
     </vbox>
   </vbox>
 

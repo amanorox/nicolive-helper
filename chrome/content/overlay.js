@@ -112,19 +112,46 @@ var NicoLiveOverlay = {
 	//Application.console.log(url+' '+title);
     },
 
+    getNsenId:function(ch){
+	let url = "http://live.nicovideo.jp/nsen/"+ch+"?mode=getvid";
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.open("GET", url);
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 && req.status==200 ){
+		let xml = req.responseXML;
+		try{
+		    let request_id = xml.getElementsByTagName("video_id")[0].textContent;
+		    NicoLiveOverlay.openNicoLiveWindow("http://live.nicovideo.jp/watch/"+request_id);
+		} catch (x) {
+		}
+	    }
+	};
+	req.send("");
+    },
+
     // メニューからopenする.
-    openNicoLiveWindow:function(){
-	let url = window.content.location.href;
+    openNicoLiveWindow:function(url){
+	let unsafeWin = window.content.wrappedJSObject;
 	let request_id;
+	if( !url ) url = window.content.location.href;
+
+	let r = url.match(/watch\/nsen\/(.*)$/);
+	if( r ){
+	    this.getNsenId(r[1]);
+	    return;
+	}
 
 	// URLからrequest idを.
 	request_id = url.match(/watch\/((lv|co|ch)\d+)/);
 	if(!request_id){
+	    // URLから接続先が分からなければページ内の情報にアクセス.
 	    try{
-		let unsafeWin = window.content.wrappedJSObject;
 		request_id = unsafeWin.Video.id;
+		if( !request_id || request_id.indexOf("lv")!=0 ){
+		    request_id="lv0";
+		}
 	    } catch (x) {
-		Application.console.log(x);
 		request_id="lv0";
 	    }
 	}else{
@@ -133,16 +160,28 @@ var NicoLiveOverlay = {
 
 	let title;
 	let iscaster = true;
+	// 番組タイトルは id="title"
+	// タイトルタグ
+	// <h2 class="title" title="タイトル名">
 	try{
-	    // 番組タイトルはタイトルタグを使用.
-	    title = window.content.document.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1];
+	    title = doc.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1]; // 〜原宿
 	} catch (x) {
 	    try{
-		title = window.content.document.getElementsByTagName('title')[0].textContent;
+		if( request_id==unsafeWin.Video.id ){
+		    title = unsafeWin.Video.title;// Zero〜
+		}else{
+		    title = doc.getElementsByTagName('title')[0];
+		}
 	    } catch (x) {
-		title = "";
+		try{
+		    // タイトルタグで
+		    title = doc.getElementsByTagName('title')[0];
+		} catch (x) {
+		    title = "";
+		}
 	    }
 	}
+
 	if(request_id!="lv0"){
 	    if( !window.content.document.body.innerHTML.match(/console\.swf/) ){
 		// 生主コンソールがないならリスナ.
@@ -163,11 +202,7 @@ var NicoLiveOverlay = {
     },
 
     onPageLoad:function(e){
-	if( 0 && e.target.location.href.match(/^http:\/\/www.nicovideo.jp\/watch\/(.*)$/) ){
-	    this.process_videopage(e.target);
-	    return;
-	}
-
+	let unsafeWin = e.target.defaultView.wrappedJSObject;
 	let url = e.target.location.href;
 	let request_id;
 
@@ -175,8 +210,6 @@ var NicoLiveOverlay = {
 	request_id = url.match(/nicovideo.jp\/watch\/((lv|co|ch)\d+)/);
 	if(!request_id){
 	    try{
-		let doc = e.target;
-		let unsafeWin = doc.defaultView.wrappedJSObject;
 		request_id = unsafeWin.Video.id;
 		if( !request_id || request_id.indexOf("lv")!=0 ) return;
 	    } catch (x) {
@@ -216,14 +249,21 @@ var NicoLiveOverlay = {
 	    prefs.getBoolPref("autowindowopen-listener") && !iscaster ){
 		let title;
 		try{
-		    title = e.target.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1];
+		    let doc = e.target;
+		    title = doc.getElementById("title").textContent.match(/^\s+(.*)\s+$/)[1]; // 〜原宿
 		} catch (x) {
 		    try{
-			title = e.target.getElementsByTagName('title')[0].textContent;
+			title = unsafeWin.Video.title;// Zero〜
 		    } catch (x) {
-			title = "";
+			try{
+			    // タイトルタグで
+			    title = doc.getElementsByTagName('title')[0];
+			} catch (x) {
+			    title = "";
+			}
 		    }
 		}
+
 		let community_id = "";
 		if( url.match(/(ch|co)\d+/) ){
 		    community_id = request_id;
