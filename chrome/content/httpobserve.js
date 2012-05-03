@@ -2,6 +2,14 @@ var HttpObserver = {
 
     observe:function(subject, topic, data){
 	if( topic=="http-on-modify-request" ){
+	    /*
+	    if( httpChannel.URI.spec.match(/getzappinglist/) ){
+		debugprint("HTTP getzappinglist is canceled.");
+		var httpRequest = httpChannel.QueryInterface(Components.interfaces.nsIRequest); 
+		httpRequest.cancel(0);
+	    }
+	     */
+
 	    if( !$('get-extratime').hasAttribute('checked') ) return;
 
 	    var httpChannel = subject.QueryInterface(Components.interfaces.nsIHttpChannel);

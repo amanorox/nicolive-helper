@@ -29,18 +29,22 @@ table{
 }
 table.requestview{
 /*    cursor: default; */
+/*    margin: 3px; */
 }
 
 /* リクエスト、ストックの枠線 */
 table.requestview tr {
-/*    border-bottom: 2px solid black; */
+    border-bottom: 1px solid black;
 }
 
 table.requestview tr{
-    margin: 4px;
-    border-radius: 8px;
-    box-shadow: 1px 1px 1px 1px #ccc;
-    display: block;
+/*    margin: 4px; */
+/*    border-radius: 8px;
+    box-shadow: 1px 1px 1px 1px #ccc;*/
+    /* display: block; */
+}
+table.requestview td {
+/*    padding-top: 4px; */
 }
 
 /* テキスト範囲選択できるクラス */
