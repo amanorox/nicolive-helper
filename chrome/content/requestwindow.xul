@@ -244,7 +244,7 @@
     </toolbarbutton>
     <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>
     <spacer flex="1"/>
-    <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu">
+    <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu" style="float:right;">
       <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
 	<menuseparator/>
