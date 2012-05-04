@@ -67,6 +67,7 @@ var NicoLiveHelper = {
     musicinfo: {},         // 再生中の動画情報.
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},  // {json}用.
+    _usernamecache: {},    // ユーザー名キャッシュ
 
     commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用(なし、動画情報送信中、動画情報送信終了).
     commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
@@ -1004,6 +1005,9 @@ var NicoLiveHelper = {
 		if(info.tags==null) break;
 		tmp = info.tags.join('　');
 		tmp = tmp.replace(/(.{35,}?)　/g,"$1<br>");
+		break;
+	    case 'username':
+		tmp = NicoLiveHelper._usernamecache[info.posting_user_id] || "";
 		break;
 	    case 'pname':
 		if(info.video_id==null || info.tags==null) break;
@@ -2537,6 +2541,9 @@ var NicoLiveHelper = {
 	    for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
 		switch( elem.tagName ){
 		case "user_id":
+		    // user_id は先にリク主に使ってしまったので
+		    // 投稿者のuser_idはこちらに
+		    info.posting_user_id = elem.textContent;
 		    break;
 
 		case "video_id":
@@ -2749,6 +2756,10 @@ var NicoLiveHelper = {
 	    }
 
 	    ans.movieinfo.request_id = NicoLiveHelper.request_id;
+
+	    if( this.iscaster && NicoLivePreference.getusername ){
+		this.getUserName( ans.movieinfo.posting_user_id );
+	    }
 
 	    switch(ans.code){
 	    case 0:
@@ -4363,6 +4374,36 @@ var NicoLiveHelper = {
 	}
     },
 
+    // http:/ext.nicovideo.jp/thumb_user/... から登録(こちら優先)
+    getUserName:function(user_id){
+	if( this._usernamecache[user_id]!=undefined ){ // すでに設定済み.
+	    return;
+	}
+
+	let req = new XMLHttpRequest();
+	if( !req ) return;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    try{
+			let text = req.responseText;
+			let name = text.match(/><strong>(.*)<\/strong>/)[1];
+			if( name ){
+			    NicoLiveHelper._usernamecache[user_id] = name;
+			}
+		    } catch (x) {
+			NicoLiveHelper._usernamecache[user_id] = undefined;
+		    }
+		}else{
+		    NicoLiveHelper._usernamecache[user_id] = undefined;
+		}
+	    }
+	};
+	req.open('GET', 'http://ext.nicovideo.jp/thumb_user/'+user_id );
+	req.send("");
+	this._usernamecache[user_id] = "";
+    },
+
     // 動画時間を定義したファイルを読み込む.
     loadVideoLength:function(){
 	this._videolength = new Object();
@@ -4411,32 +4452,6 @@ var NicoLiveHelper = {
 	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified.");
 	pref.setIntPref("WakutoriFMode",1);
 	this.nextBroadcasting();
-    },
-
-    checkClock:function(){
-	let urls = new Array();
-	urls.push( "http://ntp-a1.nict.go.jp/cgi-bin/jsont" );
-	urls.push( "http://ntp-b1.nict.go.jp/cgi-bin/jsont" );
-	let url = urls[ GetRandomInt(0, urls.length-1) ];
-	let req = new XMLHttpRequest();
-	if( !req ) return;
-	req.open("GET",url);
-	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		let str;
-		let jsont = function(json){
-		    let tm = new Date( json["st"] * 1000 );
-		    let now = new Date();
-		    let str;
-		    str = tm.toLocaleString();
-		    str += "(STD Time)\n";
-		    str += (new Date).toLocaleString() + "(Your PC)";
-		    AlertPrompt(str,'Current Date');
-		};
-		eval(req.responseText);
-	    }
-	};
-	req.send("");
     },
 
     /**
@@ -4574,9 +4589,11 @@ var NicoLiveHelper = {
 
 	this.updatePNameWhitelist();
 	this.loadVideoLength();
+	this._usernamecache = Application.storage.get("nico_usernamecache",{});
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
+	Application.storage.set("nico_usernamecache",this._usernamecache);
 	this._donotshowdisconnectalert = true;
 	this.saveAll();
 	this.saveToStorage();

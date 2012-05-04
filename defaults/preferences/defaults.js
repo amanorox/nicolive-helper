@@ -1,4 +1,5 @@
 pref("extensions.nicolivehelper.mikuonly",false);
+pref("extensions.nicolivehelper.getusername",false);
 pref("extensions.nicolivehelper.check_delete",false);
 pref("extensions.nicolivehelper.prepare",true);
 pref("extensions.nicolivehelper.prepare-timing",60);

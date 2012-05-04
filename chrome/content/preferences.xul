@@ -25,6 +25,7 @@
       <preference id="pref-allow-req-n-min-ago" name="extensions.nicolivehelper.allow-req-n-min-ago" type="int"/><!-- n分以上前の再生済みを受付 -->
       <preference id="pref-accept-within-livespace" name="extensions.nicolivehelper.accept-within-livespace" type="bool"/><!-- 枠に収まる範囲でリク受付 -->
       <preference id="pref-accept-nreq" name="extensions.nicolivehelper.accept-nreq" type="int"/><!-- 一人頭のリク受付数 -->
+      <preference id="pref-get-username" name="extensions.nicolivehelper.getusername" type="bool"/><!-- 投稿者名取得 -->
       <preference id="pref-mikuonly" name="extensions.nicolivehelper.mikuonly" type="bool"/><!-- 初音ミクのライブモード -->
       <preference id="pref-prepare" name="extensions.nicolivehelper.prepare" type="bool"/><!-- 先読み -->
       <preference id="pref-prepare-timing" name="extensions.nicolivehelper.prepare-timing" type="int"/><!-- ジングル動画IDリスト -->
@@ -95,6 +96,7 @@
 	    <label value="件"/>
 	    <button label="今までの受付数をリセット" oncommand="opener.NicoLiveHelper.resetRequestCount();"/>
 	  </hbox>
+	  <hbox><checkbox preference="pref-get-username" label="投稿者名を取得する" tooltiptext="放送中にリクエストのあった動画の投稿者名を取得します。"/></hbox>
 	  <hbox><checkbox preference="pref-mikuonly" label="初音ミクのライブモード(開発主用)" tooltiptext="初音ミクのライブ向けにテキトーにリクエスト受付ルールを設定している開発主用のモードです。"/></hbox>
 	</tabpanel>
       </tabpanels>
