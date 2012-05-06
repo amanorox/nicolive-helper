@@ -330,7 +330,7 @@
 	</vbox>
 
 	<!-- error request tab -->
-	<vbox flex="1" id="tab-requesterror">
+	<vbox flex="1" id="tab-requesterror" class="tabpanel">
 	  <hbox>
 	    <spacer flex="1"/>
 	    <button label="&button.clearall;" oncommand="NicoLiveHelper.removeErrorRequestAll();"/>

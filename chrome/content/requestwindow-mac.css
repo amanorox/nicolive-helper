@@ -1,3 +1,11 @@
+#tabpanels {
+    padding: 4px;
+}
+
+.tabpanel {
+/*    border: 1px solid black; */
+}
+
 toolbar {
     -moz-appearance: -moz-mac-unified-toolbar !important;
     padding-bottom: 1px !important;
