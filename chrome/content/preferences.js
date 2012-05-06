@@ -501,6 +501,8 @@ var NLHPreference = {
 	    // リクエストチェック
 	    if( data.requestchecker ){
 		$('custom-script').value = data.requestchecker;
+	    }else{
+		$('custom-script').value = '';
 	    }
 	    break;
 	case 1:
