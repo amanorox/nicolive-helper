@@ -6,6 +6,8 @@ style chrome://nicolivehelper/content/requestwindow.xul chrome://nicolivehelper/
 
 overlay chrome://browser/content/browser.xul chrome://nicolivehelper/content/menu.xul
 
+resource nicolivehelpermodules modules/
+
 component {6224daa1-71a2-4d1a-ad90-01ca1c08e323} components/simpleautocomplete.js
 contract @mozilla.org/autocomplete/search;1?name=simple-autocomplete {6224daa1-71a2-4d1a-ad90-01ca1c08e323}
 

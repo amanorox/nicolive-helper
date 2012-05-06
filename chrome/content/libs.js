@@ -38,6 +38,14 @@ function $$(tag){
     return document.getElementsByTagName(tag);
 }
 
+function MergeSimpleObject(a,b)
+{
+    for(let k in b){
+	a[k] = b[k];
+    }
+    return a;
+}
+
 function CreateXHR(method,uri, substitution)
 {
     let req = new XMLHttpRequest();

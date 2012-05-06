@@ -24,6 +24,8 @@ THE SOFTWARE.
  * ニコニコ生放送ヘルパー for Firefox 3.5
  */
 
+Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
+
 /*
  * inplayがtrueになるとき
  * ・/playを受け取ったとき
@@ -67,7 +69,6 @@ var NicoLiveHelper = {
     musicinfo: {},         // 再生中の動画情報.
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},  // {json}用.
-    _usernamecache: {},    // ユーザー名キャッシュ
 
     commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用(なし、動画情報送信中、動画情報送信終了).
     commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
@@ -1007,7 +1008,7 @@ var NicoLiveHelper = {
 		tmp = tmp.replace(/(.{35,}?)　/g,"$1<br>");
 		break;
 	    case 'username':
-		tmp = NicoLiveHelper._usernamecache[info.posting_user_id] || "";
+		tmp = UserNameCache[info.posting_user_id] || "";
 		break;
 	    case 'pname':
 		if(info.video_id==null || info.tags==null) break;
@@ -3151,7 +3152,7 @@ var NicoLiveHelper = {
 		debugprint(x);
 	    }
 	}
-	NicoLiveComment.getNGWords();// obtain NG words list.
+	// NicoLiveComment.getNGWords();// obtain NG words list.
 
 	debugprint('Server clock:'+GetDateString(this.serverconnecttime*1000));
 	debugprint('PC clock:'+GetDateString(this.connecttime*1000));
@@ -4376,7 +4377,7 @@ var NicoLiveHelper = {
 
     // http:/ext.nicovideo.jp/thumb_user/... から登録(こちら優先)
     getUserName:function(user_id){
-	if( this._usernamecache[user_id]!=undefined ){ // すでに設定済み.
+	if( UserNameCache[user_id]!=undefined ){ // すでに設定済み.
 	    return;
 	}
 
@@ -4389,19 +4390,19 @@ var NicoLiveHelper = {
 			let text = req.responseText;
 			let name = text.match(/><strong>(.*)<\/strong>/)[1];
 			if( name ){
-			    NicoLiveHelper._usernamecache[user_id] = name;
+			    UserNameCache[user_id] = name;
 			}
 		    } catch (x) {
-			NicoLiveHelper._usernamecache[user_id] = undefined;
+			UserNameCache[user_id] = undefined;
 		    }
 		}else{
-		    NicoLiveHelper._usernamecache[user_id] = undefined;
+		    UserNameCache[user_id] = undefined;
 		}
 	    }
 	};
 	req.open('GET', 'http://ext.nicovideo.jp/thumb_user/'+user_id );
 	req.send("");
-	this._usernamecache[user_id] = "";
+	UserNameCache[user_id] = "";
     },
 
     // 動画時間を定義したファイルを読み込む.
@@ -4589,11 +4590,9 @@ var NicoLiveHelper = {
 
 	this.updatePNameWhitelist();
 	this.loadVideoLength();
-	this._usernamecache = Application.storage.get("nico_usernamecache",{});
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
-	Application.storage.set("nico_usernamecache",this._usernamecache);
 	this._donotshowdisconnectalert = true;
 	this.saveAll();
 	this.saveToStorage();
