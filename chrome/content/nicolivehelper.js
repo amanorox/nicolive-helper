@@ -4534,16 +4534,26 @@ var NicoLiveHelper = {
 
 	let request_id, title, iscaster, community_id;
 	try{
-	    request_id = window.arguments[0];
-	    title      = window.arguments[1];
-	    iscaster   = window.arguments[2];
-	    community_id = window.arguments[3];
-	    if( request_id==null || title==null || iscaster==null ){
-		request_id = "lv0";
-		title = "";
-		iscaster = true;
+	    // XULRunnerではここからコマンドライン引数を取る
+	    // window.arguments[0].getArgument(0);
+	    if( RUN_ON_FIREFOX ){
+		request_id = window.arguments[0];
+		title      = window.arguments[1];
+		iscaster   = window.arguments[2];
+		community_id = window.arguments[3];
+		if( request_id==null || title==null || iscaster==null ){
+		    request_id = "lv0";
+		    title = "";
+		    iscaster = true;
+		}
+	    }else{
+		request_id = window.arguments[0].getArgument(0) || "lv0";
+		title      = "";
+		iscaster   = true;
+		community_id = "";
 	    }
 	} catch (x) {
+	    debugprint(x);
 	    debugprint("no window.arguments.");
 	    request_id = Application.storage.get("nico_request_id","lv0");
 	    title      = Application.storage.get("nico_live_title","");

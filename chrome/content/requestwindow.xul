@@ -121,7 +121,7 @@
     <key id="tab-move-9" key="9" modifiers="accel" oncommand="NicoLiveWindow.changeTab(9);"/>
   </keyset>
 
-  <arrowscrollbox allowevents="true" orient="horizontal">
+  <toolbox>
   <toolbar id="global-menu">
     <!-- auto/manual sequential/random playstyle -->
     <toolbarbutton label="&playstyle.manual_sequential;" type="menu" id="toolbar-playstyle">
@@ -245,14 +245,14 @@
     </toolbarbutton>
     <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>
     <spacer flex="1"/>
-    <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu" style="margin-left: 3em;">
+    <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu">
       <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
 	<menuseparator/>
       </menupopup>
     </toolbarbutton>
   </toolbar>
-  </arrowscrollbox>
+  </toolbox>
 
   <hbox flex="1" style="margin-top: 5px;">
 
