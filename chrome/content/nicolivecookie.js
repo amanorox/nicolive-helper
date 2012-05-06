@@ -73,40 +73,6 @@ var NicoLiveCookie = {
 	return c;
     },
 
-    // IE(非保護モード)のクッキーを取得(XPCOM)
-    getStandardIECookie:function(uri,name){
-	let c;
-	try{
-	    let obj = Components.classes["@miku39.jp/NLHGetCookie;1"].createInstance(Components.interfaces.INLHGetCookie);
-	    c = obj.getStandardModeIECookie(uri,name);
-	    c = c.split(";");
-	    for(let i=0,item;item=c[i];i++){
-		try{
-		    c = item.match(/user_session=(.*)/)[1];
-		    break;
-		} catch (x) {
-		}
-	    }
-	    debugprint(c);
-	} catch (x) {
-	    c = "";
-	}
-	return c;
-    },
-    // IE(保護モード)のクッキーを取得(XPCOM)
-    getProtectedIECookie:function(uri,name){
-	let c;
-	try{
-	    let obj = Components.classes["@miku39.jp/NLHGetCookie;1"].createInstance(Components.interfaces.INLHGetCookie);
-	    c = obj.getProtectedModeIECookie(uri,name);
-	    c = c.split(";")[0].match(/user_session=(.*)/)[1];
-	    debugprint(c);
-	} catch (x) {
-	    c = "";
-	}
-	return c;
-    },
-
     getCookie:function(uri_string){
 	var ios = Cc["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);  
 	var uri = ios.newURI(uri_string, null, null);  
@@ -165,6 +131,27 @@ var NicoLiveCookie = {
 	st.finalize();
 	dbconnect.close();
 	return return_value;
+    },
+
+    // Mac Safariのクッキーを取得(js-ctypes)
+    getMacSafariCookie:function(){
+	//debugprint("read mac safari's cookie.");
+	if( !this.macsafari ){
+	    if( !this.lib ){
+		let path = GetExtensionPath();
+		path.append("libs");
+		path.append("libmacsafaricookie.dylib");
+		debugprint(path.path);
+		this.lib = ctypes.open(path.path);
+	    }
+	    this.macsafari = this.lib.declare("GetSafariNicoSessionCookie", ctypes.default_abi, ctypes.int32_t, ctypes.char.ptr, ctypes.int32_t );
+	}
+	var myUTF16String = ctypes.char.array()(1024);
+	this.macsafari(myUTF16String, 1024);
+	//debugprint(myUTF16String.readString());
+
+	var c = myUTF16String.readString();
+	return c;
     }
 
 };

@@ -4497,18 +4497,23 @@ var NicoLiveHelper = {
 	if( $('use-standard-mode-ie').hasAttribute('checked') ){
 	    //this._user_session = NicoLiveCookie.getStandardIECookie("http://www.nicovideo.jp/","user_session");
 	    this._user_session = NicoLiveCookie.getStdIECookie("http://www.nicovideo.jp/","user_session");
-	    debugprint("use standard mode ie");
+	    debugprint("use Standard mode IE");
 	    this._use_other_browser = true;
 	}
 	if( $('use-protected-mode-ie').hasAttribute('checked') ){
 	    //this._user_session = NicoLiveCookie.getProtectedIECookie("http://www.nicovideo.jp/","user_session");
 	    this._user_session = NicoLiveCookie.getIECookie("http://www.nicovideo.jp/","user_session");
-	    debugprint("use protected mode ie");
+	    debugprint("use Protected mode IE");
 	    this._use_other_browser = true;
 	}
 	if( $('use-google-chrome').hasAttribute('checked') ){
 	    this._user_session = NicoLiveCookie.getChromeCookie();
-	    debugprint("use google chrome");
+	    debugprint("use Google Chrome");
+	    this._use_other_browser = true;
+	}
+	if( $('use-mac-safari').hasAttribute('checked') ){
+	    this._user_session = NicoLiveCookie.getMacSafariCookie();
+	    debugprint("use Mac Safari");
 	    this._use_other_browser = true;
 	}
     },
