@@ -6,6 +6,11 @@ try{
 
 
 var NicoLiveCookie = {
+    notice:function(elem){
+	let b = elem.hasAttribute('checked');
+	ShowNotice(elem.label+'のクッキー共有を'+(b?'有効':'無効')+'にしました。');
+    },
+
 
     init:function(){
     },

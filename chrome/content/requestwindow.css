@@ -192,7 +192,12 @@ a {
     cursor:pointer;
 }
 
+toolbar{
+/*    display: inline; */
+}
+
 toolbarbutton{
+    vertical-align: text-top;
     margin-right: 2px;
 }
 

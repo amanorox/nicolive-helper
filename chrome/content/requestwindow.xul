@@ -229,7 +229,7 @@
 	</menu>
 
 	<menuseparator/>
-	<menu label="使用ブラウザ" tooltiptext="クッキーを共有するブラウザにチェックしてください。また、チェックを切り替えた後はウィンドウを開き直してください。">
+	<menu label="使用ブラウザ" tooltiptext="クッキーを共有するブラウザにチェックしてください。また、チェックを切り替えた後はウィンドウを開き直してください。" oncommand="NicoLiveCookie.notice(event.target);">
 	  <menupopup>
 	    <menuitem id="use-google-chrome" persist="checked" label="Google Chrome(Windows)" type="checkbox" autocheck="true"/>
 	    <menuitem id="use-protected-mode-ie" persist="checked" label="Internet Explorer(保護モード)" type="checkbox" autocheck="true"/>
@@ -245,7 +245,7 @@
     </toolbarbutton>
     <toolbarbutton label="&toolbar.open_preference;" oncommand="OpenSettingsDialog();"/>
     <spacer flex="1"/>
-    <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu">
+    <toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu" style="float:right;">
       <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">
 	<menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
 	<menuseparator/>
