@@ -23,8 +23,13 @@ THE SOFTWARE.
 /**
  * ニコニコ生放送ヘルパー for Firefox 3.5
  */
-
-Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
+try{
+    // Firefox 3.5 でなぜか読めない
+    Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
+} catch (x) {
+    Application.console.log('Cannot load usernamecache.jsm');
+    var UserNameCache = {};
+}
 
 /*
  * inplayがtrueになるとき
