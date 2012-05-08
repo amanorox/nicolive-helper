@@ -632,11 +632,11 @@ var NicoLiveRequest = {
 	if(this.opentab.contentDocument){
 	    try{
 		let status,loadratio;
-		let flv = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject.__proto__;
+		let flv = this.opentab.contentDocument.getElementById('external_nicoplayer').wrappedJSObject.__proto__;
 		status = flv.ext_getStatus();
 		loadratio = flv.ext_getLoadedRatio();
 
-		if((status=="stopped"||status=="paused") && loadratio>0.1 && this.playlist_first && flv.ext_getPlayheadTime()==0){
+		if((status=="stopped"||status=="paused") && loadratio>0.2 && this.playlist_first && flv.ext_getPlayheadTime()==0){
 		    flv.ext_play(true);
 		    if( this._screensize ){
 			flv.ext_setVideoSize( NicoLiveRequest._screensize );
@@ -644,7 +644,7 @@ var NicoLiveRequest = {
 		    //flv.ext_setVideoSize("full");
 		    this.playlist_first--;
 		    
-		    let flvcontainer = this.opentab.contentDocument.getElementById('flvplayer_container').wrappedJSObject;
+		    let flvcontainer = this.opentab.contentDocument.getElementById('external_nicoplayer').wrappedJSObject.__proto__;
 		    this.opentab.contentWindow.scroll(0,flvcontainer.offsetTop-32);
 
 		    let vid = NicoLiveHelper.stock[this.playlist_start].video_id;
