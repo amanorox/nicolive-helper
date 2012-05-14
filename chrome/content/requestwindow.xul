@@ -275,7 +275,7 @@
 	<vbox class="tabpanel" id="tab-request">
 	  <!-- command buttons -->
 	  <hbox align="center">
-	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleRequest();"/>
+	    <button label="&button.shuffle;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.shuffleRequest();"/>
 	    <button type="menu" label="リク受付方式">
 	      <menupopup>
 		<menuitem label="アンカー指定" oncommand="OpenAnchorWindow();"/>
@@ -311,7 +311,7 @@
 	      </menupopup>
 	    </menulist>
 
-	    <button label="&button.shuffle;" oncommand="NicoLiveHelper.shuffleStock();"/>
+	    <button label="&button.shuffle;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.shuffleStock();"/>
 	    <button type="menu" label="&button.load_mylist;">
 	      <menupopup id="menupopup-from-mylist">
 		<menuitem label="&toriaezu_mylist;" oncommand="NicoLiveMylist.addToStockFromDeflist();"/>
