@@ -1,0 +1,143 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeArchitecturePreference = i386;
+		activeBuildConfigurationName = Release;
+		activeTarget = D2AAC0620554660B00DB518D /* macsafaricookie */;
+		addToTargets = (
+			D2AAC0620554660B00DB518D /* macsafaricookie */,
+		);
+		codeSenseManager = E716D5BF155682B500DD95F7 /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 361280914;
+			PBXWorkspaceStateSaveDate = 361280914;
+		};
+		perUserProjectItems = {
+			E716D676155683EE00DD95F7 /* PBXTextBookmark */ = E716D676155683EE00DD95F7 /* PBXTextBookmark */;
+			E716D677155683EE00DD95F7 /* PBXTextBookmark */ = E716D677155683EE00DD95F7 /* PBXTextBookmark */;
+			E716D678155683EE00DD95F7 /* PBXTextBookmark */ = E716D678155683EE00DD95F7 /* PBXTextBookmark */;
+			E716D6861556866E00DD95F7 /* PBXTextBookmark */ = E716D6861556866E00DD95F7 /* PBXTextBookmark */;
+			E77F04B81588B5DF004046EB /* PBXTextBookmark */ = E77F04B81588B5DF004046EB /* PBXTextBookmark */;
+		};
+		sourceControlManager = E716D5BE155682B500DD95F7 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	D2AAC0620554660B00DB518D /* macsafaricookie */ = {
+		activeExec = 0;
+	};
+	E716D5BE155682B500DD95F7 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	E716D5BF155682B500DD95F7 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	E716D5C0155682DD00DD95F7 /* safaricookie.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 602}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 406}";
+		};
+	};
+	E716D5C2155682E900DD95F7 /* safaricookie.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 264}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 263}";
+		};
+	};
+	E716D5C4155682F600DD95F7 /* nsINLHSafariCookie.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 245}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 161}";
+		};
+	};
+	E716D5C6155682FF00DD95F7 /* nsINLHSafariCookie.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 237}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 157}";
+		};
+	};
+	E716D676155683EE00DD95F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E716D5C0155682DD00DD95F7 /* safaricookie.m */;
+		name = "safaricookie.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 406;
+		vrLoc = 0;
+	};
+	E716D677155683EE00DD95F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E716D5C2155682E900DD95F7 /* safaricookie.h */;
+		name = "safaricookie.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 263;
+		vrLoc = 0;
+	};
+	E716D678155683EE00DD95F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E716D5C4155682F600DD95F7 /* nsINLHSafariCookie.cpp */;
+		name = "nsINLHSafariCookie.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 161;
+		vrLoc = 0;
+	};
+	E716D6861556866E00DD95F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E716D5C6155682FF00DD95F7 /* nsINLHSafariCookie.h */;
+		name = "nsINLHSafariCookie.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 157;
+		vrLoc = 0;
+	};
+	E77F04B81588B5DF004046EB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E716D5C6155682FF00DD95F7 /* nsINLHSafariCookie.h */;
+		name = "nsINLHSafariCookie.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 157;
+		vrLoc = 0;
+	};
+}
