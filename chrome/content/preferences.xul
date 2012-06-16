@@ -591,6 +591,7 @@
       <preference id="pref-notice-message" name="extensions.nicolivehelper.notice.message" type="unichar"/>
       <preference id="pref-notice-extend" name="extensions.nicolivehelper.notice.extend" type="unichar"/>
       <preference id="pref-notice-soundfile" name="extensions.nicolivehelper.notice.soundfile" type="unichar"/>
+      <preference id="pref-video-db-path" name="extensions.nicolivehelper.db-path" type="unichar"/>
 
       <preference id="pref-ngwordfiltering" name="extensions.nicolivehelper.ngwordfiltering" type="bool"/>
       <preference id="pref-ngword-recomment" name="extensions.nicolivehelper.ngword-recomment" type="bool"/>
@@ -775,10 +776,17 @@
 		</grid>
 	      </vbox>
 	      <separator/>
-		<hbox align="center">
-		  <label value="延長時メッセージ"/>
-		  <textbox flex="1" preference="pref-notice-extend"/>
-		</hbox>
+	      <hbox align="center">
+		<label value="延長時メッセージ:"/>
+		<textbox flex="1" preference="pref-notice-extend"/>
+	      </hbox>
+	      <separator/>
+	      <hbox align="center">
+		<label value="動画DBファイル:"/>
+		<textbox flex="1" preference="pref-video-db-path" id="select-video-db"/>
+		<button label="参照..." oncommand="NLHPreference.refDatabase();"/>
+		<button label="リセット" oncommand="NLHPreference.resetDatabasePath();"/>
+	      </hbox>
 
 	    </vbox>
 	  </tabpanel>

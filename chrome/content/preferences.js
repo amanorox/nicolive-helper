@@ -716,6 +716,26 @@ var NLHPreference = {
 	}
     },
 
+    refDatabase:function(){
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "使用する動画DBのファイル", nsIFilePicker.modeOpen);
+	fp.appendFilters(nsIFilePicker.filterAll);
+	let rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    let file = fp.file;
+	    let path = fp.file.path;
+	    this.debugprint("「"+path+"」を動画DBに使用します");
+
+	    $('pref-video-db-path').value = path;
+	}
+    },
+
+    resetDatabasePath:function(){
+	let file = window.opener.NicoLiveDatabase.getDefaultPath();
+	$('pref-video-db-path').value = file.path;
+    },
+
     init:function(){
 	let data = opener.NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
 	this.script = data;

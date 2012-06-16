@@ -917,10 +917,27 @@ var NicoLiveDatabase = {
 	}
     },
 
+    getDefaultPath:function(){
+        let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+        file.append("nicolivehelper_miku39jp.sqlite");
+	return file;
+    },
+
+    getDBPath:function(){
+	let path = NicoLivePreference.getBranch().getUnicharPref("db-path");
+	if( path ){
+	    Application.console.log(path);
+	    let localFile = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
+	    localFile.initWithPath( path );
+	    return localFile;
+	}else{
+	    return this.getDefaultPath();
+	}
+    },
+
     init1st:function(){
 	try{
-            let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-            file.append("nicolivehelper_miku39jp.sqlite");
+            let file = this.getDBPath(); //this.getDefaultPath();
 	    this._filename = file.path;
 
             let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);
