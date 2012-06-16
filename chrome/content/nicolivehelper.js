@@ -4610,6 +4610,8 @@ var NicoLiveHelper = {
 
 	this.updatePNameWhitelist();
 	this.loadVideoLength();
+
+	//OpenSimpleCommentWindow();
     },
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
