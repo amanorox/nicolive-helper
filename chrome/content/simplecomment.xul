@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<dialog id="continuouscommentwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+	title="シンプルコメント(NicoLive Helper)"
+	buttons="cancel" ondialogcancel="return true;" ondialogaccept="return false;">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+
+  <vbox flex="1">
+    <hbox id="box-caster-comment">
+      <textbox id="textbox-comment"
+	       flex="1"
+	       maxlength="1024"
+	       type="autocomplete"
+	       emptytext="コメントを入力"
+	       onkeypress="window.opener.NicoLiveComment.postComment(this,event);"
+	       ontextreverted="this.select();"
+	       />
+    </hbox>
+  </vbox>
+
+</dialog>

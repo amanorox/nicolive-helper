@@ -42,6 +42,7 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverights.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivemenucontrol.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveserver.js" /><!-- for test -->
 
   <script>
   <![CDATA[
@@ -73,6 +74,17 @@
 	  f += ',alwaysRaised=yes';
       }
       var w = window.openDialog("chrome://nicolivehelper/content/continuouscomment.xul","vote",f,value);
+      SetWindowTopMost(w,NicoLivePreference.topmost);
+      w.focus();
+  }
+
+  function OpenSimpleCommentWindow(){
+      var value = null;
+      var f = "chrome,resizable=yes,centerscreen";
+      if(NicoLivePreference.topmost){
+	  f += ',alwaysRaised=yes';
+      }
+      var w = window.openDialog("chrome://nicolivehelper/content/simplecomment.xul","vote",f,value);
       SetWindowTopMost(w,NicoLivePreference.topmost);
       w.focus();
   }
@@ -681,6 +693,7 @@
 
     <menupopup id="popup-comment-kotehan">
       <menuitem label="&comment.menu_delname;" oncommand="NicoLiveComment.deleteKotehanFromListbox();"/>
+      <menuitem label="コテハン全削除" oncommand="NicoLiveComment.deleteKotehanAll();"/>
       <menuseparator/>
       <menuitem label="&general.savefile;" oncommand="NicoLiveComment.saveKotehanToFile();"/>
       <menuitem label="&general.loadfile;" oncommand="NicoLiveComment.loadKotehanFromFile();"/>

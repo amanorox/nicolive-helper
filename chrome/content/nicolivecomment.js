@@ -288,8 +288,9 @@ var NicoLiveComment = {
 	let mail = $('textbox-mail').value;
 
 	NicoLiveHelper.postCommentMain(str,mail,"");
+	//NicoLiveTalker.runProcess("",str);
 
-	$('textbox-comment').value = "";
+	textbox.value = "";
 	return true;
     },
 
@@ -517,6 +518,15 @@ var NicoLiveComment = {
 	    NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
 	    this.updateCommentsName(userid,"");
 	}
+    },
+
+    deleteKotehanAll:function(){
+	let elem = $('kotehan-list');
+	while(elem.itemCount>0){
+	    elem.removeItemAt(0);
+	}
+	this.namemap = new Object();
+	NicoLiveDatabase.saveGPStorage("nico_live_kotehan",this.namemap);
     },
 
     pressKeyOnNameList:function(e){
