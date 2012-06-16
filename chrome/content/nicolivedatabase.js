@@ -924,7 +924,12 @@ var NicoLiveDatabase = {
     },
 
     getDBPath:function(){
-	let path = NicoLivePreference.getBranch().getUnicharPref("db-path");
+	let path;
+	try{
+	    path = NicoLivePreference.getBranch().getUnicharPref("db-path");
+	} catch (x) {
+	    path = null;
+	}
 	if( path ){
 	    Application.console.log(path);
 	    let localFile = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
