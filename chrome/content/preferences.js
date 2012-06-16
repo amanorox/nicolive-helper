@@ -719,7 +719,7 @@ var NLHPreference = {
     refDatabase:function(){
 	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	fp.init(window, "使用する動画DBのファイル", nsIFilePicker.modeOpen);
+	fp.init(window, "使用する動画DBのファイル", nsIFilePicker.modeSave);
 	fp.appendFilters(nsIFilePicker.filterAll);
 	let rv = fp.show();
 	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
