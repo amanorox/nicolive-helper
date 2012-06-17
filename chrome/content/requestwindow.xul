@@ -377,7 +377,7 @@
 
 	<!-- comment tab -->
 	<vbox class="tabpanel" id="tab-comment">
-	  <hbox id="box-caster-comment">
+	  <hbox id="box-caster-comment" align="center">
 	    <menulist id="textbox-mail" label="" editable="true" value="">
 	      <menupopup>
 		<menuitem label="" value=""/>
@@ -400,6 +400,7 @@
 	    </menulist>
 
 	    <textbox id="textbox-comment"
+		     style="padding: 2px;"
 		     flex="1"
 		     maxlength="1024"
 		     type="autocomplete"
@@ -410,8 +411,11 @@
 		     onkeypress="NicoLiveComment.postComment(this,event);"
 		     ontextreverted="this.select();"
 		     />
+	    <html:input type="button" value="送信" onclick="NicoLiveComment.postComment($('textbox-comment'),null);"/>
+	    <!--
+	    <button label="発言" style="display:inline;" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/>
+	    -->
 	    <checkbox persist="checked" id="overwrite-hidden-perm" label="&comment.write_upperarea;" tooltiptext="&comment.tooltip_write_upperarea;"/>
-	    <!-- <button label="発言" oncommand="NicoLiveComment.postComment($('textbox-comment'),null);"/> -->
 	  </hbox>
 	  <scrollbox id="comment-box" orient="vertical" flex="1" style="overflow:auto;">
 	    <html:table id="comment_table" style="width:100%"></html:table>
