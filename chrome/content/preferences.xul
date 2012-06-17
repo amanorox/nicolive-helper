@@ -602,6 +602,7 @@
       <preference id="pref-classes-value" name="extensions.nicolivehelper.classes-value" type="unichar"/>
       <preference id="e.n.font" name="extensions.nicolivehelper.font" type="unichar"/>
       <preference id="e.n.font-color" name="extensions.nicolivehelper.font-color" type="unichar"/>
+      <preference id="e.n.font-scale" name="extensions.nicolivehelper.font-scale" type="int"/>
 
       <!-- to obtain font group from browser settings -->
       <preference id="font.language.group" name="font.language.group" type="wstring"/>
@@ -738,6 +739,8 @@
 	      <label value="フォント:"/>
 	      <menulist id="select-font" preference="e.n.font"/>
 	      <colorpicker id="select-font-color" type="button" preference="e.n.font-color"/>
+	      <scale id="window-font-scale" value="9" min="5" max="36"
+		     onchange="NLHPreference.changeFontScale(this.value);"/><label id="font-scale-label" value="9 pt."/>
 	    </hbox>
 	    <separator/>
 

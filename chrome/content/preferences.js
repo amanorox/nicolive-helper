@@ -539,6 +539,16 @@ var NLHPreference = {
 	}
     },
 
+    changeFontScale:function(value){
+	$('e.n.font-scale').value = value;
+	this.updateFontScaleView();
+    },
+    updateFontScaleView:function(){
+	let value = $('e.n.font-scale').value;
+	$('window-font-scale').value = value;
+	$('font-scale-label').value = value + "pt.";
+    },
+
     // Twitterユーザの認証.
     authorizeTwitterUser:function(){
 	let user = $('twitter-user').value;
@@ -758,6 +768,7 @@ var NLHPreference = {
 	this._login = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
 
 	this.getSavedTwitterToken();
+	this.updateFontScaleView();
 
 	$('prepare-timing-bar').value = $('pref-prepare-timing').value;
     },

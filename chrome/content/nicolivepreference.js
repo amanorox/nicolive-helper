@@ -133,6 +133,7 @@ var NicoLivePreference = {
 	this.readClasses();
 	this.readFont();
 	this.readFontColor();
+	this.readFontScale();
 
 	this.readTwitterSettings();
 	this.readNGVideoSettings();
@@ -216,6 +217,11 @@ var NicoLivePreference = {
 	    $('tabpanels').style.color = col;
 	} catch (x) {
 	}
+    },
+    readFontScale:function(){
+	let branch = this.getBranch();
+	let fontscale = branch.getIntPref("font-scale");
+	$('mainwindow-tab').style.fontSize = fontscale + "pt";
     },
 
     // 動画分類設定を読みこむ.
