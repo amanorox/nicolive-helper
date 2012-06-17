@@ -59,6 +59,11 @@ table.requestview td {
 /*    display:none; */
 }
 
+.video-thumbnail {
+    width: 65px;
+    height: 50px;
+}
+
 /* リク・ストックビュー内の水平線<hr/> */
 .requestview hr {
     padding: 0;
@@ -66,10 +71,6 @@ table.requestview td {
     border-width: 1px 0px 0px 0px;
     border-style: dashed;
 /*    border: 1px solid gray; */
-}
-
-window {
-/*    font-family: MS UI Gothic; */
 }
 
 /* リク、ストックなどのコマンドボタン */

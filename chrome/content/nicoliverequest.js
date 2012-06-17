@@ -48,6 +48,9 @@ var NicoLiveRequest = {
 	img.src = item.thumbnail_url;
 	img.style.cssFloat = 'left';
 	img.style.marginRight = '0.5em';
+	img.className = "video-thumbnail";
+
+	/*
 	if(isstock){
 	    img.className = 'stock-thumbnail';
 	    img.setAttribute("width",this.visibleDetail?130:65 +"px");
@@ -59,6 +62,7 @@ var NicoLiveRequest = {
 	    img.setAttribute("width","130px");
 	    img.setAttribute("height","100px");
 	}
+	 */
 	a.setAttribute("onmouseover","NicoLiveComment.showThumbnail(event,'"+item.video_id+"');");
 	a.setAttribute("onmouseout","NicoLiveComment.hideThumbnail();");
 	a.appendChild(img);
