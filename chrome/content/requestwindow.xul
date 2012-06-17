@@ -244,10 +244,11 @@
 	    <menuseparator/>
 	    <menu label="使用ブラウザ" tooltiptext="クッキーを共有するブラウザにチェックしてください。また、チェックを切り替えた後はウィンドウを開き直してください。" oncommand="NicoLiveCookie.notice(event.target);">
 	      <menupopup>
-		<menuitem id="use-google-chrome" persist="checked" label="Google Chrome(Windows)" type="checkbox" autocheck="true"/>
-		<menuitem id="use-protected-mode-ie" persist="checked" label="Internet Explorer(保護モード)" type="checkbox" autocheck="true"/>
-		<menuitem id="use-standard-mode-ie" persist="checked" label="Internet Explorer(標準モード)" type="checkbox" autocheck="true"/>
-		<menuitem id="use-mac-safari" persist="checked" label="Safari(Mac OS X)" type="checkbox" autocheck="true"/>
+		<menuitem name="use-browser" id="use-no-external-browser" persist="checked" label="なし" type="radio" autocheck="true"/>
+		<menuitem name="use-browser" id="use-google-chrome" persist="checked" label="Google Chrome(Windows)" type="radio" autocheck="true"/>
+		<menuitem name="use-browser" id="use-protected-mode-ie" persist="checked" label="Internet Explorer(保護モード)" type="radio" autocheck="true"/>
+		<menuitem name="use-browser" id="use-standard-mode-ie" persist="checked" label="Internet Explorer(標準モード)" type="radio" autocheck="true"/>
+		<menuitem name="use-browser" id="use-mac-safari" persist="checked" label="Safari(Mac OS X)" type="radio" autocheck="true"/>
 	      </menupopup>
 	    </menu>
 	  </menupopup>
