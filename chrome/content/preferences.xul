@@ -790,6 +790,9 @@
 		<button label="参照..." oncommand="NLHPreference.refDatabase();"/>
 		<button label="リセット" oncommand="NLHPreference.resetDatabasePath();"/>
 	      </hbox>
+	      <description style="color:#ff0000;">
+		※動画DBファイルを変更した場合は、Firefoxを再起動してください。
+	      </description>
 
 	    </vbox>
 	  </tabpanel>
