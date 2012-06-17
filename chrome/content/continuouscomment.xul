@@ -14,7 +14,25 @@
   </script>
 
   <vbox flex="1">
-    <button label="1行送信" oncommand="SendOneLine();"/>
+    <hbox align="center">
+      <button label="1行送信" oncommand="SendContinuousComment();" flex="1"/>
+      <menulist id="menu-interval" persist="value" oncommand="if(this.value==0) clearInterval(interval_id);">
+	<menupopup>
+	  <menuitem label="手動" value="0"/>
+	  <menuitem label="1秒" value="1"/>
+	  <menuitem label="2秒" value="2"/>
+	  <menuitem label="3秒" value="3"/>
+	  <menuitem label="4秒" value="4"/>
+	  <menuitem label="5秒" value="5"/>
+	  <menuitem label="6秒" value="6"/>
+	  <menuitem label="7秒" value="7"/>
+	  <menuitem label="8秒" value="8"/>
+	  <menuitem label="9秒" value="9"/>
+	  <menuitem label="10秒" value="10"/>
+	</menupopup>
+      </menulist>
+      
+    </hbox>
     <menulist oncommand="ReadTextFile(DirLists[this.value]);">
       <menupopup id="menu-filelist">
       </menupopup>

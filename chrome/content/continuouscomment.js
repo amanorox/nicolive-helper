@@ -1,4 +1,22 @@
 var DirLists = new Array();
+var interval_id;
+
+function SendContinuousComment(){
+    let interval = document.getElementById('menu-interval').value;
+    if( interval==0 ){
+	SendOneLine();
+    }else{
+	SendOneLine();
+	ChangeInterval( interval );
+    }
+}
+
+function ChangeInterval(value){
+    clearInterval(interval_id);
+    if( value!=0 ){
+	interval_id = setInterval( SendOneLine, value*1000 );
+    }
+}
 
 function SendOneLine()
 {
@@ -24,6 +42,8 @@ function SendOneLine()
 	}
 	str.splice(0,1);
 	document.getElementById('multiline-comment').value = str.join('\r\n');
+    }else{
+	clearInterval(interval_id);
     }
 }
 
