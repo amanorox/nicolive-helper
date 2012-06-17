@@ -1078,6 +1078,7 @@ var NicoLiveHelper = {
 
 	    case 'progress':
 		// 現在の動画の進行具合の棒グラフ.
+		if( NicoLiveHelper.musicinfo.length_ms<=0 ) return "";
 		let progress = GetCurrentTime()-NicoLiveHelper.musicstarttime;
 		let progressbar = Math.floor(progress / (NicoLiveHelper.musicinfo.length_ms/1000) * 100);
 		tmp = "0:00 <font color=\"#0000ff\">";
