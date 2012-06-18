@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="urn:mozilla:extension:nlh_commenttalker@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBABF0rySSbFWREigD4EEkqXUrksTYhdp93ZcEzE1RT9spobQP1lRETNkLEUQ8hieanzWgQSdQj1F/9LLwVjopq8di0qE0H4FHv0rwRn38ggNyTJWzSQveuOHB5XvvZtoyOzea1AwDELPRvza0s7C2QSbwYxQN1ILOYsIZ82dDe1qV">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="5.0"
                    em:maxVersion="*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nlh_commenttalker_0.6.xpi"
-                   em:updateHash="sha1:12d0df3c315ed03cf043036dca037bb6a909c1a9"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nlh_commenttalker_0.6.2.xpi"
+                   em:updateHash="sha1:bdc13399f454af87f08e3ac000b69586745e042f"
                    em:updateInfoURL="http://ch.nicovideo.jp/community/co105163" />
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="0.6">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="0.6.2">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mozilla:extension:nlh_commenttalker@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAGq3+DfRuSSt0P3iNJY1juEnVTNR2JoWBQYGFG/mp7ONmUuGjsUKe22PU04MFC3GqwJ73hYIyJzRPRDOUZVJtdzqfbxqMQIcUVV7SBBGPmXMzMNyI4LmkHauBXG9pGaIyyk1zQjJC16NmGEfKTttSz/4iflfUY6PWvYipo11nAYg">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
 </RDF:RDF>

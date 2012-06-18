@@ -6,11 +6,11 @@
   <script type="application/javascript;version=1.7" src="chrome://nlh_commenttalker/content/nicolivetalker.js" />
 
   <tabs id="maintabs">
-    <tab id="tab-comment-talker" insertafter="tabs-db" label="読み上げ"/>
+    <tab id="tabs-comment-talker" insertafter="tabs-db" label="読み上げ" linkedpanel="tab-comment-talker"/>
   </tabs>
 
   <tabpanels id="tabpanels">
-    <vbox insertafter="tab-database">
+    <vbox id="tab-comment-talker" insertafter="tab-database">
       <hbox align="center">
 	<checkbox id="enable-comment-talker" label="コメント読み上げを使用する"/>
 	<spacer flex="1"/>
