@@ -253,13 +253,13 @@ var NicoLiveComment = {
 	$('iframe-thumbnail').style.left = x + 5 + "px";
 	$('iframe-thumbnail').style.top = y + 5 + "px";
 	$('iframe-thumbnail').style.display = 'block';
-	$('iframe-thumbnail').height = 312;
+	$('iframe-thumbnail').width = 312;
 	$('iframe-thumbnail').height = 176;
 	$('iframe-thumbnail').style.opacity = 1;
     },
     hideThumbnail:function(){
 //	$('iframe-thumbnail').style.display = 'none';
-	$('iframe-thumbnail').height = 312;
+	$('iframe-thumbnail').width = 312;
 	$('iframe-thumbnail').height = 0;
 	$('iframe-thumbnail').style.opacity = 0;
     },
