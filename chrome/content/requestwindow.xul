@@ -42,6 +42,7 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverights.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivemenucontrol.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivetabs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveserver.js" /><!-- for test -->
 
   <script>
@@ -269,15 +270,19 @@
 
     <tabbox flex="1" persist="selectedIndex" id="mainwindow-tab">
       <arrowscrollbox allowevents="true" class="tabbrowser-arrowscrollbox" orient="horizontal">
-	<tabs id="maintabs">
-	  <tab id="tabs-request" label="&tab.request;"/>
-	  <tab id="tabs-stock" label="&tab.stock;"/>
-	  <tab id="tabs-error" label="&tab.error;"/>
-	  <tab id="tabs-playlist" label="&tab.playlist;"/>
-	  <tab id="tabs-comment" label="&tab.comment;"/>
-	  <tab id="tabs-db" label="&tab.database;"/>
-	  <tab id="tabs-controlpanel" label="コントロールパネル"/>
-	  <tab id="tabs-debug" label="&tab.debug;"/>
+	<tabs id="maintabs"
+	      ondragstart="NicoLiveTabs.startDragging(event);"
+	      ondragenter="NicoLiveTabs.checkDrag(event);"
+	      ondragover="NicoLiveTabs.checkDrag(event);"
+	      ondrop="NicoLiveTabs.dropTab(event);">
+	  <tab id="tabs-request" label="&tab.request;" linkedpanel="tab-request"/>
+	  <tab id="tabs-stock" label="&tab.stock;" linkedpanel="tab-stock"/>
+	  <tab id="tabs-error" label="&tab.error;" linkedpanel="tab-requesterror"/>
+	  <tab id="tabs-playlist" label="&tab.playlist;" linkedpanel="tab-playlist"/>
+	  <tab id="tabs-comment" label="&tab.comment;" linkedpanel="tab-comment"/>
+	  <tab id="tabs-db" label="&tab.database;" linkedpanel="tab-database"/>
+	  <tab id="tabs-controlpanel" label="コントロールパネル" linkedpanel="tab-controlpanel"/>
+	  <tab id="tabs-debug" label="&tab.debug;" linkedpanel="tab-debug"/>
 	</tabs>
       </arrowscrollbox>
 

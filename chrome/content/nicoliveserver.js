@@ -127,4 +127,4 @@ var NicoLiveServer = {
 };
 
 //window.addEventListener("load", function(e){ NicoLiveServer.init(); }, false);
-window.addEventListener("unload", function(e){ NicoLiveServer.destroy(); }, false);
+//window.addEventListener("unload", function(e){ NicoLiveServer.destroy(); }, false);

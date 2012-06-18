@@ -215,30 +215,6 @@ var NicoLiveWindow = {
 	}
     },
 
-    init: function(){
-	let prefs = NicoLivePreference.getBranch();
-	if( prefs.getBoolPref("autoscroll") ){
-	    try{
-		let tab = this.findTab(NicoLiveHelper.request_id) || this.findTab(NicoLiveHelper.community);
-		let player;
-		if(tab){
-		    // watch_player_top_box for ニコニコ動画Zero
-		    player = tab.linkedBrowser.contentDocument.getElementById('watch_player_top_box').wrappedJSObject;
-		    tab.linkedBrowser.contentWindow.scroll(0,player.offsetTop-16);
-		}
-	    } catch (x) {
-	    }
-	}
-
-	this.backuprestore = NicoLiveDatabase.loadGPStorage("nico_live_backup",{});
-	this.createRestoreMenu();
-	this.setupWindowOpener();
-    },
-    destroy: function(){
-	this.save();
-	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
-    },
-
     backupCurrent:function(){
 	this.backup('system-backup');
 	this.createRestoreMenu();
@@ -405,6 +381,40 @@ var NicoLiveWindow = {
 	    }
 	}
 
+    },
+
+    restoreTabPositions:function(){
+	let tabs = NicoLiveDatabase.loadGPStorage("nico_live_tab_position", [] );
+	let maintabs = $('maintabs');
+	for(let i=0,item; item=tabs[i]; i++){
+	    let elem = document.getElementById( item );
+	    maintabs.insertBefore( elem, maintabs.firstChild );
+	}
+    },
+
+    init: function(){
+	let prefs = NicoLivePreference.getBranch();
+	if( prefs.getBoolPref("autoscroll") ){
+	    try{
+		let tab = this.findTab(NicoLiveHelper.request_id) || this.findTab(NicoLiveHelper.community);
+		let player;
+		if(tab){
+		    // watch_player_top_box for ニコニコ動画Zero
+		    player = tab.linkedBrowser.contentDocument.getElementById('watch_player_top_box').wrappedJSObject;
+		    tab.linkedBrowser.contentWindow.scroll(0,player.offsetTop-16);
+		}
+	    } catch (x) {
+	    }
+	}
+	this.backuprestore = NicoLiveDatabase.loadGPStorage("nico_live_backup",{});
+	this.createRestoreMenu();
+	this.setupWindowOpener();
+
+	this.restoreTabPositions();
+    },
+    destroy: function(){
+	this.save();
+	NicoLiveDatabase.saveGPStorage("nico_live_backup",this.backuprestore);
     }
 };
 

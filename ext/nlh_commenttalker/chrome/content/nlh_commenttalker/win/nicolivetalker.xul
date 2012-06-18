@@ -6,7 +6,7 @@
   <script type="application/javascript;version=1.7" src="chrome://nlh_commenttalker/content/nicolivetalker.js" />
 
   <tabs id="maintabs">
-    <tab insertafter="tabs-db" label="棒読みちゃん"/>
+    <tab id="tab-comment-talker" insertafter="tabs-db" label="棒読みちゃん"/>
   </tabs>
 
   <tabpanels id="tabpanels">
