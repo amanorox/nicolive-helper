@@ -30,14 +30,14 @@ var NicoLiveTabs = {
 	let dt = event.dataTransfer;
 	let effect = dt.dropEffect; // copy, move
 	let target = event.target;
-	debugprint("tab dropped");
-	debugprint(target.id);
+	//debugprint("tab dropped");
+	//debugprint(target.id);
 
 	let node = dt.mozGetDataAt("application/x-moz-node", 0);
 	target.parentNode.insertBefore(node,target);
 
 	let tabs = evaluateXPath2(document,"//xul:tabs/xul:tab");
-	Application.console.log(tabs.length);
+	//Application.console.log(tabs.length);
 
 	let i = tabs.length-1;
 	let tmp = new Array();
