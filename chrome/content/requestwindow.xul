@@ -318,26 +318,28 @@
 	      ondragover="return NicoLiveRequest.checkDrag(event)"
 	      ondrop="NicoLiveRequest.dropToStock(event)">
 
-	  <hbox align="center" style="width:100%;">
-	    <menulist id="stock-playstyle" persist="value" tooltiptext="&stock.playstyle.tooltiptext;">
-	      <menupopup>
-		<menuitem label="&stock.playstyle.none;" value="0"/>
-		<menuitem label="&stock.playstyle.sequential;" value="1"/>
-		<menuitem label="&stock.playstyle.random;" value="2"/>
-	      </menupopup>
-	    </menulist>
+	  <arrowscrollbox orient="horizontal">
+	    <hbox align="center" flex="1">
+	      <menulist id="stock-playstyle" persist="value" tooltiptext="&stock.playstyle.tooltiptext;">
+		<menupopup>
+		  <menuitem label="&stock.playstyle.none;" value="0"/>
+		  <menuitem label="&stock.playstyle.sequential;" value="1"/>
+		  <menuitem label="&stock.playstyle.random;" value="2"/>
+		</menupopup>
+	      </menulist>
 
-	    <button label="&button.shuffle;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.shuffleStock();"/>
-	    <button type="menu" label="&button.load_mylist;">
-	      <menupopup id="menupopup-from-mylist">
-		<menuitem label="&toriaezu_mylist;" oncommand="NicoLiveMylist.addToStockFromDeflist();"/>
-	      </menupopup>
-	    </button>
+	      <button label="&button.shuffle;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.shuffleStock();"/>
+	      <button type="menu" label="&button.load_mylist;">
+		<menupopup id="menupopup-from-mylist">
+		  <menuitem label="&toriaezu_mylist;" oncommand="NicoLiveMylist.addToStockFromDeflist();"/>
+		</menupopup>
+	      </button>
 
-	    <textbox id="input-stock" emptytext="&stock.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
-	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
-	    <label id="stock-playtime"/>
-	  </hbox>
+	      <textbox id="input-stock" emptytext="&stock.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
+	      <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
+	      <label id="stock-playtime"/>
+	    </hbox>
+	  </arrowscrollbox>
 
 	  <vbox flex="1" style="overflow:auto" id="vbox-stock">
 	    <html:table id="stock-table" class="requestview">
@@ -487,8 +489,7 @@
 		</vbox>
 	      </groupbox>
 
-	      <arrowscrollbox orient="horizontal">
-	      <hbox>
+	      <hbox style="display:inline-block;">
 		<menulist id="db-search-max" value="100" oncommand="NicoLiveDatabase.search();">
 		  <menupopup>
 		    <menuitem label="&db.result_10;" value="10"/>
@@ -524,7 +525,6 @@
 		<spacer flex="1"/>
 		<button label="&db.update;" tooltiptext="&db.tooltip_update;" oncommand="NicoLiveDatabase.updateDatabase(NicoLiveDatabase._searchresult);"/>
 	      </hbox>
-	      </arrowscrollbox>
 
 	      <!-- 検索結果表示 -->
 	      <vbox flex="1" style="overflow:auto">
@@ -578,7 +578,7 @@
 
 	<!-- control panel tab -->
 	<vbox id="tab-controlpanel">
-	  <hbox>
+	  <hbox style="display:inline-block;">
 	    <button label="&toolbar.beginbroadcasting;" oncommand="NicoLiveHelper.startBroadcasting();"/>
 	    <button label="ジングル再生" oncommand="NicoLiveHelper.playJingle();"/>
 	    <button label="動画情報の再送信" oncommand="NicoLiveHelper.sendMusicInfo(true);"/>
@@ -592,7 +592,7 @@
 	      <checkbox persist="checked" autocheck="true" id="controlpanel-auto-free-extend" label="自動無料延長を行う" oncommand="NicoLiveHelper.setAutoFreeExtend(this.hasAttribute('checked'));"/>
 	    </hbox>
 	    <label id="controlpanel-remain-point" value="所持ニコニコポイント:(更新してください)"/>
-	    <hbox>
+	    <hbox style="display:inline-block;">
 	      <button label="更新" oncommand="NicoLiveHelper.updateExtendMenu();"/>
 	      <menulist id="controlpanel-menu-live-extend-menulist">
 		<menupopup id="controlpanel-menu-live-extend">
