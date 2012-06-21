@@ -579,10 +579,11 @@
 	<!-- control panel tab -->
 	<vbox id="tab-controlpanel">
 	  <hbox style="display:inline-block;">
+	    <button id="btn-connect-to-current-broadcast" label="放送中の番組に接続" oncommand="NicoLiveWindow.getCurrentBroadcasting();"/>
 	    <button label="&toolbar.beginbroadcasting;" oncommand="NicoLiveHelper.startBroadcasting();"/>
 	    <button label="ジングル再生" oncommand="NicoLiveHelper.playJingle();"/>
 	    <button label="動画情報の再送信" oncommand="NicoLiveHelper.sendMusicInfo(true);"/>
-	    <button label="リクエスト受け付け数リセット" oncommand="NicoLiveHelper.resetRequestCount();"/>
+	    <button label="リクエスト受付数リセット" oncommand="NicoLiveHelper.resetRequestCount();"/>
 	  </hbox>
 
 	  <groupbox>

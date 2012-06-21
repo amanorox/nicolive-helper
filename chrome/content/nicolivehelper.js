@@ -512,7 +512,9 @@ var NicoLiveHelper = {
 		let str = dat[1];
 		let result = str.match(/\d+/g);
 		let graph = "";
-		let color = ["#ff0000","#00ff00","#0000ff","#ffffff"];
+		let color = ["#ff0000","#00ff00","#0000ff",
+			     "#ffffff","#ffff00","#00ffff",
+			     "#ff00ff","#888888","#ffff88"];
 		str = "";
 		for(let i=1,a;a=NicoLiveHelper.officialvote[i];i++){
 		    str += NicoLiveHelper.officialvote[i] + "(" + (result[i-1]/10).toFixed(1) + "%) ";

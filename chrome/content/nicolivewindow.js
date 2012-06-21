@@ -197,9 +197,13 @@ var NicoLiveWindow = {
 
     // 放送IDを入力して接続.
     connectToBroadcasting:function(){
-	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルID、もしくは、URLを入力してください。","放送IDを入力","");
+	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルID、もしくは、URLを入力してください。\n何も入力せずにOKすると、現在放送中の番組に接続します。","放送IDを入力","");
 	let request_id;
-	if( !lvid ) return;
+	if( lvid==null ) return;
+	if( lvid=="" ){
+	    this.getCurrentBroadcasting();
+	    return;
+	}
 	request_id = lvid.match(/lv\d+/);
 	if(request_id){
 	    NicoLiveHelper.connectNewBroadcasting(request_id,"",true,"");
@@ -213,6 +217,33 @@ var NicoLiveWindow = {
 	if( request_id[1] ){
 	    this.getNsenId(request_id[1]);
 	}
+    },
+
+    getCurrentBroadcasting:function(){
+	let url = "http://live.nicovideo.jp/my";
+	let req = CreateXHR("GET",url);
+	if(!req) return;
+
+	$('btn-connect-to-current-broadcast').disabled = true;
+	req.onreadystatechange = function(){
+	    if( req.readyState==4 ){
+		$('btn-connect-to-current-broadcast').disabled = false;
+		if( req.status==200 ){
+		    let str = req.responseText;
+		    try{
+			let lvid = str.match(/href=\"http.*\/watch\/(lv\d+)\"\s*class=\"now\"/)[1];
+			debugprint( lvid );
+			if(lvid){
+			    NicoLiveHelper.connectNewBroadcasting(lvid,"",true,"");
+			}
+		    } catch (x) {
+			ShowNotice("放送中の番組が見つかりませんでした。");
+		    }
+		}
+	    }
+	};
+	req.send('');
+	return;
     },
 
     backupCurrent:function(){
