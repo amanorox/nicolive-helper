@@ -184,7 +184,7 @@ var NicoLiveRequest = {
 
 	if(item.selfrequest){
 	    // green
-	    tr.className = "color6";
+	    tr.className = "table_selfreq";
 	}
 	let td;
 	td = tr.insertCell(tr.cells.length);
@@ -551,7 +551,7 @@ var NicoLiveRequest = {
 	let tr = table.insertRow(table.rows.length);
 	tr.className = table.rows.length%2?"table_oddrow":"table_evenrow";
 	if(item.selfrequest){
-	    tr.className = "color6";  // green
+	    tr.className = "table_selfreq";  // green
 	}else if(item.no_live_play){
 	    tr.className = "table_played";
 	}else if(item.error){
@@ -1027,11 +1027,11 @@ var NicoLiveRequest = {
 	    let tr = FindParentElement(node,'html:tr');
 	    let n = tr.getAttribute('request-index');
 	    let item = NicoLiveHelper.getRequestItem(n);
-	    if( tr.className=="color6"){
+	    if( tr.className=="table_selfreq"){
 		tr.className = n%2?"table_oddrow":"table_evenrow";
 		item.selfrequest = false;
 	    }else{
-		tr.className = "color6";
+		tr.className = "table_selfreq";
 		item.selfrequest = true;
 	    }
 	} catch (x) {

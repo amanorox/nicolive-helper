@@ -2940,7 +2940,7 @@ var NicoLiveHelper = {
 	}
 	if(b){
 	    let requestelems = evaluateXPath(document,"//*[@id='request-table']/html:tbody/html:tr");
-	    requestelems[i].className = "color6";
+	    requestelems[i].className = "table_selfreq";
 	    //NicoLiveRequest.update(this.requestqueue);
 	    this.saveRequest();
 	}

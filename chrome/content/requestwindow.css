@@ -93,6 +93,11 @@ tr.table_evenrow{
     background-color: #eeeeff;
 }
 
+/* 自貼り */
+tr.table_selfreq {
+    background-color: #eeffee;
+}
+
 /* co154で最近再生されたもの */
 tr.table_recently_play{
     background-color: #ffcc99;
