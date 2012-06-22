@@ -220,7 +220,6 @@ var NicoLiveRequest = {
 
 	let hbox = CreateElement('hbox');
 	hbox.setAttribute("class","btn_command");
-	hbox.setAttribute("align","center");
 	let button = CreateElement('button');
 	button.setAttribute("label",'再生');
 	button.className = 'commandbtn';
@@ -451,6 +450,7 @@ var NicoLiveRequest = {
 
 	// コマンドボタンに作用するストックのインデックスはtrの属性から取ることにしよう.
 	let hbox = CreateElement('hbox');
+	hbox.setAttribute("class","btn_command");
 	let button = CreateElement('button');
 	button.setAttribute('label','リクエスト');
 	button.className = 'commandbtn';
