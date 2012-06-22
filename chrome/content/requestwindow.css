@@ -76,7 +76,7 @@ table.requestview td {
 /* リク、ストックなどのコマンドボタン */
 button.commandbtn {
     font-size: 8pt;
-    min-width: 70px;
+/*    min-width: 70px; min-widthはMacのみで */
 }
 
 tr {
