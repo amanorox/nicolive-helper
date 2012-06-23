@@ -214,16 +214,16 @@
 	    <menuitem label="&toolbar.downloadjson;" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
 	    <menuseparator/>
 	    <menuitem label="&toolbar.beginbroadcasting;" tooltiptext="&toolbar.tooltip_beginbroadcasting;" oncommand="NicoLiveHelper.startBroadcasting();"/>
-	    <menuitem label="次枠へ" tooltiptext="次枠を開始するために、新規番組登録画面に移動します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
+	    <menuitem label="&toolbar.nextlive;" tooltiptext="次枠を開始するために、新規番組登録画面に移動します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
 	    <menu label="その他">
 	      <menupopup>
 		<menuitem id="get-extratime" oncommand="ShowNotice(this.hasAttribute('checked')?'ロスタイムを有効にしました':'ロスタイムを無効にしました');" persist="checked" label="ロスタイム作成" tooltiptext="動画を視聴したままロスタイムに突入します。" type="checkbox" autocheck="true"/>
 		<menuitem id="do-freeextend" label="無料延長を行う" tooltiptext="予約枠で無料延長を行います。" oncommand="NicoLiveHelper.getsalelist(true);"/>
 		<menuitem id="auto-freeextend" oncommand="NicoLiveHelper.setAutoFreeExtend(this.hasAttribute('checked'));" persist="checked" label="自動無料延長" tooltiptext="チェックがあると、放送終了3分前に自動で無料延長を行います。" type="checkbox" autocheck="true"/>
 		
-		<menu label="放送時間延長">
+		<menu label="&toolbar.live_extend;">
 		  <menupopup id="menu-live-extend">
-		    <menuitem label="更新" oncommand="NicoLiveHelper.updateExtendMenu();" tooltiptext="所持ポイント、延長アイテムを更新します。"/>
+		    <menuitem label="&general.update;" oncommand="NicoLiveHelper.updateExtendMenu();" tooltiptext="所持ポイント、延長アイテムを更新します。"/>
 		  </menupopup>
 		</menu>
 		
@@ -283,7 +283,7 @@
 	  <tab id="tabs-playlist" label="&tab.playlist;" linkedpanel="tab-playlist"/>
 	  <tab id="tabs-comment" label="&tab.comment;" linkedpanel="tab-comment"/>
 	  <tab id="tabs-db" label="&tab.database;" linkedpanel="tab-database"/>
-	  <tab id="tabs-controlpanel" label="コントロールパネル" linkedpanel="tab-controlpanel"/>
+	  <tab id="tabs-controlpanel" label="&tab.controlpanel;" linkedpanel="tab-controlpanel"/>
 	  <tab id="tabs-debug" label="&tab.debug;" linkedpanel="tab-debug"/>
 	</tabs>
       </arrowscrollbox>
@@ -596,7 +596,7 @@
 	    </hbox>
 	    <label id="controlpanel-remain-point" value="所持ニコニコポイント:(更新してください)"/>
 	    <hbox style="display:inline-block;">
-	      <button label="更新" oncommand="NicoLiveHelper.updateExtendMenu();"/>
+	      <button label="&general.update;" oncommand="NicoLiveHelper.updateExtendMenu();"/>
 	      <menulist id="controlpanel-menu-live-extend-menulist">
 		<menupopup id="controlpanel-menu-live-extend">
 		  <menuitem value="need-update" label="更新してください"/>
@@ -691,7 +691,7 @@
 
     <!-- for comment body -->
     <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(this);">
-      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
       <menuitem label="&comment.menu.jasracsearch;" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
       <menuitem label="&comment.menu.elicensesearch;" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment(document.popupNode||$('popup-copycomment').triggerNode);"/>
@@ -713,7 +713,7 @@
     <!-- for request tab -->
     <menupopup id="popup-copyrequest" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -788,7 +788,7 @@
     <!-- for error tab -->
     <menupopup id="popup-error-request" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,document.popupNode||$('popup-error-request').triggerNode);">
@@ -827,7 +827,7 @@
     <!-- for stock -->
     <menupopup id="popup-sort-stock" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -896,7 +896,7 @@
     <!-- for playlist -->
     <menupopup id="popup-playlist" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="Googleで検索" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
