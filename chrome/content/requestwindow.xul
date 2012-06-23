@@ -123,6 +123,11 @@
     <!-- CTRL+Z: Undo -->
     <key id="undo" key="z" modifiers="accel" oncommand=""/>
 
+    <!-- CTRL+→ 右のタブへ -->
+    <key id="right-tab" keycode="VK_RIGHT" modifiers="accel" oncommand="NicoLiveWindow.moveRightTab();"/>
+    <!-- CTRL+← 左のタブへ -->
+    <key id="left-tab" keycode="VK_LEFT" modifiers="accel" oncommand="NicoLiveWindow.moveLeftTab();"/>
+
     <!-- CTRL+Num: Change the tab -->
     <key id="tab-move-0" key="0" modifiers="accel" oncommand="NicoLiveWindow.changeTab(0);"/>
     <key id="tab-move-1" key="1" modifiers="accel" oncommand="NicoLiveWindow.changeTab(1);"/>

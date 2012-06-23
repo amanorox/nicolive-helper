@@ -62,6 +62,16 @@ var NicoLiveWindow = {
 	n = (n + 9) % 10;
 	$('maintabs').selectedIndex = n;
     },
+    moveRightTab:function(){
+	let n = $('maintabs').selectedIndex+1;
+	n++;
+	this.changeTab(n);
+    },
+    moveLeftTab:function(){
+	let n = $('maintabs').selectedIndex+1;
+	n--;
+	this.changeTab(n);
+    },
 
     checkClock:function(){
 	let urls = new Array();
