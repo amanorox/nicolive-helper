@@ -38,6 +38,13 @@ var NicoLiveHistory = {
 	}
     },
 
+    _addStock:function(video_id){
+	let item = NicoLiveHelper.findVideoInfo(video_id);
+	if( item!=null ){
+	    NicoLiveHelper.addStockQueue(item);
+	}
+    },
+
     // プレイリストにアイテムを追加.
     addPlayList:function(item){
 	let table = $('playlist-table');
@@ -59,6 +66,12 @@ var NicoLiveHistory = {
 	button.setAttribute("label",'リクエストに追加');
 	button.className = 'commandbtn';
 	button.setAttribute("oncommand","NicoLiveHistory._addRequest('"+item.video_id+"');");
+	hbox.appendChild(button);
+
+	button = CreateElement('button');
+	button.setAttribute("label",'ストックに追加');
+	button.className = 'commandbtn';
+	button.setAttribute("oncommand","NicoLiveHistory._addStock('"+item.video_id+"');");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
