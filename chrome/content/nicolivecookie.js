@@ -78,6 +78,17 @@ var NicoLiveCookie = {
 	return c;
     },
 
+    setCookie:function(value){
+	var cookieMgr = Cc["@mozilla.org/cookiemanager;1"].getService(Components.interfaces.nsICookieManager2);
+	var host = ".nicovideo.jp";
+	var path = "/";
+	var key = "user_session";
+	var d = new Date();
+	var expired = d.getTime()/1000; // seconds since the epoch.
+	expired += 60*60*24*7; // 1 week
+	cookieMgr.add( host, path, key, value, false, false, false, expired );
+    },
+
     getCookie:function(uri_string){
 	var ios = Cc["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);  
 	var uri = ios.newURI(uri_string, null, null);  

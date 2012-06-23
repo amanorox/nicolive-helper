@@ -596,13 +596,13 @@
 	    </hbox>
 	    <label id="controlpanel-remain-point" value="所持ニコニコポイント:(更新してください)"/>
 	    <hbox style="display:inline-block;">
-	      <button label="&general.update;" oncommand="NicoLiveHelper.updateExtendMenu();"/>
+	      <button id="btn-update-extend-menu" label="&general.update;" oncommand="NicoLiveHelper.updateExtendMenu();"/>
 	      <menulist id="controlpanel-menu-live-extend-menulist">
 		<menupopup id="controlpanel-menu-live-extend">
 		  <menuitem value="need-update" label="更新してください"/>
 		</menupopup>
 	      </menulist>
-	      <button label="延長" oncommand="NicoLiveHelper.pressExtendButtonOfControlPanel();"/>
+	      <button id="btn-extend-live" label="延長" oncommand="NicoLiveHelper.pressExtendButtonOfControlPanel();"/>
 	      <button label="ポイント購入" oncommand="NicoLiveWindow.openDefaultBrowser('http://point.nicovideo.jp/',true);"/>
 	    </hbox>
 	  </groupbox>

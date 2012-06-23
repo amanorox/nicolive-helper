@@ -3911,16 +3911,20 @@ var NicoLiveHelper = {
 	let url = "http://watch.live.nicovideo.jp/api/getremainpoint";
 	let req = CreateXHR("GET",url);
 	if( !req ) return;
+	$('btn-update-extend-menu').disabled = true;
 	req.onreadystatechange = function(){
-	    if( req.readyState==4 && req.status==200 ){
-		let remain = req.responseXML;
-		try{
-		    NicoLiveHelper.remainpoint = remain.getElementsByTagName("remain")[0].textContent;
-		    debugprint("remain point="+NicoLiveHelper.remainpoint);
-		    $('controlpanel-remain-point').value = "所持ニコニコポイント:"+NicoLiveHelper.remainpoint;
-		    NicoLiveHelper.getsalelist();
-		} catch (x) {
-		    NicoLiveHelper.remainpoint = 0;
+	    if( req.readyState==4 ){
+		$('btn-update-extend-menu').disabled = false;
+		if( req.status==200 ){
+		    let remain = req.responseXML;
+		    try{
+			NicoLiveHelper.remainpoint = remain.getElementsByTagName("remain")[0].textContent;
+			debugprint("remain point="+NicoLiveHelper.remainpoint);
+			$('controlpanel-remain-point').value = "所持ニコニコポイント:"+NicoLiveHelper.remainpoint;
+			NicoLiveHelper.getsalelist();
+		    } catch (x) {
+			NicoLiveHelper.remainpoint = 0;
+		    }
 		}
 	    }
 	};
@@ -4063,8 +4067,11 @@ var NicoLiveHelper = {
 	let url = "http://watch.live.nicovideo.jp/api/usepoint";
 	let req = CreateXHR("POST",url);
 	if(!req) return;
+
+	$('btn-extend-live').disabled = true;
 	req.onreadystatechange = function(){
 	    if( req.readyState==4 ){
+		$('btn-extend-live').disabled = false;
 		if( req.status==200 ){
 		    let xml = req.responseXML;
 		    try{
@@ -4500,7 +4507,6 @@ var NicoLiveHelper = {
 	if( !NicoLiveCookie.getCookie("http://www.nicovideo.jp/") ){
 	    // getCookieで取れなければサードパーティクッキーの保存にチェックが入ってないので.
 	    this._user_session = NicoLiveCookie.getCookie2("http://www.nicovideo.jp/","user_session");
-	    debugprint("user_session="+this._user_session);
 	}
 	if( $('use-standard-mode-ie').hasAttribute('checked') ){
 	    //this._user_session = NicoLiveCookie.getStandardIECookie("http://www.nicovideo.jp/","user_session");
@@ -4523,6 +4529,12 @@ var NicoLiveHelper = {
 	    this._user_session = NicoLiveCookie.getMacSafariCookie();
 	    debugprint("use Mac Safari");
 	    this._use_other_browser = true;
+	}
+	if( this._user_session ){
+	    debugprint("user_session="+this._user_session);
+	}
+	if( !RUN_ON_FIREFOX && this._use_other_browser ){
+	    NicoLiveCookie.setCookie( this._user_session );
 	}
     },
 

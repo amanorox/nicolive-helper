@@ -7,7 +7,7 @@ try{
 } catch (x) {
 } 
 
-const RUN_ON_FIREFOX = 1; // なにかいい判定方法あるんだろうけど調べがつかないのでフラグで.
+const RUN_ON_FIREFOX = true; // なにかいい判定方法あるんだろうけど調べがつかないのでフラグで.
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;

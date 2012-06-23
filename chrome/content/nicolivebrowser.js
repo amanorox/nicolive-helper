@@ -34,6 +34,7 @@ var NicoLiveBrowser = {
 
     initContent:function(){
 	try{
+	    //$('live-page').contentDocument.getElementById('flvplayer_container').style.display = 'block';
 	    $('live-page').contentDocument.getElementById('footer').style.display = 'none';
 	    $('live-page').contentDocument.getElementById('navi').style.display = 'none';
 	    $('live-page').contentDocument.getElementById('header').style.display = 'none';
