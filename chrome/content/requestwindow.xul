@@ -120,6 +120,8 @@
     <key id="reconnect" key="r" modifiers="accel" oncommand="NicoLiveHelper.reconnect();"/>
     <!-- CTRL+B: Back stage pass comment(using only caster) -->
     <key id="reconnect" key="b" modifiers="accel" oncommand="NicoLiveHelper.postBSPComment();"/>
+    <!-- CTRL+Z: Undo -->
+    <key id="undo" key="z" modifiers="accel" oncommand=""/>
 
     <!-- CTRL+Num: Change the tab -->
     <key id="tab-move-0" key="0" modifiers="accel" oncommand="NicoLiveWindow.changeTab(0);"/>
@@ -266,7 +268,7 @@
     </toolbar>
   </toolbox>
   
-  <hbox flex="1" style="margin-top: 5px;">
+  <hbox flex="1" style="margin-top: 3px;">
 
     <tabbox flex="1" persist="selectedIndex" id="mainwindow-tab">
       <arrowscrollbox allowevents="true" class="tabbrowser-arrowscrollbox" orient="horizontal">

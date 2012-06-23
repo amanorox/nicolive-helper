@@ -414,6 +414,9 @@ var NicoLiveWindow = {
 
     },
 
+    setCustomCSS:function(){
+    },
+
     restoreTabPositions:function(){
 	let tabs = NicoLiveDatabase.loadGPStorage("nico_live_tab_position", [] );
 	let maintabs = $('maintabs');
@@ -442,6 +445,7 @@ var NicoLiveWindow = {
 	this.setupWindowOpener();
 
 	this.restoreTabPositions();
+	this.setCustomCSS();
     },
     destroy: function(){
 	this.save();

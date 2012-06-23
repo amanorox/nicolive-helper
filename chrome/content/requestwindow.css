@@ -20,6 +20,13 @@ checkbox#overwrite-hidden-perm:hover {
 }
 */
 
+#mainwindow-tab{
+}
+
+tabpanels {
+    padding: 2px;
+}
+
 .tabpanel{
 /*    background-color: #f0f0f0;*/
 }
@@ -96,6 +103,7 @@ tr.table_evenrow{
 /* 自貼り */
 tr.table_selfreq {
     background-color: #eeffee;
+    border-left: 10px solid rgb(0,200,0);
 }
 
 /* co154で最近再生されたもの */
