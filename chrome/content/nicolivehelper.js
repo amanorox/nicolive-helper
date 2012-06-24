@@ -75,6 +75,8 @@ var NicoLiveHelper = {
     anchor: {},            // アンカー処理用.
     userdefinedvalue: {},  // {json}用.
 
+    undo_stack: [],        // アンドゥ処理関数のスタック
+
     commentstate: COMMENT_STATE_NONE, // コメントの状態遷移用(なし、動画情報送信中、動画情報送信終了).
     commentview: COMMENT_VIEW_NORMAL, // 上コメ表示状態.
 
@@ -1363,11 +1365,21 @@ var NicoLiveHelper = {
     // ストックから削除する.
     removeStock:function(idx){
 	idx--;
-	this.stock.splice(idx,1);
+	let removeditem = this.stock.splice(idx,1);
 	//NicoLiveRequest.updateStockView(this.stock);
 	NicoLiveRequest.deleteStockRow(idx);
 	this.saveStock();
 	this.updateRemainRequestsAndStocks();
+
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.stock.splice( idx, 0, removeditem[0] );
+		NicoLiveRequest.updateStockView( NicoLiveHelper.stock );
+		NicoLiveHelper.saveStock();
+		NicoLiveHelper.updateRemainRequestsAndStocks();
+	    }
+	);
+
     },
     // ストックの最上位に移動.
     topToStock:function(idx){
@@ -1733,6 +1745,20 @@ var NicoLiveHelper = {
     // プレイリストをクリアする.
     clearPlayList:function(){
 	let elem = $('played-list-textbox');
+
+	let str = elem.value;
+	let s = this.playlist;
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.playlist = s;
+		for(let i=0,item; item=NicoLiveHelper.playlist[i];i++){
+		    NicoLiveHistory.addPlayList( item );
+		}
+		$('played-list-textbox').value = str;
+		NicoLiveHelper.savePlaylist();
+	    }
+	);
+
 	elem.value = "";
 	this.playlist = new Array();
 	// ストックの再生済み情報をクリアする.
@@ -1746,6 +1772,16 @@ var NicoLiveHelper = {
     },
     // リクエストを消去する.
     clearRequest:function(){
+	let s = this.requestqueue;
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.requestqueue = s;
+		NicoLiveRequest.update( NicoLiveHelper.requestqueue );
+		NicoLiveHelper.saveRequest();
+		NicoLiveHelper.updateRemainRequestsAndStocks();
+	    }
+	);
+
 	this.requestqueue = new Array();
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
@@ -1753,6 +1789,16 @@ var NicoLiveHelper = {
     },
     // ストックを消去する.
     clearStock:function(){
+	let s = this.stock;
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.stock = s;
+		NicoLiveRequest.updateStockView( NicoLiveHelper.stock );
+		NicoLiveHelper.saveStock();
+		NicoLiveHelper.updateRemainRequestsAndStocks();
+	    }
+	);
+
 	this.stock = new Array();
 	NicoLiveRequest.updateStockView(this.stock);
 	this.saveStock();
@@ -2321,6 +2367,16 @@ var NicoLiveHelper = {
 	NicoLiveRequest.update(this.requestqueue);
 	this.saveRequest();
 	this.updateRemainRequestsAndStocks();
+
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.requestqueue.splice( idx, 0, removeditem[0] );
+		NicoLiveRequest.update( NicoLiveHelper.requestqueue );
+		NicoLiveHelper.saveRequest();
+		NicoLiveHelper.updateRemainRequestsAndStocks();
+	    }
+	);
+
 	return removeditem[0];
     },
     // 指定のリクを先頭に移動する.
@@ -2505,6 +2561,15 @@ var NicoLiveHelper = {
 
     // リクエストをシャッフル(てきとー実装).
     shuffleRequest: function(){
+	let s = JSON.stringify(this.requestqueue);
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.requestqueue = JSON.parse(s);
+		NicoLiveRequest.update( NicoLiveHelper.requestqueue );
+		NicoLiveHelper.saveRequest();
+	    }
+	);
+
 	let i = this.requestqueue.length;
 	while(i){
 	    let j = Math.floor(Math.random()*i);
@@ -2516,6 +2581,15 @@ var NicoLiveHelper = {
 	this.saveRequest();
     },
     shuffleStock:function(){
+	let s = JSON.stringify(this.stock);
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.stock = JSON.parse(s);
+		NicoLiveRequest.updateStockView( NicoLiveHelper.stock );
+		NicoLiveHelper.saveStock();
+	    }
+	);
+
 	let i = this.stock.length;
 	while(i){
 	    let j = Math.floor(Math.random()*i);
@@ -4264,6 +4338,17 @@ var NicoLiveHelper = {
 	this.getplayerstatus(request_id);
     },
 
+    setUndo:function( undo_func ){
+	this.undo_stack[0] = undo_func;
+    },
+    undo:function(){
+	let f = this.undo_stack[0];
+	if( 'function'==typeof f ){
+	    f();
+	}
+	this.undo_stack[0] = undefined;
+    },
+
     saveAll:function(){
 	this.saveStock();
 	this.saveRequest();
@@ -4463,6 +4548,10 @@ var NicoLiveHelper = {
 	}
 	NicoLiveWindow.openDefaultBrowser(url, true);
     },
+
+    /**
+     * 自動で次枠を取得する.
+     */
     autoNextBroadcasting:function(){
 	if( !this.iscaster ) return;
 	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified.");

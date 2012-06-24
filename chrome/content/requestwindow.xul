@@ -121,7 +121,7 @@
     <!-- CTRL+B: Back stage pass comment(using only caster) -->
     <key id="reconnect" key="b" modifiers="accel" oncommand="NicoLiveHelper.postBSPComment();"/>
     <!-- CTRL+Z: Undo -->
-    <key id="undo" key="z" modifiers="accel" oncommand=""/>
+    <key id="undo" key="z" modifiers="accel" oncommand="NicoLiveHelper.undo();"/>
 
     <!-- CTRL+→ 右のタブへ -->
     <key id="right-tab" keycode="VK_RIGHT" modifiers="accel" oncommand="NicoLiveWindow.moveRightTab();"/>
