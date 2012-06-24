@@ -120,6 +120,7 @@ var NicoLiveCookie = {
 	// C:\Users\amano\AppData\Local\Google\Chrome\User Data\Default\Cookies
 	let file;
 	if( IsWINNT() ){
+	    debugprint("Windows Chrome");
             file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("LocalAppData", Components.interfaces.nsIFile);
             file.append("Google");
             file.append("Chrome");
@@ -127,9 +128,16 @@ var NicoLiveCookie = {
             file.append("Default");
             file.append("Cookies");
 	}else if( IsLinux() ){
+	    debugprint("Linux Chrome");
 	    
 	}else if( IsDarwin() ){
-	    
+	    debugprint("Mac Chrome");
+            file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ULibDir", Components.interfaces.nsIFile);
+	    file.append("Application Support");
+            file.append("Google");
+            file.append("Chrome");
+            file.append("Default");
+            file.append("Cookies");
 	}
 	debugprint(file.path);
 
