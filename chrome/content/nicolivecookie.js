@@ -127,8 +127,14 @@ var NicoLiveCookie = {
             file.append("User Data");
             file.append("Default");
             file.append("Cookies");
+
 	}else if( IsLinux() ){
 	    debugprint("Linux Chrome");
+            file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("Home", Components.interfaces.nsIFile);
+            file.append(".config");
+            file.append("google-chrome");
+            file.append("Default");
+            file.append("Cookies");
 	    
 	}else if( IsDarwin() ){
 	    debugprint("Mac Chrome");
