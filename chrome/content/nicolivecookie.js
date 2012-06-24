@@ -118,12 +118,19 @@ var NicoLiveCookie = {
 
     getChromeCookie:function(){
 	// C:\Users\amano\AppData\Local\Google\Chrome\User Data\Default\Cookies
-        let file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("LocalAppData", Components.interfaces.nsIFile);
-        file.append("Google");
-        file.append("Chrome");
-        file.append("User Data");
-        file.append("Default");
-        file.append("Cookies");
+	let file;
+	if( IsWINNT() ){
+            file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("LocalAppData", Components.interfaces.nsIFile);
+            file.append("Google");
+            file.append("Chrome");
+            file.append("User Data");
+            file.append("Default");
+            file.append("Cookies");
+	}else if( IsLinux() ){
+	    
+	}else if( IsDarwin() ){
+	    
+	}
 	debugprint(file.path);
 
         let storageService = Components.classes["@mozilla.org/storage/service;1"].getService(Components.interfaces.mozIStorageService);

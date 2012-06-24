@@ -631,3 +631,23 @@ function IsWINNT()
     }
     return false;
 }
+
+function IsDarwin()
+{
+    let osString = Components.classes["@mozilla.org/xre/app-info;1"]
+        .getService(Components.interfaces.nsIXULRuntime).OS;
+    if(osString=="Darwin"){
+	return true;
+    }
+    return false;
+}
+
+function IsLinux()
+{
+    let osString = Components.classes["@mozilla.org/xre/app-info;1"]
+        .getService(Components.interfaces.nsIXULRuntime).OS;
+    if(osString=="Linux"){
+	return true;
+    }
+    return false;
+}
