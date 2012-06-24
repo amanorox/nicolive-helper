@@ -881,7 +881,7 @@ var NicoLiveOverlay = {
 		Prefs.setCharPref("version",current);
 		// バージョンが異なるとき、すなわちアップグレードしたときに実行するコードを挿入します。
 		window.setTimeout(function(){
-				      gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#1.1.51");
+				      gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#1.1.52");
 				  }, 1500);
 	    }
 	}
