@@ -65,6 +65,7 @@ function CreateXHR(method,uri, substitution)
 	//req.setRequestHeader("Cookie", "user_session="+NicoLiveHelper._user_session);
     }
 
+    req.timeout = 30*1000; // 30sec timeout for Gecko 12.0+
     return req;
 }
 
