@@ -432,7 +432,9 @@ var NicoLiveWindow = {
 	let maintabs = $('maintabs');
 	for(let i=0,item; item=tabs[i]; i++){
 	    let elem = document.getElementById( item );
-	    maintabs.insertBefore( elem, maintabs.firstChild );
+	    if( elem ){
+		maintabs.insertBefore( elem, maintabs.firstChild );
+	    }
 	}
     },
 
