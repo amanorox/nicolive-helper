@@ -21,25 +21,33 @@ THE SOFTWARE.
  */
 
 var InAppBrowser = {
-    browser: null,
-
     backward: function(){
-	this.browser.goBack();
+	document.getElementById('page').goBack();
+	setTimeout(function(){
+		       document.getElementById('url').value = document.getElementById('page').currentURI.spec;
+		   },100);
     },
     forward: function(){
-	this.browser.goForward();
+	document.getElementById('page').goForward();
+	setTimeout(function(){
+		       document.getElementById('url').value = document.getElementById('page').currentURI.spec;
+		   },100);
     },
     reload: function(){
-	this.browser.reload();
+	document.getElementById('page').reload();
     },
     go: function(){
 	document.getElementById('page').setAttribute('src', document.getElementById('url').value );
     },
 
+    onLoad: function(){
+	document.getElementById('url').value = document.getElementById('page').currentURI.spec;
+    },
+
     init: function(){
 	document.getElementById('page').setAttribute('src', window.arguments[0]);
+	document.getElementById('page').addEventListener('DOMContentLoaded', this.onLoad, false );
 	document.getElementById('url').value = window.arguments[0];
-	this.browser = document.getElementById('page');
     },
     destroy: function(){
     }
