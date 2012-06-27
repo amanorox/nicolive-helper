@@ -13,25 +13,27 @@
 	windowtype="NicoLiveHelperBrowserWindow"
 	title="Browser for NicoLive Helper">
 
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/browser.js" />
+
   <keyset>
     <!-- CTRL+W: Close this window -->
     <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"/>
   </keyset>
 
+  <toolbar>
+    <toolbarbutton label="戻る" oncommand="InAppBrowser.backward();"/>
+    <toolbarbutton label="進む" oncommand="InAppBrowser.forward();"/>
+    <toolbarbutton label="リロード" oncommand="InAppBrowser.reload();"/>
+    <textbox id="url" flex="1"/>
+    <toolbarbutton label="Go" oncommand="InAppBrowser.go();"/>
+  </toolbar>
+
   <!-- live pane (want 600px) -->
-  <vbox flex="1" style="overflow:auto;">
-    <browser id="page" src="about:blank" type="content-primary" flex="1"/>
-  </vbox>
-
-<script>
-  <![CDATA[
-
-addEventListener("load",function(e){
-  document.getElementById('page').setAttribute('src', window.arguments[0]);
-},false);
-
-  ]]>
-</script>
+  <browser id="page"
+	   flex="1"
+	   src="about:blank"
+	   type="content"
+	   style="overflow:auto;"
+	   homepage="http://live.nicovideo.jp/my"/>
 
 </window>
-
