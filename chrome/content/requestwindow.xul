@@ -24,6 +24,7 @@
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoapi.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/tcplib.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecookie.js" />
 

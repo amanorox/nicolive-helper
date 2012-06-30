@@ -310,7 +310,7 @@ var NicoLiveFolderDB = {
 		NicoLiveFolderDB._appendVideos(id, videos.join(','));
 	    }
 	};
-	NicoApi.mylistByXML( mylist_id, f );
+	NicoApi.mylistRSS( mylist_id, f );
     },
 
     startDraggingItem:function(event){

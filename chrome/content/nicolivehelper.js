@@ -2089,7 +2089,7 @@ var NicoLiveHelper = {
 	    return;
 	}
 
-	let f = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
 		let tmp = req.responseText.match(/postkey=(.*)/);
 		if(tmp){
@@ -3086,37 +3086,6 @@ var NicoLiveHelper = {
     },
 
     /** コメントサーバに接続.
-     * TCP接続するだけのシンプル版.
-     * @param server 接続先サーバ.
-     * @param port ポート番号.
-     * @param receiver データリスナ.
-     * @return 成功したらI/Oストリームを返す.
-     */
-    connectCommentServer2:function(server,port,receiver){
-	debugprint("connect to:"+server+":"+port);
-	let socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"].getService(Components.interfaces.nsISocketTransportService);
-	let socket = socketTransportService.createTransport(null,0,server,port,null);
-	let iStream, ciStream;
-	let pump;
-
-	iStream = socket.openInputStream(0,0,0);
-	ciStream = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
-	ciStream.init(iStream,"UTF-8",0,Components.interfaces.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
-
-	pump = Components.classes["@mozilla.org/network/input-stream-pump;1"].createInstance(Components.interfaces.nsIInputStreamPump);
-	pump.init(iStream,-1,-1,0,0,false);
-
-	let oStream, coStream;
-	oStream = socket.openOutputStream(0,0,0);
-	coStream = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
-	coStream.init(oStream,"UTF-8",0,Components.interfaces.nsIConverterOutputStream.DEFAULT_REPLACEMENT_CHARACTER);
-
-	pump.asyncRead(receiver, null);
-
-	return { "istream": ciStream, "ostream": coStream };
-    },
-
-    /** コメントサーバに接続.
      * @param server サーバ.
      * @param port ポート.
      * @param thread スレッド番号.
@@ -3171,7 +3140,7 @@ var NicoLiveHelper = {
 	    }
 	};
 
-	let iostream = this.connectCommentServer2( server, port, dataListener );
+	let iostream = TcpLib.connectTcpServer( server, port, dataListener );
 	this.coStream = iostream.ostream;
 	this.ciStream = iostream.istream;
 
@@ -3223,9 +3192,16 @@ var NicoLiveHelper = {
 	this.connecttime = this.serverconnecttime;
     },
 
+    // コメントサーバーに接続する前に必要な一仕事をしてから接続する.
+    preprocessConnectServer:function(){
+	NicoLiveHelper.getpublishstatus(NicoLiveHelper.request_id,
+					function(){
+					    NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
+					});
+    },
+
     keepConnection:function(){
 	let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
-	//let str = "<ping>PING</ping>";
 	this.coStream.writeString(str);
     },
 
@@ -3636,10 +3612,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.construct_playlist_for_timeshift(xml);
 		}else{
 		    // 主コメトークンを取得してから接続.
-		    NicoLiveHelper.getpublishstatus(NicoLiveHelper.request_id,
-						   function(){
-						       NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
-						   });
+		    NicoLiveHelper.preprocessConnectServer();
 		}
 
 		NicoLiveHelper.setLiveProgressBarTipText();
@@ -3894,7 +3867,6 @@ var NicoLiveHelper = {
     },
 
     /** 放送主専用トークン(token)、開演時刻(start_time)、終了時刻(end_time)を取得する.
-     * getpublishstatusを行い、token,end_time,start_timeを得る.
      * postfuncが指定されていた場合、通信終了時に指定の関数を呼び出す.
      */
     getpublishstatus:function( request_id, postfunc ){
@@ -3904,7 +3876,6 @@ var NicoLiveHelper = {
 	    }
 	    return;
 	}
-	debugprint('GET getpublishstatus');
 
 	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ){
