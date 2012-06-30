@@ -24,6 +24,11 @@ THE SOFTWARE.
  */
 
 var NicoLiveStock = {
+    setTotalStockTime:function(t){
+	let elem = $("stock-playtime");
+	let t = NicoLiveHelper.getStockTime();
+	elem.value = ""+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.stock.length+"件";
+    },
 
     refreshStock: function( requestqueue ){
 	this._summation_time = 0;
@@ -35,6 +40,7 @@ var NicoLiveStock = {
 	for(let i=0,item;item=requestqueue[i];i++){
 	    this.addRow(item);
 	}
+	this.setTotalStockTime();
     },
 
     // ストックテーブルの行の中身を作成する.

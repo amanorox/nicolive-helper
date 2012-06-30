@@ -221,7 +221,10 @@ var NicoLivePreference = {
     readFontScale:function(){
 	let branch = this.getBranch();
 	let fontscale = branch.getIntPref("font-scale");
-	$('mainwindow-tab').style.fontSize = fontscale + "pt";
+	try{
+	    $('mainwindow-tab').style.fontSize = fontscale + "pt";
+	} catch (x) {
+	}
     },
 
     // 動画分類設定を読みこむ.
@@ -398,6 +401,7 @@ function NicoLiveUpdateWindowZOrder(){
     //Application.console.log('update z-order');
 }
 
-window.addEventListener("load", function(e){ NicoLivePreference.init(); }, false);
+NicoLivePreference.init();
+
 window.addEventListener("unload", function(e){ NicoLivePreference.destroy(); }, false);
 window.addEventListener("resize", NicoLiveUpdateWindowZOrder, false );

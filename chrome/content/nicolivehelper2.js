@@ -40,10 +40,10 @@ Components.utils.import("resource://nicolivehelpermodules/pnamelist.jsm");
 var NicoLiveHelper = {
     iscaster: true,     // 自分が生主かどうか
 
-    request: null,      // リクエスト
-    stock: null,        // ストック
-    playlist: null,     // プレイリスト
-    error_request:null, // 再生できないリクエスト
+    request: [],        // リクエスト
+    stock: [],          // ストック
+    playlist: [],       // プレイリスト
+    error_request:{},   // 再生できないリクエスト
     co154playlog: {},   // co154のプレイログ
 
     // 非同期処理したあとの順番処理用
@@ -88,6 +88,56 @@ var NicoLiveHelper = {
 	thread: ""
     },
     twitterinfo: {},     // Nico Twitter APIへのアクセス情報
+
+    isRequested: function(video_id){
+	if( NicoLivePreference.allow_duplicative ){
+	    return false;
+	}
+
+	for(let i=0,item;item=this.request[i];i++){
+	    // リクエストに既にある動画.
+	    if(item.video_id==video_id){
+		return true;
+	    }
+	}
+	return false;
+    },
+    isStocked:function(video_id){
+	for(let i=0,item;item=this.stock[i];i++){
+	    // ストックに既にある動画.
+	    if(item.video_id==video_id){
+		return true;
+	    }
+	}
+	return false;
+    },
+
+    getPlayTime:function( list, excludeplayed, checkmaxplay ){
+	let t=0;
+	let maxplay = parseInt(NicoLivePreference.max_movieplay_time*60*1000);
+	let s;
+	for(let i=0,item;item=list[i];i++){
+	    if( excludeplayed && item.isplayed ) continue;
+	    if( maxplay>0 && checkmaxplay ){
+		s = maxplay>item.length_ms?item.length_ms:maxplay;
+	    }else{
+		s = item.length_ms;
+	    }
+	    t += s;
+	}
+	t /= 1000;
+	let min,sec;
+	min = parseInt(t/60);
+	sec = t%60;
+	return {"min":min, "sec":sec};
+    },
+
+    getRequestTime:function(){
+	return this.getPlayTime( this.request, false, true );
+    },
+    getStockTime:function(){
+	return this.getPlayTime( this.stock, true, true );
+    },
 
     /**
      * 与えられた文字列がP名っぽいかどうか判断
@@ -360,6 +410,7 @@ var NicoLiveHelper = {
     addStock: function( vid ){
 	if(vid.length<3) return;
 	if( this.stock_order["_"+vid] ) return;
+	if( this.isStocked(vid) ) return;
 
 	let request = new Object();
 	request.video_id = vid;
@@ -381,6 +432,7 @@ var NicoLiveHelper = {
 			// HTTPエラーのときはリクエスト処理キューから削除してあげる.
 			// 実験したところ、タイムアウトもこっちでokみたい.
 			NicoLiveHelper.stock_order.splice(i,1);
+			delete NicoLiveHelper.stock_order["_"+vid];
 		    }
 		    break;
 		}
@@ -392,6 +444,8 @@ var NicoLiveHelper = {
 
     addRequest: function(vid, cno, userid, is_self_request, retry){
 	if(vid.length<3) return;
+	if( this.isRequested(vid) ) return;
+
 	if( !retry ){
 	    let request = new Object();
 	    request.video_id = vid;

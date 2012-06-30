@@ -36,6 +36,8 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehelper2.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverequest2.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivestock2.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehistory2.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecomment2.js" />
 
   <toolbox id="global-toolbox">
     <toolbar id="global-menu">
@@ -182,7 +184,7 @@
       <!-- request tab -->
       <vbox class="tabpanel" id="tab-request">
 	<arrowscrollbox orient="horizontal">
-	  <hbox flex="1">
+	  <hbox flex="1" align="center">
 	    <menulist id="request-set-no" persist="value">
 	      <menupopup>
 		<menuitem label="0" value="0"/>
@@ -269,12 +271,108 @@
       <vbox class="tabpanel" id="tab-requesterror">
       </vbox>
 
-      <!-- playlist(history) tab -->
+      <!-- playlist tab -->
       <vbox class="tabpanel" id="tab-playlist">
+	<deck id="playlist-deck" persist="selectedIndex" flex="1">
+	  <textbox id="played-list-textbox" emptytext="&playlist.emptytext_textlog;" multiline="true" flex="1" />
+	  <vbox flex="1" style="overflow:auto">
+	    <html:table id="playlist-table" class="requestview">
+	    </html:table>
+	  </vbox>
+	</deck>
+	<hbox>
+	  <button label="&button.clearall;" tooltiptext="&playlist.tooltip_clearall;"/>
+	  <button label="&playlist.recover_text;" tooltiptext="&playlist.tooltip_recover_text;"/>
+	  <spacer flex="1"/>
+	  <menulist id="id-playlist-style" persist="value" oncommand="$('playlist-deck').selectedIndex=this.value;">
+	    <menupopup>
+	      <menuitem label="&playlist.bytext;" value="0"/>
+	      <menuitem label="&playlist.bydetail;" value="1"/>
+	    </menupopup>
+	  </menulist>
+	</hbox>
       </vbox>
 
       <!-- comment tab -->
       <vbox class="tabpanel" id="tab-comment">
+	<hbox id="box-caster-comment" align="center">
+	  <menulist id="textbox-mail" label="" editable="true" value="">
+	    <menupopup>
+	      <menuitem label="" value=""/>
+	      <menuitem label="&comment.command_caster;" value=""/>
+	      <menuitem label="se1" value="se1"/>
+	      <menuitem label="se2" value="se2"/>
+	      <menuitem label="hidden" value="hidden"/>
+	      <menuitem label="&comment.command_listener;" value=""/>
+	      <menuitem label="cyan big" value="cyan big"/>
+	      <menuitem label="shita" value="shita"/>
+	      <menuitem label="green shita small" value="green shita small"/>
+	      <menuitem label="orange" value="orange"/>
+	      <menuitem label="&comment.command_premium;" value=""/>
+	      <menuitem label="marineblue" value="marineblue"/>
+	      <menuitem label="passionorange" value="passionorange"/>
+	      <menuitem label="elementalgreen ue" value="elementalgreen ue"/>
+	      <menuitem label="truered shita small" value="truered shita small"/>
+	      <menuitem label="niconicowhite big" value="niconicowhite big"/>
+	    </menupopup>
+	  </menulist>
+	  
+	  <textbox id="textbox-comment"
+		   style="padding: 2px;"
+		   flex="1"
+		   maxlength="1024"
+		   type="autocomplete"
+		   autocompletesearch="simple-autocomplete"
+		   enablehistory="true"
+		   showcommentcolumn="true" 
+		   emptytext="&comment.emptytext_input;"
+		   onkeypress="NicoLiveComment.postComment(this,event);"
+		   ontextreverted="this.select();"
+		   />
+	  <html:input type="button" value="送信" onclick="NicoLiveComment.postComment($('textbox-comment'),null);"/>
+	  <checkbox persist="checked" id="overwrite-hidden-perm" label="&comment.write_upperarea;" tooltiptext="&comment.tooltip_write_upperarea;"/>
+	</hbox>
+	<scrollbox id="comment-box" orient="vertical" flex="1" style="overflow:auto;">
+	  <html:table id="comment_table" style="width:100%"></html:table>
+	</scrollbox>
+	<splitter collapse="after" state="collapsed"/>
+	<vbox flex="1" style="overflow:auto;">
+	  <grid>
+	    <columns>
+	      <column/>
+	      <column/>
+	      <column/>
+	    </columns>
+	    <rows>
+	      <row>
+		<hbox align="center"><label value="&comment.comment_no;"/></hbox>
+		<textbox id="comment_no_to_add_reflection"/>
+		<button label="&comment.register_reflection;" oncommand="NicoLiveComment.addReflectionFromCommentNo($('comment_no_to_add_reflection').value);"/>
+	      </row>
+	      <row>
+		<hbox align="center"><label value="&comment.user_id;"/></hbox>
+		<hbox><textbox id="comment-user-id"/></hbox>
+		<button type="menu" label="&general.command;">
+		  <menupopup id="menupopup-comment-command">
+		    <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addNameFromId($('comment-user-id').value);"/>
+		    <menuitem label="&comment.menu_reflection;" oncommand="NicoLiveComment.showCommentReflectorDialog($('comment-user-id').value);"/>
+		    <menuitem label="&comment.del_nguser;" oncommand="NicoLiveComment.delNGUser($('comment-user-id').value);"/>
+		  </menupopup>
+		</button>
+	      </row>
+	    </rows>
+	  </grid>
+	  <listbox id="kotehan-list" rows="5" context="popup-comment-kotehan" onkeypress="NicoLiveComment.pressKeyOnNameList(event);">
+	    <listcols>
+	      <listcol flex="1" />
+	      <listcol flex="1" />
+	    </listcols>
+	    <listhead>
+	      <listheader label="&comment.user_id;" />
+	      <listheader label="&comment.kotehan;" />
+	    </listhead>
+	  </listbox>
+	</vbox>
       </vbox>
 
       <!-- database tab -->

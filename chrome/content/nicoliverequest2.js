@@ -53,6 +53,12 @@ var NicoLiveRequest = {
 	$('iframe-thumbnail').style.opacity = 0;
     },
 
+    setTotalRequestTime:function(){
+	let elem = $('request-playtime');
+	let t = NicoLiveHelper.getRequestTime();
+	elem.value = ""+t.min+"分"+t.sec+"秒/"+NicoLiveHelper.request.length+"件";
+    },
+
     // 動画情報を表示しているvboxを作成して返す.
     createVideoInformation:function(item,isstock){
 	let vbox = CreateElement('vbox');
@@ -274,6 +280,7 @@ var NicoLiveRequest = {
 	for(let i=0,item;item=requestqueue[i];i++){
 	    this.addRow(item);
 	}
+	this.setTotalRequestTime();
     },
 
     addRequest: function( sm ){
