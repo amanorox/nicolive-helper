@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://nicolivehelper/content/requestwindow.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://nicolivehelper/locale/nicolivehelper.dtd">
+
+<window id="requestwindow"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	persist="screenX screenY width height sizemode"
+	width="640"
+	height="480"
+	windowtype="NicoLiveHelperMainWindow"
+	title="NicoLive Helper 2.0">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/oauth.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/sha1.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/cookiemonster.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/httpobserve.js" />
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/misc.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecookie.js" />
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/tcplib.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoapi.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehelper2.js" />
+
+  <tabbox flex="1" persist="selectedIndex" id="mainwindow-tab">
+    <arrowscrollbox allowevents="true" class="tabbrowser-arrowscrollbox" orient="horizontal">
+      <tabs id="maintabs">
+	<tab id="tabs-request" label="&tab.request;" linkedpanel="tab-request"/>
+	<tab id="tabs-stock" label="&tab.stock;" linkedpanel="tab-stock"/>
+	<tab id="tabs-error" label="&tab.error;" linkedpanel="tab-requesterror"/>
+	<tab id="tabs-playlist" label="&tab.playlist;" linkedpanel="tab-playlist"/>
+	<tab id="tabs-comment" label="&tab.comment;" linkedpanel="tab-comment"/>
+	<tab id="tabs-db" label="&tab.database;" linkedpanel="tab-database"/>
+	<tab id="tabs-controlpanel" label="&tab.controlpanel;" linkedpanel="tab-controlpanel"/>
+	<tab id="tabs-debug" label="&tab.debug;" linkedpanel="tab-debug"/>
+      </tabs>
+    </arrowscrollbox>
+    
+    <tabpanels flex="1" id="tabpanels">
+      <!-- request tab -->
+      <vbox class="tabpanel" id="tab-request">
+      </vbox>
+
+      <!-- stock tab -->
+      <vbox class="tabpanel" id="tab-stock">
+      </vbox>
+
+      <!-- error request tab -->
+      <vbox class="tabpanel" id="tab-requesterror">
+      </vbox>
+
+      <!-- playlist(history) tab -->
+      <vbox class="tabpanel" id="tab-playlist">
+      </vbox>
+
+      <!-- comment tab -->
+      <vbox class="tabpanel" id="tab-comment">
+      </vbox>
+
+      <!-- database tab -->
+      <vbox class="tabpanel" id="tab-database">
+      </vbox>
+
+      <!-- control panel tab -->
+      <vbox id="tab-controlpanel">
+      </vbox>
+
+      <!-- debug tab -->
+      <vbox id="tab-debug">
+	<textbox id="debug-textbox" emptytext="This area is used for debugging messages." multiline="true" flex="1" />
+      </vbox>
+
+    </tabpanels>
+
+    <notificationbox id="noticewin">
+    </notificationbox>
+  </tabbox>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="string-bundle" src="chrome://nicolivehelper/locale/nicolivehelper.properties"/>
+  </stringbundleset>
+  
+</window>

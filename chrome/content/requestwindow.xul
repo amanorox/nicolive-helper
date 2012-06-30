@@ -47,6 +47,11 @@
 
   <script>
   <![CDATA[
+  function OpenNUI(){
+    var feature="chrome,resizable=yes";
+    window.open("chrome://nicolivehelper/content/requestwindow2.xul","NLHNUI_lv0",feature);
+  }
+
   function OpenSettingsDialog(){
       var f='chrome,toolbar,modal=no,resizable=yes,centerscreen';
       if(NicoLivePreference.topmost){
@@ -144,6 +149,7 @@
   <toolbox id="global-toolbox">
     <toolbar id="global-menu">
       <arrowscrollbox orient="horizontal" flex="1">
+	<toolbarbutton label="NUI" oncommand="OpenNUI();"/>
 	<!-- auto/manual sequential/random playstyle -->
 	<toolbarbutton label="&playstyle.manual_sequential;" type="menu" id="toolbar-playstyle">
 	  <menupopup id="toolbar-popup-playstyle">

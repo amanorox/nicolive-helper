@@ -93,7 +93,7 @@ var NicoLiveOverlay = {
 		win.NicoLiveHelper.connectNewBroadcasting(url,title,iscaster,community_id);
 		win.focus();
 	    }else{
-		let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLH_lv0",feature);
+		let w = window.open("chrome://nicolivehelper/content/requestwindow.xul","NLHNUI_lv0",feature);
 		w.arguments = [ url, title, iscaster, community_id ];
 		w.focus();
 		this.debugprint("Open NicoLive Helper Window.");
