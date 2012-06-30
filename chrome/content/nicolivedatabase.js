@@ -104,10 +104,7 @@ var NicoLiveDatabase = {
     addOneVideo:function(id){
 	// 動画IDで渡す.
 	if(id.length<3) return;
-	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
 		if( music ){
@@ -115,16 +112,13 @@ var NicoLiveDatabase = {
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.getthumbinfo( id, f );
     },
 
     updateOneVideo:function(id){
 	// 動画IDで渡す.
 	if(id.length<3) return;
-	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+id;
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
 		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
 		if( music ){
@@ -135,9 +129,8 @@ var NicoLiveDatabase = {
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.getthumbinfo( id, f );
     },
-
 
     // DBにinsert to する.
     addDatabase:function(music,dosync){
