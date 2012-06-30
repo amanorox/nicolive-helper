@@ -188,10 +188,7 @@ var NicoLiveMylist = {
 	    return;
 	}
 
-	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
 		let xml = req.responseXML;
 		let items = xml.getElementsByTagName('item');
@@ -227,7 +224,7 @@ var NicoLiveMylist = {
 		NicoLiveRequest.addStock(videos.join(','));
 	    }
 	};
-	req.send('');
+	NicoApi.mylistByXML( mylist_id, f );
     },
 
     addStockFromMylist:function(mylist_id,mylist_name){
@@ -241,10 +238,7 @@ var NicoLiveMylist = {
 	    return;
 	}
 
-	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
 		let xml = req.responseXML;
 		let link = xml.getElementsByTagName('link');
@@ -252,14 +246,13 @@ var NicoLiveMylist = {
 		for(let i=0,item;item=link[i];i++){
 		    let video_id = item.textContent.match(/(sm|nm)\d+/);
 		    if(video_id){
-			//debugprint('mylist:'+video_id[0]);
 			videos.push(video_id[0]);
 		    }
 		}
 		NicoLiveDatabase.addVideos(videos.join(','));
 	    }
 	};
-	req.send('');
+	NicoApi.mylistByXML( mylist_id, f );
     },
 
     // とりマイからDBに追加.

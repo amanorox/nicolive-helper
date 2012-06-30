@@ -109,5 +109,10 @@ var NicoApi = {
     getwaybackkey: function( thread, postfunc ){
 	let url = this.base_uri + "getwaybackkey?thread="+thread;
 	this.callApi( url, postfunc );
+    },
+
+    mylistByXML: function( mylist_id, postfunc ){
+	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
+	this.callApi( url, postfunc );
     }
 };

@@ -290,10 +290,7 @@ var NicoLiveFolderDB = {
      * @param mylist_id マイリストID
      */
     appendVideosFromMylist:function(id,mylist_id){
-	let url = "http://www.nicovideo.jp/mylist/" + mylist_id + "?rss=2.0";
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
 		let xml = req.responseXML;
 		let items = xml.getElementsByTagName('item');
@@ -313,7 +310,7 @@ var NicoLiveFolderDB = {
 		NicoLiveFolderDB._appendVideos(id, videos.join(','));
 	    }
 	};
-	req.send('');
+	NicoApi.mylistByXML( mylist_id, f );
     },
 
     startDraggingItem:function(event){
