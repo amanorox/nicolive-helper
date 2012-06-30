@@ -23,8 +23,13 @@ THE SOFTWARE.
 var NicoApi = {
     base_uri: "http://watch.live.nicovideo.jp/api/",
 
-    callApi: function( url, postfunc ){
-	let req = CreateXHR("GET",url);
+    callApi: function( url, postfunc, postdata ){
+	let req;
+	if( postdata ){
+	    req = CreateXHR("POST",url);
+	}else{
+	    req = CreateXHR("GET",url);
+	}
 	if( !req ){
 	    postfunc( null );
 	    return;
@@ -33,17 +38,47 @@ var NicoApi = {
 	    if( req.readyState!=4 ) return;
 	    if( req.status!=200 ){
 		debugprint( url+" failed.");
-		postfunc( null );
+		postfunc( null, req );
 		return;
 	    }
 	    postfunc( req.responseXML, req );
 	};
-	req.send("");
+	if( postdata ){
+	    req.setRequestHeader('Content-type','application/x-www-form-urlencoded; charset=UTF-8');
+	    req.send( data.join("&") );
+	}else{
+	    req.send("");
+	}
+    },
+
+    broadcast: function( request_id, postdata, postfunc ){
+	let url = this.base_uri + "broadcast/" + this.request_id;
+	this.callApi( url, postfunc, postdata );
+    },
+
+    presscast: function( postdata, postfunc ){
+	// BSPはなぜか watch.live.nicovideo.jp じゃなくて live.nicovideo.jp
+	let url = "http://live.nicovideo.jp/api/presscast";
+	this.callApi( url, postfunc, postdata );
+    },
+
+    getpostkey: function( thread, block_no, postfunc ){
+	let url = this.base_uri + "getpostkey?thread="+thread+"&block_no="+block_no;
+	this.callApi( url, postfunc );
     },
 
     getthumbinfo: function( video_id, postfunc ){
 	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
 	this.callApi( url, postfunc );
+    },
+
+    heartbeat:function( postdata, postfunc ){
+	let url = this.base_uri + "heartbeat";
+	this.callApi( url, postfunc, postdata );
+    },
+    
+    configurestream:function( request_id, param, postfunc ){
+	let url = "http://watch.live.nicovideo.jp/api/configurestream/" + request_id +"?"+param;
     },
 
     getplayerstatus: function( request_id, postfunc ){
@@ -54,6 +89,25 @@ var NicoApi = {
     getpublishstatus: function( request_id, postfunc ){
 	let url = this.base_uri + "getpublishstatus?v=" + request_id + "&version=2";
 	this.callApi( url, postfunc );
-    }
+    },
 
+    getremainpoint: function( postfunc ){
+	let url = this.base_uri + "getremainpoint";
+	this.callApi( url, postfunc );
+    },
+
+    getsalelist: function( request_id, postfunc ){
+	let url = this.base_uri + "getsalelist?v=" + request_id;
+	this.callApi( url, postfunc );
+    },
+
+    usepoint: function( postdata, postfunc ){
+	let url = this.base_uri + "usepoint";
+	this.callApi( url, postfunc , postdata );
+    },
+
+    getwaybackkey: function( thread, postfunc ){
+	let url = this.base_uri + "getwaybackkey?thread="+thread;
+	this.callApi( url, postfunc );
+    }
 };

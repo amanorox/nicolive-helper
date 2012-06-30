@@ -627,21 +627,16 @@ var NicoLiveHelper = {
     // 動画の存在をチェックして、削除されてるようなら次の再生を仕掛ける.
     checkVideoDeletedAndPlayNext:function(video_id){
 	if( !NicoLivePreference.check_delete ) return;
-
-	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
-	let req = CreateXHR("GET", url );
-	if( !req ) return;
-
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ){
-		let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
+		let music = NicoLiveHelper.xmlToMovieInfo(xml);
 		if( !music ){
 		    ShowNotice("動画情報を取得できなかったため15秒後にスキップします");
 		    NicoLiveHelper.setupPlayNextMusic(15*1000);
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.getthumbinfo( video_id, f );
     },
 
     // コメを処理する(各種追加機能の古いバージョンでのフック用).
@@ -846,11 +841,8 @@ var NicoLiveHelper = {
     // this.musicstarttimeはあらかじめセットしておくこと.
     setCurrentVideoInfo:function(video_id,setinterval, is_retry){
 	// setinterval=trueのときは次曲再生のタイマーをしかける(生主用).
-	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
 	//debugprint(video_id+'のサムネイルを取得中...');
-	let req = CreateXHR("GET",url);
-	if( !req ) return;
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState==4 ){
 		if( req.status==200 ){
 		    let music = NicoLiveHelper.xmlToMovieInfo(req.responseXML);
@@ -889,7 +881,8 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send("");
+
+	NicoApi.getthumbinfo( video_id, f );
     },
 
     // 与えられたstrがP名かどうか.
@@ -1886,11 +1879,7 @@ var NicoLiveHelper = {
 	if( comment.length<=0 ) return;
 	if( !mail ) mail = "";
 
-	let url = "http://watch.live.nicovideo.jp/api/broadcast/" + this.request_id;
-	let req = CreateXHR("POST",url);
-	if( !req ) return;
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ){
 		debugprint('castercomment:'+req.responseText);
 		// status=error&error=0
@@ -1952,14 +1941,16 @@ var NicoLiveHelper = {
 	if(comment.length<=0) return; // マクロ展開したあとにコメが空になったら.
 
 	// 主コメは184=falseにしても効果がないので常時trueに.
-	let data = "body="+encodeURIComponent(comment)+"&is184=true";
+	let data = new Array();
+	data.push("body="+encodeURIComponent(comment));
+	data.push("is184=true");
 	if(name){
-	    data += "&name="+encodeURIComponent(name);
+	    data.push("name="+encodeURIComponent(name));
 	}
-	data += "&token="+NicoLiveHelper.token;
+	data.push("token="+NicoLiveHelper.token);
 	// コマンドは mail=green%20shita と付ける.
-	data += "&mail="+encodeURIComponent(mail);
-	req.send(data);
+	data.push("mail="+encodeURIComponent(mail));
+	NicoApi.broadcast( this.request_id, data, f );
 
 	// 主コメ送信のレスポンスが来たときにセットアップしていたのをここに移動.
 	switch( NicoLiveHelper.commentstate ){
@@ -2097,10 +2088,8 @@ var NicoLiveHelper = {
 	    debugprint('getpostkey: retry failed\n');
 	    return;
 	}
-	let url = "http://watch.live.nicovideo.jp/api/getpostkey?thread="+thread+"&block_no="+block_no;
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+
+	let f = function(){
 	    if( req.readyState==4 && req.status==200 ){
 		let tmp = req.responseText.match(/postkey=(.*)/);
 		if(tmp){
@@ -2115,13 +2104,10 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send('');
-	return;
+	NicoApi.getpostkey( thread, block_no, f );
     },
 
     postUserPress:function(name,comment,color){
-	let url = "http://live.nicovideo.jp/api/presscast";
-	let data = new Array();
 	if( !comment ) return;
 	if( !name ) name = this.user_name;
 	if( !color ) color = "#45bc38";
@@ -2134,6 +2120,7 @@ var NicoLiveHelper = {
 	    }
 	}
 
+	let data = new Array();
 	data.push("v="+this.request_id);
 	data.push("body="+encodeURIComponent(comment));
 	data.push("name="+encodeURIComponent(name));
@@ -2141,9 +2128,7 @@ var NicoLiveHelper = {
 	data.push("color="+encodeURIComponent(color));
 	data.push("mode=json");
 
-	let req = CreateXHR("POST", url);
-	if( !req ) return;
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ) {
 		let result = JSON.parse(req.responseText);
 		if(result.status=="error"){
@@ -2151,8 +2136,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded; charset=UTF-8');
-	req.send(data.join('&'));
+	NicoApi.presscast( data, f );
     },
 
     // Twitterにtweetする(ニコ生API経由).
@@ -2763,10 +2747,7 @@ var NicoLiveHelper = {
 	    }
 	}
 
-	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+sm;
-	let req = CreateXHR("GET",url);
-	if( !req ) return;
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ){
 		// ストックでもリクエスト縛り要件を満たすかチェックする.
 		let ans = NicoLiveHelper.checkToAcceptRequest(req.responseXML, 0);
@@ -2794,7 +2775,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.getthumbinfo( sm, f );
     },
 
     // 現在のリクエスト処理キューをクリアする.
@@ -2924,10 +2905,6 @@ var NicoLiveHelper = {
     addRequest: function(vid,cno,userid, is_self_request, retry){
 	if(vid.length<3) return;
 
-	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+vid;
-	let req = CreateXHR("GET",url);
-	if( !req ) return;
-
 	if( !retry ){
 	    let request = new Object();
 	    request.video_id = vid;
@@ -2941,8 +2918,7 @@ var NicoLiveHelper = {
 	    this.showRequestProgress();
 	}
 
-	req.onreadystatechange = function(){
-	    if( req.readyState!=4 ) return;
+	let f = function( xml, req ){
 	    let i,q;
 	    if( req.status!=200 && !retry ){
 		setTimeout( function(){
@@ -2967,7 +2943,8 @@ var NicoLiveHelper = {
 	    }
 	    NicoLiveHelper.processRequest();
 	};
-	req.send("");
+
+	NicoApi.getthumbinfo( vid, f );
     },
 
     /**
@@ -3049,11 +3026,6 @@ var NicoLiveHelper = {
 	    }
 	}
 	return false;
-    },
-
-    // 動画情報を取得してリクエストに追加する.
-    getthumbinfo:function(sm,cno,userid){
-	this.addRequest(sm,cno,userid);
     },
 
     // コメントサーバからやってくる行を処理する.
@@ -3520,11 +3492,7 @@ var NicoLiveHelper = {
     // タイムシフト用.
     getwaybackkey:function(req_id){
 	if(this.isOffline()) return;
-
-	let url = "http://watch.live.nicovideo.jp/api/getwaybackkey?thread="+this.thread;
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ){
 		let tmp = req.responseText.match(/waybackkey=(.*)/);
 		if(tmp){
@@ -3537,8 +3505,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send('');
-	return;
+	NicoApi.getwaybackkey( this.thread, f );
     },
 
     // タイムシフトのときに再生された動画を全部、プレイリスト(テキスト)に.
@@ -3562,13 +3529,8 @@ var NicoLiveHelper = {
     // getplayerstatus APIから生放送情報を取得する.
     getplayerstatus: function(req_id){
 	debugprint("GET getplayerstatus");
-	let url="http://watch.live.nicovideo.jp/api/getplayerstatus?v="+req_id;
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState!=4 || req.status!=200 ) return;
-	    let xml = req.responseXML;
-
 	    if( xml.getElementsByTagName('code').length ){
 		debugalert("番組情報を取得できませんでした. CODE="+ xml.getElementsByTagName('code')[0].textContent );
 		return;
@@ -3693,8 +3655,7 @@ var NicoLiveHelper = {
 	this._donotshowdisconnectalert = true;
 	this.close();
 
-	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
-	req.send("");
+	NicoApi.getplayerstatus( req_id, f );
     },
 
     // 初音ミクコミュのプレイログを取得する.
@@ -3750,10 +3711,7 @@ var NicoLiveHelper = {
      */
     updateEndTime:function(req_id){
 	debugprint("get getplayerstatus to obtain end_time.");
-	let url="http://watch.live.nicovideo.jp/api/getplayerstatus?v="+req_id;
-	let req = CreateXHR("GET",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState!=4 || req.status!=200 ) return;
 	    let xml = req.responseXML;
 	    try{
@@ -3767,9 +3725,7 @@ var NicoLiveHelper = {
 	    debugprint("New endtime="+NicoLiveHelper.endtime);
 	    NicoLiveHelper.setLiveProgressBarTipText();
 	};
-
-	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
-	req.send("");
+	NicoApi.getplayerstatus( req_id, f );
     },
 
     // duミリ秒後に次曲再生のタイマをしかける.
@@ -3854,33 +3810,27 @@ var NicoLiveHelper = {
     },
 
     heartbeat:function(){
-	let url = "http://watch.live.nicovideo.jp/api/heartbeat";
-	let req = CreateXHR("POST",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
 		let xml = req.responseXML;
 		try{
 		    let watcher = xml.getElementsByTagName('watchCount')[0].textContent;
 		    $('statusbar-n-of-listeners').label = LoadFormattedString('STR_WATCHER',[watcher]);
 		} catch (x) {
-
 		}
 	    }
 	};
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	let data = "v="+this.request_id;
-	req.send(data);
+	let data = new Array();
+	data.push("v="+this.request_id);
+	NicoApi.heartbeat( data, f );
     },
 
     // 配信開始する前に配信タイプを指定する必要があるので、
     // 従来の配信開始configureStreamの前ってことで 0 を付けただけ.
     configureStream0:function(token){
 	if( !this.iscaster ) return;
-	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=hq&value=0&version=2&token="+token;
-	let req = CreateXHR("GET",conf);
-	if( !req ) return;
-	req.onreadystatechange = function(){
+
+	let f = function(xml,req){
 	    if( req.readyState==4 ){
 		if( req.status==200 ){
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
@@ -3894,7 +3844,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.configurestream( this.request_id, "key=hq&value=0&version=2&token="+token, f );
     },
 
     // 配信開始ステータスに変える.
@@ -3907,10 +3857,8 @@ var NicoLiveHelper = {
 	// 外部配信 http://watch.live.nicovideo.jp/api/configurestream/lv25214688?token=39cf24389dfda675eb2ba996934627794c86fd9b&key=hq&value=1&version=2
 	// 簡易配信 http://watch.live.nicovideo.jp/api/configurestream/lv25214688?token=39cf24389dfda675eb2ba996934627794c86fd9b&key=hq&value=0&version=2
 	// 配信終了 http://watch.live.nicovideo.jp/api/configurestream/lv25353436?token=8c1fdb8790312869e872ae6617a3ddf43de8eb5b&version=2&key=end%5Fnow
-	let conf = "http://watch.live.nicovideo.jp/api/configurestream/" + this.request_id +"?key=exclude&value=0&version=2&token="+token;
-	let req = CreateXHR("GET",conf);
-	if( !req ) return;
-	req.onreadystatechange = function(){
+
+	let f = function(xml,req){
 	    if( req.readyState==4 ){
 		if( req.status==200 ){
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
@@ -3932,7 +3880,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.configurestream( this,request_id, "key=exclude&value=0&version=2&token="+token, f );
     },
 
     // 配信開始.
@@ -3957,10 +3905,8 @@ var NicoLiveHelper = {
 	    return;
 	}
 	debugprint('GET getpublishstatus');
-	let url = "http://watch.live.nicovideo.jp/api/getpublishstatus?v=" + request_id + "&version=2";
-	let req = CreateXHR("GET",url);
-	if( !req ) return;
-	req.onreadystatechange = function(){
+
+	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ){
 		let publishstatus = req.responseXML;
 		NicoLiveHelper.token = publishstatus.getElementsByTagName('token')[0].textContent;
@@ -3984,18 +3930,17 @@ var NicoLiveHelper = {
 		NicoLiveHelper.setLiveProgressBarTipText();
 	    }
 	};
-	req.send("");
+
+	NicoApi.getpublishstatus( request_id, f );
     },
 
     /** 残りニコニコポイントを取得して、成功したら延長メニューを取得する.
      */
     getremainpoint:function(){
 	if( this.isOffline() || !this.iscaster ) return;
-	let url = "http://watch.live.nicovideo.jp/api/getremainpoint";
-	let req = CreateXHR("GET",url);
-	if( !req ) return;
+
 	$('btn-update-extend-menu').disabled = true;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 ){
 		$('btn-update-extend-menu').disabled = false;
 		if( req.status==200 ){
@@ -4011,7 +3956,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.getremainpoint( f );
     },
 
     /** 延長メニューを更新.
@@ -4113,11 +4058,7 @@ var NicoLiveHelper = {
      */
     getsalelist:function( do_freeextend ){
 	if( !this.iscaster || this.isOffline() ) return;
-
-	let url = "http://watch.live.nicovideo.jp/api/getsalelist?v=" + this.request_id;
-	let req = CreateXHR("GET",url);
-	if( !req ) return;
-	req.onreadystatechange = function(){
+	let f = function( xml, req ){
 	    if( req.readyState==4 ){
 		if( req.status==200 ){
 		    //debugprint(req.responseText);
@@ -4140,19 +4081,15 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.send("");
+	NicoApi.getsalelist( this.request_id, f );
     },
 
     // 生放送を延長する.
     liveExtend:function(num, code, item, coupon){
 	if( this.isOffline() || !this.iscaster ) return;
 
-	let url = "http://watch.live.nicovideo.jp/api/usepoint";
-	let req = CreateXHR("POST",url);
-	if(!req) return;
-
 	$('btn-extend-live').disabled = true;
-	req.onreadystatechange = function(){
+	let f = function(xml, req){
 	    if( req.readyState==4 ){
 		$('btn-extend-live').disabled = false;
 		if( req.status==200 ){
@@ -4178,7 +4115,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+
 	let data = new Array();
 	let now = GetCurrentTime();
 	let remain = this.endtime - now;
@@ -4193,7 +4130,8 @@ var NicoLiveHelper = {
 	    data.push("coupon_id="+coupon);
 	}
 	debugprint('extend:'+data.join(','));
-	req.send(data.join('&'));
+
+	NicoApi.usepoint( data, f );
     },
 
     // 無料延長.
@@ -4202,13 +4140,9 @@ var NicoLiveHelper = {
     freeExtend:function(num, code){
 	if( this.isOffline() || !this.iscaster ) return;
 
-	let url = "http://watch.live.nicovideo.jp/api/usepoint";
-	let req = CreateXHR("POST",url);
-	if(!req) return;
-	req.onreadystatechange = function(){
+	let f = function(xml,req){
 	    if( req.readyState==4 ){
 		if( req.status==200 ){
-		    let xml = req.responseXML;
 		    try{
 			if( xml.getElementsByTagName('usepoint')[0].getAttribute('status')=='ok' ){
 			    NicoLiveHelper.endtime = parseInt(xml.getElementsByTagName('new_end_time')[0].textContent);
@@ -4230,7 +4164,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	req.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+
 	let data = new Array();
 	let now = GetCurrentTime();
 	let remain = this.endtime - now;
@@ -4242,7 +4176,7 @@ var NicoLiveHelper = {
 	data.push("item=freeextend"); // 無料延長.
 	data.push("v="+this.request_id);
 	debugprint('free-extend:'+data.join(','));
-	req.send(data.join('&'));
+	NicoApi.usepoint( data, f );
     },
 
     // スタートアップコメントを送信開始する.
@@ -4344,6 +4278,7 @@ var NicoLiveHelper = {
     start: function(request_id){
 	this.request_id = request_id.toString();
 	debugprint("starting nicolive " + request_id);
+
 	this.getplayerstatus(request_id);
     },
 

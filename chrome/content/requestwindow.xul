@@ -13,6 +13,8 @@
 	windowtype="NicoLiveHelperMainWindow"
 	title="NicoLive Helper">
 
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/misc.js" />
+
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/prefutils.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/csvparser.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/oauth.js" />
@@ -21,6 +23,8 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/httpobserve.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoapi.js" />
+
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecookie.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewhitelist.js" />
@@ -44,64 +48,6 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivemenucontrol.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivetabs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliveserver.js" /><!-- for test -->
-
-  <script>
-  <![CDATA[
-  function OpenSettingsDialog(){
-      var f='chrome,toolbar,modal=no,resizable=yes,centerscreen';
-      if(NicoLivePreference.topmost){
-	  f += ',alwaysRaised=yes';
-      }
-      var w = window.openDialog('chrome://nicolivehelper/content/preferences.xul','NLHPreference',f);
-      SetWindowTopMost(w,NicoLivePreference.topmost);
-      w.focus();
-  }
-
-  function OpenVoteDialog(){
-      var value = null;
-      var f = "chrome,resizable=yes,centerscreen";
-      if(NicoLivePreference.topmost){
-	  f += ',alwaysRaised=yes';
-      }
-      var w = window.openDialog("chrome://nicolivehelper/content/votedialog.xul","vote",f,value);
-      SetWindowTopMost(w,NicoLivePreference.topmost);
-      w.focus();
-  }
-
-  function OpenContinuousCommentWindow(){
-      var value = null;
-      var f = "chrome,resizable=yes,centerscreen";
-      if(NicoLivePreference.topmost){
-	  f += ',alwaysRaised=yes';
-      }
-      var w = window.openDialog("chrome://nicolivehelper/content/continuouscomment.xul","vote",f,value);
-      SetWindowTopMost(w,NicoLivePreference.topmost);
-      w.focus();
-  }
-
-  function OpenSimpleCommentWindow(){
-      var value = null;
-      var f = "chrome,resizable=yes,centerscreen";
-      if(NicoLivePreference.topmost){
-	  f += ',alwaysRaised=yes';
-      }
-      var w = window.openDialog("chrome://nicolivehelper/content/simplecomment.xul","vote",f,value);
-      SetWindowTopMost(w,NicoLivePreference.topmost);
-      w.focus();
-  }
-
-  function OpenAnchorWindow(){
-      var value = null;
-      var f = "chrome,dialog,centerscreen,modal";
-      if(NicoLivePreference.topmost){
-	  f += ',alwaysRaised=yes';
-      }
-      var w = window.openDialog("chrome://nicolivehelper/content/anchorwin.xul","vote",f,value);
-      SetWindowTopMost(w,NicoLivePreference.topmost);
-      w.focus();
-  }
-  ]]>
-  </script>
 
   <keyset>
     <!-- F5: Redraw a stock and a request tab -->

@@ -219,6 +219,7 @@ var NicoLiveRequest = {
 	this.addVideoInformation(vbox,item);
 
 	let hbox = CreateElement('hbox');
+	hbox.setAttribute("align","center");
 	hbox.setAttribute("class","btn_command");
 	let button = CreateElement('button');
 	button.setAttribute("label",'再生');
