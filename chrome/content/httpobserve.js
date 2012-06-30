@@ -62,6 +62,3 @@ var HttpObserver = {
 	}
     }
 };
-
-//window.addEventListener("load", function(e){ HttpObserver.init(); }, false);
-//window.addEventListener("unload", function(e){ HttpObserver.destroy(); }, false);

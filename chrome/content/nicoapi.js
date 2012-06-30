@@ -23,37 +23,37 @@ THE SOFTWARE.
 var NicoApi = {
     base_uri: "http://watch.live.nicovideo.jp/api/",
 
-    getplayerstatus: function( request_id, postfunc ){
-	let url = this.base_uri + "getplayerstatus?v=" + request_id;
-	let req = CreateXHR( 'GET', url );
-	if( !req ) return;
+    callApi: function( url, postfunc ){
+	let req = CreateXHR("GET",url);
+	if( !req ){
+	    postfunc( null );
+	    return;
+	}
 	req.onreadystatechange = function(){
 	    if( req.readyState!=4 ) return;
 	    if( req.status!=200 ){
-		debugprint("getplayerstatus failed: "+ req.status);
+		debugprint( url+" failed.");
 		postfunc( null );
 		return;
 	    }
-	    postfunc( req.responseXML );
+	    postfunc( req.responseXML, req );
 	};
-	req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 	req.send("");
+    },
+
+    getthumbinfo: function( video_id, postfunc ){
+	let url = "http://ext.nicovideo.jp/api/getthumbinfo/"+video_id;
+	this.callApi( url, postfunc );
+    },
+
+    getplayerstatus: function( request_id, postfunc ){
+	let url = this.base_uri + "getplayerstatus?v=" + request_id;
+	this.callApi( url, postfunc );
     },
 
     getpublishstatus: function( request_id, postfunc ){
 	let url = this.base_uri + "getpublishstatus?v=" + request_id + "&version=2";
-	let req = CreateXHR( 'GET', url );
-	if( !req ) return;
-	req.onreadystatechange = function(){
-	    if( req.readyState!=4 ) return;
-	    if( req.status!=200 ){
-		debugprint("getpublishstatus failed: "+ req.status);
-		postfunc( null );
-		return;
-	    }
-	    postfunc( req.responseXML );
-	};
-	req.send("");
+	this.callApi( url, postfunc );
     }
 
 };

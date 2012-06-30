@@ -25,7 +25,7 @@ THE SOFTWARE.
  */
 // Firefox 3.5 でなぜか読めない
 Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
-
+Components.utils.import("resource://nicolivehelpermodules/pnamelist.jsm");
 
 /*
  * inplayがtrueになるとき
@@ -38,7 +38,22 @@ Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
  */
 
 var NicoLiveHelper = {
-    iscaster: true,      // 自分が生主かどうか
+    iscaster: true,     // 自分が生主かどうか
+
+    request: null,      // リクエスト
+    stock: null,        // ストック
+    playlist: null,     // プレイリスト
+    error_request:null, // 再生できないリクエスト
+    co154playlog: {},   // co154のプレイログ
+
+    // 非同期処理したあとの順番処理用
+    request_order: [],
+    stock_order: [],
+
+    userdefinedvalue: {},  // ユーザー定義値
+    uadp: {},              // 広告ポイント
+    product_code: {},      // 作品コード(xxx-xxxxx-x)
+    _videolength: {},      // 動画の長さ修正データ
 
     community_id: "co0", // コミュニティID
     request_id: "lv0",   // 放送ID (lv0 はoffline)
@@ -46,6 +61,11 @@ var NicoLiveHelper = {
     owner_name: "",      // 放送主の名前
     token: "",           // 運営コメントトークン
     _exclude:0,          // 配信ステータス(1:未配信 0:配信中)
+
+    playstyle: 0,                 // 再生スタイル
+    isautoplay: false,            // 自動再生
+    israndomplay: false,          // ランダム再生
+    isconsumptionrateplay: false, // リク消費率順再生
 
     opentime: 0,         // 開場時刻
     starttime: 0,        // 開演時刻
@@ -69,7 +89,347 @@ var NicoLiveHelper = {
     },
     twitterinfo: {},     // Nico Twitter APIへのアクセス情報
 
+    /**
+     * 与えられた文字列がP名っぽいかどうか判断
+     */
+    isPName:function(str){
+	if( PNameList["_"+str] ){
+	    // P名リストに存在している
+	    return true;
+	}
+	if( NicoLivePreference.no_auto_pname ) return false;
+	if(str.match(/(PSP|アイドルマスターSP|m[a@]shup|drop|step|overlap|vocaloid_map|mikunopop|mikupop|ship|dump|sleep)$/i)) return false;
+	if(str.match(/(M[A@]D|joysound|MMD|HD|3D|vocaloud|world|頭文字D|イニシャルD|(吸血鬼|バンパイア)ハンターD|4D|TOD|oid|clannad|2nd|3rd|second|third|append|CD|DVD|solid|vivid|hard)$/i)) return false;
+	let t = str.match(/.*([^jO][pP]|jP)[)]?$/);
+	if(t){
+	    return true;
+	}
+	// D名
+	t = str.match(/.*[^E][D]$/);
+	if(t){
+	    return true;
+	}
+	return false;
+    },
 
+    /**
+     * 動画情報XMLからP名を取得.
+     */
+    getPName:function(item){
+	// DBに設定してあるP名があればそれを優先.
+	let pname = NicoLiveDatabase.getPName(item.video_id);
+	if(!pname){
+	    pname = new Array();
+	    let i,j,tag;
+	    try{
+		// まずはP名候補をリストアップ.
+		for(i=0;tag=item.tags[i];i++){
+		    if( this.isPName(tag) ){
+			pname.push(tag);
+		    }
+		}
+	    } catch (x) { }
+	    if(pname.length){
+		/* ラマーズP,嫁に囲まれて本気出すラマーズP
+		 * とあるときに、後者だけを出すようにフィルタ.
+		 * てきとう実装.
+		 * 組み合わせの問題なのでnlognで出来るけど、
+		 * P名タグは数少ないしn*nでもいいよね.
+		 */
+		let n = pname.length;
+		for(i=0;i<n;i++){
+		    let omitflg=false;
+		    if(!pname[i]) continue;
+		    for(j=0;j<n;j++){
+			if(i==j) continue;
+
+			if(pname[j].match(pname[i]+'$')){
+			    omitflg = true;
+			}
+			/* 曲名(誰P)となっているものが含まれていたらそれを除外する
+			 * ために (誰P) を含むものを除外する.
+			 */
+			if(pname[j].indexOf('('+pname[i]+')') != -1 ){
+			    pname[j] = "";
+			}
+		    }
+		    if(omitflg) pname[i] = "";
+		}
+		let tmp = new Array();
+		for(i=0;i<n;i++){
+		    if(pname[i]) tmp.push(pname[i]);
+		}
+		pname = tmp.join(',');
+	    }else{
+		pname = "";
+	    }
+	}
+	return pname;
+    },
+
+    /**
+     * 動画情報を展開する
+     * @param xml XML
+     */
+    xmlToMovieInfo: function(xml){
+	// ニコニコ動画のgetthumbinfoのXMLから情報抽出.
+	let info = new Object();
+	info.cno = 0;
+	info.tags = [];
+	info.no_live_play = 0;
+
+	let root;
+	try{
+	    root = xml.getElementsByTagName('thumb')[0];
+	} catch (x) {
+	    return null;
+	}
+	if( !root ) return null;
+	try{
+	    for(let i=0,elem; elem=root.childNodes[i]; i++){	    	
+		switch( elem.tagName ){
+		case "user_id":
+		    // user_id は先にリク主に使ってしまったので
+		    // 投稿者のuser_idはこちらに
+		    info.posting_user_id = elem.textContent;
+		    break;
+
+		case "video_id":
+		    info.video_id = elem.textContent;
+		    break;
+		case "title":
+		    info.title = restorehtmlspecialchars(elem.textContent);
+		    break;
+		case "description":
+		    info.description = restorehtmlspecialchars(elem.textContent).replace(/　/g,' ');
+		    break;
+		case "thumbnail_url":
+		    info.thumbnail_url = elem.textContent;
+		    break;
+		case "first_retrieve":
+		    info.first_retrieve = elem.textContent;
+		    let date = info.first_retrieve.match(/\d+/g);
+		    let d = new Date(date[0],date[1]-1,date[2],date[3],date[4],date[5]);
+		    info.first_retrieve = d.getTime() / 1000; // seconds since the epoc.
+		    break;
+		case "length":
+		    if( this._videolength["_"+info.video_id] ){
+			info.length = this._videolength["_"+info.video_id];
+		    }else{
+			info.length = elem.textContent;
+		    }
+		    let len = info.length.match(/\d+/g);
+		    info.length_ms = (parseInt(len[0],10)*60 + parseInt(len[1],10))*1000;
+		    break;
+		case "view_counter":
+		    info.view_counter = parseInt(elem.textContent);
+		    break;
+		case "comment_num":
+		    info.comment_num = parseInt(elem.textContent);
+		    break;
+		case "mylist_counter":
+		    info.mylist_counter = parseInt(elem.textContent);
+		    break;
+		case "tags":
+		    // attribute domain=jp のチェックが必要.
+		    // また、半角に正規化.
+		    if( elem.getAttribute('domain')=='jp' ){
+			let tag = elem.getElementsByTagName('tag');// DOM object
+			info.tags = new Array();
+			for(let i=0,item;item=tag[i];i++){
+			    info.tags[i] = restorehtmlspecialchars(ZenToHan(item.textContent)); // string
+			}
+		    }else{
+			let domain = elem.getAttribute('domain');
+			let tag = elem.getElementsByTagName('tag');
+			if( !info.overseastags ){
+			    info.overseastags = new Array();
+			    info.overseastags2 = new Object();
+			}
+			info.overseastags2[domain] = new Array();
+			for(let i=0,item;item=tag[i];i++){
+			    let tag = restorehtmlspecialchars(ZenToHan(item.textContent));
+			    info.overseastags.push( tag );
+			    info.overseastags2[domain].push(tag);
+			}
+		    }
+		    break;
+		case "size_high":
+		    info.filesize = parseInt(elem.textContent);
+		    info.highbitrate = elem.textContent;
+		    info.highbitrate = (info.highbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
+		    break;
+		case "size_low":
+		    info.lowbitrate = elem.textContent;
+		    info.lowbitrate = (info.lowbitrate*8 / (info.length_ms/1000) / 1000).toFixed(2); // kbps "string"
+		    break;
+		case "movie_type":
+		    info.movie_type = elem.textContent;
+		    break;
+		case "no_live_play":
+		    info.no_live_play = parseInt(elem.textContent);
+		    break;
+		default:
+		    break;
+		}
+	    }
+	} catch (x) {
+	    info.video_id = null;
+	    debugprint('error occured in xmlToMovieInfo:'+x);
+	}
+
+	if( !info.video_id ) return null;
+
+	try{
+	    info.pname = this.getPName(info);
+	} catch (x) {
+	    info.pname = "";
+	}
+
+	try{
+	    info.mylistcomment = NicoLiveMylist.mylist_itemdata["_"+info.video_id].description;
+	    info.registerDate = NicoLiveMylist.mylist_itemdata["_"+info.video_id].pubDate;
+	} catch (x) {
+	    info.mylistcomment = "";
+	    info.registerDate = 0; // Unix time
+	}
+	try{
+	    info.uadp = this.uadp["_"+info.video_id];
+	} catch (x) {}
+	try{
+	    info.product_code = this.product_code["_"+info.video_id];
+	} catch (x) {}
+	return info;
+    },
+
+    // ストック処理キューを先頭から処理する
+    processStock:function(){
+	let q;
+	let cnt = 0;
+	while( NicoLiveHelper.stock_order.length && NicoLiveHelper.stock_order[0].xml!=null ){
+	    cnt++;
+	    q = NicoLiveHelper.stock_order.shift();
+
+	    let vinfo = NicoLiveHelper.xmlToMovieInfo( q.xml );
+	    vinfo.cno = q.comment_no;
+	    vinfo.user_id = q.user_id;
+	    vinfo.video_id = q.video_id;
+	    vinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではなくて主セレ扱い.
+	    vinfo.selfrequest = q.is_self_request;
+
+	    NicoLiveHelper.stock.push( vinfo );
+	    NicoLiveStock.addRow( vinfo );
+	}// end of while
+    },
+
+    // リクエスト処理キューを先頭から処理する.
+    processRequest:function(){
+	let q;
+	let cnt = 0;
+	while( NicoLiveHelper.request_order.length && NicoLiveHelper.request_order[0].xml!=null ){
+	    cnt++;
+	    q = NicoLiveHelper.request_order.shift();
+
+	    let vinfo = NicoLiveHelper.xmlToMovieInfo( q.xml );
+	    vinfo.cno = q.comment_no;
+	    vinfo.user_id = q.user_id;
+	    vinfo.video_id = q.video_id;
+	    vinfo.iscasterselection = q.comment_no==0?true:false; // コメ番0はリクエストではなくて主セレ扱い.
+	    vinfo.selfrequest = q.is_self_request;
+
+	    NicoLiveHelper.request.push( vinfo );
+	    NicoLiveRequest.addRow( vinfo );
+	}// end of while
+
+	this.showRequestProgress();
+    },
+    showRequestProgress: function(){
+	let remain = NicoLiveHelper.request_order.length;
+	if( remain==0 ){
+	    $('request-progress').style.display = 'none';
+	}else{
+	    let processlist = "";
+	    for(let i=0,item; (item=NicoLiveHelper.request_order[i]) && i<10; i++){
+		processlist += item.video_id + " ";
+	    }
+	    $('request-progress-label').value = "残り:"+remain + " ("+processlist;
+	    $('request-progress').style.display = '';
+	}
+    },
+
+    addStock: function( vid ){
+	if(vid.length<3) return;
+	if( this.stock_order["_"+vid] ) return;
+
+	let request = new Object();
+	request.video_id = vid;
+	request.comment_no = 0;
+	request.user_id = "-";
+	request.is_self_request = false;
+	request.xml = null;
+	request.time = GetCurrentTime();
+	this.stock_order.push(request);
+	this.stock_order["_"+vid] = true;
+
+	let f = function(xml, req){
+	    let i,q;
+	    for(i=0;q=NicoLiveHelper.stock_order[i];i++){
+		if(q.video_id==vid && q.xml==null){
+		    if( req.status==200 ){
+			q.xml = xml;
+		    }else{
+			// HTTPエラーのときはリクエスト処理キューから削除してあげる.
+			// 実験したところ、タイムアウトもこっちでokみたい.
+			NicoLiveHelper.stock_order.splice(i,1);
+		    }
+		    break;
+		}
+	    }
+	    NicoLiveHelper.processStock();
+	};
+	NicoApi.getthumbinfo( vid, f );
+    },
+
+    addRequest: function(vid, cno, userid, is_self_request, retry){
+	if(vid.length<3) return;
+	if( !retry ){
+	    let request = new Object();
+	    request.video_id = vid;
+	    request.comment_no = cno;
+	    request.user_id = userid;
+	    request.is_self_request = is_self_request;
+	    request.xml = null;
+	    request.time = GetCurrentTime();
+	    this.request_order.push(request);
+	}
+
+	let f = function(xml, req){
+	    let i,q;
+	    if( !retry && !xml ){
+		setTimeout( function(){
+				NicoLiveHelper.addRequest(vid, cno, userid, is_self_request, true);
+			    }, 2000 );
+		ShowNotice(vid+"の動画情報取得に失敗しました。リトライします(code="+req.status+")");
+		return;
+	    }
+
+	    for(i=0;q=NicoLiveHelper.request_order[i];i++){
+		if(q.video_id==vid && q.comment_no==cno && q.xml==null){
+		    if( req.status==200 ){
+			q.xml = xml;
+		    }else{
+			// HTTPエラーのときはリクエスト処理キューから削除してあげる.
+			// 実験したところ、タイムアウトもこっちでokみたい.
+			NicoLiveHelper.request_order.splice(i,1);
+			ShowNotice(q.video_id+"の動画情報取得に失敗したため、リクエストから削除します(code="+req.status+")");
+		    }
+		    break;
+		}
+	    }
+	    NicoLiveHelper.processRequest();
+	};
+	NicoApi.getthumbinfo( vid, f );
+    },
 
     // コメを処理する(各種追加機能の古いバージョンでのフック用).
     processComment: function(xmlchat){},
@@ -294,7 +654,11 @@ var NicoLiveHelper = {
      */
     connectLive: function( request_id ){
 	let f = function(xml){
-	    if( xml==null || xml.getElementsByTagName('code').length ){
+	    if( !xml ){
+		debugprint("コメントサーバーに接続できませんでした。");
+		return;
+	    }
+	    if( xml.getElementsByTagName('code').length ){
 		debugalert("番組情報を取得できませんでした. CODE="+ xml.getElementsByTagName('code')[0].textContent );
 		return;
 	    }
@@ -335,6 +699,7 @@ var NicoLiveHelper = {
 		    let du = currentplay.getAttribute('duration');   // 動画の長さ
 		    st = st && parseInt(st) || 0;
 		    du = du && parseInt(du) || 0;
+		    debugprint("st="+st+" ,du="+du);
 		    if(du){
 			// 動画の長さが設定されているときは何か再生中.
 			let remain;
@@ -389,7 +754,10 @@ var NicoLiveHelper = {
      * 保存してあるリクエスト、ストック、再生履歴の復元
      */
     restoreData: function(){
-
+	this.request = NicoLiveDatabase.loadGPStorage("nico_live_requestlist",[]);
+	this.stock = NicoLiveDatabase.loadGPStorage("nico_live_stock",[]);
+	NicoLiveRequest.refreshRequest( this.request );
+	NicoLiveStock.refreshStock( this.stock );
     },
 
     isOffline: function(){
@@ -399,7 +767,11 @@ var NicoLiveHelper = {
     init: function(){
 	debugprint('Initializing NicoLive Helper...');
 
-	let request_id, title, iscaster, community_id;
+	this.request = new Array();
+	this.stock = new Array();
+	this.playlist = new Array();
+	this.error_request = new Object();
+
 	try{
 	    // XULRunnerではここからコマンドライン引数を取る
 	    // window.arguments[0].getArgument(0);
@@ -409,9 +781,9 @@ var NicoLiveHelper = {
 		this.iscaster   = window.arguments[2];
 		this.community_id = window.arguments[3];
 		if( request_id==null || title==null || iscaster==null ){
-		    request_id = "lv0";
-		    title = "";
-		    iscaster = true;
+		    this.request_id = "lv0";
+		    this.title = "";
+		    this.iscaster = true;
 		}
 	    }else{
 		this.request_id = window.arguments[0].getArgument(0) || "lv0";
@@ -432,9 +804,11 @@ var NicoLiveHelper = {
 	debugprint("community id:"+this.community_id);
 
 	if( this.isOffline() ){
+	    debugprint("offline mode.");
 	    this.restoreData();
 	}else{
 	    this.connectLive( this.request_id );
+	    this.restoreData(); // 仮
 	}
 
     },
