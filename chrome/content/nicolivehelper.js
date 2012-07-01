@@ -471,7 +471,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.commentstate = COMMENT_STATE_NONE;
 			    return;
 			}
-			NicoLiveHelper.sendMusicInfo();
+			NicoLiveHelper.sendVideoInfo();
 			NicoLiveHelper.addPlayListText(NicoLiveHelper.musicinfo);
 			NicoLiveHelper.checkVideoDeletedAndPlayNext(NicoLiveHelper.musicinfo.video_id);
 		    }
@@ -487,7 +487,7 @@ var NicoLiveHelper = {
 		if( !NicoLiveHelper.iscaster ){
 		    NicoLiveHelper.updateEndTime( NicoLiveHelper.request_id );
 		}else{
-		    NicoLiveHelper.getpublishstatus( NicoLiveHelper.request_id );
+		    NicoLiveHelper.getToken( NicoLiveHelper.request_id );
 		}
 	    }
 
@@ -861,7 +861,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.commentstate = COMMENT_STATE_NONE;
 			    NicoLiveHelper.setupPlayNextMusic(music.length_ms);
 			    if( !NicoLivePreference.nocomment_for_directplay ){
-				NicoLiveHelper.sendMusicInfo();
+				NicoLiveHelper.sendVideoInfo();
 			    }
 			    NicoLiveHelper.inplay = true;
 			}
@@ -1131,7 +1131,7 @@ var NicoLiveHelper = {
     },
 
     // 再生する曲の情報を主コメする.
-    _sendMusicInfo:function(){
+    _sendVideoInfo:function(){
 	let sendstr = NicoLivePreference.videoinfo[this._counter].comment;
 	if(!sendstr){
 	    clearInterval(this._sendmusicid);
@@ -1177,13 +1177,13 @@ var NicoLiveHelper = {
      * 動画情報を送信開始する.
      * @param resend 動画情報の再送信時に指定するフラグ
      */
-    sendMusicInfo:function(resend){
+    sendVideoInfo:function(resend){
 	let func = function(){
 	    clearInterval(NicoLiveHelper._sendmusicid);
 	    clearInterval(NicoLiveHelper._revertcommentid); // 古い動画情報復帰は消しておこう.
 	    NicoLiveHelper._counter = 0;
-	    NicoLiveHelper._sendmusicid = setInterval( function(){ NicoLiveHelper._sendMusicInfo(); }, NicoLivePreference.videoinfo_interval*1000);
-	    NicoLiveHelper._sendMusicInfo();
+	    NicoLiveHelper._sendmusicid = setInterval( function(){ NicoLiveHelper._sendVideoInfo(); }, NicoLivePreference.videoinfo_interval*1000);
+	    NicoLiveHelper._sendVideoInfo();
 	};
 	this.clearCasterCommentAndRun(func);
 
@@ -3068,7 +3068,7 @@ var NicoLiveHelper = {
 	    debugprint('ticket='+this.ticket);
 	    ShowNotice("コメントサーバに接続しました");
 	    if( $('automatic-broadcasting').hasAttribute('checked') ){
-		NicoLiveHelper.configureStream0( NicoLiveHelper.token );
+		NicoLiveHelper.beginLive( NicoLiveHelper.token );
 	    }
 	    // <ping>EOT</ping>
 	    //this.coStream.writeString("<ping>EOT</ping>");
@@ -3194,7 +3194,7 @@ var NicoLiveHelper = {
 
     // コメントサーバーに接続する前に必要な一仕事をしてから接続する.
     preprocessConnectServer:function(){
-	NicoLiveHelper.getpublishstatus(NicoLiveHelper.request_id,
+	NicoLiveHelper.getToken(NicoLiveHelper.request_id,
 					function(){
 					    NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
 					});
@@ -3367,7 +3367,7 @@ var NicoLiveHelper = {
 
 	if( this.iscaster && (p%60)==0 && this._exclude ){
 	    // 配信開始していない間は1分ごとにステータスチェック.
-	    this.getpublishstatus(this.request_id);
+	    this.getToken(this.request_id);
 	}
 
 	if(p<0) p = 0;
@@ -3406,7 +3406,7 @@ var NicoLiveHelper = {
 	    if( this.endtime && this.endtime<now ){
 		// 終了時刻を越えたら新しい終了時刻が設定されているかどうかを見にいく.
 		this.endtime = 0;
-		this.getpublishstatus(this.request_id);
+		this.getToken(this.request_id);
 		if( !this.iscaster ){
 		    this.updateEndTime(this.request_id);
 		}
@@ -3799,7 +3799,7 @@ var NicoLiveHelper = {
 
     // 配信開始する前に配信タイプを指定する必要があるので、
     // 従来の配信開始configureStreamの前ってことで 0 を付けただけ.
-    configureStream0:function(token){
+    beginLive:function(token){
 	if( !this.iscaster ) return;
 
 	let f = function(xml,req){
@@ -3807,7 +3807,7 @@ var NicoLiveHelper = {
 		if( req.status==200 ){
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
 		    if( confstatus.getAttribute('status')=='ok' ){
-			NicoLiveHelper.configureStream(token);
+			NicoLiveHelper.setLiveStartingStatus(token);
 		    }else{
 			debugalert(LoadString('STR_FAILED_TO_START_BROADCASTING'));
 		    }
@@ -3820,7 +3820,7 @@ var NicoLiveHelper = {
     },
 
     // 配信開始ステータスに変える.
-    configureStream:function(token){
+    setLiveStartingStatus:function(token){
 	if( !this.iscaster ) return;
 	// exclude=0ってパラメタだから
 	// 視聴者を排除(exclude)するパラメタをOFF(0)にするって意味だろうな.
@@ -3859,16 +3859,16 @@ var NicoLiveHelper = {
     startBroadcasting:function(){
 	// getpublishstatus + configurestream
 	if( !this.request_id || this.request_id=="lv0" ) return;
-	this.getpublishstatus( this.request_id,
+	this.getToken( this.request_id,
 			       function(){
-				   NicoLiveHelper.configureStream0( NicoLiveHelper.token );
+				   NicoLiveHelper.beginLive( NicoLiveHelper.token );
 			       } );
     },
 
     /** 放送主専用トークン(token)、開演時刻(start_time)、終了時刻(end_time)を取得する.
      * postfuncが指定されていた場合、通信終了時に指定の関数を呼び出す.
      */
-    getpublishstatus:function( request_id, postfunc ){
+    getToken:function( request_id, postfunc ){
 	if( !this.iscaster || !request_id || request_id=="lv0" ){
 	    if( 'function'==typeof postfunc){
 		postfunc();
@@ -3894,7 +3894,6 @@ var NicoLiveHelper = {
 		debugprint('endtime='+NicoLiveHelper.endtime);
 		debugprint('exclude='+NicoLiveHelper._exclude);
 		if( 'function'==typeof postfunc){
-		    debugprint('calling post-function.');
 		    postfunc();
 		}
 		NicoLiveHelper.setLiveProgressBarTipText();
