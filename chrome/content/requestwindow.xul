@@ -662,6 +662,7 @@
 	<label value="" id="popup-comment-displayuserid"/>
       </hbox>
       <menuitem id="popup-comment-openprofile" label="&comment.menu_openprofile;" oncommand="NicoLiveComment.openProfile(document.popupNode||$('popup-comment').triggerNode);"/>
+      <menuitem id="" label="トラッキング" oncommand="NicoLiveComment.trackComment(document.popupNode||$('popup-comment').triggerNode);"/>
       <menuseparator/>
       <menuitem label="&comment.menu_setname;" oncommand="NicoLiveComment.addName(document.popupNode||$('popup-comment').triggerNode);"/>
       <menu label="&comment.menu_color;">

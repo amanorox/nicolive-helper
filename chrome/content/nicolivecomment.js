@@ -491,6 +491,19 @@ var NicoLiveComment = {
 	}
     },
 
+    trackComment:function(node){
+	let userid = node.getAttribute('user_id');
+	let str = "";
+	for(let i=0,item;item=this.commentlog[i];i++){
+	    if( item.user_id==userid ){
+		let datestr = GetDateString(item.date*1000);
+		let name = item.name || this.namemap[item.user_id] && this.namemap[item.user_id].name || item.user_id;
+		str += item.no+"\t"+name+"\t"+item.text+"\t"+datestr+"\n";
+	    }
+	}
+	window.openDialog("chrome://nicolivehelper/content/commentlog.xul","comment","chrome,dialog,width=640,height=320,resizable=yes,centerscreen",str).focus();
+    },
+
     addNameFromId:function(userid){
 	if( !userid ) return;
 
@@ -653,7 +666,7 @@ var NicoLiveComment = {
 	    let datestr = GetDateString(item.date*1000);
 	    str += item.no+"\t"+item.user_id+"\t"+item.text+"\t"+datestr+"\n";
 	}
-	window.openDialog("chrome://nicolivehelper/content/commentlog.xul","comment","chrome,width=640,height=320,resizable=yes,centerscreen",str).focus();
+	window.openDialog("chrome://nicolivehelper/content/commentlog.xul","comment","chrome,dialog,width=640,height=320,resizable=yes,centerscreen",str).focus();
     },
 
     push:function(chat){
