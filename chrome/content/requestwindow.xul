@@ -636,6 +636,10 @@
     <statusbarpanel id="statusbar-remain" label="R/0 S/0"/>
     <statusbarpanel id="statusbar-n-of-listeners" label="&live.watcher;"/>
     <statusbarpanel id="statusbar-live-progress" label="0:00" onclick="NicoLiveHelper.changeLiveTimeFormat(event);"/>
+    <checkbox id="auto-navigate-next-live"
+	      oncommand=""
+	      style="width:0.5em;margin:0; padding-right:0;"
+	      tooltiptext="自動で次枠に移動アシストします。"/>
   </statusbar>
 
   <popupset>
