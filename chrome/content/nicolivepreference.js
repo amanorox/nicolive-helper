@@ -132,7 +132,12 @@ var NicoLivePreference = {
 	this.do_customscript = branch.getBoolPref("custom-script");
 	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
 
-	this.log_num = branch.getIntPref("comment.view");
+	// XULRunner上でここで例外が出る場合があるので
+	try{
+	    this.log_num = branch.getIntPref("comment.view");
+	} catch (x) {
+	    this.log_num = 500;
+	}
 
 	this.readClasses();
 	this.readFont();
