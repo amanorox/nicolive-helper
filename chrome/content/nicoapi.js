@@ -55,7 +55,7 @@ var NicoApi = {
     },
 
     broadcast: function( request_id, postdata, postfunc ){
-	let url = this.live_base_uri + "broadcast/" + this.request_id;
+	let url = this.live_base_uri + "broadcast/" + request_id;
 	this.callApi( url, postfunc, postdata );
     },
 
