@@ -51,7 +51,7 @@ var NicoLiveAlertModule = {
 	    this.ciStream.close();
 	    delete this.ciStream;
 	}
-	Application.console.log('connection close');
+	Components.utils.reportError('connection close');
     },
 
     connectCommentServer: function(server,port,thread){
@@ -97,6 +97,7 @@ var NicoLiveAlertModule = {
 	    }
 	};
 	this.pump.asyncRead(dataListener,null);
+	Components.utils.reportError('Connect alert server.');
     },
 
     connect:function(){
@@ -123,7 +124,7 @@ var NicoLiveAlertModule = {
 			}
 		    }
 		}else{
-		    alert('ニコ生アラートサーバへ接続失敗');
+		    Components.utils.reportError('ニコ生アラートサーバへ接続失敗');
 		}
 	    }
 	};

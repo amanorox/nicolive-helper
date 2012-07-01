@@ -721,7 +721,7 @@ var NicoLiveHelper = {
 
 	let prefs = NicoLivePreference.getBranch();
 	NicoLiveComment.releaseReflector();
-	if( (autolive && this.iscaster) || NicoLivePreference.isAutoWindowClose(this.iscaster) ){
+	if( NicoLivePreference.isAutoWindowClose(this.iscaster) ){
 	    NicoLiveHelper.closeWindow();
 	}else{
 	    PlayAlertSound();
@@ -758,7 +758,7 @@ var NicoLiveHelper = {
 	let browserEnumerator = wm.getEnumerator("navigator:browser");
 	let url1 = "http://live.nicovideo.jp/watch/"+request_id;
 	let url2 = "http://live.nicovideo.jp/watch/"+community_id;
-	
+
 	while(browserEnumerator.hasMoreElements()) {
 	    let browserInstance = browserEnumerator.getNext().gBrowser;
 	    // browser インスタンスの全てのタブを確認する.
@@ -4477,10 +4477,11 @@ var NicoLiveHelper = {
 	let url;
 	if( id==0 ){
 	    url = 'http://live.nicovideo.jp/editstream';
+	    NicoLiveWindow.openDefaultBrowser(url, true);
 	}else{
 	    url = 'http://live.nicovideo.jp/editstream?reuseid='+id;
+	    AutoCreateLive.create( url );
 	}
-	NicoLiveWindow.openDefaultBrowser(url, true);
     },
 
     /**
@@ -4488,8 +4489,6 @@ var NicoLiveHelper = {
      */
     autoNextBroadcasting:function(){
 	if( !this.iscaster ) return;
-	let pref = NicoLivePreference.getSpecificBranch("greasemonkey.scriptvals.http://miku39.jp/nicolivehelper/WakutoriF modified.");
-	pref.setIntPref("WakutoriFMode",1);
 	this.nextBroadcasting();
     },
 
