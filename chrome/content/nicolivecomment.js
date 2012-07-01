@@ -645,13 +645,13 @@ var NicoLiveComment = {
 	return undefined;
     },
 
-    openDialog:function(){
+    openCommentLogDialog:function(){
 	let str = "";
 	for(let i=0,item;item=this.commentlog[i];i++){
 	    let datestr = GetDateString(item.date*1000);
-	    str += item.no+' '+item.user_id+' '+item.text+' '+datestr+"\n";
+	    str += item.no+"\t"+item.user_id+"\t"+item.text+"\t"+datestr+"\n";
 	}
-	window.openDialog("chrome://nicolivehelper/content/commentdialog.xul","comment","chrome,width=640,height=320,resizable=yes,centerscreen",str).focus();
+	window.openDialog("chrome://nicolivehelper/content/commentlog.xul","comment","chrome,width=640,height=320,resizable=yes,centerscreen",str).focus();
     },
 
     push:function(chat){
