@@ -26,7 +26,7 @@ THE SOFTWARE.
 try{
     // Firefox 3.5 でなぜか読めない
     Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
-    Components.utils.import("resource://nicolivehelpermodules/alert.jsm");
+    //Components.utils.import("resource://nicolivehelpermodules/alert.jsm");
 } catch (x) {
     Application.console.log('Cannot load usernamecache.jsm');
     var UserNameCache = {};
