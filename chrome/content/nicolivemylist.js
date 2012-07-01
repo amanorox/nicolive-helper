@@ -91,7 +91,7 @@ var NicoLiveMylist = {
 	NicoApi.getMylistToken( video_id, f );
     },
 
-    addMyList2:function(item_id,mylist_id,token,video_id, additional_msg){
+    addMyListExec:function(item_id,mylist_id,token,video_id, additional_msg){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.
 	let f = function(xml,req){
 	    if( req.readyState==4 && req.status==200 ){
@@ -114,7 +114,7 @@ var NicoLiveMylist = {
 
     // マイリストID、マイリスト名、動画IDを渡すと、対象のマイリスに動画を登録する.
     // mylist_id が default のときはとりマイ.
-    addMyList1:function(mylist_id,mylist_name,video_id, ev){
+    addMyList:function(mylist_id,mylist_name,video_id, ev){
 	try{
 	    let additional_msg = this.getDefaultMylistComment();
 	    if( ev.ctrlKey ){
@@ -134,7 +134,7 @@ var NicoLiveMylist = {
 			let item_id = req.responseText.match(/item_id\"\s*value=\"(.*)\">/);
 			debugprint('token='+token[1]);
 			debugprint('item_id='+item_id[1]);
-			NicoLiveMylist.addMyList2(item_id[1],mylist_id,token[1],video_id, additional_msg);
+			NicoLiveMylist.addMyListExec(item_id[1],mylist_id,token[1],video_id, additional_msg);
 		    } catch (x) {
 			ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
 		    }
@@ -148,9 +148,9 @@ var NicoLiveMylist = {
     },
 
     // ステータスバーから、現在再生中の動画をマイリストする.
-    addMyList:function(mylist_id, mylist_name, ev){
+    addMyListFromStatusbar:function(mylist_id, mylist_name, ev){
 	let video_id = NicoLiveHelper.musicinfo.video_id;
-	this.addMyList1(mylist_id,mylist_name,video_id, ev);
+	this.addMyList(mylist_id,mylist_name,video_id, ev);
     },
 
     // マイリストコメント付きでマイリストからストックを追加する。
@@ -382,7 +382,7 @@ var NicoLiveMylist = {
 		let popupmenu;
 		// ステータスバー用.
 		popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
-		popupmenu.setAttribute("oncommand","NicoLiveMylist.addMyList(event.target.value,event.target.label,event);");
+		popupmenu.setAttribute("oncommand","NicoLiveMylist.addMyListFromStatusbar(event.target.value,event.target.label,event);");
 		$('popup-add-mylist').insertBefore( popupmenu, $('popup-add-mylist').firstChild );
 
 		let elem;
