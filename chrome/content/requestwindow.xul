@@ -382,7 +382,7 @@
 	  </scrollbox>
 	  <splitter collapse="after" state="collapsed"/>
 	  <vbox flex="1" style="overflow:auto;">
-	    <hbox flex="1">
+	    <hbox style="display: inline-block;" flex="1">
 	      <grid>
 		<columns>
 		  <column/>
@@ -409,7 +409,7 @@
 		</rows>
 	      </grid>
 	      <spacer flex="1"/>
-	      <button style="height:1em;" label="Open As Textbox" oncommand="NicoLiveComment.openCommentLogDialog();"/>
+	      <button label="Open As Textbox" oncommand="NicoLiveComment.openCommentLogDialog();"/>
 	    </hbox>
 	    <listbox id="kotehan-list" rows="5" context="popup-comment-kotehan" onkeypress="NicoLiveComment.pressKeyOnNameList(event);">
 	      <listcols>
