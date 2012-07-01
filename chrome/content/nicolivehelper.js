@@ -42,7 +42,7 @@ try{
  */
 
 var NicoLiveHelper = {
-    domain: "live.niconico.com",
+    domain: "live.niconico.com",  // niconico.comで生放送するときにアクセスする先のドメイン
 
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
@@ -85,8 +85,7 @@ var NicoLiveHelper = {
     _extendcnt: 0,      // 延長処理を呼んだ回数(延長すると0に戻る).
 
     twitterinfo: {},  // Twitter投稿API
-
-    _product_code: {}, // 作品コード.
+    product_code: {}, // 作品コード.
 
     // リクを受け付けるかどうかチェック.
     /**
@@ -584,7 +583,7 @@ var NicoLiveHelper = {
 			let code;
 			code = chat.text.match(/(...[-+=/]....[-+=/].)/)[1];
 			code = code.replace(/[-+=/]/g,"-"); // JWID用作品コード.
-			NicoLiveHelper._product_code["_"+sm[1]] = code;
+			NicoLiveHelper.product_code["_"+sm[1]] = code;
 		    } catch (x) {
 		    }
 		    NicoLiveHelper.addRequest(sm[1], chat.no, chat.user_id, selfreq);
@@ -2727,7 +2726,7 @@ var NicoLiveHelper = {
 	} catch (x) {}
 
 	try{
-	    info.product_code = this._product_code["_"+info.video_id];
+	    info.product_code = this.product_code["_"+info.video_id];
 	} catch (x) {}
 	return info;
     },
