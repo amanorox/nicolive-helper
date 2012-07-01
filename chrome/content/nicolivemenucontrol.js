@@ -30,9 +30,11 @@ var NicoLiveMenuControl = {
 	if( str ){
 	    elem.firstChild.hidden = false;
 	    elem.firstChild.nextSibling.hidden = false;
+	    elem.firstChild.nextSibling.nextSibling.hidden = false;
 	}else{
 	    elem.firstChild.hidden = true;
 	    elem.firstChild.nextSibling.hidden = true;
+	    elem.firstChild.nextSibling.nextSibling.hidden = true;
 	}
     },
 
@@ -45,6 +47,12 @@ var NicoLiveMenuControl = {
 	let str = window.getSelection().toString() || "";
 	debugprint("search:"+str);
 	let url = "http://www.google.com/search?q="+encodeURIComponent(str);
+	NicoLiveWindow.openDefaultBrowser(url,true);
+    },
+    searchByNicoNico:function(){
+	let str = window.getSelection().toString() || "";
+	debugprint("search:"+str);
+	let url = "http://www.nicovideo.jp/search/"+encodeURIComponent(str);
 	NicoLiveWindow.openDefaultBrowser(url,true);
     }
 };

@@ -678,6 +678,7 @@
     <!-- for comment body -->
     <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(this);">
       <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
       <menuitem label="&comment.menu.jasracsearch;" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
       <menuitem label="&comment.menu.elicensesearch;" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment(document.popupNode||$('popup-copycomment').triggerNode);"/>
@@ -700,6 +701,7 @@
     <menupopup id="popup-copyrequest" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
       <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -774,6 +776,7 @@
     <menupopup id="popup-error-request" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
       <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
 
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,document.popupNode||$('popup-error-request').triggerNode);">
@@ -812,6 +815,7 @@
     <menupopup id="popup-sort-stock" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
       <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -880,6 +884,7 @@
     <menupopup id="popup-playlist" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
       <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
 
       <menu label="&classify.menu;">
 	<menupopup>

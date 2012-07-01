@@ -152,6 +152,7 @@
 
 <!ENTITY menu.copy_selection "選択範囲のテキストをコピー">
 <!ENTITY menu.search_by_google "Googleで検索">
+<!ENTITY menu.search_by_niconico "ニコニコ動画で検索">
 
 <!ENTITY comment.menu_openprofile "プロフィールページを開く">
 <!ENTITY comment.menu_setname "コテハン設定">
@@ -168,6 +169,7 @@
 <!ENTITY comment.menu.jasracsearch "JASRAC検索">
 <!ENTITY comment.menu.elicensesearch "e-License検索">
 
+<!ENTITY sort.menu_label "並べ替え">
 <!ENTITY sort.comment_no "コメント番号順ソート">
 <!ENTITY sort.descend_order "降順">
 <!ENTITY sort.ascend_order "昇順">
