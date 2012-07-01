@@ -51,7 +51,7 @@ var NicoLiveMylist = {
 	return msg;
     },
 
-    addDeflist2:function(video_id, item_id, token, additional_msg){
+    addDeflistExec:function(video_id, item_id, token, additional_msg){
 	// 二段階目は取得したトークンを使ってマイリス登録をする.
 	let f = function(xml,xmlhttp){
 	    if( xmlhttp.readyState==4 && xmlhttp.status==200 ){
@@ -71,7 +71,7 @@ var NicoLiveMylist = {
 	};
 	NicoApi.addDeflist( item_id, token, additional_msg, f );
     },
-    addDeflist1:function(video_id, additional_msg){
+    addDeflist:function(video_id, additional_msg){
 	// 一段階目はトークンを取得する.
 	if( !video_id ) return;
 	let f = function(xml,xmlhttp){
@@ -81,7 +81,7 @@ var NicoLiveMylist = {
 		    let item_id = xmlhttp.responseText.match(/item_id\"\s*value=\"(.*)\">/);
 		    token = token[1];
 		    item_id = item_id[1];
-		    NicoLiveMylist.addDeflist2(video_id, item_id, token, additional_msg);
+		    NicoLiveMylist.addDeflistExec(video_id, item_id, token, additional_msg);
 		} catch (x) {
 		    debugprint(x);
 		    ShowNotice(LoadString('STR_FAILED_ADDMYLIST'));
@@ -123,7 +123,7 @@ var NicoLiveMylist = {
 	    }
 
 	    if( mylist_id=='default' ){
-		this.addDeflist1(video_id, additional_msg);
+		this.addDeflist(video_id, additional_msg);
 		return;
 	    }
 	    // 一段階目はトークンを取得する.
