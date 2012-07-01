@@ -115,4 +115,5 @@ pref("extensions.nicolivehelper.twitter.when-addmylist",false);
 
 pref("extensions.nicolivehelper.font-scale",9);
 
+pref("extensions.nicolivehelper.comment.view",500);
 pref("extensions.nicolivehelper.comment.log",100);

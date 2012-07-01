@@ -565,6 +565,7 @@
 
   <prefpane id="nicolivehelper-prefpane-other" label="その他" image="chrome://nicolivehelper/content/data/icon1.png" onpaneload="NLHPreference.updateFilePicker();">
     <preferences>
+      <preference id="pref-comment-view-num" name="extensions.nicolivehelper.comment.view" type="int"/>
       <preference id="pref-comment-log-num" name="extensions.nicolivehelper.comment.log" type="int"/>
       <preference id="pref-save-comment" name="extensions.nicolivehelper.savecomment" type="bool"/>
       <preference id="pref-new-logfile" name="extensions.nicolivehelper.new-logfile" type="bool"/>
@@ -622,7 +623,10 @@
 	  <tabpanel orient="vertical">
 	    <!-- comment -->
 	    <vbox flex="1">
-	      <hbox align="center"><label value="接続時のログ取得行数:"/><textbox preference="pref-comment-log-num" type="number" min="1" max="500" size="5"/><label value="行"/></hbox>
+	      <hbox align="center">
+		<label value="表示行数:"/><textbox preference="pref-comment-view-num" type="number" min="1" max="10000" size="5"/>
+		<label value="接続時のログ取得行数:"/><textbox preference="pref-comment-log-num" type="number" min="1" max="500" size="3"/><label value="行"/>
+	      </hbox>
 	      <hbox>
 		<checkbox preference="pref-ngwordfiltering" label="NGワード処理を行う" tooltiptext="NGワードを含むコメントのグレーアウト処理を行います。"/>
 		<checkbox preference="pref-ngword-recomment" label="NGワードを含むコメントを運営コメントにて通知する" style="margin-left:2em;"/>

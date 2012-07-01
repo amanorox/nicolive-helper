@@ -26,6 +26,8 @@ THE SOFTWARE.
 var NicoLiveComment = {
     commentlog: [],
 
+    log_num: 500,
+
     prev_comment_no: 0,    // 直前のコメ番(NGコメント検出・表示のためのコメ番記録).
     current_comment_no: 0, // 現在のコメ番(単純増加のみで表示リフレッシュがあっても不変).
 
@@ -97,8 +99,8 @@ var NicoLiveComment = {
 	this.prev_comment_no = comment.no;
 	if(this.current_comment_no<comment.no) this.current_comment_no = comment.no;
 
-	// 500行まで.
-	if(table.rows.length>=COMMENT_LOG){
+	// 指定行数まで.
+	if(table.rows.length>=NicoLivePreference.log_num){
 	    table.deleteRow(table.rows.length-1);
 	}
 
@@ -655,7 +657,7 @@ var NicoLiveComment = {
     },
 
     push:function(chat){
-	if(this.commentlog.length>=COMMENT_LOG){
+	if(this.commentlog.length>=NicoLivePreference.log_num){
 	    this.commentlog.shift();
 	}
 	this.commentlog.push(chat);

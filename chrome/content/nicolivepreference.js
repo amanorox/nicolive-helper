@@ -23,6 +23,8 @@ THE SOFTWARE.
  * 設定
  */
 var NicoLivePreference = {
+    log_num: 500,
+
     getBool:function(path){
 	var branch = this.getBranch();
 	var b;
@@ -129,6 +131,8 @@ var NicoLivePreference = {
 
 	this.do_customscript = branch.getBoolPref("custom-script");
 	this.customscript = NicoLiveDatabase.loadGPStorage('nico_live_customscript',{});
+
+	this.log_num = branch.getIntPref("comment.view");
 
 	this.readClasses();
 	this.readFont();
