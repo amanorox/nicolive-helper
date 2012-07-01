@@ -32,10 +32,13 @@ var AutoCreateLive = {
 	    if( doc.getElementById('flvplayer_container') ){
 		// flvplayer_container があるので生放送のページだろう
 		debugprint('This page has flvplayer_container.');
-		NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
-		NicoLiveHelper.connectNewBroadcasting(request_id,"",true,request_id);
-		NicoLiveWindow.openDefaultBrowser(location.href, true);
-		AutoCreateLive.win.close();
+		NicoLiveHelper.postCommentMain( request_id, "","");
+		setTimeout(function(){
+			       NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
+			       NicoLiveHelper.connectNewBroadcasting(request_id,"",true,request_id);
+			       NicoLiveWindow.openDefaultBrowser(location.href, true);
+			       AutoCreateLive.win.close();
+			   }, 10*1000);
 		return;
 	    }else{
 		// 配信画面でないので状況確認
