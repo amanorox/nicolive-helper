@@ -4475,7 +4475,7 @@ var NicoLiveHelper = {
 	let id = this.request_id.match(/lv(\d+)/)[1];
 	let tab;
 	let url;
-	if( id==0 ){
+	if( id==0 || !this.iscaster ){
 	    url = 'http://live.nicovideo.jp/editstream';
 	    NicoLiveWindow.openDefaultBrowser(url, true);
 	}else{
