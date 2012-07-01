@@ -707,8 +707,7 @@
       <menuseparator/>
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyVideoIdToClipboard(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(document.popupNode||$('popup-copyrequest').triggerNode);"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(document.popupNode||$('popup-copyrequest').triggerNode);" id="menu-request-additionalinfo"/>
-      <menu label="&rate.name;">
+      <menu label="&rate.name;" id="menu-request-rate">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,document.popupNode||$('popup-copyrequest').triggerNode);"
 		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,document.popupNode||$('popup-copyrequest').triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
@@ -757,7 +756,6 @@
       <menuitem label="&menu.db_addtostock;" oncommand="NicoLiveDatabase.addStockOne(document.popupNode||$('popup-db-result').triggerNode);"/>
       <menuitem label="&menu.db_sendrequest;" oncommand="NicoLiveDatabase.sendRequestOne(document.popupNode||$('popup-db-result').triggerNode);"/>
       <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(document.popupNode||$('popup-db-result').triggerNode);"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(document.popupNode||$('popup-db-result').triggerNode);"/>
       <menu label="&rate.name;">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,document.popupNode||$('popup-db-result').triggerNode);"
 		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,document.popupNode||$('popup-db-result').triggerNode);">
@@ -824,8 +822,7 @@
       <menuseparator/>
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyVideoIdToClipboard(document.popupNode||$('popup-sort-stock').triggerNode);"/>
       <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(document.popupNode||$('popup-sort-stock').triggerNode);"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(document.popupNode||$('popup-sort-stock').triggerNode);" id="menu-stock-additionalinfo"/>
-      <menu label="&rate.name;">
+      <menu label="&rate.name;" id="menu-stock-rate">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,document.popupNode||$('popup-sort-stock').triggerNode);"
 		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,document.popupNode||$('popup-sort-stock').triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>
@@ -863,8 +860,7 @@
 
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyVideoIdToClipboard(document.popupNode||$('popup-playlist').triggerNode);"/>
       <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(document.popupNode||$('popup-playlist').triggerNode);"/>
-      <menuitem label="&menu.set_additional;" oncommand="NicoLiveDatabase.setAdditional(document.popupNode||$('popup-playlist').triggerNode);" id="menu-playlist-additionalinfo"/>
-      <menu label="&rate.name;">
+      <menu label="&rate.name;" id="menu-playlist-rate">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,document.popupNode||$('popup-playlist').triggerNode);"
 		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,document.popupNode||$('popup-playlist').triggerNode);">
 	  <menuitem label="&rate.none;" value="0" type="checkbox"/>

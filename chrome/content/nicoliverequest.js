@@ -941,13 +941,13 @@ var NicoLiveRequest = {
 	let popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute("oncommand",
 			       "NicoLiveRequest.addMylist(event.target.value,event.target.label,event,document.popupNode||$('popup-sort-stock').triggerNode);");
-	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-additionalinfo').nextSibling);
+	$('popup-sort-stock').insertBefore( popupmenu, $('menu-stock-rate'));
 
 	// こっちはリクエストの方.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute("oncommand",
 			       "NicoLiveRequest.addMylist(event.target.value,event.target.label,event,document.popupNode||$('popup-copyrequest').triggerNode);");
-	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-additionalinfo').nextSibling);
+	$('popup-copyrequest').insertBefore( popupmenu, $('menu-request-rate'));
     },
 
     // ストックを再描画.

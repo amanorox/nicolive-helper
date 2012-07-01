@@ -125,7 +125,7 @@ var NicoLiveHistory = {
 	// 詳細表示用のコンテキストメニュー.
 	popupmenu = NicoLiveMylist.createAddMylistMenu(mylists);
 	popupmenu.setAttribute("oncommand","NicoLiveRequest.addMylist(event.target.value,event.target.label,event,document.popupNode||$('popup-playlist').triggerNode);");
-	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-additionalinfo').nextSibling );
+	$('popup-playlist').insertBefore( popupmenu, $('menu-playlist-rate') );
     },
 
     // 詳細表示の内容でテキストを復元する.

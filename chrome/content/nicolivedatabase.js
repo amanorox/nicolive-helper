@@ -618,28 +618,20 @@ var NicoLiveDatabase = {
     /** 追加情報の記入.
      * @param node メニューがポップアップしたノード
      */
-    setAdditional:function(node){
-	let elem = FindParentElement(node,'vbox');
-	let video_id = elem.getAttribute('nicovideo_id');
-
-	let oldadditional = this.getAdditional(video_id);
-	let additional = InputPrompt( LoadFormattedString('STR_TEXT_DB_SET_ADDITIONAL',[video_id]),
-				      LoadString("STR_CAPTION_DB_SET_ADDITIONAL"),oldadditional);
-	if(additional!=null){
-	    let st;
-	    try{
-		st = this.dbconnect.createStatement('insert into pname(video_id,additional) values(?1,?2)');
-		st.bindUTF8StringParameter(0,video_id);
-		st.bindUTF8StringParameter(1,additional);
-		st.execute();
-		st.finalize();
-	    } catch (x) {
-		st = this.dbconnect.createStatement('update pname set additional=?1 where video_id=?2');
-		st.bindUTF8StringParameter(0,additional);
-		st.bindUTF8StringParameter(1,video_id);
-		st.execute();
-		st.finalize();
-	    }
+    setAdditional:function(video_id, additional){
+	let st;
+	try{
+	    st = this.dbconnect.createStatement('insert into pname(video_id,additional) values(?1,?2)');
+	    st.bindUTF8StringParameter(0,video_id);
+	    st.bindUTF8StringParameter(1,additional);
+	    st.execute();
+	    st.finalize();
+	} catch (x) {
+	    st = this.dbconnect.createStatement('update pname set additional=?1 where video_id=?2');
+	    st.bindUTF8StringParameter(0,additional);
+	    st.bindUTF8StringParameter(1,video_id);
+	    st.execute();
+	    st.finalize();
 	}
     },
     getAdditional:function(video_id){

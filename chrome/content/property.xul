@@ -12,16 +12,16 @@
 	title="&general.property;"
 	buttons="accept"
 	onload=""
-	ondialogaccept="return true;">
+	ondialogaccept="return Property.accept();">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/property.js" />
 
-  <vbox>
+  <vbox style="overflow:auto;">
     <grid>
       <columns>
 	<column/>
-	<column/>
+	<column flex="1"/>
       </columns>
       <rows>
 	<row>
@@ -68,6 +68,11 @@
 	  <label value="タグ"/>
 	  <html:div style="-moz-user-select:text; width:40em;" id="video_tags" value=""/>
 	</row>
+	<row>
+	  <label value="&menu.set_additional;"/>
+	  <textbox id="additional_info" flex="1"/>
+	</row>
+
       </rows>
     </grid>
 

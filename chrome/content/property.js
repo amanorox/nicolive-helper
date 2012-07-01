@@ -2,6 +2,14 @@
 var Property = {
     vinfo: {},
 
+    accept: function(){
+	let newstr = $('additional_info').value;
+	if( newstr != this.old_additional_info ){
+	    window.opener.NicoLiveDatabase.setAdditional(this.vinfo.video_id,newstr);
+	}
+	return true;
+    },
+
     checkSelection:function(){
 	let str = window.getSelection().toString();
 	if( str ){
@@ -31,6 +39,9 @@ var Property = {
 	$('video_length').value = this.vinfo.length;
 	$('video_highbitrate').innerHTML = this.vinfo.highbitrate + " kbps";
 	$('video_description').innerHTML = htmlspecialchars(this.vinfo.description);
+
+	this.old_additional_info = window.opener.NicoLiveDatabase.getAdditional( this.vinfo.video_id );
+	$('additional_info').value = this.old_additional_info;
 
 	let text = "";
 	text = "[jp]:"+ htmlspecialchars(this.vinfo.tags.join(', ')) +"<html:br/>";

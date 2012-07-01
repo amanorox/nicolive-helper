@@ -3503,8 +3503,7 @@ var NicoLiveHelper = {
     },
 
     // getplayerstatus APIから生放送情報を取得する.
-    getplayerstatus: function(req_id){
-	debugprint("GET getplayerstatus");
+    connectLive: function(req_id){
 	let f = function(xml, req){
 	    if( req.readyState!=4 || req.status!=200 ) return;
 	    if( xml.getElementsByTagName('code').length ){
@@ -4250,7 +4249,7 @@ var NicoLiveHelper = {
 	this.request_id = request_id.toString();
 	debugprint("starting nicolive " + request_id);
 
-	this.getplayerstatus(request_id);
+	this.connectLive(request_id);
     },
 
     setUndo:function( undo_func ){
