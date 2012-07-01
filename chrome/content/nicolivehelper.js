@@ -42,7 +42,12 @@ try{
  */
 
 var NicoLiveHelper = {
-    domain: "live.niconico.com",  // niconico.comで生放送するときにアクセスする先のドメイン
+    requestqueue: [],
+    stock: [],
+    playlist: [],
+    error_req: {},
+    request_setno: 0,
+    stock_setno: 0,
 
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
@@ -4261,6 +4266,17 @@ var NicoLiveHelper = {
 	this.undo_stack[0] = undefined;
     },
 
+    loadRequestSet:function(n){
+	this.requestqueue = NicoLiveDatabase.loadGPStorage("nico_request_set_"+n,[]);
+	NicoLiveRequest.update(this.requestqueue);
+	this.request_setno = n;
+    },
+    loadStockSet:function(n){
+	this.stock = NicoLiveDatabase.loadGPStorage("nico_stock_set_"+n,[]);
+	NicoLiveRequest.updateStockView(this.stock);
+	this.stock_setno = n;
+    },
+
     saveAll:function(){
 	this.saveStock();
 	this.saveRequest();
@@ -4282,10 +4298,15 @@ var NicoLiveHelper = {
 	Application.storage.set("nico_live_playlist_txt",$('played-list-textbox').value);
     },
     saveToStorage:function(){
+	Application.storage.set("nico_live_stock",this.stock);
 	NicoLiveDatabase.saveGPStorage("nico_live_stock",this.stock);
 	// 視聴者ではリクエスト、プレイリストは保存しない.
 	if(!this.iscaster && !this.isOffline()) return;
+	Application.storage.set("nico_live_requestlist",this.requestqueue);
 	NicoLiveDatabase.saveGPStorage("nico_live_requestlist",this.requestqueue);
+
+	Application.storage.set("nico_live_playlist",this.playlist);
+	Application.storage.set("nico_live_playlist_txt",$('played-list-textbox').value);
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist",this.playlist);
 	NicoLiveDatabase.saveGPStorage("nico_live_playlist_txt",$('played-list-textbox').value);
     },
@@ -4592,6 +4613,9 @@ var NicoLiveHelper = {
 	this.isnotified   = new Array(); // 残り3分通知を出したかどうかのフラグ.
 	this.resetRequestCount(); // 1人あたりのリクエスト受け付け数ワーク.
 
+	this.request_setno = $('request-set-no').value;
+	this.stock_setno = $('stock-set-no').value;
+
 	this.allowrequest = NicoLivePreference.allowrequest;
 	this.setPlayStyle(NicoLivePreference.playstyle);
 
@@ -4632,7 +4656,6 @@ var NicoLiveHelper = {
     destroy: function(){
 	debugprint("Destroy NicoLive Helper");
 	this._donotshowdisconnectalert = true;
-	this.saveAll();
 	this.saveToStorage();
 	this.close();
 	HttpObserver.destroy();

@@ -290,7 +290,7 @@
 
 	  <arrowscrollbox orient="horizontal">
 	    <hbox align="center" flex="1">
-	      <menulist id="request-set-no" persist="value" oncommand="NicoLiveRequest.changeStockSet(this.value);">
+	      <menulist id="stock-set-no" persist="value" oncommand="NicoLiveRequest.changeStockSet(this.value);">
 		<menupopup>
 		  <menuitem label="0" value="0"/>
 		  <menuitem label="1" value="1"/>

@@ -99,7 +99,7 @@
 <!ENTITY comment.command_listener "--- 通常 ---">
 <!ENTITY comment.command_premium "--- プレミアム ---">
 <!ENTITY comment.emptytext_input "コメントを入力してください">
-<!ENTITY comment.write_upperarea "運営コメ欄に表示">
+<!ENTITY comment.write_upperarea "運営コメ欄">
 <!ENTITY comment.tooltip_write_upperarea "直前にhidden+/permを使用したコメントがある場合、/clsで運営コメント欄を消去してからコメントします">
 
 <!ENTITY comment.comment_no "コメ番">

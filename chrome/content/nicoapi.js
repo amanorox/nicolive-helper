@@ -21,6 +21,8 @@ THE SOFTWARE.
  */
 
 var NicoApi = {
+    domain: "live.niconico.com/api/",  // niconico.comで生放送するときにアクセスする先のドメイン
+
     live_base_uri: "http://watch.live.nicovideo.jp/api/",
     base_uri_jp: "http://www.nicovideo.jp/",
     base_uri_en: "http://video.niconico.com/",

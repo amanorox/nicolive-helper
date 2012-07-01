@@ -1064,10 +1064,14 @@ var NicoLiveRequest = {
     },
 
     changeRequestSet:function(n){
-	debugprint("request:"+n);
+	let current = NicoLiveHelper.request_setno;
+	NicoLiveDatabase.saveGPStorage("nico_request_set_"+current,NicoLiveHelper.requestqueue);
+	NicoLiveHelper.loadRequestSet(n);
     },
     changeStockSet:function(n){
-	debugprint("stock:"+n);
+	let current = NicoLiveHelper.stock_setno;
+	NicoLiveDatabase.saveGPStorage("nico_stock_set_"+current,NicoLiveHelper.stock);
+	NicoLiveHelper.loadStockSet(n);
     },
 
     // 学習を行う.
