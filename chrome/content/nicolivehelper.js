@@ -1240,7 +1240,7 @@ var NicoLiveHelper = {
 	if( this.musicinfo.error ) return true; // 再生失敗したときは再生コマンドを送るのは許可.
 	if( this.musicinfo.length_ms < 5000 ) return true;  // 5秒未満の動画再生中は許可.
 	if( (now - this._playmusictime) < 5 ){
-	    // playMusic()を呼び出してから5秒未満は禁止.
+	    // playVideo()を呼び出してから5秒未満は禁止.
 	    ShowNotice(LoadString('STR_DONTPLAY_IN_SHORT_TERM'));
 	    return false;
 	}
@@ -1257,7 +1257,7 @@ var NicoLiveHelper = {
      * 指定のリクエストを再生する
      * @param idx リクエストの番号(1〜n)
      */
-    playMusic:function(idx){
+    playVideo:function(idx){
 	if( !NicoLiveHelper.canPlayCommand() ) return;
 
 	this._comment_video_id = "";
@@ -1362,7 +1362,7 @@ var NicoLiveHelper = {
 	playmusic.isplayed = true;
 	// ストックをリクエストキューの先頭に突っこんで再生.
 	this.requestqueue.unshift(playmusic);
-	this.playMusic(1);
+	this.playVideo(1);
     },
     // ストックから削除する.
     removeStock:function(idx){
@@ -1593,7 +1593,7 @@ var NicoLiveHelper = {
 	let n;
 	n = this.chooseNextMusicToPlay( this.requestqueue,false );
 	if( n ){
-	    this.playMusic( n );
+	    this.playVideo( n );
 	    return true;
 	}
 	return false;
@@ -1615,7 +1615,7 @@ var NicoLiveHelper = {
 	n = this.findRequestByVideoId(this._prepared);
 	if( n>=0 ){
 	    n++;
-	    this.playMusic( n );
+	    this.playVideo( n );
 	    return true;
 	}
 	n = this.findStockByVideoId(this._prepared);

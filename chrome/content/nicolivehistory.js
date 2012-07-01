@@ -27,7 +27,7 @@ var NicoLiveHistory = {
 	let item = NicoLiveHelper.findVideoInfo(video_id);
 	if( item!=null ){
 	    NicoLiveHelper.requestqueue.unshift(item);
-	    NicoLiveHelper.playMusic(1);
+	    NicoLiveHelper.playVideo(1);
 	}
     },
     // 再生履歴からリクエストに追加.

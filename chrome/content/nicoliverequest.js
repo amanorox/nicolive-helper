@@ -224,7 +224,7 @@ var NicoLiveRequest = {
 	let button = CreateElement('button');
 	button.setAttribute("label",'再生');
 	button.className = 'commandbtn';
-	button.setAttribute("oncommand","NicoLiveHelper.playMusic("+n+");");
+	button.setAttribute("oncommand","NicoLiveHelper.playVideo("+n+");");
 	hbox.appendChild(button);
 
 	button = CreateElement('button');
@@ -1061,6 +1061,13 @@ var NicoLiveRequest = {
 	let elem = FindParentElement(node,'vbox');
 	let vid = elem.getAttribute('nicovideo_id');
 	NicoLiveHelper.postCasterComment('/prepare '+vid,""); // 動画IDを取れる.
+    },
+
+    changeRequestSet:function(n){
+	debugprint("request:"+n);
+    },
+    changeStockSet:function(n){
+	debugprint("stock:"+n);
     },
 
     // 学習を行う.

@@ -244,17 +244,33 @@
 	<!-- request tab -->
 	<vbox class="tabpanel" id="tab-request">
 	  <!-- command buttons -->
-	  <hbox align="center">
-	    <button label="&button.shuffle;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.shuffleRequest();"/>
-	    <button type="menu" label="リク受付方式">
-	      <menupopup>
-		<menuitem label="アンカー指定" oncommand="OpenAnchorWindow();"/>
-	      </menupopup>
-	    </button>
-	    <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
-	    <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearRequest();"/>
-	    <label id="total-playtime"/>
-	  </hbox>
+	  <arrowscrollbox orient="horizontal">
+	    <hbox align="center" flex="1">
+	      <menulist id="request-set-no" persist="value" oncommand="NicoLiveRequest.changeRequestSet(this.value);">
+		<menupopup>
+		  <menuitem label="0" value="0"/>
+		  <menuitem label="1" value="1"/>
+		  <menuitem label="2" value="2"/>
+		  <menuitem label="3" value="3"/>
+		  <menuitem label="4" value="4"/>
+		  <menuitem label="5" value="5"/>
+		  <menuitem label="6" value="6"/>
+		  <menuitem label="7" value="7"/>
+		  <menuitem label="8" value="8"/>
+		  <menuitem label="9" value="9"/>
+		</menupopup>
+	      </menulist>
+	      <button label="&button.shuffle;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.shuffleRequest();"/>
+	      <button type="menu" label="リク受付方式">
+		<menupopup>
+		  <menuitem label="アンカー指定" oncommand="OpenAnchorWindow();"/>
+		</menupopup>
+	      </button>
+	      <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
+	      <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearRequest();"/>
+	      <label id="total-playtime"/>
+	    </hbox>
+	  </arrowscrollbox>
 	  <!-- request list -->
 	  <vbox flex="1" style="overflow:auto">
 	    <html:table id="request-table" class="requestview">
@@ -274,6 +290,20 @@
 
 	  <arrowscrollbox orient="horizontal">
 	    <hbox align="center" flex="1">
+	      <menulist id="request-set-no" persist="value" oncommand="NicoLiveRequest.changeStockSet(this.value);">
+		<menupopup>
+		  <menuitem label="0" value="0"/>
+		  <menuitem label="1" value="1"/>
+		  <menuitem label="2" value="2"/>
+		  <menuitem label="3" value="3"/>
+		  <menuitem label="4" value="4"/>
+		  <menuitem label="5" value="5"/>
+		  <menuitem label="6" value="6"/>
+		  <menuitem label="7" value="7"/>
+		  <menuitem label="8" value="8"/>
+		  <menuitem label="9" value="9"/>
+		</menupopup>
+	      </menulist>
 	      <menulist id="stock-playstyle" persist="value" tooltiptext="&stock.playstyle.tooltiptext;">
 		<menupopup>
 		  <menuitem label="&stock.playstyle.none;" value="0"/>
