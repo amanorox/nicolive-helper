@@ -85,6 +85,7 @@ var NicoApi = {
     
     configurestream:function( request_id, param, postfunc ){
 	let url = "http://watch.live.nicovideo.jp/api/configurestream/" + request_id +"?"+param;
+	this.callApi( url, postfunc );
     },
 
     getplayerstatus: function( request_id, postfunc ){

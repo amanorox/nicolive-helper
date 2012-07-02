@@ -3074,6 +3074,7 @@ var NicoLiveHelper = {
 	    debugprint('ticket='+this.ticket);
 	    ShowNotice("コメントサーバに接続しました");
 	    if( $('automatic-broadcasting').hasAttribute('checked') ){
+		debugprint("自動放送モードにより、放送を自動開始します。");
 		NicoLiveHelper.beginLive( NicoLiveHelper.token );
 	    }
 	    // <ping>EOT</ping>
@@ -3858,7 +3859,7 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	NicoApi.configurestream( this,request_id, "key=exclude&value=0&version=2&token="+token, f );
+	NicoApi.configurestream( this.request_id, "key=exclude&value=0&version=2&token="+token, f );
     },
 
     // 配信開始.
