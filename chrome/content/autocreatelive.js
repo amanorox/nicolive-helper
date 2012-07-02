@@ -161,7 +161,7 @@ var AutoCreateLive = {
 	this.win.addEventListener('load',
 				  function(e){
 				      try{
-					  e.target.getElementById('page').addEventListener('load', AutoCreateLive.drive, true);
+					  e.target.getElementById('page').addEventListener('DOMContentLoaded', AutoCreateLive.drive, true);
 				      } catch (x) {
 					  debugprint(x);
 				      }
