@@ -154,7 +154,7 @@ var AutoCreateLive = {
 			   if(NodeSubmitOk){
 			       doc.getElementById("esf").submit();
 			   }
-		       },1000);
+		       },2000);
 	}
     },
 
