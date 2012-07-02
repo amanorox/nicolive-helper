@@ -24,7 +24,6 @@ THE SOFTWARE.
  * ニコニコ生放送ヘルパー for Firefox 3.5
  */
 try{
-    // Firefox 3.5 でなぜか読めない
     Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
     //Components.utils.import("resource://nicolivehelpermodules/alert.jsm");
 } catch (x) {
@@ -722,7 +721,9 @@ var NicoLiveHelper = {
 	let prefs = NicoLivePreference.getBranch();
 	NicoLiveComment.releaseReflector();
 	if( NicoLivePreference.isAutoWindowClose(this.iscaster) ){
-	    NicoLiveHelper.closeWindow();
+	    // 自動放送モードのときは自動枠取り側でウィンドウを閉じるので
+	    // ここでは閉じない
+	    if( !autolive || !this.iscaster ) NicoLiveHelper.closeWindow();
 	}else{
 	    PlayAlertSound();
 	    let msg = NicoLiveHelper.request_id+':'+NicoLiveHelper.title+' は終了しました';

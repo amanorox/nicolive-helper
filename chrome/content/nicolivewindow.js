@@ -40,11 +40,13 @@ var NicoLiveWindow = {
 	
 	    // そしてそれを開く
 	    extps.loadURI(uriToOpen, null);
+	    return null;
 	}else{
 	    let tab = window.opener.getBrowser().addTab( url );
 	    if( hasfocus ){
 		window.opener.getBrowser().selectedTab = tab;
 	    }
+	    return tab;
 	}
     },
 

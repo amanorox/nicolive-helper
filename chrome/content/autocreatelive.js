@@ -35,10 +35,16 @@ var AutoCreateLive = {
 		NicoLiveHelper.postCommentMain( request_id, "","");
 		setTimeout(function(){
 			       NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
-			       NicoLiveHelper.connectNewBroadcasting(request_id,"",true,request_id);
 			       NicoLiveWindow.openDefaultBrowser(location.href, true);
 			       AutoCreateLive.win.close();
-			   }, 10*1000);
+
+			       if( NicoLivePreference.isAutoWindowClose(NicoLiveHelper.iscaster) ){
+				   NicoLiveHelper.closeWindow();
+				   return;
+			       }
+
+			       NicoLiveHelper.connectNewBroadcasting(request_id,"",true,request_id);
+			   }, 5*1000);
 		return;
 	    }else{
 		// 配信画面でないので状況確認
