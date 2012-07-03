@@ -33,10 +33,12 @@ var AutoCreateLive = {
 		// flvplayer_container があるので生放送のページだろう
 		debugprint('This page has flvplayer_container.');
 		NicoLiveHelper.postCommentMain( request_id, "","");
+		var nexturl = location.href;
+		AutoCreateLive.win.close();
+		ShowNotice( LoadString('STR_SUCCESS_NEXT_BROADCAST') );
 		setTimeout(function(){
 			       NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
-			       NicoLiveWindow.openDefaultBrowser(location.href, true);
-			       AutoCreateLive.win.close();
+			       NicoLiveWindow.openDefaultBrowser(nexturl, true);
 
 			       if( NicoLivePreference.isAutoWindowClose(NicoLiveHelper.iscaster) ){
 				   NicoLiveHelper.closeWindow();

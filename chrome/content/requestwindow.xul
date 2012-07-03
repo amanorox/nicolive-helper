@@ -166,7 +166,7 @@
 	    <menuitem label="&toolbar.downloadjson;" oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
 	    <menuseparator/>
 	    <menuitem label="&toolbar.beginbroadcasting;" tooltiptext="&toolbar.tooltip_beginbroadcasting;" oncommand="NicoLiveHelper.startBroadcasting();"/>
-	    <menuitem label="&toolbar.nextlive;" tooltiptext="次枠を開始するために、新規番組登録画面に移動します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
+	    <menuitem label="&toolbar.nextlive;" tooltiptext="次枠を取得します。" oncommand="NicoLiveHelper.nextBroadcasting();"/>
 	    <menu label="その他">
 	      <menupopup>
 		<menuitem id="get-extratime" oncommand="ShowNotice(this.hasAttribute('checked')?'ロスタイムを有効にしました':'ロスタイムを無効にしました');" persist="checked" label="ロスタイム作成" tooltiptext="動画を視聴したままロスタイムに突入します。" type="checkbox" autocheck="true"/>
@@ -320,7 +320,12 @@
 	      </button>
 
 	      <textbox id="input-stock" emptytext="&stock.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
-	      <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
+	      <button type="menu" label="消去">
+		  <menupopup id="menupopup-delete-stock">
+		    <menuitem label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
+		    <menuitem label="再生済みのみ消去" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearPlayedStock();"/>
+		  </menupopup>
+	      </button>
 	      <label id="stock-playtime"/>
 	    </hbox>
 	  </arrowscrollbox>
@@ -593,7 +598,7 @@
 	    </hbox>
 	  </groupbox>
 	  <hbox>
-	    <button label="次枠へ" oncommand="NicoLiveHelper.nextBroadcasting();"/>
+	    <button label="&toolbar.nextlive;" oncommand="NicoLiveHelper.nextBroadcasting();"/>
 	  </hbox>
 	  <hbox>
 	    <button label="マイページ" oncommand="NicoLiveWindow.openDefaultBrowser('http://live.nicovideo.jp/my',true);"/>

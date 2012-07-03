@@ -1812,6 +1812,28 @@ var NicoLiveHelper = {
 	this.saveStock();
 	this.updateRemainRequestsAndStocks();
     },
+    // 再生済みのストックを消去する.
+    clearPlayedStock:function(){
+	let s = this.stock;
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.stock = s;
+		NicoLiveRequest.updateStockView( NicoLiveHelper.stock );
+		NicoLiveHelper.saveStock();
+		NicoLiveHelper.updateRemainRequestsAndStocks();
+	    }
+	);
+
+	let newstock = new Array();
+	for(let i=0,item; item=this.stock[i]; i++){
+	    if( !item.isplayed ) newstock.push(item);
+	}
+
+	this.stock = newstock;
+	NicoLiveRequest.updateStockView(this.stock);
+	this.saveStock();
+	this.updateRemainRequestsAndStocks();
+    },
 
     /**
      * 15秒後に動画情報再送信を行う.
@@ -3387,7 +3409,7 @@ var NicoLiveHelper = {
 		    if( 180-remaintime > this._extendcnt*15 ){
 			this._extendcnt = parseInt( (180-remaintime) / 15 + 1 );
 			//this._extendcnt++;
-			if( this._extendcnt<=4 ){
+			if( this._extendcnt<=6 ){
 			    this.getsalelist(true);
 			    debugprint("自動無料延長を行います");
 			}
