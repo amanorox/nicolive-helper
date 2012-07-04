@@ -489,6 +489,7 @@ var NicoLiveHelper = {
 		}else{
 		    NicoLiveHelper.getToken( NicoLiveHelper.request_id );
 		}
+		NicoLiveHelper._extendcnt = 0;
 	    }
 
 	    if(!NicoLiveHelper.iscaster) break;
