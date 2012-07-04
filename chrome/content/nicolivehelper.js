@@ -489,6 +489,7 @@ var NicoLiveHelper = {
 		}else{
 		    NicoLiveHelper.getpublishstatus( NicoLiveHelper.request_id );
 		}
+		NicoLiveHelper._extendcnt = 0;
 	    }
 
 	    if(!NicoLiveHelper.iscaster) break;
