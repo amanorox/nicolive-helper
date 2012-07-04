@@ -21,15 +21,11 @@ THE SOFTWARE.
  */
 
 /**
- * ニコニコ生放送ヘルパー for Firefox 3.5
+ * ニコニコ生放送ヘルパー for Firefox 3.6
  */
-try{
-    Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
-    //Components.utils.import("resource://nicolivehelpermodules/alert.jsm");
-} catch (x) {
-    Application.console.log('Cannot load usernamecache.jsm');
-    var UserNameCache = {};
-}
+Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
+Components.utils.import("resource://nicolivehelpermodules/httpobserve.jsm");
+//Components.utils.import("resource://nicolivehelpermodules/alert.jsm");
 
 /*
  * inplayがtrueになるとき
@@ -3564,11 +3560,11 @@ var NicoLiveHelper = {
 		if( NicoLiveHelper.iscaster!="0" ){
 		    NicoLiveHelper.iscaster=true;
 		    debugprint('あなたは生放送主です');
-		    HttpObserver.init();
 		}else{
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('あなたは視聴者です');
 		}
+		NicoLiveHttpObserver.init();
 
 		// 現在再生している動画を調べる.
 		// mainとsubの両方でsm/nm動画を再生しているときは、mainを優先させる.
@@ -4495,7 +4491,7 @@ var NicoLiveHelper = {
 	}
     },
 
-    nextBroadcasting:function(){
+    nextBroadcasting:function(manually){
 	let id = this.request_id.match(/lv(\d+)/)[1];
 	let tab;
 	let url;
@@ -4504,7 +4500,11 @@ var NicoLiveHelper = {
 	    NicoLiveWindow.openDefaultBrowser(url, true);
 	}else{
 	    url = 'http://live.nicovideo.jp/editstream?reuseid='+id;
-	    AutoCreateLive.create( url );
+	    if( manually ){
+		NicoLiveWindow.openDefaultBrowser(url, true);
+	    }else{
+		AutoCreateLive.create( url );
+	    }
 	}
     },
 
@@ -4546,6 +4546,21 @@ var NicoLiveHelper = {
 	default:
 	    break;
 	}
+    },
+
+    /**
+     * ハートビートをキャンセルする.
+     * Experimental Function.
+     */
+    setCancelHeartbeat:function(){
+	let b = $('cancel-heartbeat').hasAttribute('checked');
+	NicoLiveHttpObserver._testCancelHeartbeat( b );
+    },
+
+    setLossTime:function(show_msg){
+	let b = $('get-extratime').hasAttribute('checked');
+	if( show_msg ) ShowNotice(b?'ロスタイムを有効にしました':'ロスタイムを無効にしました');	
+	NicoLiveHttpObserver.setLossTime( b );
     },
 
     setupCookie:function(){
@@ -4675,6 +4690,9 @@ var NicoLiveHelper = {
 	this.updatePNameWhitelist();
 	this.loadVideoLength();
 
+	this.setLossTime();
+	this.setCancelHeartbeat();  // experimental function
+
 	//OpenSimpleCommentWindow();
     },
     destroy: function(){
@@ -4682,7 +4700,7 @@ var NicoLiveHelper = {
 	this._donotshowdisconnectalert = true;
 	this.saveToStorage();
 	this.close();
-	HttpObserver.destroy();
+	NicoLiveHttpObserver.destroy();
     },
 
     test: function(){

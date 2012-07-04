@@ -65,7 +65,8 @@
 <!ENTITY toolbar.forget_learning "分類エンジンの学習情報を初期化">
 <!ENTITY toolbar.resize_window_default "ウィンドウサイズを初期状態に戻す">
 <!ENTITY toolbar.open_preference "設定">
-<!ENTITY toolbar.nextlive "次枠を取得">
+<!ENTITY toolbar.nextlive "次枠を自動取得">
+<!ENTITY toolbar.nextlive_manually "次枠へ">
 <!ENTITY toolbar.live_extend "放送時間延長">
 
 <!ENTITY tab.request "リクエスト">
