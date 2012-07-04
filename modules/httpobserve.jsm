@@ -31,8 +31,10 @@ var NicoLiveHttpObserver = {
 
 	    if( this._disable_heartbeat ){
 		if( httpChannel.URI.spec.match(/^https*:\/\/.*live\.nicovideo.*\/api\/heartbeat/) ){
-		    var httpRequest = httpChannel.QueryInterface(Components.interfaces.nsIRequest); 
-		    httpRequest.cancel(0);
+		    if(!httpChannel.getRequestHeader('User-Agent').match(/NicoLiveHelper/)){
+			var httpRequest = httpChannel.QueryInterface(Components.interfaces.nsIRequest); 
+			httpRequest.cancel(0);
+		    }
 		}
 	    }
 
@@ -81,6 +83,7 @@ var NicoLiveHttpObserver = {
 	this.counter++;
     },
     destroy:function(){
+	this.counter--;
 	if( this.counter<=0 ){
 	    try{
 		this.observerService.removeObserver(this, "http-on-modify-request");
