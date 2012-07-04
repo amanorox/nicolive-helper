@@ -209,7 +209,7 @@ var NicoLiveWindow = {
 
     // 放送IDを入力して接続.
     connectToBroadcasting:function(){
-	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)\nまたはコミュニティ・チャンネルID、もしくは、URLを入力してください。\n何も入力せずにOKすると、現在放送中の番組に接続します。","放送IDを入力","");
+	let lvid = InputPrompt("接続する番組の放送ID(lvXXXX)またはコミュニティ・チャンネルID、\nもしくは、URLを入力してください。\n何も入力せずにOKすると、現在放送中の番組に接続します。","放送IDを入力","");
 	let request_id;
 	if( lvid==null ) return;
 	if( lvid=="" ){
