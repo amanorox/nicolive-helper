@@ -8,7 +8,7 @@ var NicoLiveOverlay = {
 	return d.toLocaleFormat("%Y/%m/%d %H:%M:%S");
     },
     debugprint:function(txt){
-	Application.console.log(txt);
+	//Application.console.log(txt);
     },
 
     getDatabase:function(){
