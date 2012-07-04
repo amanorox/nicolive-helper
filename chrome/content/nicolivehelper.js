@@ -3565,6 +3565,7 @@ var NicoLiveHelper = {
 		    debugprint('あなたは視聴者です');
 		}
 		NicoLiveHttpObserver.init();
+		NicoLiveHelper._register_http_observer = true;
 
 		// 現在再生している動画を調べる.
 		// mainとsubの両方でsm/nm動画を再生しているときは、mainを優先させる.
@@ -4700,7 +4701,9 @@ var NicoLiveHelper = {
 	this._donotshowdisconnectalert = true;
 	this.saveToStorage();
 	this.close();
-	NicoLiveHttpObserver.destroy();
+	if( this._register_http_observer ){
+	    NicoLiveHttpObserver.destroy();
+	}
     },
 
     test: function(){

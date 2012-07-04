@@ -79,6 +79,7 @@ var NicoLiveHttpObserver = {
 	    this.observerService.addObserver(this, "http-on-modify-request", false);
 	    debugprint("begin http observe.");
 	    this.counter = 0;
+	    this._registered = true;
 	}
 	this.counter++;
     },
