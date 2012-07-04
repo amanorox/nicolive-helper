@@ -178,7 +178,7 @@
 	    <menuitem label="&toolbar.downloadjson;"
 		      oncommand="NicoLiveHelper.retrieveUserDefinedValue();"/>
 	    <menuseparator/>
-	    <menuitem label="&toolbar.nextlive_manually;" tooltiptext="次枠を取得します。"
+	    <menuitem label="&toolbar.nextlive_manually;" tooltiptext="番組作成ページに行きます。"
 		      oncommand="NicoLiveHelper.nextBroadcasting(true);"/>
 	    <menuitem label="&toolbar.nextlive;" tooltiptext="次枠を取得します。"
 		      oncommand="NicoLiveHelper.nextBroadcasting();"/>
