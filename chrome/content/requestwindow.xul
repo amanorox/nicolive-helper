@@ -670,6 +670,9 @@
 	      style="width:0.5em;margin:0; padding-right:0;"
 	      tooltiptext="自動で次枠に移動アシストします。"/>
     -->
+    <statusbarpanel id="statusbar-autonext"
+		    class="statusbarpanel-iconic" src="chrome://nicolivehelper/content/data/next-mono.png"
+		    onclick="NicoLiveHelper.changeAutoNextLive();"/>
   </statusbar>
 
   <popupset>

@@ -213,7 +213,7 @@ var NicoLiveOverlay = {
 		request_id = unsafeWin.Video.id;
 		if( !request_id || request_id.indexOf("lv")!=0 ) return;
 	    } catch (x) {
-		Application.console.log(x);
+		//Application.console.log(x);
 		return;
 	    }
 	}else{

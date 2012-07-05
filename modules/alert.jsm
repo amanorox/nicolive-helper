@@ -2,20 +2,31 @@
 
 var EXPORTED_SYMBOLS = ["NicoLiveAlertModule"];
 
-var NicoLiveAlertModule = {
+function debugprint(str){
+    var aConsoleService = Components.classes["@mozilla.org/consoleservice;1"].
+	getService(Components.interfaces.nsIConsoleService);
+    aConsoleService.logStringMessage(str);
+}
 
-    evaluateXPath:function(aNode, aExpr) {
-	var xpe = new XPathEvaluator();
-	var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
-					      aNode.documentElement : aNode.ownerDocument.documentElement);
-	var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
-	var found = [];
-	var res;
-	while (res = result.iterateNext())
-	    found.push(res);
-	return found;
+var NicoLiveAlertModule = {
+    connected: false,
+    alert_target: {},
+    use_external_browser: false,
+
+    isRegistered:function(community){
+	return this.alert_target[community];
     },
 
+    registerTarget:function(community){
+	this.alert_target[community] = true;
+    },
+    unregisterTarget:function(community){
+	delete this.alert_target[community];
+    },
+
+    /**
+     * ニコ生アラート処理の本体
+     */
     checkAlert:function(chat){
 	var dat = chat.split(',');
 	var request_id, community_id, caster_id;
@@ -28,6 +39,33 @@ var NicoLiveAlertModule = {
 	    request_id = "lv"+dat[0];
 	default:
 	    break;
+	}
+	if( this.alert_target[community_id] ){	    
+	    this.openDefaultBrowser("http://live.nicovideo.jp/watch/"+request_id);
+	}
+    },
+
+    openDefaultBrowser:function(url, hasfocus){
+	if( this.use_external_browser ){
+	    // まず ioservice を用いて nsIURI オブジェクトを作る
+	    var ioservice = Components.classes["@mozilla.org/network/io-service;1"]
+		.getService(Components.interfaces.nsIIOService);
+	
+	    var uriToOpen = ioservice.newURI(url, null, null);
+	
+	    var extps = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
+		.getService(Components.interfaces.nsIExternalProtocolService);
+	
+	    // そしてそれを開く
+	    extps.loadURI(uriToOpen, null);
+	    return null;
+	}else{
+	    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	    var browserEnumerator = wm.getEnumerator("navigator:browser");
+	    var browserInstance = browserEnumerator.getNext().gBrowser;
+	    var tab = browserInstance.addTab( url );
+	    browserInstance.selectedTab = tab;
+	    return tab;
 	}
     },
 
@@ -42,6 +80,18 @@ var NicoLiveAlertModule = {
 	}
     },
 
+    evaluateXPath:function(aNode, aExpr) {
+	var xpe = new XPathEvaluator();
+	var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
+					      aNode.documentElement : aNode.ownerDocument.documentElement);
+	var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+	var found = [];
+	var res;
+	while (res = result.iterateNext())
+	    found.push(res);
+	return found;
+    },
+
     closeConnection:function(){
 	if( this.oStream ){
 	    this.oStream.close();
@@ -51,11 +101,12 @@ var NicoLiveAlertModule = {
 	    this.ciStream.close();
 	    delete this.ciStream;
 	}
-	Components.utils.reportError('connection close');
+	debugprint('disconnected from nico alert server.');
+	this.connected = false;
     },
 
     connectCommentServer: function(server,port,thread){
-	Application.console.log(server+":"+port+":"+thread);
+	debugprint(server+":"+port+":"+thread);
 
 	var socketTransportService = Components.classes["@mozilla.org/network/socket-transport-service;1"].getService(Components.interfaces.nsISocketTransportService);
 	var socket = socketTransportService.createTransport(null,0,server,port,null);
@@ -77,6 +128,7 @@ var NicoLiveAlertModule = {
 	    },
 	    onStopRequest: function(request, context, status){
 		// 切断
+		NicoLiveAlertModule.closeConnection();
 	    },
 	    onDataAvailable: function(request, context, inputStream, offset, count) {
 		var lineData = {};
@@ -97,12 +149,18 @@ var NicoLiveAlertModule = {
 	    }
 	};
 	this.pump.asyncRead(dataListener,null);
-	Components.utils.reportError('Connect alert server.');
+	debugprint('Connect nicolive alert server.');
+	this.connected = true;
     },
 
     connect:function(){
+	if( this.connected ) return;
+
+	const { XMLHttpRequest } = Components.classes["@mozilla.org/appshell/appShellService;1"]  
+            .getService(Components.interfaces.nsIAppShellService)  
+            .hiddenDOMWindow;  
+	var req = XMLHttpRequest();  
 	var url = "http://live.nicovideo.jp/api/getalertinfo";
-	var req = new XMLHttpRequest();
 	if( !req ) return;
 
 	req.onreadystatechange = function(){
@@ -120,17 +178,17 @@ var NicoLiveAlertModule = {
 
 			    NicoLiveAlertModule.connectCommentServer(NicoLiveAlert.addr, NicoLiveAlert.port, NicoLiveAlert.thread);
 			} catch (x) {
-			    alert(x);
+			    debugprint(x);
 			}
 		    }
 		}else{
-		    Components.utils.reportError('ニコ生アラートサーバへ接続失敗');
+		    debugprint('failed to connect nico alert server.');
 		}
 	    }
 	};
 
 	req.open('GET', url );
 	req.send('');
-    }	
+    }
 
 };

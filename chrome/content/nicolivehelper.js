@@ -25,7 +25,7 @@ THE SOFTWARE.
  */
 Components.utils.import("resource://nicolivehelpermodules/usernamecache.jsm");
 Components.utils.import("resource://nicolivehelpermodules/httpobserve.jsm");
-//Components.utils.import("resource://nicolivehelpermodules/alert.jsm");
+Components.utils.import("resource://nicolivehelpermodules/alert.jsm");
 
 /*
  * inplayがtrueになるとき
@@ -3491,6 +3491,26 @@ var NicoLiveHelper = {
 	this.updateStatusBar();
     },
 
+    // 次枠自動接続のトグル
+    changeAutoNextLive:function(){
+	if( NicoLiveAlertModule.isRegistered( this.community ) ){
+	    NicoLiveAlertModule.unregisterTarget( this.community );
+	}else{
+	    NicoLiveAlertModule.registerTarget( this.community );
+	}
+	this.setAutoNextLiveIcon();
+    },
+    setAutoNextLiveIcon:function(){
+	if( NicoLiveAlertModule.isRegistered( this.community ) ){
+	    $('statusbar-autonext').setAttribute('src','chrome://nicolivehelper/content/data/next.png');
+	    if( !this.isOffline() ){
+		NicoLiveAlertModule.connect();
+	    }
+	}else{
+	    $('statusbar-autonext').setAttribute('src','chrome://nicolivehelper/content/data/next-mono.png');
+	}
+    },
+
     // タイムシフト用.
     getwaybackkey:function(req_id){
 	if(this.isOffline()) return;
@@ -4693,6 +4713,7 @@ var NicoLiveHelper = {
 	this.loadVideoLength();
 
 	this.setLossTime();
+	this.setAutoNextLiveIcon();
 	this.setCancelHeartbeat();  // experimental function
 
 	//OpenSimpleCommentWindow();
