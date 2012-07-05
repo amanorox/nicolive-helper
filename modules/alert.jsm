@@ -72,7 +72,8 @@ var NicoLiveAlertModule = {
     // コメントサーバからやってくる1行分のテキストを処理.
     processAlert:function(line){
 	if(line.match(/^<chat\s+.*>/)){
-	    var parser = new DOMParser();
+	    var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
+		.createInstance(Components.interfaces.nsIDOMParser);
 	    var dom = parser.parseFromString(line,"text/xml");
 	    var chat  = dom.getElementsByTagName('chat')[0].textContent;
 	    this.checkAlert(chat);
@@ -81,7 +82,8 @@ var NicoLiveAlertModule = {
     },
 
     evaluateXPath:function(aNode, aExpr) {
-	var xpe = new XPathEvaluator();
+	var xpe = Components.classes["@mozilla.org/dom/xpath-evaluator;1"]
+            .createInstance(Components.interfaces.nsIDOMXPathEvaluator);
 	var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
 					      aNode.documentElement : aNode.ownerDocument.documentElement);
 	var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
@@ -153,13 +155,15 @@ var NicoLiveAlertModule = {
 	this.connected = true;
     },
 
-    connect:function(){
+    connect:function( req ){
 	if( this.connected ) return;
 
+	/*
 	const { XMLHttpRequest } = Components.classes["@mozilla.org/appshell/appShellService;1"]  
             .getService(Components.interfaces.nsIAppShellService)  
             .hiddenDOMWindow;  
 	var req = XMLHttpRequest();  
+	 */
 	var url = "http://live.nicovideo.jp/api/getalertinfo";
 	if( !req ) return;
 
@@ -170,13 +174,13 @@ var NicoLiveAlertModule = {
 		    var status = NicoLiveAlertModule.evaluateXPath(xml,"/getalertstatus/@status");
 		    if( status.length && status[0].textContent.match(/ok/i) ){
 			try{
-			    NicoLiveAlertModule.user_id = NicoLiveAlert.evaluateXPath(xml,"/getalertstatus/user_id")[0].textContent;
-			    NicoLiveAlertModule.user_hash = NicoLiveAlert.evaluateXPath(xml,"/getalertstatus/user_hash")[0].textContent;
-			    NicoLiveAlertModule.addr = NicoLiveAlert.evaluateXPath(xml,"/getalertstatus/ms/addr")[0].textContent;
-			    NicoLiveAlertModule.port = NicoLiveAlert.evaluateXPath(xml,"/getalertstatus/ms/port")[0].textContent;
-			    NicoLiveAlertModule.thread = NicoLiveAlert.evaluateXPath(xml,"/getalertstatus/ms/thread")[0].textContent;
+			    NicoLiveAlertModule.user_id = NicoLiveAlertModule.evaluateXPath(xml,"/getalertstatus/user_id")[0].textContent;
+			    NicoLiveAlertModule.user_hash = NicoLiveAlertModule.evaluateXPath(xml,"/getalertstatus/user_hash")[0].textContent;
+			    NicoLiveAlertModule.addr = NicoLiveAlertModule.evaluateXPath(xml,"/getalertstatus/ms/addr")[0].textContent;
+			    NicoLiveAlertModule.port = NicoLiveAlertModule.evaluateXPath(xml,"/getalertstatus/ms/port")[0].textContent;
+			    NicoLiveAlertModule.thread = NicoLiveAlertModule.evaluateXPath(xml,"/getalertstatus/ms/thread")[0].textContent;
 
-			    NicoLiveAlertModule.connectCommentServer(NicoLiveAlert.addr, NicoLiveAlert.port, NicoLiveAlert.thread);
+			    NicoLiveAlertModule.connectCommentServer(NicoLiveAlertModule.addr, NicoLiveAlertModule.port, NicoLiveAlertModule.thread);
 			} catch (x) {
 			    debugprint(x);
 			}

@@ -3504,7 +3504,7 @@ var NicoLiveHelper = {
 	if( NicoLiveAlertModule.isRegistered( this.community ) ){
 	    $('statusbar-autonext').setAttribute('src','chrome://nicolivehelper/content/data/next.png');
 	    if( !this.isOffline() ){
-		NicoLiveAlertModule.connect();
+		NicoLiveAlertModule.connect( new XMLHttpRequest() );
 	    }
 	}else{
 	    $('statusbar-autonext').setAttribute('src','chrome://nicolivehelper/content/data/next-mono.png');
