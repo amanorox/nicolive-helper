@@ -125,6 +125,11 @@ table#database-table tr:hover{
     box-shadow: inset 1px 1px 1px 1px #ccc;
 }
 
+.db-description{
+    display:none;
+}
+
+
 /* コメントの枠線 */
 #comment_table tr{
     border-bottom: 1px solid #cccccc;

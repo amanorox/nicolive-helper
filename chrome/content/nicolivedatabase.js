@@ -492,6 +492,7 @@ var NicoLiveDatabase = {
 	    + " マイリスト:"+item.mylist_counter+" 時間:"+item.length+"\"/>"
 	    + "</html:div>"
 	    + "<label crop=\"end\" value=\"タグ:" + item.tags.join(",") + "\"/>"
+	    + "<html:div class=\"db-description\">"+htmlspecialchars(item.description)+"</html:div>"
 	    + "</vbox>";
 	td.innerHTML = str;
     },

@@ -201,13 +201,14 @@
 		  </menupopup>
 		</menu>
 		
+		<menuitem id="automatic-broadcasting" persist="checked" label="自動放送(Experimental)" type="checkbox" autocheck="true" tooltiptext="自動で放送を継続します。"/>
+
 		<menuseparator/>
 		<menuitem id="mikulive-recently-played-check" persist="checked" label="プレイログチェック(co154用)" tooltiptext="チェックがあると、co154で直近に再生された動画100件のチェックを行い、リクエストに前回の再生日時を提示します。" type="checkbox" autocheck="true"/>
 		
 		<menuitem label="時刻確認" oncommand="NicoLiveWindow.checkClock();"/>
 		<menuseparator/>
 		
-		<menuitem id="automatic-broadcasting" persist="checked" label="自動放送(Experimental)" type="checkbox" autocheck="true"/>
 		<menuitem id="cancel-heartbeat" persist="checked" label="ハートビートをキャンセル(Experimental)" type="checkbox" autocheck="true"
 			  oncommand="NicoLiveHelper.setCancelHeartbeat();"/>
 		<menuitem label="&toolbar.forcecastermode;" tooltiptext="&toolbar.tooltip_forcecastermode;" oncommand="NicoLiveHelper.iscaster=true;"/>
