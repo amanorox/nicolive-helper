@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<dialog id="continuouscommentwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+	title="アラート管理(NicoLive Helper)"
+	buttons="cancel" ondialogcancel="return true;">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoalertmanager.js" />
+
+  <vbox flex="1">
+    <label value="次枠誘導コミュニティ"/>
+    <description>以下のコミュニティの生放送が開始されると放送ページを開きます。</description>
+    <listbox id="manage-community" flex="1"
+	     context="popup-menu"
+	     onkeydown="return OnKeyDown(event);">
+    </listbox>
+  </vbox>
+
+  <popupset>
+    <menupopup id="popup-menu">
+      <menuitem label="削除" oncommand="Delete();"/>
+    </menupopup>
+  </popupset>
+
+</dialog>

@@ -59,6 +59,27 @@ var NicoLiveWindow = {
 	return win;
     },
 
+    openNicoAlertManager:function(){
+	var value = null;
+	var f = "chrome,resizable=yes,centerscreen";
+	if(NicoLivePreference.topmost){
+	    f += ',alwaysRaised=yes';
+	}
+	var w = window.openDialog("chrome://nicolivehelper/content/nicoalertmanager.xul","nicoalert",f,value);
+	SetWindowTopMost(w,NicoLivePreference.topmost);
+	w.focus();
+    },
+
+    checkNicoAlertConnected:function(){
+	if( NicoLiveAlertModule.connected ){
+	    $('nicoalert-disconnect').hidden = false;
+	    $('nicoalert-connect').hidden = true;
+	}else{
+	    $('nicoalert-disconnect').hidden = true;
+	    $('nicoalert-connect').hidden = false;
+	}
+    },
+
     // 左のタブから1,2,3,....,9,0 の番号としてタブを切り替える.
     changeTab:function(n){
 	n = (n + 9) % 10;

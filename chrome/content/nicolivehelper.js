@@ -3491,8 +3491,28 @@ var NicoLiveHelper = {
 	this.updateStatusBar();
     },
 
+    disconnectFromNicoLiveAlert:function(){
+	NicoLiveAlertModule.closeConnection();
+    },
+
     // 次枠自動接続のトグル
-    changeAutoNextLive:function(){
+    changeAutoNextLiveSetting:function(event){
+	if( this.isOffline() ) return;
+	if( !this.community ) return;
+	event = event || window.event;
+	let btnCode;
+	if ('object' == typeof event){
+	    btnCode = event.button;
+	    switch (btnCode){
+	    case 0: // left
+                break;
+	    case 1: // middle
+	    case 2: // right
+	    default: // unknown
+		return;
+	    }
+	}
+
 	if( NicoLiveAlertModule.isRegistered( this.community ) ){
 	    NicoLiveAlertModule.unregisterTarget( this.community );
 	}else{
@@ -3585,6 +3605,7 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('あなたは視聴者です');
 		}
+		NicoLiveHelper.setAutoNextLiveIcon();
 		NicoLiveHttpObserver.init();
 		NicoLiveHelper._register_http_observer = true;
 
@@ -4713,7 +4734,6 @@ var NicoLiveHelper = {
 	this.loadVideoLength();
 
 	this.setLossTime();
-	this.setAutoNextLiveIcon();
 	this.setCancelHeartbeat();  // experimental function
 
 	//OpenSimpleCommentWindow();

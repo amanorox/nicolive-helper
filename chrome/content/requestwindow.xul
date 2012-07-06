@@ -664,15 +664,9 @@
     <statusbarpanel id="statusbar-remain" label="R/0 S/0"/>
     <statusbarpanel id="statusbar-n-of-listeners" label="&live.watcher;"/>
     <statusbarpanel id="statusbar-live-progress" label="0:00" onclick="NicoLiveHelper.changeLiveTimeFormat(event);"/>
-    <!--
-    <checkbox id="auto-navigate-next-live"
-	      oncommand=""
-	      style="width:0.5em;margin:0; padding-right:0;"
-	      tooltiptext="自動で次枠に移動アシストします。"/>
-    -->
-    <statusbarpanel id="statusbar-autonext"
+    <statusbarpanel id="statusbar-autonext" context="popup-nicolive-alert"
 		    class="statusbarpanel-iconic" src="chrome://nicolivehelper/content/data/next-mono.png"
-		    onclick="NicoLiveHelper.changeAutoNextLive();"/>
+		    onclick="NicoLiveHelper.changeAutoNextLiveSetting(event);"/>
   </statusbar>
 
   <popupset>
@@ -970,6 +964,12 @@
       <menuitem label="&menu.db_sendrequest;" oncommand="NicoLiveFolderDB.sendRequest();" tooltiptext="&folderitem.sendrequest.help;"/>
       <menuseparator/>
       <menuitem label="&folderitem.deletevideo;" oncommand="NicoLiveFolderDB.deleteVideo();" tooltiptext="&folderitem.deletevideo.help;"/>
+    </menupopup>
+
+    <menupopup id="popup-nicolive-alert" onpopupshowing="NicoLiveWindow.checkNicoAlertConnected();">
+      <menuitem label="アラート管理" oncommand="NicoLiveWindow.openNicoAlertManager();"/>
+      <menuitem id="nicoalert-connect" label="ニコ生アラート接続" oncommand="NicoLiveAlertModule.connect( new XMLHttpRequest() );"/>
+      <menuitem id="nicoalert-disconnect" label="ニコ生アラート切断" oncommand="NicoLiveHelper.disconnectFromNicoLiveAlert();"/>
     </menupopup>
 
   </popupset>

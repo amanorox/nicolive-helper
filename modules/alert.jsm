@@ -28,6 +28,7 @@ var NicoLiveAlertModule = {
      * ニコ生アラート処理の本体
      */
     checkAlert:function(chat){
+	//debugprint(chat);
 	var dat = chat.split(',');
 	var request_id, community_id, caster_id;
 	switch(dat.length){
@@ -150,9 +151,15 @@ var NicoLiveAlertModule = {
 		}
 	    }
 	};
+	this.keepalive();
 	this.pump.asyncRead(dataListener,null);
 	debugprint('Connect nicolive alert server.');
 	this.connected = true;
+    },
+
+    keepalive:function(){
+	let str = "<thread thread=\""+this.thread+"\" res_from=\"-1\" version=\"20061206\"/>\0";
+	this.coStream.writeString(str);
     },
 
     connect:function( req ){
