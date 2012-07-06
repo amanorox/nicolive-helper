@@ -17,8 +17,8 @@ var NicoLiveAlertModule = {
 	return this.alert_target[community];
     },
 
-    registerTarget:function(community){
-	this.alert_target[community] = true;
+    registerTarget:function(community, instance){
+	this.alert_target[community] = instance;
     },
     unregisterTarget:function(community){
 	delete this.alert_target[community];
@@ -41,8 +41,13 @@ var NicoLiveAlertModule = {
 	default:
 	    break;
 	}
-	if( this.alert_target[community_id] ){	    
+	var d = this.alert_target[community_id];
+	if( d ){
 	    this.openDefaultBrowser("http://live.nicovideo.jp/watch/"+request_id);
+	    if( !d.isAutoWindowClose() ){
+		// Windowオートクローズじゃなければ接続しちゃう
+		d.connectNewBroadcasting(request_id,"",true,request_id);
+	    }
 	}
     },
 

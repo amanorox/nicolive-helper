@@ -717,7 +717,7 @@ var NicoLiveHelper = {
 
 	let prefs = NicoLivePreference.getBranch();
 	NicoLiveComment.releaseReflector();
-	if( NicoLivePreference.isAutoWindowClose(this.iscaster) ){
+	if( NicoLiveHelper.isAutoWindowClose() ){
 	    // 自動放送モードのときは自動枠取り側でウィンドウを閉じるので
 	    // ここでは閉じない
 	    if( !autolive || !this.iscaster ) NicoLiveHelper.closeWindow();
@@ -729,6 +729,10 @@ var NicoLiveHelper = {
 	    NicoLiveHelper._donotshowdisconnectalert = true;
 	    NicoLiveHelper.close();
 	}
+    },
+
+    isAutoWindowClose:function(){
+	return NicoLivePreference.isAutoWindowClose(this.iscaster);
     },
 
     closeWindow:function(){
@@ -3440,7 +3444,7 @@ var NicoLiveHelper = {
 	    }
 	    if( this.endtime==0 ){
 		if( (now-this._enterlosstime) > 2*60 ){
-		    if( (playprogress.value>=99 || !this.inplay) && NicoLivePreference.isAutoWindowClose(this.iscaster) ){
+		    if( (playprogress.value>=99 || !this.inplay) && this.isAutoWindowClose() ){
 			// ロスタイムに入って2分経ったら自動で終了にする.
 			// ただし再生中は保留.
 			this.finishBroadcasting();
@@ -3516,7 +3520,7 @@ var NicoLiveHelper = {
 	if( NicoLiveAlertModule.isRegistered( this.community ) ){
 	    NicoLiveAlertModule.unregisterTarget( this.community );
 	}else{
-	    NicoLiveAlertModule.registerTarget( this.community );
+	    NicoLiveAlertModule.registerTarget( this.community, this );
 	}
 	this.setAutoNextLiveIcon();
     },
@@ -3605,6 +3609,11 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('あなたは視聴者です');
 		}
+		// 新しいインスタンスを渡すため
+		if( NicoLiveAlertModule.isRegistered( NicoLiveHelper.community ) ){
+		    NicoLiveAlertModule.registerTarget( NicoLiveHelper.community, NicoLiveHelper );
+		}
+		
 		NicoLiveHelper.setAutoNextLiveIcon();
 		NicoLiveHttpObserver.init();
 		NicoLiveHelper._register_http_observer = true;
