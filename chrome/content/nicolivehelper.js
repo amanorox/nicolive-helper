@@ -1796,6 +1796,27 @@ var NicoLiveHelper = {
 	this.saveRequest();
 	this.updateRemainRequestsAndStocks();
     },
+    // 再生済みのリクエストを消去する.
+    clearPlayedRequest:function(){
+	let s = this.requestqueue;
+	this.setUndo(
+	    function(){
+		NicoLiveHelper.requestqueue = s;
+		NicoLiveRequest.update( NicoLiveHelper.requestqueue );
+		NicoLiveHelper.saveRequest();
+		NicoLiveHelper.updateRemainRequestsAndStocks();
+	    }
+	);
+
+	let newrequest = new Array();
+	for(let i=0,item; item=this.requestqueue[i]; i++){
+	    if( !this.playlist["_"+item.video_id] ) newrequest.push(item);
+	}
+	this.requestqueue = newrequest;
+	NicoLiveRequest.update(this.requestqueue);
+	this.saveRequest();
+	this.updateRemainRequestsAndStocks();
+    },
     // ストックを消去する.
     clearStock:function(){
 	let s = this.stock;

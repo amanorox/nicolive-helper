@@ -287,7 +287,14 @@
 		</menupopup>
 	      </button>
 	      <textbox id="input-request" emptytext="&request.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addRequest(this.value);"/>
-	      <button label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearRequest();"/>
+	      <button type="menu" label="消去">
+		  <menupopup id="menupopup-delete-stock">
+		    <menuitem label="&button.clearall;"
+			      oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearRequest();"/>
+		    <menuitem label="再生済みのみ消去"
+			      oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearPlayedRequest();"/>
+		  </menupopup>
+	      </button>
 	      <label id="total-playtime"/>
 	    </hbox>
 	  </arrowscrollbox>
@@ -342,8 +349,10 @@
 	      <textbox id="input-stock" emptytext="&stock.emptytext_add_from_mylist;" flex="1" type="search" searchbutton="true" oncommand="NicoLiveRequest.addStock(this.value);"/>
 	      <button type="menu" label="消去">
 		  <menupopup id="menupopup-delete-stock">
-		    <menuitem label="&button.clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
-		    <menuitem label="再生済みのみ消去" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearPlayedStock();"/>
+		    <menuitem label="&button.clearall;"
+			      oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearStock();"/>
+		    <menuitem label="再生済みのみ消去"
+			      oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearPlayedStock();"/>
 		  </menupopup>
 	      </button>
 	      <label id="stock-playtime"/>
@@ -378,8 +387,10 @@
 	    </vbox>
 	  </deck>
 	  <hbox>
-	    <button label="&button.clearall;" tooltiptext="&playlist.tooltip_clearall;" oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearPlayList();"/>
-	    <button label="&playlist.recover_text;" tooltiptext="&playlist.tooltip_recover_text;" oncommand="NicoLiveHistory.restorePlaylistText();"/>
+	    <button label="&button.clearall;" tooltiptext="&playlist.tooltip_clearall;"
+		    oncommand="NicoLiveWindow.backupCurrent(); NicoLiveHelper.clearPlayList();"/>
+	    <button label="&playlist.recover_text;" tooltiptext="&playlist.tooltip_recover_text;"
+		    oncommand="NicoLiveHistory.restorePlaylistText();"/>
 	    <spacer flex="1"/>
 	    <menulist id="id-playlist-style" persist="value" oncommand="$('playlist-deck').selectedIndex=this.value;">
 	      <menupopup>
