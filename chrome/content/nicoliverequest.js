@@ -1063,15 +1063,82 @@ var NicoLiveRequest = {
 	NicoLiveHelper.postCasterComment('/prepare '+vid,""); // 動画IDを取れる.
     },
 
+    saveSetListName:function(){
+	let elems = evaluateXPath2(document,"//xul:menulist[@class='select-setlist']//xul:menuitem");
+	let data = new Array();
+	for each( let item in elems ){
+	    let value = item.getAttribute("label2") || item.value;
+	    data.push( value );
+	}
+	NicoLiveDatabase.saveGPStorage("nico-live-setlist-name", data );
+    },
+
+    loadSetListName:function(){
+	let elems = evaluateXPath2(document,"//xul:menulist[@class='select-setlist']//xul:menuitem");
+	let items = NicoLiveDatabase.loadGPStorage("nico-live-setlist-name", [] );
+	for( let i=0,item; item=items[i]; i++ ){
+	    elems[i].setAttribute("label2", item );
+	}
+    },
+
+    changeSetName:function(elem,event){
+	if ('object' == typeof event){
+	    let btnCode = event.button;
+	    switch (btnCode){
+	    case 2: // right
+                break;
+	    case 1: // middle
+	    case 0: // left
+	    default: // unknown
+		return;
+	    }
+	}
+	let n = elem.value;
+	let items = elem.getElementsByTagName("menuitem");
+	let oldname = items[ n ].getAttribute("label2") || items[ n ].value;
+	let name = InputPrompt( "セットリストの名前を入力してください", "セットリスト名入力", oldname );
+	if( name ){
+	    items[ n ].setAttribute("label2",name);
+	    this.saveSetListName();
+	}
+    },
+
     changeRequestSet:function(n){
 	let current = NicoLiveHelper.request_setno;
 	NicoLiveDatabase.saveGPStorage("nico_request_set_"+current,NicoLiveHelper.requestqueue);
 	NicoLiveHelper.loadRequestSet(n);
+
+	let elem = $('request-set-no');
+	let items = elem.getElementsByTagName("menuitem");
+	debugprint(items.length);
+	items[n].setAttribute("label2", items[n].label );
+	items[n].label = items[n].value;
     },
+
+    showSetListMenu:function(elem){
+	let items = elem.getElementsByTagName("menuitem");
+	for each (let item in items ){
+	    let label = item.getAttribute("label2");
+	    if( label ){ item.label = label; }
+	}
+    },
+    hideSetListMenu:function(elem){
+	let items = elem.getElementsByTagName("menuitem");
+	for each (let item in items ){
+	    item.label = item.value;
+	}
+    },
+
     changeStockSet:function(n){
 	let current = NicoLiveHelper.stock_setno;
 	NicoLiveDatabase.saveGPStorage("nico_stock_set_"+current,NicoLiveHelper.stock);
 	NicoLiveHelper.loadStockSet(n);
+
+	let elem = $('stock-set-no');
+	let items = elem.getElementsByTagName("menuitem");
+	debugprint(items.length);
+	items[n].setAttribute("label2", items[n].label );
+	items[n].label = items[n].value;
     },
 
     // 学習を行う.
@@ -1127,6 +1194,7 @@ var NicoLiveRequest = {
 	this.setTotalStockTime({min:0,sec:0});
 	this.updateStockView(NicoLiveHelper.stock);
 	this.update(NicoLiveHelper.requestqueue);
+	this.loadSetListName();
     }
 };
 

@@ -266,7 +266,11 @@
 	  <!-- command buttons -->
 	  <arrowscrollbox orient="horizontal">
 	    <hbox align="center" flex="1">
-	      <menulist class="select-setlist" id="request-set-no" persist="value" oncommand="NicoLiveRequest.changeRequestSet(this.value);">
+	      <menulist class="select-setlist" id="request-set-no" persist="value" sizetopopup="none"
+			onclick="NicoLiveRequest.changeSetName(this,event);"
+			onpopupshowing="NicoLiveRequest.showSetListMenu(this);"
+			onpopuphiding="NicoLiveRequest.hideSetListMenu(this);"
+			oncommand="NicoLiveRequest.changeRequestSet(this.value);">
 		<menupopup>
 		  <menuitem label="0" value="0"/>
 		  <menuitem label="1" value="1"/>
@@ -317,7 +321,11 @@
 
 	  <arrowscrollbox orient="horizontal">
 	    <hbox align="center" flex="1">
-	      <menulist class="select-setlist" id="stock-set-no" persist="value" oncommand="NicoLiveRequest.changeStockSet(this.value);">
+	      <menulist class="select-setlist" id="stock-set-no" sizetopopup="none" persist="value"
+			onclick="NicoLiveRequest.changeSetName(this,event);"
+			onpopupshowing="NicoLiveRequest.showSetListMenu(this);"
+			onpopuphiding="NicoLiveRequest.hideSetListMenu(this);"
+			oncommand="NicoLiveRequest.changeStockSet(this.value);">
 		<menupopup>
 		  <menuitem label="0" value="0"/>
 		  <menuitem label="1" value="1"/>

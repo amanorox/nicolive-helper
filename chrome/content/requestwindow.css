@@ -93,6 +93,10 @@ button.commandbtn {
 /*    min-width: 70px; min-widthはMacのみで */
 }
 
+.select-setlist menuitem{
+    min-width: 3em;
+}
+
 tr {
     -moz-transition: background-color 0.25s, color 0.25s;
 }
