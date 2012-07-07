@@ -4260,8 +4260,8 @@ var NicoLiveHelper = {
 	}
     },
     _sendStartupComment:function(){
-	let str = this.startup_comments.shift();
-	if(str){
+	if( this.startup_comments.length ){
+	    let str = this.startup_comments.shift();
 	    debugprint('startupcomment:'+str);
 	    this.postCasterComment(str,"");
 	}else{

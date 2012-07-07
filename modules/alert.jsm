@@ -11,6 +11,7 @@ function debugprint(str){
 var NicoLiveAlertModule = {
     connected: false,
     alert_target: {},
+    alerted_target: {},
     use_external_browser: false,
 
     isRegistered:function(community){
@@ -43,12 +44,22 @@ var NicoLiveAlertModule = {
 	}
 	var d = this.alert_target[community_id];
 	if( d ){
-	    this.openDefaultBrowser("http://live.nicovideo.jp/watch/"+request_id);
-	    if( !d.isAutoWindowClose() ){
-		// Windowオートクローズじゃなければ接続しちゃう
-		d.connectNewBroadcasting(request_id,"",true,request_id);
+	    if( !this.alerted( community_id, request_id ) ){
+		this.alerted_target[community_id] = request_id;
+		this.openDefaultBrowser("http://live.nicovideo.jp/watch/"+request_id);
+		if( !d.isAutoWindowClose() ){
+		    // Windowオートクローズじゃなければ接続しちゃう
+		    try{
+			d.connectNewBroadcasting(request_id,"",true,request_id);
+		    }catch(e){}
+		}
 	    }
 	}
+    },
+
+    alerted: function(community_id, request_id){
+	if( this.alerted_target[community_id]==request_id ) return true;
+	return false;
     },
 
     openDefaultBrowser:function(url, hasfocus){
