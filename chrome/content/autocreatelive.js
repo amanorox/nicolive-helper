@@ -83,6 +83,9 @@ var AutoCreateLive = {
 	    // 1秒間隔で入場できるかチェック.
 	    if( doc.getElementById("que_end") ){
 		debugprint('waiting...');
+		var id = location.href.match(/(lv\d+)/i);
+		NicoLiveHelper.postCommentMain( id[1], "","");
+
 		AutoCreateLive._que_waiting_timer = setInterval(
 		    function(){
 			if(doc.getElementById("que_end").style.display!="none"){
