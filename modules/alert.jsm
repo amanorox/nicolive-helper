@@ -47,12 +47,12 @@ var NicoLiveAlertModule = {
 	    if( !this.alerted( community_id, request_id ) ){
 		this.alerted_target[community_id] = request_id;
 		this.openDefaultBrowser("http://live.nicovideo.jp/watch/"+request_id);
-		if( !d.isAutoWindowClose() ){
-		    // Windowオートクローズじゃなければ接続しちゃう
-		    try{
+		try{
+		    if( !d.isAutoWindowClose() ){
+			// Windowオートクローズじゃなければ接続しちゃう
 			d.connectNewBroadcasting(request_id,"",true,request_id);
-		    }catch(e){}
-		}
+		    }
+		}catch(e){}
 	    }
 	}
     },
