@@ -728,6 +728,9 @@ var NicoLiveHelper = {
 	    //AlertPrompt(NicoLiveHelper.request_id+' は終了しました',NicoLiveHelper.request_id);
 	    NicoLiveHelper._donotshowdisconnectalert = true;
 	    NicoLiveHelper.close();
+	    if( NicoLivePreference.isAutoTabClose() ){
+		NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
+	    }
 	}
     },
 
@@ -745,7 +748,7 @@ var NicoLiveHelper = {
 	    delay = 1;
 	}
 	setTimeout(function(){
-		       if( prefs.getBoolPref("autotabclose") ){
+		       if( NicoLivePreference.isAutoTabClose() ){
 			   NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
 		       }
 		       NicoLiveHelper._donotshowdisconnectalert = true;

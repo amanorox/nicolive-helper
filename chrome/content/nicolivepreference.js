@@ -359,6 +359,11 @@ var NicoLivePreference = {
 	}
     },
 
+    isAutoTabClose:function(){
+	let prefs = this.getBranch();
+	return prefs.getBoolPref("autotabclose");
+    },
+
     isAutoWindowClose:function(iscaster){
 	let prefs = this.getBranch();
 	if( (iscaster && prefs.getBoolPref("autowindowclose")) ||
