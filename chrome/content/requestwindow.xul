@@ -381,7 +381,7 @@
 	<vbox flex="1" class="tabpanel" id="tab-playlist">
 	  <deck id="playlist-deck" persist="selectedIndex" flex="1">
 	    <textbox id="played-list-textbox" emptytext="&playlist.emptytext_textlog;" multiline="true" flex="1" />
-	    <vbox flex="1" style="overflow:auto">
+	    <vbox flex="1" style="overflow:auto" id="vbox-playlist">
 	      <html:table id="playlist-table" class="requestview">
 	      </html:table>
 	    </vbox>
