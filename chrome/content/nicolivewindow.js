@@ -384,6 +384,7 @@ var NicoLiveWindow = {
 	NicoLiveRequest.updateStockView(NicoLiveHelper.stock);
 	NicoLiveHistory.update(NicoLiveHelper.playlist);
 	NicoLiveHelper.updateRemainRequestsAndStocks();
+	NicoLiveHelper.saveAll();
     },
 
     find:function(){
