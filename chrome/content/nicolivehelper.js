@@ -4375,8 +4375,8 @@ var NicoLiveHelper = {
     },
 
     saveAll:function(){
-	this.saveStock();
 	this.saveRequest();
+	this.saveStock();
 	this.savePlaylist();
     },
     saveStock:function(){
