@@ -1110,7 +1110,6 @@ var NicoLiveRequest = {
 
 	let elem = $('request-set-no');
 	let items = elem.getElementsByTagName("menuitem");
-	debugprint(items.length);
 	items[n].setAttribute("label2", items[n].label );
 	items[n].label = items[n].value;
     },
@@ -1136,7 +1135,6 @@ var NicoLiveRequest = {
 
 	let elem = $('stock-set-no');
 	let items = elem.getElementsByTagName("menuitem");
-	debugprint(items.length);
 	items[n].setAttribute("label2", items[n].label );
 	items[n].label = items[n].value;
     },
