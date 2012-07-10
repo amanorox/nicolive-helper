@@ -220,6 +220,16 @@ var NicoLiveOverlay = {
 	    request_id = request_id[1];
 	}
 
+	if( request_id ){
+	    let elem;
+	    elem = e.target.createElement("input");
+	    elem.setAttribute("type","button");
+	    elem.setAttribute("value","NicoLive Helperを開く");
+	    elem.addEventListener("click",function(){
+				      NicoLiveOverlay.openNicoLiveWindow(url);
+				  });
+	    e.target.getElementById('flvplayer_container').appendChild(elem);
+	}
 	let player;
 	try{
 	    player = e.target.getElementById("WatchPlayer") || e.target.getElementById("flvplayer_container");
