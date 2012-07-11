@@ -3,7 +3,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>nicolivehelper@miku39.jp</em:id>
     <em:type>2</em:type>
-    <em:name>NicoLive Helper</em:name>
+    <em:name>NicoLive Helper 2</em:name>
     <em:version>2.0b7</em:version>
     <em:unpack>true</em:unpack>
     <em:description>Help your NicoLive broadcasting.</em:description>
@@ -17,7 +17,7 @@
     <em:localized>
       <Description>
 	<em:locale>ja</em:locale>
-	<em:name>ニコニコ生放送ヘルパー</em:name>
+	<em:name>ニコニコ生放送ヘルパー2</em:name>
 	<em:description>ニコニコ生放送(リクエスト放送)を支援します。</em:description>
 	<em:creator>あまの</em:creator>
 <!--	<em:contributor>りちか</em:contributor> -->
