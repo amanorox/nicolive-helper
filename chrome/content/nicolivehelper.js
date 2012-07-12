@@ -3216,10 +3216,6 @@ var NicoLiveHelper = {
 	}
 	this.coStream.writeString(str);
 
-	// 3分に1回送ってればいいのかね.
-	this._keepconnection = setInterval( function(){
-						NicoLiveHelper.keepConnection();
-					    }, 1000*60*3);
 	this._updateprogressid = setInterval( function(){
 						  NicoLiveHelper.update();
 					      }, 1000);
@@ -3254,16 +3250,10 @@ var NicoLiveHelper = {
 					});
     },
 
-    keepConnection:function(){
-	let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
-	this.coStream.writeString(str);
-    },
-
     // 接続を閉じる.
     close: function(){
 	try{
 	    clearInterval(this._updateprogressid);
-	    clearInterval(this._keepconnection);
 	    clearInterval(this._playnext);
 	    clearInterval(this._sendmusicid);
 	    clearInterval(this._prepare);
