@@ -1184,6 +1184,12 @@ var NicoLiveRequest = {
 	window.openDialog("chrome://nicolivehelper/content/property.xul",vid,f,param);
 
     },
+    showProfile:function(node){
+	let elem = FindParentElement(node,'vbox');
+	let vid = elem.getAttribute('nicovideo_id');
+	let vinfo = NicoLiveHelper.findVideoInfo( vid );
+	NicoLiveWindow.openDefaultBrowser("http://www.nicovideo.jp/user/"+vinfo.posting_user_id, true);
+    },
 
     init:function(){
 	debugprint("NicoLiveRequest.init");

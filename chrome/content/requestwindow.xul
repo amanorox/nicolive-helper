@@ -815,6 +815,7 @@
       <menuitem label="コンパクション" tooltiptext="この動画を基準に重複したリクエストを圧縮します" oncommand="NicoLiveRequest.compactRequest(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&menu.copy_allrequest;" oncommand="NicoLiveRequest.copyRequestToClipboard();"/>
       <menuseparator/>
+      <menuitem label="投稿者プロフィール" oncommand="NicoLiveRequest.showProfile(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
@@ -835,6 +836,7 @@
       </menu>
       <menuitem label="&classify.check;" oncommand="NicoLiveRequest.doClassify(event,document.popupNode||$('popup-error-request').triggerNode);"/>
       <menuseparator/>
+      <menuitem label="投稿者プロフィール" oncommand="NicoLiveRequest.showProfile(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
@@ -928,6 +930,7 @@
       <menuseparator/>
       <menuitem label="&menu.stock_savefile;" oncommand="NicoLiveRequest.saveStockToFile();"/>
       <menuseparator/>
+      <menuitem label="投稿者プロフィール" oncommand="NicoLiveRequest.showProfile(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
@@ -962,6 +965,7 @@
 	</menupopup>
       </menu>
       <menuseparator/>
+      <menuitem label="投稿者プロフィール" oncommand="NicoLiveRequest.showProfile(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&general.property;" oncommand="NicoLiveRequest.showProperty(document.popupNode||$('popup-copyrequest').triggerNode);"/>
     </menupopup>
 
