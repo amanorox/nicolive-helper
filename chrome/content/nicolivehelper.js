@@ -3939,7 +3939,7 @@ var NicoLiveHelper = {
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
 		    if( confstatus.getAttribute('status')=='ok' ){
 			if( NicoLivePreference.twitter.when_beginlive ){
-			    let msg = this.replaceMacros(NicoLivePreference.twitter.beginlive, this.musicinfo);
+			    let msg = NicoLiveHelper.replaceMacros(NicoLivePreference.twitter.beginlive, this.musicinfo);
 			    NicoLiveTweet.tweet(msg);
 			}
 			try{

@@ -840,14 +840,16 @@
       <checkbox label="配信開始した時につぶやく" preference="twitter-tweet-when-beginlive"/>
       <hbox>
 	<textbox id="tweet-begin" flex="1" preference="twitter-tweet-begin" onkeypress="NLHPreference.previewTweet(this);"/>
+	<button label="リセット" oncommand="$('twitter-tweet-begin').value = $('twitter-tweet-begin').defaultValue;"/>
       </hbox>
       <checkbox label="動画を再生した時につぶやく" preference="twitter-tweet-when-playmovie"/>
       <hbox>
 	<textbox id="tweet-play" flex="1" preference="twitter-tweet-play" onkeypress="NLHPreference.previewTweet(this);"/>
+	<button label="リセット" oncommand="$('twitter-tweet-play').value = $('twitter-tweet-play').defaultValue;"/>
       </hbox>
       <checkbox label="マイリスト登録した時につぶやく" preference="twitter-tweet-when-addmylist"/>
       <label value="プレビュー:"/>
-      <label id="tweet-preview" value="" style="display:inline;"/>
+      <description id="tweet-preview" value=""/>
     </vbox>
   </prefpane>
 
