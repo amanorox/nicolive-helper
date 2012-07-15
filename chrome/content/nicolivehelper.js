@@ -483,6 +483,7 @@ var NicoLiveHelper = {
 	    }
 
 	    // 延長メッセージがきたら、終了時刻を更新する
+	    /*
 	    if( chat.text.indexOf("/info 3")==0 ){
 		if( !NicoLiveHelper.iscaster ){
 		    NicoLiveHelper.updateEndTime( NicoLiveHelper.request_id );
@@ -491,6 +492,7 @@ var NicoLiveHelper = {
 		}
 		NicoLiveHelper._extendcnt = 0;
 	    }
+	     */
 
 	    if(!NicoLiveHelper.iscaster) break;
 
