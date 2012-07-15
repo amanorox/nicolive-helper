@@ -813,6 +813,8 @@
       <preference id="twitter-tweet-when-beginlive" name="extensions.nicolivehelper.twitter.when-beginlive" type="bool"/>
       <preference id="twitter-tweet-when-playmovie" name="extensions.nicolivehelper.twitter.when-playmovie" type="bool"/>
       <preference id="twitter-tweet-when-addmylist" name="extensions.nicolivehelper.twitter.when-addmylist" type="bool"/>
+      <preference id="twitter-tweet-begin" name="extensions.nicolivehelper.tweet.begin" type="unichar"/>
+      <preference id="twitter-tweet-play"  name="extensions.nicolivehelper.tweet.play" type="unichar"/>
     </preferences>
 
     <vbox flex="1">
@@ -835,9 +837,17 @@
 
       <html:hr/>
 
-      <hbox><checkbox label="配信開始した時につぶやく" preference="twitter-tweet-when-beginlive"/></hbox>
-      <hbox><checkbox label="動画を再生した時につぶやく" preference="twitter-tweet-when-playmovie"/></hbox>
-      <hbox><checkbox label="マイリスト登録した時につぶやく" preference="twitter-tweet-when-addmylist"/></hbox>
+      <checkbox label="配信開始した時につぶやく" preference="twitter-tweet-when-beginlive"/>
+      <hbox>
+	<textbox id="tweet-begin" flex="1" preference="twitter-tweet-begin" onkeypress="NLHPreference.previewTweet(this);"/>
+      </hbox>
+      <checkbox label="動画を再生した時につぶやく" preference="twitter-tweet-when-playmovie"/>
+      <hbox>
+	<textbox id="tweet-play" flex="1" preference="twitter-tweet-play" onkeypress="NLHPreference.previewTweet(this);"/>
+      </hbox>
+      <checkbox label="マイリスト登録した時につぶやく" preference="twitter-tweet-when-addmylist"/>
+      <label value="プレビュー:"/>
+      <label id="tweet-preview" value="" style="display:inline;"/>
     </vbox>
   </prefpane>
 

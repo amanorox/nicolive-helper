@@ -32,6 +32,32 @@ var NLHPreference = {
 	$('preview-videoinfo').innerHTML = str;
     },
 
+    previewTweet:function(elem){
+	let info = {
+	    cno: 99,
+	    tags: ["ミクオリジナル曲","初音ミク","くちばしP","私の時間","VOCALOID殿堂入り","6/17発売「Vocalostar」収録曲","かわいいミクうた","弾幕ソング","職人とみんなの暖かいコメで作る動画"],
+	    video_id: "sm1340413",
+	    title: "初音ミクオリジナル「私の時間」",
+	    description: "ボカロユーザー、リスナーの皆に捧ぐ音楽joysoundで配信されています作品リストmylist/7新曲sm75641558/11新曲sm790612810/31新曲sm866756511/4新曲sm871253212/13新曲sm908468180万ありがとうございます！ありがとうございます！歌声途切れなすぎです！",
+	    thumbnail_url:"http://tn-skr2.smilevideo.jp/smile?i=1340413",
+	    first_retrieve: 1193051579,
+	    length: "4:28",
+	    length_ms: 268000,
+	    view_counter: 828280,
+	    comment_num: 88034,
+	    mylist_counter: 31815,
+	    highbitrate: "619.70",
+	    lowbitrate: "314.99",
+	    pname: "くちばしP"
+	};
+	if( window.opener.NicoLiveHelper.stock[0] ){
+	    info = window.opener.NicoLiveHelper.stock[0];
+	}
+	let str = elem.value;
+	str = window.opener.NicoLiveHelper.replaceMacros(str,info);
+	$('tweet-preview').value = str;
+    },
+
     initDB:function(){
 	this.dbconnect = opener.NicoLiveDatabase.dbconnect;
     },

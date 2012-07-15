@@ -117,3 +117,6 @@ pref("extensions.nicolivehelper.font-scale",9);
 
 pref("extensions.nicolivehelper.comment.view",500);
 pref("extensions.nicolivehelper.comment.log",100);
+
+pref("extensions.nicolivehelper.tweet.begin","【ニコ生】「{live-title}」を開始しました。http://nico.ms/{live-id} {hashtag}");
+pref("extensions.nicolivehelper.tweet.play","再生中:{title} http://nico.ms/{id} #{id} {hashtag} http://nico.ms/{live-id}");

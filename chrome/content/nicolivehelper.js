@@ -1108,6 +1108,15 @@ var NicoLiveHelper = {
 		}
 		tmp += " " + NicoLiveHelper.musicinfo.length;
 		break;
+	    case 'live-id':
+		tmp = NicoLiveHelper.request_id;
+		break;
+	    case 'live-title':
+		tmp = NicoLiveHelper.title;
+		break;
+	    case 'hashtag':
+		tmp = NicoLiveHelper.twitterinfo.hashtag;
+		break;
 	    }
 	    return tmp;
 	};
@@ -1199,7 +1208,8 @@ var NicoLiveHelper = {
 
 	if( !resend ){
 	    if( NicoLivePreference.twitter.when_playmovie && NicoLiveHelper.iscaster ){
-		NicoLiveTweet.tweet("再生中:"+NicoLiveHelper.musicinfo.title+" http://nico.ms/"+NicoLiveHelper.musicinfo.video_id+" #"+NicoLiveHelper.musicinfo.video_id+" "+NicoLiveHelper.twitterinfo.hashtag+" http://nico.ms/"+NicoLiveHelper.request_id);
+		let msg = this.replaceMacros(NicoLivePreference.twitter.play, this.musicinfo);
+		NicoLiveTweet.tweet(msg);
 	    }
 
 	    try{
@@ -3927,7 +3937,8 @@ var NicoLiveHelper = {
 		    let confstatus = req.responseXML.getElementsByTagName('response_configurestream')[0];
 		    if( confstatus.getAttribute('status')=='ok' ){
 			if( NicoLivePreference.twitter.when_beginlive ){
-			    NicoLiveTweet.tweet("【ニコ生】「"+NicoLiveHelper.title+"」を開始しました。 http://nico.ms/"+NicoLiveHelper.request_id+" "+NicoLiveHelper.twitterinfo.hashtag);
+			    let msg = this.replaceMacros(NicoLivePreference.twitter.beginlive, this.musicinfo);
+			    NicoLiveTweet.tweet(msg);
 			}
 			try{
 			    NicoLiveHelper.starttime = parseInt(req.responseXML.getElementsByTagName('start_time')[0].textContent);

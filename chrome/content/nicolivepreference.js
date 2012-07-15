@@ -195,6 +195,8 @@ var NicoLivePreference = {
 	this.twitter.when_beginlive = branch.getBoolPref('twitter.when-beginlive');
 	this.twitter.when_playmovie = branch.getBoolPref('twitter.when-playmovie');
 	this.twitter.when_addmylist = branch.getBoolPref('twitter.when-addmylist');
+	this.twitter.beginlive = branch.getUnicharPref('tweet.begin');
+	this.twitter.play = branch.getUnicharPref('tweet.play');
     },
 
     readNGVideoSettings:function(){
