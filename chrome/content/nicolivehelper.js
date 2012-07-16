@@ -2889,7 +2889,7 @@ var NicoLiveHelper = {
 	    if(ans.code==0 && n>nlim && nlim>0){
 		NicoLiveHelper.request_per_ppl[q.user_id]--;
 		ans.msg = NicoLivePreference.msg.limitnumberofrequests;
-		ans.code = -1;
+		ans.code = -2;
 		if(NicoLiveHelper.anchor.counter>0) NicoLiveHelper.anchor.counter--;
 	    }
 
