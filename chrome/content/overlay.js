@@ -890,9 +890,10 @@ var NicoLiveOverlay = {
 	    if (ver!=current && !firstrun){ // !firstrun によりこのセクションは拡張機能を初めて使うときは実行されません。
 		Prefs.setCharPref("version",current);
 		// バージョンが異なるとき、すなわちアップグレードしたときに実行するコードを挿入します。
-		window.setTimeout(function(){
-				      gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#1.1.53");
-				  }, 1500);
+		window.setTimeout(
+		    function(){
+			gBrowser.selectedTab = gBrowser.addTab("http://code.google.com/p/nicolivehelper/wiki/UpdateHistory#2.0");
+		    }, 1500);
 	    }
 	}
     },
