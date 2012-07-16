@@ -62,6 +62,8 @@
     <key id="tweeting" key="t" modifiers="accel" oncommand="NicoLiveTweet.inputTweet();"/>
     <!-- CTRL+W: Close this window -->
     <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"/>
+    <!-- CTRL+O: Open Live -->
+    <key id="open-live" key="o" modifiers="accel" oncommand="NicoLiveWindow.connectToBroadcasting();"/>
     <!-- CTRL+R: Reconnect -->
     <key id="reconnect" key="r" modifiers="accel" oncommand="NicoLiveHelper.reconnect();"/>
     <!-- CTRL+B: Back stage pass comment(using only caster) -->
