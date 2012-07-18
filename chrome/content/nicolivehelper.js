@@ -3129,13 +3129,15 @@ var NicoLiveHelper = {
 	// 16進数表すキーワードってなんだったっけ….
 	dat = line.match(/<thread.*ticket=\"([0-9a-fA-Fx]*)\".*\/>/);
 	if( dat ){
+	    if( this.ticket != dat[1] ){
+		ShowNotice("コメントサーバに接続しました");
+		if( $('automatic-broadcasting').hasAttribute('checked') ){
+		    debugprint("自動放送モードにより、放送を自動開始します。");
+		    NicoLiveHelper.beginLive( NicoLiveHelper.token );
+		}
+	    }
 	    this.ticket = dat[1];
 	    debugprint('ticket='+this.ticket);
-	    ShowNotice("コメントサーバに接続しました");
-	    if( $('automatic-broadcasting').hasAttribute('checked') ){
-		debugprint("自動放送モードにより、放送を自動開始します。");
-		NicoLiveHelper.beginLive( NicoLiveHelper.token );
-	    }
 	    // <ping>EOT</ping>
 	    //this.coStream.writeString("<ping>EOT</ping>");
 	}
@@ -3231,6 +3233,10 @@ var NicoLiveHelper = {
 	this._updateprogressid = setInterval( function(){
 						  NicoLiveHelper.update();
 					      }, 1000);
+	// 3分に1回送ってればいいのかね.
+	this._keepconnection = setInterval( function(){
+						NicoLiveHelper.keepConnection();
+					    }, 1000*60*3);
 	//this.heartbeat();
 	this._heartbeat = setInterval( function(){
 					   NicoLiveHelper.heartbeat();
@@ -3260,6 +3266,12 @@ var NicoLiveHelper = {
 					function(){
 					    NicoLiveHelper.connectCommentServer(NicoLiveHelper.addr,NicoLiveHelper.port,NicoLiveHelper.thread);
 					});
+    },
+
+    keepConnection:function(){
+	let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
+	//let str = "<ping>PING</ping>";
+	this.coStream.writeString(str);
     },
 
     // 接続を閉じる.
@@ -4480,6 +4492,7 @@ var NicoLiveHelper = {
 	    // online
 	    title = title.replace(/\u200b/g,"");
 	    // これだけ初期化しておけば大丈夫かな.
+	    this.ticket = "";
 	    this.title = title;
 	    this.request_id = request_id;
 	    this.community = community_id;
