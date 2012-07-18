@@ -227,7 +227,7 @@ var NicoLiveOverlay = {
 	    elem.setAttribute("value","NicoLive Helperを開く");
 	    elem.addEventListener("click",function(){
 				      NicoLiveOverlay.openNicoLiveWindow(url);
-				  });
+				  },true);
 	    e.target.getElementById('flvplayer_container').appendChild(elem);
 	}
 	let player;
