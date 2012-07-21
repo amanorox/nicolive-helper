@@ -37,6 +37,7 @@ var AutoCreateLive = {
 		AutoCreateLive.win.close();
 		ShowNotice( LoadString('STR_SUCCESS_NEXT_BROADCAST') );
 		setTimeout(function(){
+			       AutoCreateLive.win = null;
 			       NicoLiveWindow.openDefaultBrowser(nexturl, true);
 			       NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
 
