@@ -4511,6 +4511,7 @@ var NicoLiveHelper = {
 	    this.commentview = COMMENT_VIEW_NORMAL;
 	    this.resetRequestCount(); // 1人あたりのリクエスト受け付け数ワーク.
 	    this.start(request_id);
+	    this._extendcnt = 0;
 	}else{
 	    // offline
 	    document.title  = "NicoLive Helper (Single Window)";
