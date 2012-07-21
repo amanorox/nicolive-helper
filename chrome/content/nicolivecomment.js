@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
+Components.utils.import("resource://nicolivehelpermodules/sharedobject.jsm");
 
 /**
  * コメントウィンドウ
@@ -193,11 +194,13 @@ var NicoLiveComment = {
     // コメントリフレクションを行う.
     reflection:function(comment){
 	if( !NicoLiveHelper.iscaster ) return;
+	if( comment.date<NicoLiveHelper.connecttime ) return;
+
 	let name,disptype,color;
-	if(this.reflector[comment.user_id]){
-	    name = this.reflector[comment.user_id].name;
-	    disptype = this.reflector[comment.user_id].disptype;
-	    color = this.reflector[comment.user_id].color;
+	if(NicoLiveCommentReflector[comment.user_id]){
+	    name = NicoLiveCommentReflector[comment.user_id].name;
+	    disptype = NicoLiveCommentReflector[comment.user_id].disptype;
+	    color = NicoLiveCommentReflector[comment.user_id].color;
 	}else{
 	    return;
 	}
@@ -331,7 +334,7 @@ var NicoLiveComment = {
     removeFromCommentReflector:function(userid,name){
 	NicoLiveComment.delNGUser(userid);
 	let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-	delete NicoLiveComment.reflector[userid];
+	delete NicoLiveCommentReflector[userid];
 	RemoveElement(user[0]);
 	ShowNotice( LoadFormattedString('STR_OK_RELEASE_REFLECTION',[name,userid]) );
 
@@ -343,7 +346,7 @@ var NicoLiveComment = {
     addCommentReflectorCore:function(userid,name,disptype,addnguser,color){
 	if(name && name.length){
 	    let user = evaluateXPath(document,"//*[@comment-reflector='"+userid+"']");
-	    this.reflector[userid] = {"name":name, "disptype":disptype, "color":color };
+	    NicoLiveCommentReflector[userid] = {"name":name, "disptype":disptype, "color":color };
 	    if(user.length==0){
 		// ここからリフレクション解除メニューの追加.
 		let menuitem = CreateMenuItem( LoadFormattedString('STR_MENU_RELEASE_REFLECTION',[name]), userid);
@@ -368,6 +371,7 @@ var NicoLiveComment = {
 
     // リフレクション登録ダイアログを表示して設定する.
     showCommentReflectorDialog:function(userid, comment_no, defstring){
+	if( !NicoLiveHelper.iscaster ) return;
 	if( !userid ) return;
 	if( !defstring ) defstring = "★";
 	let param = {
@@ -378,8 +382,8 @@ var NicoLiveComment = {
 	};
 	let f = "chrome,dialog,centerscreen,modal";
 	if(NicoLivePreference.topmost){ f += ',alwaysRaised=yes'; }
-	if( this.reflector[userid] ){
-	    param['default'] = this.reflector[userid].name;
+	if( NicoLiveCommentReflector[userid] ){
+	    param['default'] = NicoLiveCommentReflector[userid].name;
 	}
 	window.openDialog("chrome://nicolivehelper/content/commentdialog.xul","reflector",f,param);
 	let name = param['default'];
@@ -420,15 +424,16 @@ var NicoLiveComment = {
     releaseReflector:function(){
 	// コメント反射を全解放.
 	let cnt=0;
-	for (u in this.reflector){
+	for (u in NicoLiveCommentReflector){
 	    // %Sさん　運営コメント:OFF
-	    let name = this.reflector[u].name;
+	    let name = NicoLiveCommentReflector[u].name;
 	    let str = LoadFormattedString("STR_TURN_OFF_REFLECTION",[name]);
 	    this.delNGUser(u);
 	    NicoLiveHelper.postCasterComment(str,"");
 	    cnt++;
+	    delete NicoLiveCommentReflector[u];
 	}
-	this.reflector = new Object();
+
 	try{
 	    if(cnt) ShowNotice( LoadString('STR_OK_ALL_RELEASE_REFLECTION') );
 	    let users = evaluateXPath(document,"//*[@comment-reflector]");
@@ -898,10 +903,17 @@ var NicoLiveComment = {
 	}
     },
 
-    init:function(){
-	// コメントリフレクターの登録用.
-	this.reflector = new Object();
+    initReflector:function(){
+	for (u in NicoLiveCommentReflector){
+	    // %Sさん　運営コメント:OFF
+	    let name = NicoLiveCommentReflector[u].name;
+	    let disptype = NicoLiveCommentReflector[u].disptype;
+	    let color = NicoLiveCommentReflector[u].color;
+	    this.addCommentReflectorCore( u, name, disptype, false, color );
+	}
+    },
 
+    init:function(){
 	// NGコメント.
 	this.regexstrings = new Array();
 	this.caseinsensitivestrings = new Array();
@@ -914,6 +926,9 @@ var NicoLiveComment = {
 	this.loadPresetAutocomplete();
 
 	this.createNameList();
+
+	// コメントリフレクターの登録用.
+	this.initReflector();
 
 	$('popup-comment').addEventListener('popupshowing',
 					    function(event){
@@ -929,8 +944,6 @@ var NicoLiveComment = {
 	}
 	NicoLiveDatabase.saveGPStorage("nico_live_colormap",this.colormap);
 	NicoLiveDatabase.saveGPStorage("nico_live_autocomplete",this.autocomplete);
-
-	this.releaseReflector(); // 一応呼んでおく.
     }
 };
 

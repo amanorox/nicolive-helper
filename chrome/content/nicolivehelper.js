@@ -718,7 +718,6 @@ var NicoLiveHelper = {
 	}
 
 	let prefs = NicoLivePreference.getBranch();
-	NicoLiveComment.releaseReflector();
 	if( NicoLiveHelper.isAutoWindowClose() ){
 	    // 自動放送モードのときは自動枠取り側でウィンドウを閉じるので
 	    // ここでは閉じない
@@ -4006,7 +4005,7 @@ var NicoLiveHelper = {
 		    // 取得した終了時刻がより現在より未来指していたら更新.
 		    NicoLiveHelper.endtime = tmp;
 		}else{
-		    NicoLiveComment.releaseReflector(); // ロスタイム突入なので全解放する.
+		    // ロスタイム突入
 		}
 		NicoLiveHelper._exclude = parseInt(publishstatus.getElementsByTagName('exclude')[0].textContent);
 		debugprint('token='+NicoLiveHelper.token);
@@ -4490,7 +4489,6 @@ var NicoLiveHelper = {
     connectNewBroadcasting:function(request_id,title,iscaster,community_id){
 	$('debug-textbox').value = "";
 	debugprint("Connect To New Broadcasting("+request_id+").");
-	NicoLiveComment.releaseReflector();
 	NicoLiveComment.initView();
 	if(request_id && request_id!="lv0"){
 	    // online
