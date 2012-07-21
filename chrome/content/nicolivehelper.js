@@ -4510,6 +4510,7 @@ var NicoLiveHelper = {
 	    this.resetRequestCount(); // 1人あたりのリクエスト受け付け数ワーク.
 	    this.start(request_id);
 	    this._extendcnt = 0;
+	    window.name = "NLH_"+request_id;
 	}else{
 	    // offline
 	    document.title  = "NicoLive Helper (Single Window)";
@@ -4521,6 +4522,7 @@ var NicoLiveHelper = {
 	    musictime.label = "";
 
 	    this.request_id = "lv0";
+	    window.name = "NLH_"+request_id;
 	}
 	try{
 	    AutoCreateLive.win = null;
