@@ -722,7 +722,11 @@ var NicoLiveHelper = {
 	if( NicoLiveHelper.isAutoWindowClose() ){
 	    // 自動放送モードのときは自動枠取り側でウィンドウを閉じるので
 	    // ここでは閉じない
-	    if( !autolive || !this.iscaster ) NicoLiveHelper.closeWindow();
+	    if( !autolive || !this.iscaster ){
+		if( !AutoCreateLive.win ){
+		    NicoLiveHelper.closeWindow();
+		}
+	    }
 	}else{
 	    PlayAlertSound();
 	    let msg = NicoLiveHelper.request_id+':'+NicoLiveHelper.title+' は終了しました';
@@ -4518,6 +4522,10 @@ var NicoLiveHelper = {
 	    musictime.label = "";
 
 	    this.request_id = "lv0";
+	}
+	try{
+	    AutoCreateLive.win = null;
+	} catch (x) {
 	}
     },
 

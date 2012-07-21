@@ -35,9 +35,9 @@ var AutoCreateLive = {
 		NicoLiveHelper.postCommentMain( request_id, "","");
 		var nexturl = location.href;
 		AutoCreateLive.win.close();
+		AutoCreateLive.win = null;
 		ShowNotice( LoadString('STR_SUCCESS_NEXT_BROADCAST') );
 		setTimeout(function(){
-			       AutoCreateLive.win = null;
 			       NicoLiveWindow.openDefaultBrowser(nexturl, true);
 			       NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
 
