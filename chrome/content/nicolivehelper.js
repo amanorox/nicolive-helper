@@ -3353,6 +3353,7 @@ var NicoLiveHelper = {
 	    Nicolive.Liveinfo.prototype._infoTypes[100] = "nlh";
 	    Nicolive.Liveinfo.prototype._infoTypesInverted["nlh"] = 100;
 	    Nicolive.Liveinfo.prototype._infoTypeHeaders["nlh"] = "【NicoLive Helper】";
+	    Nicolive.Liveinfo.prototype._infoTypesBackGroundColors["nlh"] = "yellow";
 	    Nicolive.Liveinfo.liveinfoArea._defaultLiveinfoConf.infoTypeEnableFlags["nlh"] = true;
 	    Nicolive.Liveinfo.liveinfoArea.addInfo(100,str);
 	} catch (x) {
