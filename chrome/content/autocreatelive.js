@@ -40,7 +40,9 @@ var AutoCreateLive = {
 		ShowNotice( LoadString('STR_SUCCESS_NEXT_BROADCAST') );
 		setTimeout(function(){
 			       NicoLiveWindow.openDefaultBrowser(nexturl, true);
-			       NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
+			       if( NicoLivePreference.isAutoTabClose() ){
+				   NicoLiveHelper.closeBroadcastingTab(NicoLiveHelper.request_id, NicoLiveHelper.community);
+			       }
 
 			       if( NicoLivePreference.isAutoWindowClose(NicoLiveHelper.iscaster) ){
 				   NicoLiveHelper.closeWindow();
