@@ -3,6 +3,7 @@
 
 <dialog id="continuouscommentwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
 	title="シンプルコメント(NicoLive Helper)"
+	persist="screenX screenY width height sizemode"
 	buttons="cancel" ondialogcancel="return true;" ondialogaccept="return false;">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
@@ -13,7 +14,7 @@
 	       flex="1"
 	       maxlength="1024"
 	       type="autocomplete"
-	       emptytext="コメントを入力"
+	       emptytext="コメントを入力(改行で送信)"
 	       onkeypress="window.opener.NicoLiveComment.postComment(this,event);"
 	       ontextreverted="this.select();"
 	       />
