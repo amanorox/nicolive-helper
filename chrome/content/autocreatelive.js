@@ -32,7 +32,8 @@ var AutoCreateLive = {
 	    if( doc.getElementById('flvplayer_container') ){
 		// flvplayer_container があるので生放送のページだろう
 		debugprint('This page has flvplayer_container.');
-		NicoLiveHelper.postCommentMain( request_id, "","");
+		var str = "次枠→"+request_id;
+		NicoLiveHelper.postCommentMain( str, "","");
 		var nexturl = location.href;
 		AutoCreateLive.win.close();
 		AutoCreateLive.win = null;
@@ -84,8 +85,11 @@ var AutoCreateLive = {
 	    // 1秒間隔で入場できるかチェック.
 	    if( doc.getElementById("que_end") ){
 		debugprint('waiting...');
-		var id = location.href.match(/(lv\d+)/i);
-		NicoLiveHelper.postCommentMain( id[1], "","");
+		var id = location.href.match(/(lv\d+)/i)[1];
+		var count = doc.getElementById("que_count").textContent;
+		var start_time = doc.getElementById("que_start_time").textContent;
+		var str = "次枠→"+id +" ("+count+"人待ち "+start_time+"ごろ開始予定)";
+		NicoLiveHelper.postCommentMain( str, "","");
 
 		AutoCreateLive._que_waiting_timer = setInterval(
 		    function(){
