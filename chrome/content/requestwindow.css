@@ -117,6 +117,13 @@ tr.table_selfreq {
     border-left: 10px solid rgb(0,200,0);
 }
 
+tr.table_selfreq div:first-child:before{
+    content: "[自貼り]";
+    color: red;
+    font-weight: bold;
+}
+
+
 /* co154で最近再生されたもの */
 tr.table_recently_play{
     background-color: #ffcc99;
