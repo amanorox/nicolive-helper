@@ -446,6 +446,7 @@ var NicoLiveHelper = {
 	}
 
 	switch(chat.premium){
+	case 2: // チャンネル放送だと premium=2 からも/playコマンドがありえる
 	case 3:
 	    if( chat.date < NicoLiveHelper.connecttime || NicoLiveHelper._timeshift ) return;
 	    // 主コメの処理.
