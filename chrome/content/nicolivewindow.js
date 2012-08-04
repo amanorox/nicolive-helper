@@ -125,8 +125,8 @@ var NicoLiveWindow = {
     setWindowList:function(){
 	this.winlist = WindowEnumerator();
 
-	while($('popup-windowlist').childNodes[2]){
-	    $('popup-windowlist').removeChild($('popup-windowlist').childNodes[2]);
+	while($('popup-windowlist').childNodes[3]){
+	    $('popup-windowlist').removeChild($('popup-windowlist').childNodes[3]);
 	}
 	for(let i=0,win;win=this.winlist[i];i++){
 	    let menuitem;

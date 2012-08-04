@@ -132,7 +132,7 @@
 	<!-- command menu -->
 	<toolbarbutton label="&toolbar.command;" type="menu">
 	  <menupopup>
-	    <menuitem label="test" oncommand="test();"/>
+<!--	    <menuitem label="test" oncommand="test();"/> -->
 	    
 	    <menuitem label="&toolbar.connect;"
 		      oncommand="NicoLiveWindow.connectToBroadcasting();"/>
@@ -239,6 +239,7 @@
 	<toolbarbutton image="chrome://nicolivehelper/content/data/window-list.png" label="" type="menu">
 	  <menupopup id="popup-windowlist" onpopupshowing="return NicoLiveWindow.setWindowList();">
 	    <menuitem label="&toolbar.resize_window_default;" oncommand="NicoLiveWindow.defaultSize();"/>
+	    <menuitem label="マイリストマネージャ" oncommand="OpenMyListManager();"/>
 	    <menuseparator/>
 	  </menupopup>
 	</toolbarbutton>

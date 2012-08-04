@@ -52,7 +52,7 @@ function OpenAnchorWindow(){
     w.focus();
 }
 
-function test(){
+function OpenMyListManager(){
     var value = null;
     var f = "chrome,resizable=yes,centerscreen";
     if(NicoLivePreference.topmost){
