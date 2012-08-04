@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+listitem.video-deleted {
+    background-color: #808080;
+}
+
+#folder-listbox listitem:-moz-drag-over {
+    border: 1px solid black;
+    font-weight: bold;
+}

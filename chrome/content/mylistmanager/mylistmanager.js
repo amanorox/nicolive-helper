@@ -42,6 +42,9 @@ var MyListManager = {
 
 	let listitem = CreateElement('listitem');
 	listitem.setAttribute('vid',item.video_id);
+	if( item.deleted!=0 ){
+	    listitem.setAttribute("class","video-deleted");
+	}
 	let hbox = CreateElement('hbox');
 	let image = CreateElement('image');
 	image.setAttribute('src',item.thumbnail_url);
@@ -203,7 +206,12 @@ var MyListManager = {
 	LibUserSessionCookie = window.opener.LibUserSessionCookie;
 	LibUserAgent = window.opener.LibUserAgent;
 
+
 	this.getMylistGroup();
+
+	if( window.opener.NicoLiveHelper.title ){
+	    document.title = window.opener.NicoLiveHelper.title + "/"+ document.title;
+	}
     },
     destroy: function(){
     }

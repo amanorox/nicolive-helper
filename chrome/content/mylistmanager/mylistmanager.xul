@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin" type="text/css"?>
-
-<!DOCTYPE window SYSTEM "chrome://nicolivehelper/locale/nicolivehelper.dtd">
+<?xml-stylesheet href="chrome://nicolivehelper/content/mylistmanager/mylistmanager.css" type="text/css"?>
 
 <window id="mylistmanager"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -9,7 +8,7 @@
 	persist="screenX screenY width height sizemode"
 	width="720"
 	height="512"
-	windowtype="NicoLiveHelperMainWindow"
+	windowtype="MyListManagerWindow"
 	title="Mylist Manager - NicoLive Helper">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/misc.js" />
@@ -19,6 +18,11 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoapi.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/mylistmanager/mylistmanager.js" />
+
+  <keyset>
+    <!-- CTRL+W: Close this window -->
+    <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"/>
+  </keyset>
 
   <vbox flex="1">
     <hbox flex="1">
@@ -62,7 +66,7 @@
 	    <label id="folder-listitem-num" value="0件"/>
 	  </hbox>
 	</hbox>
-	<listbox flex="1" id="folder-item-listbox" seltype="multiple" context=""
+	<listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu"
 		 ondragstart=""
 		 ondragenter=""
 		 ondragover=""
@@ -80,4 +84,21 @@
       </stack>
     </statusbar>
   </vbox>
+
+    <!-- for folder -->
+    <menupopup id="folder-item-menu">
+      <menuitem label="リクエストする" oncommand=""/>
+      <menuseparator/>
+      <menuitem label="ページを開く" oncommand=""/>
+      <menu label="コピー">
+	<menupopup>
+	  <menuitem label="動画ID" oncommand=""/>
+	  <menuitem label="タイトル" oncommand=""/>
+	</menupopup>
+      </menu>
+
+      <menuitem label="削除" oncommand=""/>
+      <menuseparator/>
+      <menuitem label="プロパティ" oncommand=""/>
+    </menupopup>
 </window>

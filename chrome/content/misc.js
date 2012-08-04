@@ -54,7 +54,7 @@ function OpenAnchorWindow(){
 
 function test(){
     var value = null;
-    var f = "chrome,dialog,centerscreen,modal";
+    var f = "chrome,resizable=yes,centerscreen";
     if(NicoLivePreference.topmost){
 	f += ',alwaysRaised=yes';
     }
