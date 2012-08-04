@@ -169,8 +169,11 @@ var NicoApi = {
 	let data = [];
 	data[0] = "group_id="+item_id;
 	this.callApi( url, postfunc, data );
-    }
+    },
 
+    getUserMylistPageApiToken:function(postfunc){
+	this.callApi( this.base_uri+"my/mylist", postfunc );
+    }
 };
 
 NicoApi.base_uri = NicoApi.base_uri_jp;

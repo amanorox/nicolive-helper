@@ -34,6 +34,116 @@ var MyListManager = {
     mylists: null,    // マイリスト一覧
     mylistdata: {}, // マイリストの内容(key=マイリストID or default)
 
+    apitoken: "",   // トークンが必要なAPI用
+
+    sort:function(array,order){
+	array.sort( function(a,b){
+			let tmpa=0, tmpb=0;
+			switch(order){
+			case 1:// 登録が新しい順
+			    tmpa = a.create_time;
+			    tmpb = b.create_time;
+			    break;
+			case 0:// 登録が古い順
+			    tmpb = a.create_time;
+			    tmpa = b.create_time;
+			    break;
+			case 4:// タイトル昇順
+			    tmpa = a.item_data.title;
+			    tmpb = b.item_data.title;
+			    return tmpa<tmpb?-1:1;
+			    break;
+			case 5:// タイトル降順
+			    tmpb = a.item_data.title;
+			    tmpa = b.item_data.title;
+			    return tmpa<tmpb?-1:1;
+			    break;
+			case 2:// マイリストコメント昇順
+			    tmpa = a.description;
+			    tmpb = b.description;
+			    return tmpa<tmpb?-1:1;
+			    break;
+			case 3:// マイリストコメント降順
+			    tmpb = a.description;
+			    tmpa = b.description;
+			    return tmpa<tmpb?-1:1;
+			    break;
+			case 6:// 投稿が新しい順
+			    tmpa = a.item_data.first_retrieve;
+			    tmpb = b.item_data.first_retrieve;
+			    break;
+			case 7:// 投稿が古い順
+			    tmpb = a.item_data.first_retrieve;
+			    tmpa = b.item_data.first_retrieve;
+			    break;
+			case 8:// 再生が多い順
+			    tmpa = a.item_data.view_counter;
+			    tmpb = b.item_data.view_counter;
+			    break;
+			case 9:// 再生が少ない順
+			    tmpb = a.item_data.view_counter;
+			    tmpa = b.item_data.view_counter;
+			    break;
+			case 10:// コメントが新しい順
+			    tmpa = a.item_data.update_time;
+			    tmpb = b.item_data.update_time;
+			    break;
+			case 11:// コメントが古い順
+			    tmpb = a.item_data.update_time;
+			    tmpa = b.item_data.update_time;
+			    break;
+			case 12:// コメントが多い順
+			    tmpa = a.item_data.num_res;
+			    tmpb = b.item_data.num_res;
+			    break;
+			case 13:// コメントが少ない順
+			    tmpb = a.item_data.num_res;
+			    tmpa = b.item_data.num_res;
+			    break;
+			case 14:// マイリスト登録が多い順
+			    tmpa = a.item_data.mylist_counter;
+			    tmpb = b.item_data.mylist_counter;
+			    break;
+			case 15:// マイリスト登録が少ない順
+			    tmpb = a.item_data.mylist_counter;
+			    tmpa = b.item_data.mylist_counter;
+			    break;
+			case 16:// 時間が長い順
+			    tmpa = a.item_data.length_seconds;
+			    tmpb = b.item_data.length_seconds;
+			    break;
+			case 17:// 時間が短い順
+			    tmpb = a.item_data.length_seconds;
+			    tmpa = b.item_data.length_seconds;
+			    break;
+
+			case 18:// 枚数が多い順
+			    break;
+			case 19:// 枚数が少ない順
+			    break;
+			    
+			}
+			return (tmpb - tmpa);
+		    });
+    },
+
+    doSort:function(order){
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+
+	debugprint("sort order:"+order);
+
+	this.sort( this.mylistdata[key].mylistitem, parseInt(order) );
+
+	let folder_listbox = $('folder-item-listbox');
+	RemoveChildren(folder_listbox);
+
+	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
+	    let listitem = this.createListItemElement( item.item_data );
+	    folder_listbox.appendChild(listitem);
+	}
+    },
+
     /** 動画情報を表示しているリストアイテム要素を作成.
      * @param item 動画情報のオブジェクト
      */
@@ -104,8 +214,21 @@ var MyListManager = {
 
 	$('folder-listitem-num').value = this.mylistdata[key].mylistitem.length +"件";
 
+	// どのソート順を使用するかチェック
+	let sort_order = 1;
+	for(let i=0,item; item=this.mylists.mylistgroup[i];i++){
+	    if(item.id==id){
+		sort_order = item.default_sort;
+		break;
+	    }
+	}
+	$('folder-item-sortmenu').value = sort_order;
+	debugprint("sort_order:"+sort_order);
+
 	let folder_listbox = $('folder-item-listbox');
 	RemoveChildren(folder_listbox);
+
+	this.sort( this.mylistdata[key].mylistitem, parseInt(sort_order) );
 
 	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
 	    let listitem = this.createListItemElement( item.item_data );
@@ -116,14 +239,6 @@ var MyListManager = {
     loadMyList: function(id, name){
 	$('statusbar-progressmeter').mode = "undetermined";
 	SetStatusBarText(name+'を取得しています...');
-
-	$('folder-item-sortmenu').value = 1;
-	for(let i=0,item; item=this.mylists.mylistgroup[i];i++){
-	    if(item.id==id){
-		$('folder-item-sortmenu').value = item.default_sort;
-		break;
-	    }
-	}
 
 	debugprint('load mylist(id='+id+')');
 	let f = function(xml,req){
@@ -199,6 +314,91 @@ var MyListManager = {
 	NicoApi.getmylistgroup( f );
     },
 
+    getToken:function(){
+	let f = function(xml,req){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let token = req.responseText.match(/NicoAPI\.token\s*=\s*\"(.*)\";/);
+		    MyListManager.apitoken = token;
+		}
+	    }
+	};
+	NicoApi.getUserMylistPageApiToken(f);
+    },
+
+    addRequest:function(){
+	let items = $('folder-item-listbox').children;
+	let str = "";
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+
+	let videos = this.mylistdata[key].mylistitem;
+	for( let i=0; i<items.length; i++){
+	    if( !items[i].selected ) continue;
+	    str += videos[i].item_data.video_id +" ";
+	}
+	if( window.opener.NicoLiveHelper.iscaster || window.opener.NicoLiveHelper.isOffline()){
+	    window.opener.NicoLiveRequest.addRequest( str );
+	}else{
+	    window.opener.NicoLiveHelper.postListenerComment( str, "" );
+	}
+    },
+    addStock:function(){
+	let items = $('folder-item-listbox').children;
+	let str = "";
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+
+	let videos = this.mylistdata[key].mylistitem;
+	for( let i=0; i<items.length; i++){
+	    if( !items[i].selected ) continue;
+	    str += videos[i].item_data.video_id +" ";
+	}
+	window.opener.NicoLiveRequest.addStock( str );
+    },
+
+    openPage:function(){
+	let items = $('folder-item-listbox').children;
+	let str = "";
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+
+	let videos = this.mylistdata[key].mylistitem;
+	for( let i=0; i<items.length; i++){
+	    if( !items[i].selected ) continue;
+	    let url = "http://nico.ms/"+videos[i].item_data.video_id;
+	    let hasfocus = true;
+	    window.opener.NicoLiveWindow.openDefaultBrowser(url, hasfocus);
+	}
+    },
+
+    copy:function(type){
+	let items = $('folder-item-listbox').children;
+	let str = "";
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+
+	let videos = this.mylistdata[key].mylistitem;
+	for( let i=0; i<items.length; i++){
+	    if( !items[i].selected ) continue;
+	    switch(type){
+	    case 0:
+		// 動画ID
+		str += videos[i].item_data.video_id + "\n";
+		break;
+	    case 1:
+		// タイトル
+		str += videos[i].item_data.title + "\n";
+		break;
+	    case 2:
+		// 動画ID+タイトル
+		str += videos[i].item_data.video_id + " " +videos[i].item_data.title + "\n";
+		break;
+	    }
+	}
+	CopyToClipboard(str);
+    },
+
     init: function(){
 	// initialize variables
 	debugprint( window.opener.LibUserSessionCookie );
@@ -206,11 +406,10 @@ var MyListManager = {
 	LibUserSessionCookie = window.opener.LibUserSessionCookie;
 	LibUserAgent = window.opener.LibUserAgent;
 
-
 	this.getMylistGroup();
 
 	if( window.opener.NicoLiveHelper.title ){
-	    document.title = window.opener.NicoLiveHelper.title + "/"+ document.title;
+	    document.title = window.opener.NicoLiveHelper.title + " - "+ document.title;
 	}
     },
     destroy: function(){

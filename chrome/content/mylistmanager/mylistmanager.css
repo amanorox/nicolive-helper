@@ -1,8 +1,21 @@
 @charset "UTF-8";
 
-listitem.video-deleted {
-    background-color: #808080;
+#folder-item-listbox > listitem.video-deleted {
+    background-color: #808080 ! important;
 }
+
+#folder-item-listbox > listitem {
+    border-bottom: 1px solid #c0c0c0;
+}
+
+#folder-item-listbox > listitem:nth-child(odd) {
+/*    background-color: #ffffee; */
+}
+
+#folder-item-listbox > listitem:nth-child(even){
+/*    background-color: #eeeeff; */
+}
+
 
 #folder-listbox listitem:-moz-drag-over {
     border: 1px solid black;

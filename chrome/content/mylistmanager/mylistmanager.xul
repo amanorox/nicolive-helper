@@ -20,6 +20,8 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/mylistmanager/mylistmanager.js" />
 
   <keyset>
+    <key id="select-all" key="a" modifiers="accel" oncommand=""/>
+
     <!-- CTRL+W: Close this window -->
     <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"/>
   </keyset>
@@ -35,7 +37,7 @@
       <splitter/>
       <vbox flex="1">
 	<hbox>
-	  <menulist id="folder-item-sortmenu" oncommand="">
+	  <menulist id="folder-item-sortmenu" oncommand="MyListManager.doSort(this.value);">
 	    <menupopup>
 	      <menuitem value="1" label="登録が新しい順"/>
 	      <menuitem value="0" label="登録が古い順"/>
@@ -87,18 +89,20 @@
 
     <!-- for folder -->
     <menupopup id="folder-item-menu">
-      <menuitem label="リクエストする" oncommand=""/>
+      <menuitem label="リクエストする" oncommand="MyListManager.addRequest();"/>
+      <menuitem label="ストックに追加する" oncommand="MyListManager.addStock();"/>
       <menuseparator/>
-      <menuitem label="ページを開く" oncommand=""/>
+      <menuitem label="ページを開く" oncommand="MyListManager.openPage();"/>
       <menu label="コピー">
 	<menupopup>
-	  <menuitem label="動画ID" oncommand=""/>
-	  <menuitem label="タイトル" oncommand=""/>
+	  <menuitem label="動画ID" oncommand="MyListManager.copy(0);"/>
+	  <menuitem label="タイトル" oncommand="MyListManager.copy(1);"/>
+	  <menuitem label="動画ID+タイトル" oncommand="MyListManager.copy(2);"/>
 	</menupopup>
       </menu>
 
-      <menuitem label="削除" oncommand=""/>
+      <menuitem disabled="true" label="削除" oncommand=""/>
       <menuseparator/>
-      <menuitem label="プロパティ" oncommand=""/>
+      <menuitem disabled="true" label="プロパティ" oncommand=""/>
     </menupopup>
 </window>
