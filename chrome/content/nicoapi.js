@@ -147,14 +147,23 @@ var NicoApi = {
 	this.callApi( url, postfunc );
     },
 
+    /**
+     * とりあえずマイリストに登録してある動画一覧を得る.
+     */
     getDeflist:function(postfunc){
 	let url = this.base_uri+'api/deflist/list';
 	this.callApi( url, postfunc );
     },
+    /**
+     * マイリストの一覧を得る.
+     */
     getmylistgroup: function(postfunc){
 	let url = this.base_uri+"api/mylistgroup/list";
 	this.callApi( url, postfunc );
     },
+    /**
+     * マイリストに登録してある動画一覧を得る.
+     */
     getmylist:function(item_id, postfunc){
 	let url = this.base_uri+"api/mylist/list";
 	let data = [];

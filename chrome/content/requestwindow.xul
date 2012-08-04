@@ -30,7 +30,9 @@
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivewhitelist.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivepreference.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivedatabase.js" />
+
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivehelper.js" />
+
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecomment.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoliverequest.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivemylist.js" />
@@ -130,7 +132,7 @@
 	<!-- command menu -->
 	<toolbarbutton label="&toolbar.command;" type="menu">
 	  <menupopup>
-<!--	    <menuitem label="test" oncommand=""/> -->
+	    <menuitem label="test" oncommand="test();"/>
 	    
 	    <menuitem label="&toolbar.connect;"
 		      oncommand="NicoLiveWindow.connectToBroadcasting();"/>

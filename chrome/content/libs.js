@@ -14,8 +14,6 @@ const Ci = Components.interfaces;
 
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const HTML_NS= "http://www.w3.org/1999/xhtml";
-const MYLIST_URL = "http://www.nicovideo.jp/mylistgroup_edit";
-const COMMENT_LOG = 500;
 
 // コメント送信状態.
 const COMMENT_STATE_NONE = 0;
@@ -48,21 +46,27 @@ function MergeSimpleObject(a,b)
     return a;
 }
 
+var LibUserSessionCookie = "";
+var LibUserAgent = "";
+/**
+ * @param method GET or POST
+ * @param uri URI
+ * @param substitution 使用するセッションクッキーを指定(任意)
+ */
 function CreateXHR(method,uri, substitution)
 {
     let req = new XMLHttpRequest();
     if( !req ) return null;
     req.open(method,uri);
-    if( NicoLiveHelper._useragent ){
-	req.setRequestHeader("User-Agent", NicoLiveHelper._useragent);
+    if( LibUserAgent ){
+	req.setRequestHeader("User-Agent", LibUserAgent );
     }
-    if( NicoLiveHelper._user_session ){
+    if( LibUserSessionCookie ){
 	if( substitution ){
 	    new CookieMonster(req, substitution);
 	}else{
-	    new CookieMonster(req, NicoLiveHelper._user_session);
+	    new CookieMonster(req, LibUserSessionCookie );
 	}
-	//req.setRequestHeader("Cookie", "user_session="+NicoLiveHelper._user_session);
     }
 
     req.timeout = 30*1000; // 30sec timeout for Gecko 12.0+

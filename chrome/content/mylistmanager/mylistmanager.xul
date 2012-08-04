@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://nicolivehelper/locale/nicolivehelper.dtd">
+
+<window id="mylistmanager"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	persist="screenX screenY width height sizemode"
+	width="720"
+	height="512"
+	windowtype="NicoLiveHelperMainWindow"
+	title="Mylist Manager - NicoLive Helper">
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/misc.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/utils/cookiemonster.js" />
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoapi.js" />
+
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/mylistmanager/mylistmanager.js" />
+
+  <vbox flex="1">
+    <hbox flex="1">
+      <listbox id="folder-listbox" context="folder-list-menu"
+	       onselect="MyListManager.loadMyList(this.selectedItem.value, this.selectedItem.label);"
+	       ondragenter=""
+	       ondragover=""
+	       ondrop="">
+      </listbox>
+      <splitter/>
+      <vbox flex="1">
+	<hbox>
+	  <menulist id="folder-item-sortmenu" oncommand="">
+	    <menupopup>
+	      <menuitem value="1" label="登録が新しい順"/>
+	      <menuitem value="0" label="登録が古い順"/>
+	      <menuitem value="4" label="タイトル昇順"/>
+	      <menuitem value="5" label="タイトル降順"/>
+	      <menuitem value="2" label="マイリストコメント昇順"/>
+	      <menuitem value="3" label="マイリストコメント降順"/>
+	      <menuitem value="6" label="投稿が新しい順"/>
+	      <menuitem value="7" label="投稿が古い順"/>
+	      <menuitem value="8" label="再生が多い順"/>
+	      <menuitem value="9" label="再生が少ない順"/>
+	      <menuitem value="10" label="コメントが新しい順"/>
+	      <menuitem value="11" label="コメントが古い順"/>
+	      <menuitem value="12" label="コメントが多い順"/>
+	      <menuitem value="13" label="コメントが少ない順"/>
+	      <menuitem value="14" label="マイリスト登録が多い順"/>
+	      <menuitem value="15" label="マイリスト登録が少ない順"/>
+	      <menuitem value="16" label="時間が長い順"/>
+	      <menuitem value="17" label="時間が短い順"/>
+	      <!-- 静画は未対応 -->
+	      <!--
+	      <menuitem value="18" label="枚数が多い順"/>
+	      <menuitem value="19" label="枚数が少ない順"/>
+	      -->
+	    </menupopup>
+	  </menulist>
+	  <hbox align="center">
+	    <label id="folder-listitem-num" value="0件"/>
+	  </hbox>
+	</hbox>
+	<listbox flex="1" id="folder-item-listbox" seltype="multiple" context=""
+		 ondragstart=""
+		 ondragenter=""
+		 ondragover=""
+		 ondrop=""
+		 onkeydown=""
+		 ondblclick="">
+	</listbox>
+      </vbox>
+    </hbox>
+
+    <statusbar id="statusbar">
+      <stack context="" onclick="" flex="1">
+	<progressmeter id="statusbar-progressmeter" mode="determined" value="0" flex="1" />
+	<statusbarpanel id="statusbar-text" label="" flex="1" crop="start"/>
+      </stack>
+    </statusbar>
+  </vbox>
+</window>

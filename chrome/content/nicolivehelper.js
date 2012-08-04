@@ -4670,43 +4670,41 @@ var NicoLiveHelper = {
 	this._use_other_browser = false;
 	if( !NicoLiveCookie.getCookie("http://www.nicovideo.jp/") ){
 	    // getCookieで取れなければサードパーティクッキーの保存にチェックが入ってないので.
-	    this._user_session = NicoLiveCookie.getCookie2("http://www.nicovideo.jp/","user_session");
+	    LibUserSessionCookie = NicoLiveCookie.getCookie2("http://www.nicovideo.jp/","user_session");
 	}
 	if( $('use-standard-mode-ie').hasAttribute('checked') ){
-	    //this._user_session = NicoLiveCookie.getStandardIECookie("http://www.nicovideo.jp/","user_session");
-	    this._user_session = NicoLiveCookie.getStdIECookie("http://www.nicovideo.jp/","user_session");
+	    LibUserSessionCookie = NicoLiveCookie.getStdIECookie("http://www.nicovideo.jp/","user_session");
 	    debugprint("use Standard mode IE");
 	    this._use_other_browser = true;
 	}
 	if( $('use-protected-mode-ie').hasAttribute('checked') ){
-	    //this._user_session = NicoLiveCookie.getProtectedIECookie("http://www.nicovideo.jp/","user_session");
-	    this._user_session = NicoLiveCookie.getIECookie("http://www.nicovideo.jp/","user_session");
+	    LibUserSessionCookie = NicoLiveCookie.getIECookie("http://www.nicovideo.jp/","user_session");
 	    debugprint("use Protected mode IE");
 	    this._use_other_browser = true;
 	}
 	if( $('use-google-chrome').hasAttribute('checked') ){
-	    this._user_session = NicoLiveCookie.getChromeCookie();
+	    LibUserSessionCookie = NicoLiveCookie.getChromeCookie();
 	    debugprint("use Google Chrome");
 	    this._use_other_browser = true;
 	}
 	if( $('use-mac-safari').hasAttribute('checked') ){
-	    this._user_session = NicoLiveCookie.getMacSafariCookie();
+	    LibUserSessionCookie = NicoLiveCookie.getMacSafariCookie();
 	    debugprint("use Mac Safari");
 	    this._use_other_browser = true;
 	}
-	if( this._user_session ){
-	    debugprint("user_session="+this._user_session);
+	if( LibUserSessionCookie ){
+	    debugprint("user_session=" + LibUserSessionCookie );
 	}
 	if( !RUN_ON_FIREFOX && this._use_other_browser ){
-	    NicoLiveCookie.setCookie( this._user_session );
+	    NicoLiveCookie.setCookie( LibUserSessionCookie );
 	}
     },
 
     init: function(){
 	debugprint('Initializing NicoLive Helper...');
 	this.setupCookie();
-	this._useragent = 'NicoLiveHelper/'+GetAddonVersion();
-	debugprint(this._useragent);
+	LibUserAgent = 'NicoLiveHelper/'+GetAddonVersion();
+	debugprint( LibUserAgent );
 	document.title = "NicoLive Helper " + GetAddonVersion();
 	srand( GetCurrentTime() );
 
