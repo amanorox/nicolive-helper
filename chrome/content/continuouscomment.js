@@ -99,6 +99,10 @@ function Init(){
 	    i++;
 	}
     }
+
+    if( window.opener.NicoLiveHelper.title ){
+	document.title = window.opener.NicoLiveHelper.title + " - "+ document.title;
+    }
 }
 
 window.addEventListener("load", function(e){ Init(); }, false);

@@ -8,6 +8,14 @@
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
 
+  <script>
+  <![CDATA[
+	if( window.opener.NicoLiveHelper.title ){
+	    document.title = window.opener.NicoLiveHelper.title + " - "+ document.title;
+	}
+  ]]>
+  </script>
+
   <vbox flex="1">
     <hbox id="box-caster-comment">
       <textbox id="textbox-comment"
