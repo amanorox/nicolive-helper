@@ -151,7 +151,6 @@ var MyListManager = {
 	let posteddate = GetDateString(item.first_retrieve*1000);
 
 	let listitem = CreateElement('listitem');
-	listitem.setAttribute('vid',item.video_id);
 	if( item.deleted!=0 ){
 	    listitem.setAttribute("class","video-deleted");
 	}
@@ -372,7 +371,7 @@ var MyListManager = {
 	}
     },
 
-    copy:function(type){
+    copyToClipboard:function(type){
 	let items = $('folder-item-listbox').children;
 	let str = "";
 	let id = $('folder-listbox').selectedItem.value;
@@ -397,6 +396,163 @@ var MyListManager = {
 	    }
 	}
 	CopyToClipboard(str);
+    },
+
+    startItemDragging:function(event){
+	let dt = event.dataTransfer;
+
+	let items = $('folder-item-listbox').children;
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+	let str = "";
+
+	// マイリストのアイテムIDをスペースで区切ったものをテキストとしてD&Dする
+	let videos = this.mylistdata[key].mylistitem;
+	for( let i=0; i<items.length; i++){
+	    if( !items[i].selected ) continue;
+	    str += videos[i].item_id +" ";
+	}
+	dt.setData('text/plain', str );
+    },
+
+    checkDragOnMyList:function(event){
+	// マイリスト一覧上をドラッグしているときのチェック
+	let b = event.dataTransfer.types.contains("text/plain");
+	if( b ){
+	    event.preventDefault();
+	}
+	return true;
+    },
+
+    getMyListPageToken:function( postfunc ){
+	let f = function(xml,req){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let token = req.responseText.match(/NicoAPI\.token\s*=\s*\"(.*)\";/);
+		    MyListManager.apitoken = token[1];
+		    if( "function"==typeof postfunc ){
+			postfunc();
+		    }
+		}
+	    }
+	};
+	NicoApi.getUserMylistPageApiToken( f );
+    },
+
+    copy:function( from, to, ids ){
+	let f = function(xml,req){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let result = JSON.parse(req.responseText);
+		    if( result.status=="fail" ){
+			SetStatusBarText( result.error.code + ": " + result.error.description );
+		    }else{
+			SetStatusBarText("コピーしました");
+		    }
+		}
+	    }
+	};
+	NicoApi.copymylist( from, to, ids, this.apitoken, f );
+    },
+
+    dropItemToMyList:function(event){
+	// マイリスト一覧にドロップしたときの処理
+	let dt = event.dataTransfer;
+	let effect = dt.dropEffect; // copy, move
+	let target = event.target;
+	let target_list_id = target.value;
+	let source_list_id = $('folder-listbox').selectedItem.value;
+	let msg = $('folder-listbox').selectedItem.label+"/"+source_list_id+"->"+target.label+"/"+target.value;
+	debugprint( msg );
+
+	let tmp = dt.getData("text/plain");
+	let ids = tmp.trim().split(/\s+/);
+
+	let f = function(){
+	    switch( effect ){
+	    case "move":
+	    case "copy":
+		MyListManager.copy( source_list_id, target_list_id, ids );
+		break;
+	    }
+  	};
+
+	if( !this.apitoken ){
+	    this.getMyListPageToken( f );
+	}else{
+	    f();
+	}
+    },
+
+    // 表示部分から削除する
+    deleteFromListItem:function(ids){
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+	let videos = this.mylistdata[key].mylistitem;
+	
+	let newarray = new Array();
+	for(let i=0; i<videos.length; i++){
+	    let b = false;
+	    for(let j=0; j<ids.length; j++ ){
+		if( videos[i].item_id==ids[j] ){
+		    b = true;
+		    break;
+		}
+	    }
+	    if( b ) continue;
+	    newarray.push( videos[i] );
+	}
+	this.mylistdata[key].mylistitem = newarray;
+	$('folder-listitem-num').value = this.mylistdata[key].mylistitem.length +"件";
+
+	let folder_listbox = $('folder-item-listbox');
+	RemoveChildren(folder_listbox);
+
+	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
+	    let listitem = this.createListItemElement( item.item_data );
+	    folder_listbox.appendChild(listitem);
+	}
+
+    },
+
+    delete:function(){
+	if( !ConfirmPrompt("選択した動画をマイリストから削除しますか?","マイリストの削除") ) return;
+
+	let items = $('folder-item-listbox').children;
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+	let str = "";
+
+	// マイリストのアイテムIDをスペースで区切ったものをテキストとしてD&Dする
+	let videos = this.mylistdata[key].mylistitem;
+	for( let i=0; i<items.length; i++){
+	    if( !items[i].selected ) continue;
+	    str += videos[i].item_id +" ";
+	}
+	let ids = str.trim().split(/\s+/);
+	if( ids.length ){
+	    let f = function(){
+		NicoApi.deletemylist( id, ids, MyListManager.apitoken,
+				      function(xml,req){
+					  if( req.readyState==4 ){
+					      if( req.status==200 ){
+						  let result = JSON.parse(req.responseText);
+						  if( result.status=="fail" ){
+						      SetStatusBarText( result.error.code + ": " + result.error.description );
+						  }else{
+						      SetStatusBarText("削除しました");
+						      MyListManager.deleteFromListItem(ids);
+						  }
+					      }
+					  }
+				      } );
+	    };
+	    if( !this.apitoken ){
+		this.getMyListPageToken( f );
+	    }else{
+		f();
+	    }
+	}
     },
 
     init: function(){

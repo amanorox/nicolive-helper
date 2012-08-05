@@ -171,6 +171,31 @@ var NicoApi = {
 	this.callApi( url, postfunc, data );
     },
 
+    copymylist:function(from_id, to_id, ids, token, postfunc ){
+	let url = this.base_uri+"api/mylist/copy";
+	let data = [];
+	data[0] = "group_id="+from_id;
+	data[1] = "target_group_id="+to_id;
+	data[2] = "token="+token;
+	for( let i=0; i<ids.length; i++ ){
+	    data[3+i] = "id_list[0][]="+ids[i];
+	}
+
+	this.callApi( url, postfunc, data );
+    },
+
+    deletemylist:function(from_id, ids, token, postfunc ){
+	let url = this.base_uri+"api/mylist/delete";
+	let data = [];
+	data[0] = "group_id="+from_id;
+	data[2] = "token="+token;
+	for( let i=0; i<ids.length; i++ ){
+	    data[3+i] = "id_list[0][]="+ids[i];
+	}
+
+	this.callApi( url, postfunc, data );
+    },
+
     getUserMylistPageApiToken:function(postfunc){
 	this.callApi( this.base_uri+"my/mylist", postfunc );
     }

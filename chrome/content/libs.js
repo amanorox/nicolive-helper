@@ -617,7 +617,11 @@ function HanToZenKana(str){
 }
 
 function FormatCommas(str){
-    return str.toString().replace(/(\d)(?=(?:\d{3})+$)/g,"$1,");
+    try{
+	return str.toString().replace(/(\d)(?=(?:\d{3})+$)/g,"$1,");
+    } catch (x) {
+	return str;
+    }
 }
 
 function clearTable(tbody)

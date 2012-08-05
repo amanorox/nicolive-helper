@@ -30,9 +30,9 @@
     <hbox flex="1">
       <listbox id="folder-listbox" context="folder-list-menu"
 	       onselect="MyListManager.loadMyList(this.selectedItem.value, this.selectedItem.label);"
-	       ondragenter=""
-	       ondragover=""
-	       ondrop="">
+	       ondragenter="MyListManager.checkDragOnMyList(event);"
+	       ondragover="MyListManager.checkDragOnMyList(event);"
+	       ondrop="MyListManager.dropItemToMyList(event);">
       </listbox>
       <splitter/>
       <vbox flex="1">
@@ -69,7 +69,7 @@
 	  </hbox>
 	</hbox>
 	<listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu"
-		 ondragstart=""
+		 ondragstart="MyListManager.startItemDragging(event);"
 		 ondragenter=""
 		 ondragover=""
 		 ondrop=""
@@ -95,13 +95,13 @@
       <menuitem label="ページを開く" oncommand="MyListManager.openPage();"/>
       <menu label="コピー">
 	<menupopup>
-	  <menuitem label="動画ID" oncommand="MyListManager.copy(0);"/>
-	  <menuitem label="タイトル" oncommand="MyListManager.copy(1);"/>
-	  <menuitem label="動画ID+タイトル" oncommand="MyListManager.copy(2);"/>
+	  <menuitem label="動画ID" oncommand="MyListManager.copyToClipboard(0);"/>
+	  <menuitem label="タイトル" oncommand="MyListManager.copyToClipboard(1);"/>
+	  <menuitem label="動画ID+タイトル" oncommand="MyListManager.copyToClipboard(2);"/>
 	</menupopup>
       </menu>
 
-      <menuitem disabled="true" label="削除" oncommand=""/>
+      <menuitem label="削除" oncommand="MyListManager.delete();"/>
       <menuseparator/>
       <menuitem disabled="true" label="プロパティ" oncommand=""/>
     </menupopup>
