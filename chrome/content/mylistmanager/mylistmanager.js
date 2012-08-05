@@ -460,6 +460,61 @@ var MyListManager = {
 	}
     },
 
+    moveListItem:function( from, to, result ){
+	// 2 件のうち 1 件はすでに移動先に存在しているため移動できませんでした
+	let n1 = result.matches.item.length;
+	let n2 = result.duplicates.item.length;
+	SetStatusBarText( n1 + " 件のうち "+ n2 + " 件はすでに移動先に存在しているため移動できませんでした");
+
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+	let videos = this.mylistdata[key].mylistitem;
+	let newarray = new Array();
+
+	for(let i=0; i<videos.length; i++){
+	    let b = false;
+	    for( let j=0; j<result.targets.item.length; j++ ){
+		let moved_id = result.targets.item[j].id;
+		if( videos[i].item_id==moved_id ){
+		    b = true;
+		    break;
+		}
+	    }
+	    if( b ) continue;
+	    newarray.push( videos[i] );
+	}
+	this.mylistdata[key].mylistitem = newarray;
+	$('folder-listitem-num').value = this.mylistdata[key].mylistitem.length +"件";
+
+	let folder_listbox = $('folder-item-listbox');
+	RemoveChildren(folder_listbox);
+
+	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
+	    let listitem = this.createListItemElement( item.item_data );
+	    folder_listbox.appendChild(listitem);
+	}
+    },
+
+    move:function( from, to, ids ){
+	let f = function(xml,req){
+	    if( req.readyState==4 ){
+		if( req.status==200 ){
+		    let result = JSON.parse(req.responseText);
+		    if( result.status=="fail" ){
+			SetStatusBarText( result.error.code + ": " + result.error.description );
+		    }else{
+			MyListManager.moveListItem( from, to, result );
+		    }
+		}
+	    }
+	};
+	if( from=='default' ){
+	    NicoApi.movedeflist( to, ids, this.apitoken, f );
+	}else{
+	    NicoApi.movemylist( from, to, ids, this.apitoken, f );
+	}
+    },
+
     dropItemToMyList:function(event){
 	// マイリスト一覧にドロップしたときの処理
 	let dt = event.dataTransfer;
@@ -476,6 +531,8 @@ var MyListManager = {
 	let f = function(){
 	    switch( effect ){
 	    case "move":
+		MyListManager.move( source_list_id, target_list_id, ids );
+		break;
 	    case "copy":
 		MyListManager.copy( source_list_id, target_list_id, ids );
 		break;
