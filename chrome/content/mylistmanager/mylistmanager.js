@@ -452,7 +452,12 @@ var MyListManager = {
 		}
 	    }
 	};
-	NicoApi.copymylist( from, to, ids, this.apitoken, f );
+
+	if( from=='default' ){
+	    NicoApi.copydeflist( to, ids, this.apitoken, f );
+	}else{
+	    NicoApi.copymylist( from, to, ids, this.apitoken, f );
+	}
     },
 
     dropItemToMyList:function(event){
@@ -532,20 +537,24 @@ var MyListManager = {
 	let ids = str.trim().split(/\s+/);
 	if( ids.length ){
 	    let f = function(){
-		NicoApi.deletemylist( id, ids, MyListManager.apitoken,
-				      function(xml,req){
-					  if( req.readyState==4 ){
-					      if( req.status==200 ){
-						  let result = JSON.parse(req.responseText);
-						  if( result.status=="fail" ){
-						      SetStatusBarText( result.error.code + ": " + result.error.description );
-						  }else{
-						      SetStatusBarText("削除しました");
-						      MyListManager.deleteFromListItem(ids);
-						  }
-					      }
-					  }
-				      } );
+		let f2 = function(xml,req){
+		    if( req.readyState==4 ){
+			if( req.status==200 ){
+			    let result = JSON.parse(req.responseText);
+			    if( result.status=="fail" ){
+				SetStatusBarText( result.error.code + ": " + result.error.description );
+			    }else{
+				SetStatusBarText("削除しました");
+				MyListManager.deleteFromListItem(ids);
+			    }
+			}
+		    }
+		};
+		if( id=='default' ){
+		    NicoApi.deletedeflist( ids, MyListManager.apitoken, f2 );
+		}else{
+		    NicoApi.deletemylist( id, ids, MyListManager.apitoken, f2 );
+		}
 	    };
 	    if( !this.apitoken ){
 		this.getMyListPageToken( f );

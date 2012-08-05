@@ -171,6 +171,9 @@ var NicoApi = {
 	this.callApi( url, postfunc, data );
     },
 
+    /**
+     * マイリストからマイリストへコピー
+     */
     copymylist:function(from_id, to_id, ids, token, postfunc ){
 	let url = this.base_uri+"api/mylist/copy";
 	let data = [];
@@ -183,16 +186,43 @@ var NicoApi = {
 
 	this.callApi( url, postfunc, data );
     },
+    /**
+     * とりマイからマイリストへコピー
+     */
+    copydeflist:function( to_id, ids, token, postfunc ){
+	let url = this.base_uri+"api/deflist/copy";
+	let data = [];
+	data[0] = "target_group_id="+to_id;
+	data[1] = "token="+token;
+	for( let i=0; i<ids.length; i++ ){
+	    data[2+i] = "id_list[0][]="+ids[i];
+	}
+	this.callApi( url, postfunc, data );
+    },
 
+    /**
+     * マイリストの動画を削除
+     */
     deletemylist:function(from_id, ids, token, postfunc ){
 	let url = this.base_uri+"api/mylist/delete";
 	let data = [];
 	data[0] = "group_id="+from_id;
-	data[2] = "token="+token;
+	data[1] = "token="+token;
 	for( let i=0; i<ids.length; i++ ){
-	    data[3+i] = "id_list[0][]="+ids[i];
+	    data[2+i] = "id_list[0][]="+ids[i];
 	}
-
+	this.callApi( url, postfunc, data );
+    },
+    /**
+     * とりマイの動画を削除
+     */
+    deletedeflist:function(ids, token, postfunc ){
+	let url = this.base_uri+"api/deflist/delete";
+	let data = [];
+	data[0] = "token="+token;
+	for( let i=0; i<ids.length; i++ ){
+	    data[1+i] = "id_list[0][]="+ids[i];
+	}
 	this.callApi( url, postfunc, data );
     },
 
