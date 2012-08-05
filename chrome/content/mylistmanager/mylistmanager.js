@@ -462,9 +462,14 @@ var MyListManager = {
 
     moveListItem:function( from, to, result ){
 	// 2 件のうち 1 件はすでに移動先に存在しているため移動できませんでした
-	let n1 = result.matches.item.length;
-	let n2 = result.duplicates.item.length;
-	SetStatusBarText( n1 + " 件のうち "+ n2 + " 件はすでに移動先に存在しているため移動できませんでした");
+	try{
+	    let n1 = result.matches.item.length;
+	    let n2 = result.duplicates.item.length;
+	    SetStatusBarText( n1 + " 件のうち "+ n2 + " 件はすでに移動先に存在しているため移動できませんでした");
+	} catch (x) {
+	    // 移動先に重複がない場合には result.duplicates.itemがないのでこっちに飛ぶ
+	    SetStatusBarText( result.targets.item.length + " 件を移動しました");
+	}
 
 	let id = $('folder-listbox').selectedItem.value;
 	let key = "_"+id;
