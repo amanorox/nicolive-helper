@@ -16,6 +16,7 @@
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicoapi.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/nicolivecookie.js" />
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/mylistmanager/mylistmanager.js" />
 
@@ -25,6 +26,19 @@
     <!-- CTRL+W: Close this window -->
     <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"/>
   </keyset>
+
+  <menubar id="menu-bar">
+    <menu id="menu-file" label="File">
+      <menupopup id="file-popup">
+	<menuitem label="Open with IE Protected Mode" oncommand="MyListManager.open(0);"/>
+	<menuitem label="Open with IE Standard Mode" oncommand="MyListManager.open(1);"/>
+	<menuitem label="Open with Google Chrome" oncommand="MyListManager.open(2);"/>
+	<menuitem label="Open with Mac Safari" oncommand="MyListManager.open(3);"/>
+	<menuseparator/>
+	<menuitem label="Close" oncommand="window.close();"/>
+      </menupopup>
+    </menu>
+  </menubar>
 
   <vbox flex="1">
     <hbox flex="1">

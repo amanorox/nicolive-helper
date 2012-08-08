@@ -626,17 +626,48 @@ var MyListManager = {
 	}
     },
 
+    openMyListManager:function(cookie,agent){
+	var value = {};
+	var f = "chrome,resizable=yes,centerscreen";
+	value.cookie = cookie;
+	value.agent = agent;
+	var w = window.openDialog("chrome://nicolivehelper/content/mylistmanager/mylistmanager.xul","",f,value);
+	w.focus();
+    },
+
+    open:function(n){
+	let cookie = "";
+	switch( n ){
+	case 0: // IE Protected
+	    cookie = NicoLiveCookie.getIECookie("http://www.nicovideo.jp/","user_session");
+	    break;
+	case 1: // IE Standard
+	    cookie = NicoLiveCookie.getStdIECookie("http://www.nicovideo.jp/","user_session");
+	    break;
+	case 2: // Chrome
+	    cookie = NicoLiveCookie.getChromeCookie();
+	    break;
+	case 3: // Safari
+	    cookie = NicoLiveCookie.getMacSafariCookie();
+	    break;
+	}
+	this.openMyListManager(cookie, LibUserAgent);
+    },
+
     init: function(){
 	// initialize variables
-	debugprint( window.opener.LibUserSessionCookie );
-	debugprint( window.opener.LibUserAgent );
-	LibUserSessionCookie = window.opener.LibUserSessionCookie;
-	LibUserAgent = window.opener.LibUserAgent;
+	debugprint( window.arguments[0].cookie );
+	debugprint( window.arguments[0].agent );
+	LibUserSessionCookie = window.arguments[0].cookie;
+	LibUserAgent = window.arguments[0].agent;
 
 	this.getMylistGroup();
 
-	if( window.opener.NicoLiveHelper.title ){
-	    document.title = window.opener.NicoLiveHelper.title + " - "+ document.title;
+	try{
+	    if( window.opener.NicoLiveHelper.title ){
+		document.title = window.opener.NicoLiveHelper.title + " - "+ document.title;
+	    }
+	} catch (x) {
 	}
     },
     destroy: function(){

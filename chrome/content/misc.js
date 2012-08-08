@@ -53,12 +53,14 @@ function OpenAnchorWindow(){
 }
 
 function OpenMyListManager(){
-    var value = null;
+    var value = {};
     var f = "chrome,resizable=yes,centerscreen";
     if(NicoLivePreference.topmost){
 	f += ',alwaysRaised=yes';
     }
-    var w = window.openDialog("chrome://nicolivehelper/content/mylistmanager/mylistmanager.xul","vote",f,value);
+    value.cookie = LibUserSessionCookie;
+    value.agent = LibUserAgent;
+    var w = window.openDialog("chrome://nicolivehelper/content/mylistmanager/mylistmanager.xul","mylistmanager",f,value);
     SetWindowTopMost(w,NicoLivePreference.topmost);
     w.focus();
 }
