@@ -35,6 +35,8 @@
 	<menuitem label="Open with Google Chrome" oncommand="MyListManager.open(2);"/>
 	<menuitem label="Open with Mac Safari" oncommand="MyListManager.open(3);"/>
 	<menuseparator/>
+	<menuitem label="Save as..." oncommand="MyListManager.saveToFile();"/>
+	<menuseparator/>
 	<menuitem label="Close" oncommand="window.close();"/>
       </menupopup>
     </menu>
@@ -84,9 +86,9 @@
 	</hbox>
 	<listbox flex="1" id="folder-item-listbox" seltype="multiple" context="folder-item-menu"
 		 ondragstart="MyListManager.startItemDragging(event);"
-		 ondragenter=""
-		 ondragover=""
-		 ondrop=""
+		 ondragenter="MyListManager.checkDropToListItem(event);"
+		 ondragover="MyListManager.checkDropToListItem(event);"
+		 ondrop="MyListManager.dropToListItem(event);"
 		 onkeydown=""
 		 ondblclick="">
 	</listbox>

@@ -131,7 +131,7 @@ var MyListManager = {
 	let id = $('folder-listbox').selectedItem.value;
 	let key = "_"+id;
 
-	debugprint("sort order:"+order);
+	//debugprint("sort order:"+order);
 
 	this.sort( this.mylistdata[key].mylistitem, parseInt(order) );
 
@@ -222,7 +222,7 @@ var MyListManager = {
 	    }
 	}
 	$('folder-item-sortmenu').value = sort_order;
-	debugprint("sort_order:"+sort_order);
+	//debugprint("sort_order:"+sort_order);
 
 	let folder_listbox = $('folder-item-listbox');
 	RemoveChildren(folder_listbox);
@@ -293,7 +293,7 @@ var MyListManager = {
 		    MyListManager.mylists = JSON.parse(req.responseText);
 		    
 		    if( MyListManager.mylists.status=='fail'){
-			debugprint( MyListManager.mylists.error.description );
+			SetStatusBarText( MyListManager.mylists.error.description );
 			return;
 		    }
 
@@ -626,6 +626,42 @@ var MyListManager = {
 	}
     },
 
+    checkDropToListItem:function(event){
+	let b = false;
+	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	if( file ){
+	    b = true;
+	}
+	if( event.dataTransfer.types.contains('text/plain') ) b = true;
+	if( event.dataTransfer.types.contains("text/uri-list") ) b = true;
+	if( b ) event.preventDefault();
+	return true;
+    },
+
+    dropToListItem:function(event){
+	// ファイルをドロップしたとき.
+	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
+	if (file instanceof Components.interfaces.nsIFile){
+	    if( !file.leafName.match(/\.txt$/) ) return;
+	    debugprint("file dropped:"+file.path);
+	    //this.readFileToStock(file);
+	    return;
+	}
+	if( event.dataTransfer.types.contains('text/plain') ){
+	    let txt = event.dataTransfer.mozGetDataAt("text/plain",0);
+	    debugprint("drop text");
+	    //this.addStock(txt);
+	    return;
+	}
+	// アンカーをドロップしたとき.
+	if( event.dataTransfer.types.contains("text/uri-list") ){
+	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
+	    debugprint("uri dropped:"+uri);
+	    //this.addStock(uri);
+	    return;
+	}
+    },
+
     openMyListManager:function(cookie,agent){
 	var value = {};
 	var f = "chrome,resizable=yes,centerscreen";
@@ -652,6 +688,33 @@ var MyListManager = {
 	    break;
 	}
 	this.openMyListManager(cookie, LibUserAgent);
+    },
+
+    saveToFile:function(){
+	let id = $('folder-listbox').selectedItem.value;
+	let key = "_"+id;
+	let videos = this.mylistdata[key].mylistitem;
+
+	let str = "";
+	for(let i=0; i<videos.length; i++){
+	    str += videos[i].item_data.video_id + " " +videos[i].item_data.title + "\r\n";
+	}
+	
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
+	let fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "テキストファイルに保存", nsIFilePicker.modeSave);
+	fp.appendFilters(nsIFilePicker.filterAll);
+	let rv = fp.show();
+	if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+	    let file = fp.file;
+	    let path = fp.file.path;
+	    let os = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+	    let flags = 0x02|0x08|0x20;// wronly|create|truncate
+	    os.init(file,flags,0664,0);
+	    let cos = GetUTF8ConverterOutputStream(os);
+	    cos.writeString( str );
+	    cos.close();
+	}
     },
 
     init: function(){
