@@ -433,6 +433,9 @@ var MyListManager = {
 		    if( "function"==typeof postfunc ){
 			postfunc();
 		    }
+		    token = req.responseText.match(/nickname = \"(.*)\";/);
+		    debugprint(token[1]);
+		    $('statusbar-username').label = token[1];
 		}
 	    }
 	};
@@ -725,6 +728,7 @@ var MyListManager = {
 	LibUserAgent = window.arguments[0].agent;
 
 	this.getMylistGroup();
+	this.getMyListPageToken();
 
 	try{
 	    if( window.opener.NicoLiveHelper.title ){
