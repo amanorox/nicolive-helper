@@ -71,7 +71,7 @@
 	      </row>
 	    </rows>
 	  </grid>
-	  <checkbox preference="pref-check-delete" label="再生時にすでに削除されている動画かどうかをチェックする" tooltiptext="削除されていた場合、スキップして次の動画を再生します。"/>
+	  <checkbox preference="pref-check-delete" label="再生時に再生可能かどうかをチェックする" tooltiptext="再生時に、生放送の引用が許可されていなかったり削除されていた場合、スキップして次の動画を再生します。"/>
 	</tabpanel>
 	<tabpanel orient="vertical">
 	  <checkbox preference="pref-autoreply" label="リクエストに対して自動で運営コメントを返す"/>

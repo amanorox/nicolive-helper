@@ -27,20 +27,24 @@
     <key id="closewindow" key="w" modifiers="accel" oncommand="window.close();"/>
   </keyset>
 
-  <menubar id="menu-bar">
-    <menu id="menu-file" label="File">
-      <menupopup id="file-popup">
-	<menuitem label="Open with IE Protected Mode" oncommand="MyListManager.open(0);"/>
-	<menuitem label="Open with IE Standard Mode" oncommand="MyListManager.open(1);"/>
-	<menuitem label="Open with Google Chrome" oncommand="MyListManager.open(2);"/>
-	<menuitem label="Open with Mac Safari" oncommand="MyListManager.open(3);"/>
-	<menuseparator/>
-	<menuitem label="Save as..." oncommand="MyListManager.saveToFile();"/>
-	<menuseparator/>
-	<menuitem label="Close" oncommand="window.close();"/>
-      </menupopup>
-    </menu>
-  </menubar>
+  <toolbox>
+    <toolbar>
+      <menubar id="menu-bar">
+	<menu id="menu-file" label="File">
+	  <menupopup id="file-popup">
+	    <menuitem label="Open with IE Protected Mode" oncommand="MyListManager.open(0);"/>
+	    <menuitem label="Open with IE Standard Mode" oncommand="MyListManager.open(1);"/>
+	    <menuitem label="Open with Google Chrome" oncommand="MyListManager.open(2);"/>
+	    <menuitem label="Open with Mac Safari" oncommand="MyListManager.open(3);"/>
+	    <menuseparator/>
+	    <menuitem label="Save as..." oncommand="MyListManager.saveToFile();"/>
+	    <menuseparator/>
+	    <menuitem label="Close" oncommand="window.close();"/>
+	  </menupopup>
+	</menu>
+      </menubar>
+    </toolbar>
+  </toolbox>
 
   <vbox flex="1">
     <hbox flex="1">

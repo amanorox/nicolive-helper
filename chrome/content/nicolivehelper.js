@@ -634,8 +634,8 @@ var NicoLiveHelper = {
 	let f = function(xml, req){
 	    if( req.readyState==4 && req.status==200 ){
 		let music = NicoLiveHelper.xmlToMovieInfo(xml);
-		if( !music ){
-		    ShowNotice("動画情報を取得できなかったため15秒後にスキップします");
+		if( !music || music.no_live_play ){
+		    ShowNotice("生放送で再生できないため15秒後にスキップします");
 		    NicoLiveHelper.setupPlayNextMusic(15*1000);
 		}
 	    }
