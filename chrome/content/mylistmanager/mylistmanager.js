@@ -681,7 +681,9 @@ var MyListManager = {
 		let result = JSON.parse(req.responseText);
 		switch(result.status){
 		case 'ok':
-		    SetStatusBarText(video_id+'をマイリストしました。');
+		    let max = $('statusbar-progressmeter').max;
+		    let processed = max - MyListManager.registerMylistQueue.length;
+		    SetStatusBarText(video_id+'をマイリストしました。('+processed+'/'+max+')');
 		    setTimeout( function(){
 				    MyListManager.runAddingMyList();
 				},2000);
