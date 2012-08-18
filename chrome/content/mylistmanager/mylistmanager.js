@@ -36,6 +36,8 @@ var MyListManager = {
 
     apitoken: "",   // トークンが必要なAPI用
 
+    registerMylistQueue: [],
+
     sort:function(array,order){
 	array.sort( function(a,b){
 			let tmpa=0, tmpb=0;
@@ -641,27 +643,124 @@ var MyListManager = {
 	return true;
     },
 
+    // ファイルからマイリストに登録する.
+    readFileToMyList:function(file){
+	if( this.registerMylistQueue.length ) return;
+
+	// file は nsIFile
+	let istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+	istream.init(file, 0x01, 0444, 0);
+	istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+	// 行を配列に読み込む
+	let line = {}, hasmore;
+	let first = true;
+	do {
+	    hasmore = istream.readLine(line);
+	    let d = line.value.match(/(sm|nm)\d+|\d{10}/);
+	    if( d ){
+		this.registerMylistQueue.push( d[0] );
+	    }
+	} while(hasmore);
+	istream.close();
+
+	$('statusbar-progressmeter').max = this.registerMylistQueue.length;
+	this.runAddingMyList();
+    },
+
+    finishAddingMyList:function(){
+	this.registerMylistQueue = new Array();
+	$('statusbar-progressmeter').mode = "determined";
+	$('statusbar-progressmeter').value = 0;
+    },
+
+    addMyListExec:function(item_id,mylist_id,token,video_id, additional_msg){
+	// 二段階目は取得したトークンを使ってマイリス登録をする.
+	let f = function(xml,req){
+	    if( req.readyState==4 && req.status==200 ){
+		let result = JSON.parse(req.responseText);
+		switch(result.status){
+		case 'ok':
+		    SetStatusBarText(video_id+'をマイリストしました。');
+		    setTimeout( function(){
+				    MyListManager.runAddingMyList();
+				},2000);
+		    break;
+		case 'fail':
+		    MyListManager.finishAddingMyList();
+		    SetStatusBarText(result.error.description);
+		    break;
+		default:
+		    break;
+		}
+	    }
+	};
+	NicoApi.addMylist(item_id, mylist_id, token, additional_msg, f );
+    },
+
+    runAddingMyList:function(){
+	if( this.registerMylistQueue.length==0 ){
+	    this.finishAddingMyList();
+	    this.refreshCurrentMylist();
+	    return;
+	}
+	$('statusbar-progressmeter').value = $('statusbar-progressmeter').max - this.registerMylistQueue.length;
+
+	let mylist_id = $('folder-listbox').selectedItem.value;
+	let video_id = this.registerMylistQueue.shift();
+	if( mylist_id=='default' ){
+	    this.finishAddingMyList();
+	    SetStatusBarText("現在、とりあえずマイリストにはマイリスト登録できません。");
+	    return;
+	}
+
+	// 一段階目はトークンを取得する.
+	let f = function(xml,req){
+	    if( req.readyState==4 && req.status==200 ){
+		try{
+		    let token = req.responseText.match(/NicoAPI\.token\s*=\s*\"(.*)\";/);
+		    let item_id = req.responseText.match(/item_id\"\s*value=\"(.*)\">/);
+		    debugprint('token='+token[1]);
+		    debugprint('item_id='+item_id[1]);
+		    MyListManager.addMyListExec(item_id[1],mylist_id,token[1],video_id, "");
+		} catch (x) {
+		    MyListManager.finishAddingMyList();
+		    SetStatusBarText("マイリスト登録に失敗しました: "+video_id);
+		}
+	    }
+	};
+	NicoApi.getMylistToken( video_id, f );
+    },
+
     dropToListItem:function(event){
 	// ファイルをドロップしたとき.
 	var file = event.dataTransfer.mozGetDataAt("application/x-moz-file", 0);
 	if (file instanceof Components.interfaces.nsIFile){
 	    if( !file.leafName.match(/\.txt$/) ) return;
 	    debugprint("file dropped:"+file.path);
-	    //this.readFileToStock(file);
+	    this.readFileToMyList(file);
 	    return;
 	}
+
+	let str = "";
 	if( event.dataTransfer.types.contains('text/plain') ){
-	    let txt = event.dataTransfer.mozGetDataAt("text/plain",0);
+	    str = event.dataTransfer.mozGetDataAt("text/plain",0);
 	    debugprint("drop text");
-	    //this.addStock(txt);
-	    return;
 	}
 	// アンカーをドロップしたとき.
 	if( event.dataTransfer.types.contains("text/uri-list") ){
-	    let uri = event.dataTransfer.mozGetDataAt("text/uri-list",0);
-	    debugprint("uri dropped:"+uri);
-	    //this.addStock(uri);
-	    return;
+	    str = event.dataTransfer.mozGetDataAt("text/uri-list",0);
+	    debugprint("uri dropped:"+str);
+	}
+
+	if( str ){
+	    this.registerMylistQueue = new Array();
+	    let d = str.match(/(sm|nm)\d+|\d{10}/);
+	    if( d ){
+		this.registerMylistQueue.push( d[0] );
+	    }
+	    $('statusbar-progressmeter').max = this.registerMylistQueue.length;
+	    this.runAddingMyList();
 	}
     },
 
@@ -718,6 +817,14 @@ var MyListManager = {
 	    cos.writeString( str );
 	    cos.close();
 	}
+    },
+
+    /**
+     * 現在のマイリストの表示を更新する.
+     */
+    refreshCurrentMylist:function(){
+	let mylist = $('folder-listbox');
+	this.loadMyList( mylist.selectedItem.value, mylist.selectedItem.label );
     },
 
     init: function(){
