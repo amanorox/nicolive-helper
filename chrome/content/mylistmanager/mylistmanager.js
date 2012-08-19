@@ -689,8 +689,14 @@ var MyListManager = {
 				},2000);
 		    break;
 		case 'fail':
-		    MyListManager.finishAddingMyList();
-		    SetStatusBarText(result.error.description);
+		    if( result.error.code=='EXIST' ){
+			setTimeout( function(){
+					MyListManager.runAddingMyList();
+				    },2000);
+		    }else{
+			MyListManager.finishAddingMyList();
+		    }
+		    SetStatusBarText(result.error.description+": "+ video_id);
 		    break;
 		default:
 		    break;
@@ -757,9 +763,9 @@ var MyListManager = {
 
 	if( str ){
 	    this.registerMylistQueue = new Array();
-	    let d = str.match(/(sm|nm)\d+|\d{10}/);
-	    if( d ){
-		this.registerMylistQueue.push( d[0] );
+	    let d = str.trim().split(/\s+/);
+	    for(let i=0,item;item=d[i];i++){
+		this.registerMylistQueue.push( item );
 	    }
 	    $('statusbar-progressmeter').max = this.registerMylistQueue.length;
 	    this.runAddingMyList();
