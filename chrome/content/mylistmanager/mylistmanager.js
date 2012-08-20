@@ -141,7 +141,7 @@ var MyListManager = {
 	RemoveChildren(folder_listbox);
 
 	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
-	    let listitem = this.createListItemElement( item.item_data );
+	    let listitem = this.createListItemElement( item );
 	    folder_listbox.appendChild(listitem);
 	}
     },
@@ -149,7 +149,8 @@ var MyListManager = {
     /** 動画情報を表示しているリストアイテム要素を作成.
      * @param item 動画情報のオブジェクト
      */
-    createListItemElement:function(item){
+    createListItemElement:function(mylist_data){
+	let item = mylist_data.item_data;
 	let posteddate = GetDateString(item.first_retrieve*1000);
 
 	let listitem = CreateElement('listitem');
@@ -167,7 +168,7 @@ var MyListManager = {
 	let sec = parseInt(item.length_seconds%60);
 
 	div.innerHTML = item.video_id + " "+htmlspecialchars(item.title)+"<br/>"
-	    + "投稿日:"+posteddate+" 時間:"+(min+":"+(sec<10?("0"+sec):sec))+"<br/>"
+	    + "投稿:"+posteddate+" (登録:"+GetDateString(mylist_data.create_time*1000)+") 時間:"+(min+":"+(sec<10?("0"+sec):sec))+"<br/>"
 	    + "再生:"+FormatCommas(item.view_counter)
 	    + " コメント:"+FormatCommas(item.num_res)
 	    + " マイリスト:"+FormatCommas(item.mylist_counter);
@@ -232,7 +233,7 @@ var MyListManager = {
 	this.sort( this.mylistdata[key].mylistitem, parseInt(sort_order) );
 
 	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
-	    let listitem = this.createListItemElement( item.item_data );
+	    let listitem = this.createListItemElement( item );
 	    folder_listbox.appendChild(listitem);
 	}
     },
@@ -500,7 +501,7 @@ var MyListManager = {
 	RemoveChildren(folder_listbox);
 
 	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
-	    let listitem = this.createListItemElement( item.item_data );
+	    let listitem = this.createListItemElement( item );
 	    folder_listbox.appendChild(listitem);
 	}
     },
@@ -581,7 +582,7 @@ var MyListManager = {
 	RemoveChildren(folder_listbox);
 
 	for(let i=0,item; item=this.mylistdata[key].mylistitem[i]; i++){
-	    let listitem = this.createListItemElement( item.item_data );
+	    let listitem = this.createListItemElement( item );
 	    folder_listbox.appendChild(listitem);
 	}
 
