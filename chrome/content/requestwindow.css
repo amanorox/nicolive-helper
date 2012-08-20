@@ -87,6 +87,17 @@ table.requestview td {
 /*    border: 1px solid gray; */
 }
 
+/* ちょっと使いづらいかな */
+/*
+hbox.btn_command{
+    display: none;
+}
+vbox:hover + hbox.btn_command, hbox.btn_command:hover {
+    display: inline;
+}
+*/
+
+
 /* リク、ストックなどのコマンドボタン */
 button.commandbtn {
     font-size: 8pt;
@@ -229,7 +240,7 @@ a {
     cursor:pointer;
 }
 
-toolbar{
+toolbox{
 /*    display: inline; */
 }
 
