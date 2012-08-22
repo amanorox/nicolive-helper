@@ -801,6 +801,8 @@
       <menuseparator/>
       <menuitem label="&menu.copy_video_id;" oncommand="NicoLiveDatabase.copyVideoIdToClipboard(document.popupNode||$('popup-copyrequest').triggerNode);"/>
       <menuitem label="&menu.set_pname;" oncommand="NicoLiveDatabase.setPName(document.popupNode||$('popup-copyrequest').triggerNode);"/>
+      <menuitem label="ストックに追加" oncommand="NicoLiveRequest.addStockFromRequest(document.popupNode||$('popup-copyrequest').triggerNode);"/>
+
       <menu label="&rate.name;" id="menu-request-rate">
 	<menupopup oncommand="NicoLiveDatabase.setFavorite(event,document.popupNode||$('popup-copyrequest').triggerNode);"
 		   onpopupshowing="return NicoLiveDatabase.showingRateMenu(event,document.popupNode||$('popup-copyrequest').triggerNode);">

@@ -1063,6 +1063,12 @@ var NicoLiveRequest = {
 	NicoLiveHelper.postCasterComment('/prepare '+vid,""); // 動画IDを取れる.
     },
 
+    addStockFromRequest:function(node){
+	let elem = FindParentElement(node,'vbox');
+	let vid = elem.getAttribute('nicovideo_id');
+	this.addStock(vid);
+    },
+
     saveSetListName:function(){
 	let elems = evaluateXPath2(document,"//xul:menulist[@class='select-setlist']//xul:menuitem");
 	let data = new Array();
