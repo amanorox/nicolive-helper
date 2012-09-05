@@ -33,7 +33,9 @@ var NicoLiveComment = {
     current_comment_no: 0, // 現在のコメ番(単純増加のみで表示リフレッシュがあっても不変).
 
     getScrollBox:function(){
-	return $('comment-box').boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+	if( this._comment_box ) return this._comment_box;
+	this._comment_box = $('comment-box').boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+	return this._comment_box;
     },
     getPosition:function(){
 	let y = {};

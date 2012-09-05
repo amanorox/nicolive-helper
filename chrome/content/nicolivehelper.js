@@ -1311,7 +1311,7 @@ var NicoLiveHelper = {
 	// /playの場合、正しくサーバからやってくれば改めてタイマはセットされる.
 	let l = this.musicinfo.length_ms;
 	if( l > 60*1000) l = 60*1000;
-	this.setupPlayNextMusic(l);
+	this.setupPlayNextMusic(l, true); // no prepare
 
 	this.postCasterComment(str,""); // 再生.
 
@@ -3821,7 +3821,7 @@ var NicoLiveHelper = {
     },
 
     // duミリ秒後に次曲再生のタイマをしかける.
-    setupPlayNextMusic:function(du){
+    setupPlayNextMusic:function(du, noprepare){
 	// du(duration)にはミリ秒を渡す.
 	clearInterval(this._playnext);
 	clearInterval(this._prepare);
@@ -3850,6 +3850,8 @@ var NicoLiveHelper = {
 		NicoLiveHelper.checkPlayNext();
 	    }, next_time );
 	debugprint( parseInt((next_time)/1000)+'秒後に次曲を再生します');
+
+	if( noprepare ) return;
 
 	let prepare_time1 = next_time - NicoLivePreference.prepare_timing*1000;
 	let prepare_time2 = next_time - 40*1000;
