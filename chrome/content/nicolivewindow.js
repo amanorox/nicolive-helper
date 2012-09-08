@@ -472,7 +472,8 @@ var NicoLiveWindow = {
 		let player;
 		if(tab){
 		    // watch_player_top_box for ニコニコ動画Zero
-		    player = tab.linkedBrowser.contentDocument.getElementById('watch_player_top_box').wrappedJSObject;
+		    player = tab.linkedBrowser.contentDocument.getElementById('watch_player_top_box').wrappedJSObject
+			|| tab.linkedBrowser.contentDocument.getElementById('WatchPlayer').wrappedJSObject; // for 原宿
 		    tab.linkedBrowser.contentWindow.scroll(0,player.offsetTop-32);
 		}
 	    } catch (x) {
