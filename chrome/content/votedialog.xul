@@ -5,25 +5,8 @@
 	title="アンケートウィンドウ(NicoLive Helper)"
 	buttons="accept,cancel" ondialogaccept="return AcceptFunction();" ondialogcancel="return true;">
 
-  <script>
-  <![CDATA[
-
-  function AcceptFunction(){
-      var texts = document.getElementsByTagName('textbox');
-      var i,txt,str="";
-      for(i=0;txt=texts[i];i++){
-	  if(txt.value){
-	      var tmp = txt.value.replace(/"/g,"");
-	      str += '"'+tmp+'" '
-	  }
-      }
-      //Application.console.log(str);
-      opener.NicoLiveHelper.postCasterComment("/vote start "+str,"");
-      return true;
-  }
-
-  ]]>
-  </script>
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/libs.js" />
+  <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/votedialog.js" />
 
   <vbox>
     <hbox align="center">
@@ -53,6 +36,14 @@
       <textbox id="answer8" flex="1"/>
       <label value="選択肢9"/>
       <textbox id="answer9" flex="1"/>
+    </hbox>
+
+    <hbox align="center">
+      <label value="過去のアンケート"/>
+      <menulist oncommand="VoteDialog.restore(this.value);" flex="1">
+	<menupopup id="menu-recent">
+	</menupopup>
+      </menulist>
     </hbox>
   </vbox>
 
