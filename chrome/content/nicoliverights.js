@@ -26,6 +26,25 @@ var NicoLiveRights = {
 	this.searchJWID(code);
     },
 
+    searchJWIDbyTitle:function(str){
+	str = str.trim();
+	let tab = window.opener.getBrowser().addTab('http://www2.jasrac.or.jp/eJwid/main.jsp?trxID=F00100');
+	window.opener.getBrowser().selectedTab = tab;
+	let opentab = window.opener.getBrowser().getBrowserForTab(tab);
+	opentab.addEventListener('load',
+				 function(e){
+				     try{
+					 let frame = e.target.getElementsByTagName('frame')[0].wrappedJSObject;
+					 let inputcode = evaluateXPath(frame.contentDocument,"//input[@name='IN_WORKS_TITLE_NAME1']")[0];
+					 inputcode.value = str;
+					 let submit = evaluateXPath(frame.contentDocument,"//input[@name='CMD_SEARCH']")[0];
+					 submit.click();
+				     } catch (x) {
+				     }
+				 },true);
+	tab = null; opentab = null;
+    },
+
     searchJWID:function(code){
 	// xxx-xxxx-x (JASRAC)
 	// xxxxx (elicense)

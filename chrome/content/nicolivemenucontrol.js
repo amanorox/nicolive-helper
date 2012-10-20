@@ -23,6 +23,7 @@ THE SOFTWARE.
 var NicoLiveMenuControl = {
 
     /** テキストが範囲選択されていたら、指定のメニューの先頭に置いてある項目のみを表示.
+     * 「テキストのコピー」だけでなく各種検索も増えたので、それらを一括して表示ON/OFFする
      * @param elem メニュー要素
      */
     showOnlyFirstMenuItemIfTextSelected:function(elem){
@@ -30,11 +31,9 @@ var NicoLiveMenuControl = {
 	if( str ){
 	    elem.firstChild.hidden = false;
 	    elem.firstChild.nextSibling.hidden = false;
-	    elem.firstChild.nextSibling.nextSibling.hidden = false;
 	}else{
 	    elem.firstChild.hidden = true;
 	    elem.firstChild.nextSibling.hidden = true;
-	    elem.firstChild.nextSibling.nextSibling.hidden = true;
 	}
     },
 

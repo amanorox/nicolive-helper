@@ -878,10 +878,8 @@ var NicoLiveComment = {
 	}
 	if( str ){
 	    elem.firstChild.hidden = false;
-	    elem.firstChild.nextSibling.hidden = false;
 	}else{
 	    elem.firstChild.hidden = true;
-	    elem.firstChild.nextSibling.hidden = true;
 	}
     },
 

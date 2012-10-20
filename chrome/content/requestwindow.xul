@@ -735,8 +735,13 @@
 
     <!-- for comment body -->
     <menupopup id="popup-copycomment" onpopupshowing="NicoLiveComment.showPopupMenuForComment(this);">
-      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
-      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+      <menu label="検索">
+	<menupopup>
+	  <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+	  <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+	  <menuitem label="J-WIDで作品タイトル検索" oncommand="NicoLiveRights.searchJWIDbyTitle(window.getSelection().toString());"/>
+	</menupopup>
+      </menu>
       <menuitem label="&comment.menu.jasracsearch;" id="comment-search-jasrac" oncommand="NicoLiveRights.searchJWID(window.getSelection().toString());"/>
       <menuitem label="&comment.menu.elicensesearch;" id="comment-search-elicense" oncommand="NicoLiveRights.search_elicense(window.getSelection().toString());"/>
       <menuitem label="&comment.menu_copy_comment;" oncommand="NicoLiveComment.copyComment(document.popupNode||$('popup-copycomment').triggerNode);"/>
@@ -758,8 +763,13 @@
     <!-- for request tab -->
     <menupopup id="popup-copyrequest" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
-      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+      <menu label="検索">
+	<menupopup>
+	  <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+	  <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+	  <menuitem label="J-WIDで作品タイトル検索" oncommand="NicoLiveRights.searchJWIDbyTitle(window.getSelection().toString());"/>
+	</menupopup>
+      </menu>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -836,8 +846,13 @@
     <!-- for error tab -->
     <menupopup id="popup-error-request" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
-      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+      <menu label="検索">
+	<menupopup>
+	  <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+	  <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+	  <menuitem label="J-WIDで作品タイトル検索" oncommand="NicoLiveRights.searchJWIDbyTitle(window.getSelection().toString());"/>
+	</menupopup>
+      </menu>
 
       <menu label="&classify.train;">
 	<menupopup class="training-menu" oncommand="NicoLiveRequest.doTrain(event,document.popupNode||$('popup-error-request').triggerNode);">
@@ -876,8 +891,13 @@
     <!-- for stock -->
     <menupopup id="popup-sort-stock" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
-      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+      <menu label="検索">
+	<menupopup>
+	  <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+	  <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+	  <menuitem label="J-WIDで作品タイトル検索" oncommand="NicoLiveRights.searchJWIDbyTitle(window.getSelection().toString());"/>
+	</menupopup>
+      </menu>
 
       <menu label="&classify.menu;">
 	<menupopup>
@@ -946,8 +966,13 @@
     <!-- for playlist -->
     <menupopup id="popup-playlist" onpopupshowing="NicoLiveMenuControl.showOnlyFirstMenuItemIfTextSelected(this);">
       <menuitem label="&menu.copy_selection;" oncommand="NicoLiveMenuControl.copyToClipboard();"/>
-      <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
-      <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+      <menu label="検索">
+	<menupopup>
+	  <menuitem label="&menu.search_by_google;" oncommand="NicoLiveMenuControl.searchByGoogle();"/>
+	  <menuitem label="&menu.search_by_niconico;" oncommand="NicoLiveMenuControl.searchByNicoNico();"/>
+	  <menuitem label="J-WIDで作品タイトル検索" oncommand="NicoLiveRights.searchJWIDbyTitle(window.getSelection().toString());"/>
+	</menupopup>
+      </menu>
 
       <menu label="&classify.menu;">
 	<menupopup>
