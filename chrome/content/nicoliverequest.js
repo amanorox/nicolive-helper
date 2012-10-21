@@ -637,7 +637,12 @@ var NicoLiveRequest = {
 	if(this.opentab.contentDocument){
 	    try{
 		let status,loadratio;
-		let flv = this.opentab.contentDocument.getElementById('external_nicoplayer').wrappedJSObject.__proto__;
+		let flv;
+		try{
+		    flv = this.opentab.contentDocument.getElementById('external_nicoplayer').wrappedJSObject.__proto__;
+		} catch (x) {
+		    flv = this.opentab.contentDocument.getElementById('flvplayer').wrappedJSObject.__proto__;
+		}
 		status = flv.ext_getStatus();
 		loadratio = flv.ext_getLoadedRatio();
 
