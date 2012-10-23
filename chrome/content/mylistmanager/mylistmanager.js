@@ -759,6 +759,8 @@ var MyListManager = {
 	// アンカーをドロップしたとき.
 	if( event.dataTransfer.types.contains("text/uri-list") ){
 	    str = event.dataTransfer.mozGetDataAt("text/uri-list",0);
+	    str = str.match(/((sm|nm)\d+)/)[1];
+
 	    debugprint("uri dropped:"+str);
 	}
 
