@@ -2827,7 +2827,9 @@ var NicoLiveHelper = {
 		case -5: // リク済み.
 		case -7: // 枠に収まらない.
 		    ans.movieinfo.iscasterselection = true; // ストックは主セレ扱い.
-		    ans.movieinfo.video_id = sm;
+		    if( !ans.movieinfo.video_id.match(/^(sm|nm)/) ){
+			ans.movieinfo.video_id = sm;
+		    }
 		    if(NicoLiveHelper.isPlayedMusic(ans.movieinfo.video_id)){
 			ans.movieinfo.isplayed = true;
 		    }
