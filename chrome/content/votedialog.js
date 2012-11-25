@@ -11,7 +11,8 @@ function AcceptFunction(){
 	item.value.push( texts[i].value );
     }
     //Application.console.log(str);
-    opener.NicoLiveHelper.postCasterComment("/vote start "+str,"");
+    let mail = document.getElementById("menu-se").value;
+    opener.NicoLiveHelper.postCasterComment("/vote start "+str, mail);
 
     VoteDialog.recent.unshift( item );
     if( VoteDialog.recent.length>10 ){

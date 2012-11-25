@@ -39,6 +39,13 @@
     </hbox>
 
     <hbox align="center">
+      <menulist id="menu-se">
+	<menupopup>
+	  <menuitem label="なし" value=""/>
+	  <menuitem label="se1" value="se1"/>
+	  <menuitem label="se2" value="se2"/>
+	</menupopup>
+      </menulist>
       <label value="過去のアンケート"/>
       <menulist oncommand="VoteDialog.restore(this.value);" flex="1">
 	<menupopup id="menu-recent">
