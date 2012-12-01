@@ -627,7 +627,7 @@
 	      </hbox>
 	      <label id="main-video-title" class="video-title" value=""/>
 	    </groupbox>
-	    <button style="margin-top:1.5em;" image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.swapScreen();"/>
+	    <button style="margin-top:1.5em;" image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.postCasterComment('/swap');"/>
 	    <groupbox>
 	      <caption label="サブ画面"/>
 	      <hbox>

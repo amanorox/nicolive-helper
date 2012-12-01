@@ -4742,15 +4742,6 @@ var NicoLiveHelper = {
 	}
     },
 
-    swapScreen:function(){
-	let tmp;
-	tmp = $('main-state-soundonly').checked;
-	$('main-state-soundonly').checked = $('sub-state-soundonly').checked;
-	$('sub-state-soundonly').checked = tmp;
-
-	this.postCasterComment("/swap");
-    },
-
     setupCookie:function(){
 	this._use_other_browser = false;
 	if( !NicoLiveCookie.getCookie("http://www.nicovideo.jp/") ){
