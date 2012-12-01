@@ -27,7 +27,7 @@
 <!ENTITY play.tooltip_stop "/stop 動画の再生を停止します。">
 <!ENTITY play.tooltip_soundonly "このチェックボタンを押すことでサウンドオンリーにします。チェックを外すとサウンドオンリーを解除します。また、チェックされている間の動画再生はサウンドオンリーで行われます。">
 <!ENTITY play.tooltip_swap "/swap メイン画面とサブ画面を交換します。">
-<!ENTITY play.subdisplay "サブ画面">
+<!ENTITY play.subdisplay "サブ再生">
 <!ENTITY play.tooltip_subdisplay "このチェックボタンが押されている間、再生、停止、サウンドオンリーをサブ画面に対して行います。">
 
 <!ENTITY toolbar.backuprestore "バックアップと復元">

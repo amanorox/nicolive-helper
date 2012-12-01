@@ -617,7 +617,26 @@
 
 	<!-- control panel tab -->
 	<vbox id="tab-controlpanel">
-	  <hbox style="display:inline-block;">
+	  <hbox style="margin-bottom: 0.5em;" align="center">
+	    <groupbox>
+	      <caption label="メイン画面"/>
+	      <hbox>
+		<toolbarbutton id="main-state-soundonly" class="soundonly-toggle" label="サウンドオンリー" type="checkbox" oncommand="NicoLiveHelper.playSoundOnly(0,this.checked);"/>
+		<button id="main-state-playcamera" label="カメラ映像" oncommand="NicoLiveHelper.postCasterComment('/play');"/>
+		<button label="再生停止" oncommand="NicoLiveHelper.postCasterComment('/stop');" tooltiptext="/stop"/>
+	      </hbox>
+	    </groupbox>
+	    <button image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.swapScreen();"/>
+	    <groupbox>
+	      <caption label="サブ画面"/>
+	      <hbox>
+		<toolbarbutton id="sub-state-soundonly" class="soundonly-toggle" label="サウンドオンリー" type="checkbox" oncommand="NicoLiveHelper.playSoundOnly(1,this.checked);"/>
+		<button label="再生停止" oncommand="NicoLiveHelper.postCasterComment('/stop sub');" tooltiptext="/stop sub"/>
+	      </hbox>
+	    </groupbox>
+	  </hbox>
+	  <html:hr/>
+	  <hbox style="display:inline-block; margin-top: 0.5em;">
 	    <button id="btn-connect-to-current-broadcast" label="放送中の番組に接続"
 		    tooltiptext="現在あなたが放送中の番組に接続します。"
 		    oncommand="NicoLiveWindow.getCurrentBroadcasting();"/>

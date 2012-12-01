@@ -134,6 +134,12 @@ tr.table_selfreq div:first-child:before{
     font-weight: bold;
 }
 
+.soundonly-toggle[checked="true"]:after {
+    content: "ON";
+}
+.soundonly-toggle:after {
+    content: "OFF";
+}
 
 /* co154で最近再生されたもの */
 tr.table_recently_play{

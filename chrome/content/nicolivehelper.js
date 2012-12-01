@@ -45,6 +45,8 @@ var NicoLiveHelper = {
     request_setno: 0,
     stock_setno: 0,
 
+    soundonly_state:[ false, false ],
+
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
     port: 0,
@@ -3666,12 +3668,24 @@ var NicoLiveHelper = {
 		// 現在再生している動画を調べる.
 		// mainとsubの両方でsm/nm動画を再生しているときは、mainを優先させる.
 		let contents = xml.getElementsByTagName('contents');
+		let done = false;
 		for(let i=0,currentplay;currentplay=contents[i];i++){
-		    let st = currentplay.attributes.getNamedItem('start_time'); // 再生開始時刻.
-		    let du = currentplay.attributes.getNamedItem('duration');   // 動画の長さ.
-		    st = st && parseInt(st.nodeValue) || 0;
-		    du = du && parseInt(du.nodeValue) || 0;
-		    if(du){
+		    let id = currentplay.getAttribute('id');
+		    let b = currentplay.getAttribute('disableVideo')=='1'?true:false;
+		    if( id=="main" ){
+			NicoLiveHelper.soundonly_state[0] = b;
+			$('main-state-soundonly').checked = b;
+		    }
+		    if( id=="sub" ){
+			NicoLiveHelper.soundonly_state[1] = b;
+			$('sub-state-soundonly').checked = b;
+		    }
+
+		    let st = currentplay.getAttribute('start_time'); // 再生開始時刻.
+		    let du = currentplay.getAttribute('duration');   // 動画の長さ.
+		    st = st && parseInt(st) || 0;
+		    du = du && parseInt(du) || 0;
+		    if(du && !done){
 			// 動画の長さが設定されているときは何か再生中.
 			let remain;
 			remain = (st+du)-GetCurrentTime(); // second.
@@ -3689,7 +3703,7 @@ var NicoLiveHelper = {
 			    NicoLiveHelper.setCurrentVideoInfo(tmp[0],false);
 			    NicoLiveHelper.inplay = true;
 			}
-			break;
+			done = true;
 		    }
 		}
 		// サーバ時刻を調べる.
@@ -4668,6 +4682,26 @@ var NicoLiveHelper = {
 	let b = $('get-extratime').hasAttribute('checked');
 	if( show_msg ) ShowNotice(b?'ロスタイムを有効にしました':'ロスタイムを無効にしました');	
 	NicoLiveHttpObserver.setLossTime( b );
+    },
+
+    playSoundOnly:function(target,b){
+	switch(target){
+	case 0:
+	    this.postCasterComment("/soundonly "+(b?"on":"off"));
+	    break;
+	case 1:
+	    this.postCasterComment("/soundonly "+(b?"on":"off")+" sub");
+	    break;
+	}
+    },
+
+    swapScreen:function(){
+	let tmp;
+	tmp = $('main-state-soundonly').checked;
+	$('main-state-soundonly').checked = $('sub-state-soundonly').checked;
+	$('sub-state-soundonly').checked = tmp;
+
+	this.postCasterComment("/swap");
     },
 
     setupCookie:function(){
