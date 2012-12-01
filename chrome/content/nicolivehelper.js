@@ -45,8 +45,6 @@ var NicoLiveHelper = {
     request_setno: 0,
     stock_setno: 0,
 
-    soundonly_state:[ false, false ],
-
     request_id: "",    // 生放送ID(lvXXXXXXX).
     addr: "",
     port: 0,
@@ -410,6 +408,53 @@ var NicoLiveHelper = {
 	}
     },
 
+    /** コントロールパネルのサウンドオンリーフラグの更新処理
+     * @param text コメントテキスト
+     */
+    processSoundOnlyState:function(text){
+	let main = $('main-state-soundonly');
+	let sub = $('sub-state-soundonly');
+	if( text.match(/^\/play rtmp/) ){
+	    // カメラ映像
+	    main.checked = false;
+	    return;
+	}
+	if( text.match(/^\/soundonly (on|off)\s*(.*)/) ){
+	    // soundonlyコマンド
+	    let onoff = RegExp.$1;
+	    let target = RegExp.$2;
+	    let b = onoff=='on'?true:false;
+	    if( target=='sub' ){
+		sub.checked = b;
+	    }else{
+		main.checked = b;
+	    }
+	    return;
+	}
+	//dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
+	if( text.match(/^\/play(sound)*\s*smile:.*(main|sub).*\"(.*)\"$/) ){
+	    // 動画の再生
+	    let is_soundonly = RegExp.$1;
+	    let target = RegExp.$2;
+	    let title = RegExp.$3;
+	    let b = is_soundonly ? true:false;
+	    if( target=='sub' ){
+		sub.checked = b;
+		$('sub-video-title').value = title;
+	    }else{
+		main.checked = b;
+		$('main-video-title').value = title;
+	    }
+	    return;
+	}
+	if( text.match(/^\/swap/) ){
+	    // メイン・サブ切り替え
+	    let tmp = main.checked;
+	    main.checked = sub.checked;
+	    sub.checked = tmp;
+	}
+    },
+
     // コメントを処理する(新).
     processComment2: function(chat){
 	// /telopで始まる行はニコニコ実況のものなので処理しなくてok.
@@ -451,7 +496,8 @@ var NicoLiveHelper = {
 	case 2: // チャンネル放送だと premium=2 からも/playコマンドがありえる
 	case 3:
 	    if( chat.date < NicoLiveHelper.connecttime || NicoLiveHelper._timeshift ) return;
-	    // 主コメの処理.
+	    // ここから主コメの処理.
+	    NicoLiveHelper.processSoundOnlyState(chat.text);
 	    let dat;
 	    // /play smile:sm00000 main "title"
 	    dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
@@ -3671,14 +3717,15 @@ var NicoLiveHelper = {
 		let done = false;
 		for(let i=0,currentplay;currentplay=contents[i];i++){
 		    let id = currentplay.getAttribute('id');
+		    let title = currentplay.getAttribute('title') || "";
 		    let b = currentplay.getAttribute('disableVideo')=='1'?true:false;
 		    if( id=="main" ){
-			NicoLiveHelper.soundonly_state[0] = b;
 			$('main-state-soundonly').checked = b;
+			$('main-video-title').value = title;
 		    }
 		    if( id=="sub" ){
-			NicoLiveHelper.soundonly_state[1] = b;
 			$('sub-state-soundonly').checked = b;
+			$('sub-video-title').value = title;
 		    }
 
 		    let st = currentplay.getAttribute('start_time'); // 再生開始時刻.

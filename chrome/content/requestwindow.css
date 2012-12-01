@@ -134,11 +134,18 @@ tr.table_selfreq div:first-child:before{
     font-weight: bold;
 }
 
+/* コントロールパネルのメイン・サブステート用 */
 .soundonly-toggle[checked="true"]:after {
     content: "ON";
 }
 .soundonly-toggle:after {
     content: "OFF";
+}
+.video-title[value='']{
+    display:none;
+}
+.video-title{
+    display:block;
 }
 
 /* co154で最近再生されたもの */

@@ -617,22 +617,24 @@
 
 	<!-- control panel tab -->
 	<vbox id="tab-controlpanel">
-	  <hbox style="margin-bottom: 0.5em;" align="center">
+	  <hbox style="margin-bottom: 0.5em;" align="top">
 	    <groupbox>
 	      <caption label="メイン画面"/>
 	      <hbox>
 		<toolbarbutton id="main-state-soundonly" class="soundonly-toggle" label="サウンドオンリー" type="checkbox" oncommand="NicoLiveHelper.playSoundOnly(0,this.checked);"/>
-		<button id="main-state-playcamera" label="カメラ映像" oncommand="NicoLiveHelper.postCasterComment('/play');"/>
+		<button label="カメラ映像" oncommand="NicoLiveHelper.postCasterComment('/play');"/>
 		<button label="再生停止" oncommand="NicoLiveHelper.postCasterComment('/stop');" tooltiptext="/stop"/>
 	      </hbox>
+	      <label id="main-video-title" class="video-title" value=""/>
 	    </groupbox>
-	    <button image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.swapScreen();"/>
+	    <button style="margin-top:1.5em;" image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.swapScreen();"/>
 	    <groupbox>
 	      <caption label="サブ画面"/>
 	      <hbox>
 		<toolbarbutton id="sub-state-soundonly" class="soundonly-toggle" label="サウンドオンリー" type="checkbox" oncommand="NicoLiveHelper.playSoundOnly(1,this.checked);"/>
 		<button label="再生停止" oncommand="NicoLiveHelper.postCasterComment('/stop sub');" tooltiptext="/stop sub"/>
 	      </hbox>
+	      <label id="sub-video-title" class="video-title" value=""/>
 	    </groupbox>
 	  </hbox>
 	  <html:hr/>
