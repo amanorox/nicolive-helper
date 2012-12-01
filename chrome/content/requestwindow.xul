@@ -622,12 +622,12 @@
 	      <caption label="メイン画面"/>
 	      <hbox>
 		<toolbarbutton id="main-state-soundonly" class="soundonly-toggle" label="サウンドオンリー" type="checkbox" oncommand="NicoLiveHelper.playSoundOnly(0,this.checked);"/>
-		<button label="カメラ映像" oncommand="NicoLiveHelper.postCasterComment('/play');"/>
+		<button label="カメラ映像" tooltiptext="/play" oncommand="NicoLiveHelper.postCasterComment('/play');"/>
 		<button label="再生停止" oncommand="NicoLiveHelper.postCasterComment('/stop');" tooltiptext="/stop"/>
 	      </hbox>
 	      <label id="main-video-title" class="video-title" value=""/>
 	    </groupbox>
-	    <button style="margin-top:1.5em;" image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.postCasterComment('/swap');"/>
+	    <button style="margin-top:1.5em; min-width:48px;" image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.postCasterComment('/swap');"/>
 	    <groupbox>
 	      <caption label="サブ画面"/>
 	      <hbox>

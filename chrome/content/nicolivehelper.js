@@ -417,6 +417,7 @@ var NicoLiveHelper = {
 	if( text.match(/^\/play rtmp/) ){
 	    // カメラ映像
 	    main.checked = false;
+	    $('main-video-title').value = "";
 	    return;
 	}
 	if( text.match(/^\/soundonly (on|off)\s*(.*)/) ){
@@ -452,6 +453,10 @@ var NicoLiveHelper = {
 	    let tmp = main.checked;
 	    main.checked = sub.checked;
 	    sub.checked = tmp;
+
+	    tmp = $('main-video-title').value;
+	    $('main-video-title').value = $('sub-video-title').value;
+	    $('sub-video-title').value = tmp;
 	}
     },
 
