@@ -442,9 +442,11 @@ var NicoLiveHelper = {
 	    if( target=='sub' ){
 		sub.checked = b;
 		$('sub-video-title').value = title;
+		$('sub-video-title').setAttribute('tooltiptext',title);
 	    }else{
 		main.checked = b;
 		$('main-video-title').value = title;
+		$('main-video-title').setAttribute('tooltiptext',title);
 	    }
 	    return;
 	}
@@ -457,6 +459,9 @@ var NicoLiveHelper = {
 	    tmp = $('main-video-title').value;
 	    $('main-video-title').value = $('sub-video-title').value;
 	    $('sub-video-title').value = tmp;
+
+	    $('main-video-title').setAttribute('tooltiptext', $('main-video-title').value );
+	    $('sub-video-title').setAttribute('tooltiptext', $('sub-video-title').value );
 	}
     },
 
@@ -3727,10 +3732,12 @@ var NicoLiveHelper = {
 		    if( id=="main" ){
 			$('main-state-soundonly').checked = b;
 			$('main-video-title').value = title;
+			$('main-video-title').setAttribute('tooltiptext', title);
 		    }
 		    if( id=="sub" ){
 			$('sub-state-soundonly').checked = b;
 			$('sub-video-title').value = title;
+			$('sub-video-title').setAttribute('tooltiptext', title);
 		    }
 
 		    let st = currentplay.getAttribute('start_time'); // 再生開始時刻.
