@@ -617,8 +617,8 @@
 
 	<!-- control panel tab -->
 	<vbox id="tab-controlpanel">
-	  <hbox width="100%" style="margin-bottom: 0.5em; width:100%;">
-	    <groupbox width="45%">
+	  <hbox width="100%" style="display:inline-block; margin-bottom: 0.5em; width:100%;">
+	    <groupbox width="100%">
 	      <caption label="メイン画面"/>
 	      <hbox>
 		<toolbarbutton id="main-state-soundonly" class="soundonly-toggle" label="サウンドオンリー" type="checkbox" oncommand="NicoLiveHelper.playSoundOnly(0,this.checked);"/>
@@ -627,10 +627,8 @@
 	      </hbox>
 	      <label id="main-video-title" class="video-title" crop="end" value=""/>
 	    </groupbox>
-	    <vbox style="padding-top:1.5em;">
-	      <button style="min-width:48px; vertical-align:center;" image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.postCasterComment('/swap');"/>
-	    </vbox>
-	    <groupbox width="45%">
+	    <toolbarbutton style="margin-top:1.5em;" image="data/swap2.png" tooltiptext="/swap" oncommand="NicoLiveHelper.postCasterComment('/swap');"/>
+	    <groupbox width="100%">
 	      <caption label="サブ画面"/>
 	      <hbox>
 		<toolbarbutton id="sub-state-soundonly" class="soundonly-toggle" label="サウンドオンリー" type="checkbox" oncommand="NicoLiveHelper.playSoundOnly(1,this.checked);"/>

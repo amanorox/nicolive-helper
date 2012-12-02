@@ -420,6 +420,19 @@ var NicoLiveHelper = {
 	    $('main-video-title').value = "";
 	    return;
 	}
+	if( text.match(/^\/stop\s*(sub)*/) ){
+	    let target = RegExp.$1;
+	    if( target=='sub' ){
+		let subtitle = $('sub-video-title');
+		subtitle.value = "";
+		subtitle.setAttribute('tooltiptext',"");
+	    }else{
+		let maintitle = $('main-video-title');
+		maintitle.value = "";
+		maintitle.setAttribute('tooltiptext',"");
+	    }
+	    return;
+	}
 	if( text.match(/^\/soundonly (on|off)\s*(.*)/) ){
 	    // soundonlyコマンド
 	    let onoff = RegExp.$1;
@@ -432,7 +445,6 @@ var NicoLiveHelper = {
 	    }
 	    return;
 	}
-	//dat = chat.text.match(/^\/play(sound)*\s*smile:(((sm|nm|ze|so)\d+)|\d+)\s*(main|sub)\s*\"(.*)\"$/);
 	if( text.match(/^\/play(sound)*\s*smile:.*(main|sub).*\"(.*)\"$/) ){
 	    // 動画の再生
 	    let is_soundonly = RegExp.$1;
@@ -440,13 +452,15 @@ var NicoLiveHelper = {
 	    let title = RegExp.$3;
 	    let b = is_soundonly ? true:false;
 	    if( target=='sub' ){
+		let subtitle = $('sub-video-title');
 		sub.checked = b;
-		$('sub-video-title').value = title;
-		$('sub-video-title').setAttribute('tooltiptext',title);
+		subtitle.value = title;
+		subtitle.setAttribute('tooltiptext',title);
 	    }else{
+		let maintitle = $('main-video-title');
 		main.checked = b;
-		$('main-video-title').value = title;
-		$('main-video-title').setAttribute('tooltiptext',title);
+		maintitle.value = title;
+		maintitle.setAttribute('tooltiptext',title);
 	    }
 	    return;
 	}
@@ -456,12 +470,14 @@ var NicoLiveHelper = {
 	    main.checked = sub.checked;
 	    sub.checked = tmp;
 
-	    tmp = $('main-video-title').value;
-	    $('main-video-title').value = $('sub-video-title').value;
-	    $('sub-video-title').value = tmp;
+	    let maintitle = $('main-video-title');
+	    let subtitle = $('sub-video-title');
+	    tmp = maintitle.value;
+	    maintitle.value = subtitle.value;
+	    subtitle.value = tmp;
 
-	    $('main-video-title').setAttribute('tooltiptext', $('main-video-title').value );
-	    $('sub-video-title').setAttribute('tooltiptext', $('sub-video-title').value );
+	    maintitle.setAttribute('tooltiptext', maintitle.value );
+	    subtitle.setAttribute('tooltiptext', subtitle.value );
 	}
     },
 
