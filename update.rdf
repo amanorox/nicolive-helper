@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="2.1.5">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBADkfmr564mKwJybqqaT1viWnQNLzL8Q6/c61Gfc4xDPt2jva6QDVmvvBmQyIw0Mog6vh1bP2r2kiEOISJUmW8BIRjKIipe8ngGKIW1fS2YkaXO0wnaS5wgIRPfi2hEwQ32mo0GqJCklSGIXuOvuwA3RDKp1AsFnkDFXHXsRNm0mS">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.6"
                    em:maxVersion="*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_2.1.5.xpi"
-                   em:updateHash="sha1:94c4b6c55e3c77abaf3216cca086ec8c7ac5d6cb"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_2.1.6.xpi"
+                   em:updateHash="sha1:e163fe9a9c2e5c7aacb756da80310d2549c94eb3"
                    em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="2.1.6">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBABe/FkUqF+JN9G4WvPMkqT9ReWFaQE9PoFNhf+EmYC+j5BWIzbBW62QbMY5ZRKXDRszlBS+fr+Yh055CXm0AeuZzDwe/bYYcfqUF2jvpRpPqabWhb0rXxYhEKlcRaTCJIcS9NywIp39AJ6Wt/R8IiEBhahs/LHYGjsQCFWvnT8gQ">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
 </RDF:RDF>
