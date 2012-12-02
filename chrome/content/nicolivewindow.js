@@ -464,6 +464,16 @@ var NicoLiveWindow = {
 	$('mainwindow-tab').selectedIndex = tabindex;
     },
 
+    setSubPlay:function(b){
+	if( b ){
+	    $('cp-mainscreen-label').style.fontWeight = 'normal';
+	    $('cp-subscreen-label').style.fontWeight = 'bold';
+	}else{
+	    $('cp-mainscreen-label').style.fontWeight = 'bold';
+	    $('cp-subscreen-label').style.fontWeight = 'normal';
+	}
+    },
+
     init: function(){
 	let prefs = NicoLivePreference.getBranch();
 	if( prefs.getBoolPref("autoscroll") ){
@@ -485,6 +495,8 @@ var NicoLiveWindow = {
 
 	this.restoreTabPositions();
 	this.setCustomCSS();
+
+	this.setSubPlay( $('do-subdisplay').checked );
     },
     destroy: function(){
 	this.save();
