@@ -2806,9 +2806,9 @@ var NicoLiveHelper = {
 		    // また、半角に正規化.
 		    if( elem.getAttribute('domain')=='jp' ){
 			let tag = elem.getElementsByTagName('tag');// DOM object
-			info.tags = new Array();
+			if( !info.tags ) info.tags = new Array();
 			for(let i=0,item;item=tag[i];i++){
-			    info.tags[i] = restorehtmlspecialchars(ZenToHan(item.textContent)); // string
+			    info.tags.push( restorehtmlspecialchars(ZenToHan(item.textContent)) ); // string
 			}
 		    }else{
 			let domain = elem.getAttribute('domain');
