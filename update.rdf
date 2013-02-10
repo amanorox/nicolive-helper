@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="2.1.6.1">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
   <RDF:Seq RDF:about="rdf:#$N3pNz">
     <RDF:li RDF:resource="rdf:#$O3pNz"/>
   </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHw1pdys5TqkJHi2WnLZQ5P4FTA4tNcM6NnXX4pDMirm+7jHyXl1Li4pwPDu58nU2XXXl9q0EfuCTGe2+e29C/YNFDqSVEb6f1qY1WJHb0NI1aO+SXfnpmrZSBEIWmKrxfvkWkzUsuf8dODLZPOBPaU8aoFQxCZS7hzavi523qOZ">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.6"
                    em:maxVersion="*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_2.1.6.1.xpi"
-                   em:updateHash="sha1:f6aa77604d4ddfac2f211898a8eaa8dda3eb36de"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_2.1.7.xpi"
+                   em:updateHash="sha1:00c19ba2304f56d39ffb6eeec4f8a1257dc1002a"
                    em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="2.1.6.1">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAAdqmDYfr/2av/DOFly/3EGxREl+B9exBkH0rUllmvDeIWLaWlMEjgBBx5WpQImU3EBzdMSOnMSiDlsBEWNZFPuwzjPilpXT+VJo80GhSy7ahqqd6KbR1/fw0HM3c1pKwv4LEmRhXQWe9FULPGurkeT8Bmu9HZ7NjfRJy9PZGQRW">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
   </RDF:Description>
 </RDF:RDF>
