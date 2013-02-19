@@ -2141,8 +2141,9 @@ var NicoLiveHelper = {
 		// postclsfuncが空いているので、登録したのち/cls
 		this.postclsfunc = func;
 		this.postCasterComment("/cls","");
-		clearInterval(this._sendclsid);
+		clearInterval( this._sendclsid );
 		this._clscounter = 0;
+		// /clsがきちんと送れるように6秒間隔でリトライする
 		this._sendclsid = setInterval( sendclsfunc, 6000 );
 	    }else{
 		// 1秒ごとにpost /cls関数が空いてないかチェック.
@@ -2157,7 +2158,7 @@ var NicoLiveHelper = {
 				// 登録したのち/cls
 				NicoLiveHelper.postclsfunc = func;
 				NicoLiveHelper.postCasterComment("/cls","");
-				clearInterval(NicoLiveHelper._sendclsid);
+				clearInterval( NicoLiveHelper._sendclsid );
 				NicoLiveHelper._clscounter = 0;
 				NicoLiveHelper._sendclsid = setInterval( sendclsfunc, 6000 );
 			    }
