@@ -657,7 +657,7 @@ var NicoLiveHelper = {
 	    if( chat.text.indexOf("/del")!=0 ){
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
-		    let selfreq = chat.text.match(/[^他](貼|張)/);
+		    let selfreq = chat.text.match(/[^他](貼|張)|自|関/);
 		    try{
 			let code;
 			code = chat.text.match(/(...[-+=/]....[-+=/].)/)[1];
@@ -671,7 +671,7 @@ var NicoLiveHelper = {
 		if( NicoLivePreference.allow_10digit ){
 		    let sm = chat.text.match(/(\d{10})/);
 		    if(sm){
-			let selfreq = chat.text.match(/[^他](貼|張)/);
+			let selfreq = chat.text.match(/[^他](貼|張)|自|関/);
 			if( sm[1]!=8888888888 ){
 			    NicoLiveHelper.addRequest(sm[1], chat.no, chat.user_id, selfreq);
 			    return;
