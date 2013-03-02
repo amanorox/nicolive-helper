@@ -3176,6 +3176,8 @@ var NicoLiveHelper = {
 
     // コメントサーバからやってくる行を処理する.
     processLine: function(line){
+	this.lastReceived = GetCurrentTime();
+
 	//debugprint(line);
 	if(line.match(/^<chat\s+.*>/)){
 	    //debugprint(line);
@@ -3350,9 +3352,11 @@ var NicoLiveHelper = {
     },
 
     keepConnection:function(){
-	let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
-	//let str = "<ping>PING</ping>";
-	this.coStream.writeString(str);
+	if( GetCurrentTime()-this.lastReceived >= 150 ){
+	    let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
+	    //let str = "<ping>PING</ping>";
+	    this.coStream.writeString(str);
+	}
     },
 
     // 接続を閉じる.

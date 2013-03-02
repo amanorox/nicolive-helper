@@ -1,3 +1,11 @@
+function OpenAboutDialog(){
+    var f='chrome,toolbar,modal=yes,resizable=no,centerscreen';
+    var w = window.openDialog('chrome://nicolivehelperadvance/content/about.xul','NLHAAbout',f);
+    SetWindowTopMost(w,NicoLivePreference.topmost);
+    w.focus();
+}
+
+
 function OpenSettingsDialog(){
     var f='chrome,toolbar,modal=no,resizable=yes,centerscreen';
     if(NicoLivePreference.topmost){
