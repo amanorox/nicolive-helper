@@ -2206,7 +2206,7 @@ var NicoLiveHelper = {
 	    + " postkey=\""+this.postkey+"\""
 	    + " mail=\""+mail+(NicoLivePreference.comment184?" 184\"":"\"")
 	    + " user_id=\""+this.user_id+"\""
-	    + " premium=\""+this.is_premium+"\" locale=\"jp\">"
+	    + " premium=\""+this.is_premium+"\" locale=\""+NicoLiveHelper.userLanguage+"\">"
 	    + htmlspecialchars(comment)
 	    + "</chat>\0";
 	//debugprint(str);
@@ -2247,7 +2247,12 @@ var NicoLiveHelper = {
 		}
 	    }
 	};
-	NicoApi.getpostkey( thread, block_no, f );
+
+	let uselc = 1;
+	let lang_flag = 1;
+	let locale_flag = null; 
+	let seat_flag = 1;
+	NicoApi.getpostkey( thread, block_no, uselc, lang_flag, locale_flag, seat_flag, f );
     },
 
     postUserPress:function(name,comment,color){
@@ -3750,6 +3755,9 @@ var NicoLiveHelper = {
 		    NicoLiveHelper.iscaster = false;
 		    debugprint('あなたは視聴者です');
 		}
+
+		NicoLiveHelper.userLanguage = xml.getElementsByTagName('userLanguage')[0].textContent;
+
 		// 新しいインスタンスを渡すため
 		if( NicoLiveAlertModule.isRegistered( NicoLiveHelper.community ) ){
 		    NicoLiveAlertModule.registerTarget( NicoLiveHelper.community, NicoLiveHelper );

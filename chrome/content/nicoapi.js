@@ -68,8 +68,8 @@ var NicoApi = {
 	this.callApi( url, postfunc, postdata );
     },
 
-    getpostkey: function( thread, block_no, postfunc ){
-	let url = this.live_base_uri + "getpostkey?thread="+thread+"&block_no="+block_no;
+    getpostkey: function( thread, block_no, uselc, lang_flag, locale_flag, seat_flag, postfunc ){
+	let url = this.live_base_uri + "getpostkey?thread="+thread+"&block_no="+block_no+"&uselc="+uselc+"&lang_flag="+lang_flag+"&locale_flag="+locale_flag+"&seat_flag="+seat_flag;
 	this.callApi( url, postfunc );
     },
 
