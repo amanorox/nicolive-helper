@@ -300,7 +300,6 @@ var NLHPreference = {
 	$('pref-restrict-bitrate').value = 0;
 	$('pref-date-from').value = "2007-08-31";
 	$('pref-date-to').value = "2007-08-31";
-	$('pref-bitrate').value = 0;
     },
 
     // 動画情報をデフォルトにする.

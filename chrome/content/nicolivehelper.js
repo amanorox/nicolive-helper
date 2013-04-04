@@ -657,7 +657,7 @@ var NicoLiveHelper = {
 	    if( chat.text.indexOf("/del")!=0 ){
 		let sm = chat.text.match(/((sm|nm)\d+)/);
 		if(sm){
-		    let selfreq = chat.text.match(/[^他](貼|張)/);
+		    let selfreq = chat.text.match(/[^他](貼|張)|自|関/);
 		    try{
 			let code;
 			code = chat.text.match(/(...[-+=/]....[-+=/].)/)[1];
@@ -671,7 +671,7 @@ var NicoLiveHelper = {
 		if( NicoLivePreference.allow_10digit ){
 		    let sm = chat.text.match(/(\d{10})/);
 		    if(sm){
-			let selfreq = chat.text.match(/[^他](貼|張)/);
+			let selfreq = chat.text.match(/[^他](貼|張)|自|関/);
 			if( sm[1]!=8888888888 ){
 			    NicoLiveHelper.addRequest(sm[1], chat.no, chat.user_id, selfreq);
 			    return;
@@ -2141,8 +2141,9 @@ var NicoLiveHelper = {
 		// postclsfuncが空いているので、登録したのち/cls
 		this.postclsfunc = func;
 		this.postCasterComment("/cls","");
-		clearInterval(this._sendclsid);
+		clearInterval( this._sendclsid );
 		this._clscounter = 0;
+		// /clsがきちんと送れるように6秒間隔でリトライする
 		this._sendclsid = setInterval( sendclsfunc, 6000 );
 	    }else{
 		// 1秒ごとにpost /cls関数が空いてないかチェック.
@@ -2157,7 +2158,7 @@ var NicoLiveHelper = {
 				// 登録したのち/cls
 				NicoLiveHelper.postclsfunc = func;
 				NicoLiveHelper.postCasterComment("/cls","");
-				clearInterval(NicoLiveHelper._sendclsid);
+				clearInterval( NicoLiveHelper._sendclsid );
 				NicoLiveHelper._clscounter = 0;
 				NicoLiveHelper._sendclsid = setInterval( sendclsfunc, 6000 );
 			    }
@@ -3180,6 +3181,8 @@ var NicoLiveHelper = {
 
     // コメントサーバからやってくる行を処理する.
     processLine: function(line){
+	this.lastReceived = GetCurrentTime();
+
 	//debugprint(line);
 	if(line.match(/^<chat\s+.*>/)){
 	    //debugprint(line);
@@ -3354,9 +3357,11 @@ var NicoLiveHelper = {
     },
 
     keepConnection:function(){
-	let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
-	//let str = "<ping>PING</ping>";
-	this.coStream.writeString(str);
+	if( GetCurrentTime()-this.lastReceived >= 150 ){
+	    let str = "<thread thread=\""+this.thread+"\" res_from=\"0\" version=\"20061206\"/>\0";
+	    //let str = "<ping>PING</ping>";
+	    this.coStream.writeString(str);
+	}
     },
 
     // 接続を閉じる.
