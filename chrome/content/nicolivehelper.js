@@ -3595,6 +3595,7 @@ var NicoLiveHelper = {
 	    }
 	    if( this.endtime==0 ){
 		if( (now-this._enterlosstime) > 2*60 ){
+		    let playprogress = $('statusbar-music-progressmeter');
 		    if( (playprogress.value>=99 || !this.inplay) && this.isAutoWindowClose() ){
 			// ロスタイムに入って2分経ったら自動で終了にする.
 			// ただし再生中は保留.
