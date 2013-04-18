@@ -71,7 +71,7 @@
     <!-- CTRL+R: Reconnect -->
     <key id="reconnect" key="r" modifiers="accel" oncommand="NicoLiveHelper.reconnect();"/>
     <!-- CTRL+B: Back stage pass comment(using only caster) -->
-    <key id="reconnect" key="b" modifiers="accel" oncommand="NicoLiveHelper.postBSPComment();"/>
+    <key id="postbsp" key="b" modifiers="accel" oncommand="NicoLiveHelper.postBSPComment();"/>
     <!-- CTRL+Z: Undo -->
     <key id="undo" key="z" modifiers="accel" oncommand="NicoLiveHelper.undo();"/>
 
