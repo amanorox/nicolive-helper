@@ -187,6 +187,9 @@ var NicoLiveOverlay = {
 		// 生主コンソールがないならリスナ.
 		iscaster = false;
 	    }
+	    if( window.content.document.body.innerHTML.match(/nicolivebroadcaster\.swf/) ){
+		iscaster = true;
+	    }
 	    if( window.content.document.getElementById("utility_container") ){
 		// 新バージョンではutility_containerがあれば生主.
 		iscaster = true;
@@ -248,6 +251,9 @@ var NicoLiveOverlay = {
 		// 新バージョン用のチェック.
 		iscaster = true;
 		this.debugprint("utility_container is found.");
+	    }
+	    if( e.target.getElementById('nicolivebroadcaster_container') ){
+		iscaster = true;
 	    }
 	} catch (x) {
 	    this.debugprint(x);
