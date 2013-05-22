@@ -11,7 +11,7 @@
 	width="720"
 	height="512"
 	windowtype="NicoLiveHelperMainWindow"
-	title="NikeLive Helper">
+	title="NicoLive Helper">
 
   <script type="application/javascript;version=1.7" src="chrome://nicolivehelper/content/misc.js" />
 
