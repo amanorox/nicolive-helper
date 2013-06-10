@@ -2,22 +2,22 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBALr92TunQvoQd+6yTQHtbBWPL+PVCZXkV7lMS5Qmu3HrnUyC1aRMLcLD15dJEnWaldKrkpz99W5byFHYCFfuWKqtA4604dWw4ExZMSXX/hQTsRxh8xQRZMv/ahrBrMJ0iHc0fUOO9hI3gsh3p99lBXgbz3PBoW9KeNLwnbdQ76vt">
+    <em:updates RDF:resource="rdf:#$N3pNz"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$O3pNz"
+                   em:version="2.1.10">
+    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
+  </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$N3pNz">
+    <RDF:li RDF:resource="rdf:#$O3pNz"/>
+  </RDF:Seq>
   <RDF:Description RDF:about="rdf:#$R3pNz"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.6"
                    em:maxVersion="*"
-                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_2.1.9.xpi"
-                   em:updateHash="sha1:4751a00497157c7e46676bb68293a87faca5e0dd"
+                   em:updateLink="http://miku39.jp/dists/software/firefox/nicolivehelper_2.1.10.xpi"
+                   em:updateHash="sha1:84e55bd1c8fbac5746b563fafc41190e225052ee"
                    em:updateInfoURL="http://miku39.jp/dists/software/firefox/nicolivehelper/updateinfourl.xhtml" />
-  <RDF:Seq RDF:about="rdf:#$N3pNz">
-    <RDF:li RDF:resource="rdf:#$O3pNz"/>
-  </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:nicolivehelper@miku39.jp"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBADSMmQgrSM/zaXrrTtkBUciie+V75jJDBPe8O8nFRtfPEcLi1HhBMe7qYFfAm4ORo/wMisV9a0D7BSBoZ2J0HvJd0Ewai3hhJDtZQOApLF+y0fdHu79vz0ja84+HF0UaMJh3I2t4Jhj9JhXbv5u5XTxp3naw9CY1h3SZqyNa91Zo">
-    <em:updates RDF:resource="rdf:#$N3pNz"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$O3pNz"
-                   em:version="2.1.9">
-    <em:targetApplication RDF:resource="rdf:#$R3pNz"/>
-  </RDF:Description>
 </RDF:RDF>
