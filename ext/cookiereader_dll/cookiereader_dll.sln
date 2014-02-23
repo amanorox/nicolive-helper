@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cookiereader_dll", "cookiereader_dll.vcproj", "{50F3BBDE-1A4A-45AA-809E-A8803B65508D}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cookiereader_dll", "cookiereader_dll.vcxproj", "{50F3BBDE-1A4A-45AA-809E-A8803B65508D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
